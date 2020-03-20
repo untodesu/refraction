@@ -50,7 +50,8 @@ public:
 	void			PerformClientSideObstacleAvoidance( float flFrameTime, CUserCmd *pCmd );
 	void			PerformClientSideNPCSpeedModifiers( float flFrameTime, CUserCmd *pCmd );
 
-	bool				IsWeaponLowered( void ) { return m_HL2Local.m_bWeaponLowered; }
+	bool			IsWeaponLowered( void ) { return m_HL2Local.m_bWeaponLowered; }
+	virtual void	CalcViewRoll( QAngle &eyeAngles );
 
 public:
 
