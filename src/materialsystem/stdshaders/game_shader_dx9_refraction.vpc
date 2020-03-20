@@ -11,5 +11,20 @@ $Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
 
 $Project "Refraction Shader DLL (DX9)"
 {
-    
+    $Folder	"Source Files"
+	{
+		$File "Post_ChromaticAberration.cpp"
+	}
+	
+	$Folder "Shader Source"
+	{
+		$File "post_chromatic_aberration_ps30.fxc"
+	}
+	
+	$Folder	"Header Files"
+	{
+	
+	}
+	
+	$File	"buildrefractionshaders.bat"
 }
