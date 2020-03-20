@@ -405,22 +405,22 @@ void CUtlBuffer::EatWhiteSpace()
 //-----------------------------------------------------------------------------
 bool CUtlBuffer::EatCPPComment()
 {
-	if ( IsText() && IsValid() )
-	{
+	if( IsText() && IsValid() ) {
 		// If we don't have a a c++ style comment next, we're done
-		const char *pPeek = (const char *)PeekGet( 2 * sizeof(char), 0 );
-		if ( !pPeek || ( pPeek[0] != '/' ) || ( pPeek[1] != '/' ) )
+		const char *pPeek = (const char *)PeekGet( 2 * sizeof( char ), 0 );
+		if( !pPeek || (pPeek[0] != '/' && pPeek[1] != '/') ) {
 			return false;
+		}
 
 		// Deal with c++ style comments
 		m_Get += 2;
 
 		// read complete line
-		for ( char c = GetChar(); IsValid(); c = GetChar() )
-		{
-			if ( c == '\n' )
+		for( char c = GetChar(); IsValid(); c = GetChar() ) {
+			if( c == '\n' )
 				break;
 		}
+
 		return true;
 	}
 	return false;
