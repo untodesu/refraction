@@ -60,7 +60,7 @@ enum TANKBULLET
 //			env_laser (duration is 0.5 rate of fire)
 //			rockets
 //			explosion?
-
+//			Remember, tanks are not afraid of punks.
 class CFuncTank : public CBaseEntity
 {
 
@@ -237,14 +237,8 @@ protected:
 	int						m_iBulletDamage; // 0 means use Bullet type's default damage
 	int						m_iBulletDamageVsPlayer; // Damage vs player. 0 means use m_iBulletDamage
 
-#ifdef HL2_EPISODIC
 	string_t				m_iszAmmoType;		// The name of the ammodef that we use when we fire. Bullet damage still comes from keyvalues.
 	int						m_iAmmoType;		// The cached index of the ammodef that we use when we fire.
-#else
-	int						m_iSmallAmmoType;
-	int						m_iMediumAmmoType;
-	int						m_iLargeAmmoType;
-#endif // HL2_EPISODIC
 
 	int						m_spread;		// firing spread
 
