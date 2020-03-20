@@ -15,26 +15,26 @@
 
 #if defined( CLIENT_DLL )
 
-	#include "iclientvehicle.h"
-	#include "prediction.h"
-	#include "c_basedoor.h"
-	#include "c_world.h"
-	#include "view.h"
-	#include "client_virtualreality.h"
-	#define CRecipientFilter C_RecipientFilter
-	#include "sourcevr/isourcevirtualreality.h"
+#include "iclientvehicle.h"
+#include "prediction.h"
+#include "c_basedoor.h"
+#include "c_world.h"
+#include "view.h"
+#include "client_virtualreality.h"
+#define CRecipientFilter C_RecipientFilter
+#include "sourcevr/isourcevirtualreality.h"
 
 #else
 
-	#include "iservervehicle.h"
-	#include "trains.h"
-	#include "world.h"
-	#include "doors.h"
-	#include "ai_basenpc.h"
-	#include "env_zoom.h"
+#include "iservervehicle.h"
+#include "trains.h"
+#include "world.h"
+#include "doors.h"
+#include "ai_basenpc.h"
+#include "env_zoom.h"
 
-	extern int TrainSpeed(int iSpeed, int iMax);
-	
+extern int TrainSpeed( int iSpeed, int iMax );
+
 #endif
 
 #if defined( CSTRIKE_DLL )
@@ -57,34 +57,33 @@
 #include "tier0/memdbgon.h"
 
 #if defined(GAME_DLL) && !defined(_XBOX)
-	extern ConVar sv_pushaway_max_force;
-	extern ConVar sv_pushaway_force;
-	extern ConVar sv_turbophysics;
+extern ConVar sv_pushaway_max_force;
+extern ConVar sv_pushaway_force;
+extern ConVar sv_turbophysics;
 
-	class CUsePushFilter : public CTraceFilterEntitiesOnly
+class CUsePushFilter : public CTraceFilterEntitiesOnly {
+public:
+	bool ShouldHitEntity( IHandleEntity *pHandleEntity, int contentsMask )
 	{
-	public:
-		bool ShouldHitEntity( IHandleEntity *pHandleEntity, int contentsMask )
-		{
-			CBaseEntity *pEntity = EntityFromEntityHandle( pHandleEntity );
+		CBaseEntity *pEntity = EntityFromEntityHandle( pHandleEntity );
 
-			// Static prop case...
-			if ( !pEntity )
-				return false;
+		// Static prop case...
+		if(!pEntity)
+			return false;
 
-			// Only impact on physics objects
-			if ( !pEntity->VPhysicsGetObject() )
-				return false;
+		// Only impact on physics objects
+		if(!pEntity->VPhysicsGetObject())
+			return false;
 
 #if defined( CSTRIKE_DLL )
-			// don't push the bomb!
-			if ( dynamic_cast<CC4*>( pEntity ) )
-				return false;
+		// don't push the bomb!
+		if(dynamic_cast<CC4*>(pEntity))
+			return false;
 #endif // CSTRIKE_DLL
 
-			return g_pGameRules->CanEntityBeUsePushed( pEntity );
-		}
-	};
+		return g_pGameRules->CanEntityBeUsePushed( pEntity );
+	}
+};
 #endif
 
 #ifdef CLIENT_DLL
@@ -93,14 +92,14 @@ ConVar mp_usehwmmodels( "mp_usehwmmodels", "0", NULL, "Enable the use of the hw 
 
 bool UseHWMorphModels()
 {
-// #ifdef CLIENT_DLL 
-// 	if ( mp_usehwmmodels.GetInt() == 0 )
-// 		return g_pMaterialSystemHardwareConfig->HasFastVertexTextures();
-// 
-// 	return mp_usehwmmodels.GetInt() > 0;
-// #else
-// 	return false;
-// #endif
+	// #ifdef CLIENT_DLL 
+	// 	if ( mp_usehwmmodels.GetInt() == 0 )
+	// 		return g_pMaterialSystemHardwareConfig->HasFastVertexTextures();
+	// 
+	// 	return mp_usehwmmodels.GetInt() > 0;
+	// #else
+	// 	return false;
+	// #endif
 	return false;
 }
 
@@ -111,29 +110,26 @@ void CopySoundNameWithModifierToken( char *pchDest, const char *pchSource, int n
 	int nDest = 0;
 	bool bFoundPeriod = false;
 
-	while ( pchSource[ nSource ] != '\0' && nDest < nMaxLenInChars - 2 )
-	{
-		pchDest[ nDest ] = pchSource[ nSource ];
+	while(pchSource[nSource] != '\0' && nDest < nMaxLenInChars - 2) {
+		pchDest[nDest] = pchSource[nSource];
 		nDest++;
 		nSource++;
 
-		if ( !bFoundPeriod && pchSource[ nSource - 1 ] == '.' )
-		{
+		if(!bFoundPeriod && pchSource[nSource - 1] == '.') {
 			// Insert special token after the period
 			bFoundPeriod = true;
 
 			int nToken = 0;
 
-			while ( pchToken[ nToken ] != '\0' && nDest < nMaxLenInChars - 2 )
-			{
-				pchDest[ nDest ] = pchToken[ nToken ];
+			while(pchToken[nToken] != '\0' && nDest < nMaxLenInChars - 2) {
+				pchDest[nDest] = pchToken[nToken];
 				nDest++;
 				nToken++;
 			}
 		}
 	}
 
-	pchDest[ nDest ] = '\0';
+	pchDest[nDest] = '\0';
 }
 
 //-----------------------------------------------------------------------------
@@ -149,7 +145,7 @@ float CBasePlayer::GetPlayerMaxSpeed()
 {
 	// player max speed is the lower limit of m_flMaxSpeed and sv_maxspeed
 	float fMaxSpeed = sv_maxspeed.GetFloat();
-	if ( MaxSpeed() > 0.0f && MaxSpeed() < fMaxSpeed )
+	if(MaxSpeed() > 0.0f && MaxSpeed() < fMaxSpeed)
 		fMaxSpeed = MaxSpeed();
 
 	return fMaxSpeed;
@@ -166,28 +162,27 @@ void CBasePlayer::ItemPreFrame()
 	CBaseCombatWeapon *pActive = GetActiveWeapon();
 
 	// Allow all the holstered weapons to update
-	for ( int i = 0; i < WeaponCount(); ++i )
-	{
+	for(int i = 0; i < WeaponCount(); ++i) {
 		CBaseCombatWeapon *pWeapon = GetWeapon( i );
 
-		if ( pWeapon == NULL )
+		if(pWeapon == NULL)
 			continue;
 
-		if ( pActive == pWeapon )
+		if(pActive == pWeapon)
 			continue;
 
 		pWeapon->ItemHolsterFrame();
 	}
 
-    if ( gpGlobals->curtime < m_flNextAttack )
+	if(gpGlobals->curtime < m_flNextAttack)
 		return;
 
-	if (!pActive)
+	if(!pActive)
 		return;
 
 #if defined( CLIENT_DLL )
 	// Not predicting this weapon
-	if ( !pActive->IsPredicted() )
+	if(!pActive->IsPredicted())
 		return;
 #endif
 
@@ -207,7 +202,7 @@ bool CBasePlayer::UsingStandardWeaponsInVehicle( void )
 	IClientVehicle *pVehicle = GetVehicle();
 #endif
 	Assert( pVehicle );
-	if ( !pVehicle )
+	if(!pVehicle)
 		return true;
 
 	// NOTE: We *have* to do this before ItemPostFrame because ItemPostFrame
@@ -216,7 +211,7 @@ bool CBasePlayer::UsingStandardWeaponsInVehicle( void )
 	bool bUsingStandardWeapons = pVehicle->IsPassengerUsingStandardWeapons( nRole );
 
 	// Fall through and check weapons, etc. if we're using them 
-	if (!bUsingStandardWeapons )
+	if(!bUsingStandardWeapons)
 		return false;
 
 	return true;
@@ -233,8 +228,7 @@ void CBasePlayer::ItemPostFrame()
 	CalcViewModelView( EyePosition(), EyeAngles() );
 
 	// Don't process items while in a vehicle.
-	if ( GetVehicle() )
-	{
+	if(GetVehicle()) {
 #if defined( CLIENT_DLL )
 		IClientVehicle *pVehicle = GetVehicle();
 #else
@@ -244,20 +238,19 @@ void CBasePlayer::ItemPostFrame()
 		bool bUsingStandardWeapons = UsingStandardWeaponsInVehicle();
 
 #if defined( CLIENT_DLL )
-		if ( pVehicle->IsPredicted() )
+		if(pVehicle->IsPredicted())
 #endif
 		{
 			pVehicle->ItemPostFrame( this );
 		}
 
-		if (!bUsingStandardWeapons || !GetVehicle())
+		if(!bUsingStandardWeapons || !GetVehicle())
 			return;
 	}
 
 
 	// check if the player is using something
-	if ( m_hUseEntity != NULL )
-	{
+	if(m_hUseEntity != NULL) {
 #if !defined( CLIENT_DLL )
 		Assert( !IsInAVehicle() );
 		ImpulseCommands();// this will call playerUse
@@ -265,24 +258,20 @@ void CBasePlayer::ItemPostFrame()
 		return;
 	}
 
-    if ( gpGlobals->curtime < m_flNextAttack )
-	{
-		if ( GetActiveWeapon() )
-		{
+	if(gpGlobals->curtime < m_flNextAttack) {
+		if(GetActiveWeapon()) {
 			GetActiveWeapon()->ItemBusyFrame();
 		}
 	}
-	else
-	{
-		if ( GetActiveWeapon() && (!IsInAVehicle() || UsingStandardWeaponsInVehicle()) )
-		{
+	else {
+		if(GetActiveWeapon() && (!IsInAVehicle() || UsingStandardWeaponsInVehicle())) {
 #if defined( CLIENT_DLL )
 			// Not predicting this weapon
-			if ( GetActiveWeapon()->IsPredicted() )
+			if(GetActiveWeapon()->IsPredicted())
 #endif
 
 			{
-				GetActiveWeapon()->ItemPostFrame( );
+				GetActiveWeapon()->ItemPostFrame();
 			}
 		}
 	}
@@ -300,13 +289,12 @@ void CBasePlayer::ItemPostFrame()
 //-----------------------------------------------------------------------------
 // Eye angles
 //-----------------------------------------------------------------------------
-const QAngle &CBasePlayer::EyeAngles( )
+const QAngle &CBasePlayer::EyeAngles()
 {
 	// NOTE: Viewangles are measured *relative* to the parent's coordinate system
 	CBaseEntity *pMoveParent = const_cast<CBasePlayer*>(this)->GetMoveParent();
 
-	if ( !pMoveParent )
-	{
+	if(!pMoveParent) {
 		return pl.v_angle;
 	}
 
@@ -329,23 +317,18 @@ const QAngle &CBasePlayer::LocalEyeAngles()
 //-----------------------------------------------------------------------------
 // Actual Eye position + angles
 //-----------------------------------------------------------------------------
-Vector CBasePlayer::EyePosition( )
+Vector CBasePlayer::EyePosition()
 {
-	if ( GetVehicle() != NULL )
-	{
+	if(GetVehicle() != NULL) {
 		// Return the cached result
 		CacheVehicleView();
 		return m_vecVehicleViewOrigin;
 	}
-	else
-	{
+	else {
 #ifdef CLIENT_DLL
-		if ( IsObserver() )
-		{
-			if ( GetObserverMode() == OBS_MODE_CHASE )
-			{
-				if ( IsLocalPlayer() )
-				{
+		if(IsObserver()) {
+			if(GetObserverMode() == OBS_MODE_CHASE) {
+				if(IsLocalPlayer()) {
 					return MainViewOrigin();
 				}
 			}
@@ -363,18 +346,14 @@ Vector CBasePlayer::EyePosition( )
 //-----------------------------------------------------------------------------
 const Vector CBasePlayer::GetPlayerMins( void ) const
 {
-	if ( IsObserver() )
-	{
-		return VEC_OBS_HULL_MIN_SCALED( this );	
+	if(IsObserver()) {
+		return VEC_OBS_HULL_MIN_SCALED( this );
 	}
-	else
-	{
-		if ( GetFlags() & FL_DUCKING )
-		{
+	else {
+		if(GetFlags() & FL_DUCKING) {
 			return VEC_DUCK_HULL_MIN_SCALED( this );
 		}
-		else
-		{
+		else {
 			return VEC_HULL_MIN_SCALED( this );
 		}
 	}
@@ -386,19 +365,15 @@ const Vector CBasePlayer::GetPlayerMins( void ) const
 // Output : const Vector
 //-----------------------------------------------------------------------------
 const Vector CBasePlayer::GetPlayerMaxs( void ) const
-{	
-	if ( IsObserver() )
-	{
-		return VEC_OBS_HULL_MAX_SCALED( this );	
+{
+	if(IsObserver()) {
+		return VEC_OBS_HULL_MAX_SCALED( this );
 	}
-	else
-	{
-		if ( GetFlags() & FL_DUCKING )
-		{
+	else {
+		if(GetFlags() & FL_DUCKING) {
 			return VEC_DUCK_HULL_MAX_SCALED( this );
 		}
-		else
-		{
+		else {
 			return VEC_HULL_MAX_SCALED( this );
 		}
 	}
@@ -410,7 +385,7 @@ const Vector CBasePlayer::GetPlayerMaxs( void ) const
 void CBasePlayer::CacheVehicleView( void )
 {
 	// If we've calculated the view this frame, then there's no need to recalculate it
-	if ( m_nVehicleViewSavedFrame == gpGlobals->framecount )
+	if(m_nVehicleViewSavedFrame == gpGlobals->framecount)
 		return;
 
 #ifdef CLIENT_DLL
@@ -419,8 +394,7 @@ void CBasePlayer::CacheVehicleView( void )
 	IServerVehicle *pVehicle = GetVehicle();
 #endif
 
-	if ( pVehicle != NULL )
-	{		
+	if(pVehicle != NULL) {
 		int nRole = pVehicle->GetPassengerRole( this );
 
 		// Get our view for this frame
@@ -428,11 +402,9 @@ void CBasePlayer::CacheVehicleView( void )
 		m_nVehicleViewSavedFrame = gpGlobals->framecount;
 
 #ifdef CLIENT_DLL
-		if( UseVR() )
-		{
-			C_BaseAnimating *pVehicleAnimating = dynamic_cast<C_BaseAnimating *>( pVehicle );
-			if( pVehicleAnimating )
-			{
+		if(UseVR()) {
+			C_BaseAnimating *pVehicleAnimating = dynamic_cast<C_BaseAnimating *>(pVehicle);
+			if(pVehicleAnimating) {
 				int eyeAttachmentIndex = pVehicleAnimating->LookupAttachment( "vehicle_driver_eyes" );
 
 				Vector vehicleEyeOrigin;
@@ -451,14 +423,12 @@ void CBasePlayer::CacheVehicleView( void )
 //-----------------------------------------------------------------------------
 void CBasePlayer::EyeVectors( Vector *pForward, Vector *pRight, Vector *pUp )
 {
-	if ( GetVehicle() != NULL )
-	{
+	if(GetVehicle() != NULL) {
 		// Cache or retrieve our calculated position in the vehicle
 		CacheVehicleView();
 		AngleVectors( m_vecVehicleViewAngles, pForward, pRight, pUp );
 	}
-	else
-	{
+	else {
 		AngleVectors( EyeAngles(), pForward, pRight, pUp );
 	}
 }
@@ -470,18 +440,15 @@ void CBasePlayer::EyePositionAndVectors( Vector *pPosition, Vector *pForward,
 										 Vector *pRight, Vector *pUp )
 {
 	// Handle the view in the vehicle
-	if ( GetVehicle() != NULL )
-	{
+	if(GetVehicle() != NULL) {
 		CacheVehicleView();
 		AngleVectors( m_vecVehicleViewAngles, pForward, pRight, pUp );
-		
-		if ( pPosition != NULL )
-		{
+
+		if(pPosition != NULL) {
 			*pPosition = m_vecVehicleViewOrigin;
 		}
 	}
-	else
-	{
+	else {
 		VectorCopy( BaseClass::EyePosition(), *pPosition );
 		AngleVectors( EyeAngles(), pForward, pRight, pUp );
 	}
@@ -515,38 +482,36 @@ void CBasePlayer::UpdateStepSound( surfacedata_t *psurface, const Vector &vecOri
 	float velwalk;
 	int	fLadder;
 
-	if ( m_flStepSoundTime > 0 )
-	{
+	if(m_flStepSoundTime > 0) {
 		m_flStepSoundTime -= 1000.0f * gpGlobals->frametime;
-		if ( m_flStepSoundTime < 0 )
-		{
+		if(m_flStepSoundTime < 0) {
 			m_flStepSoundTime = 0;
 		}
 	}
 
-	if ( m_flStepSoundTime > 0 )
+	if(m_flStepSoundTime > 0)
 		return;
 
-	if ( GetFlags() & (FL_FROZEN|FL_ATCONTROLS))
+	if(GetFlags() & (FL_FROZEN | FL_ATCONTROLS))
 		return;
 
-	if ( GetMoveType() == MOVETYPE_NOCLIP || GetMoveType() == MOVETYPE_OBSERVER )
+	if(GetMoveType() == MOVETYPE_NOCLIP || GetMoveType() == MOVETYPE_OBSERVER)
 		return;
 
-	if ( !sv_footsteps.GetFloat() )
+	if(!sv_footsteps.GetFloat())
 		return;
 
 	speed = VectorLength( vecVelocity );
 	float groundspeed = Vector2DLength( vecVelocity.AsVector2D() );
 
 	// determine if we are on a ladder
-	fLadder = ( GetMoveType() == MOVETYPE_LADDER );
+	fLadder = (GetMoveType() == MOVETYPE_LADDER);
 
 	GetStepSoundVelocities( &velwalk, &velrun );
 
-	bool onground = ( GetFlags() & FL_ONGROUND );
-	bool movingalongground = ( groundspeed > 0.0001f );
-	bool moving_fast_enough =  ( speed >= velwalk );
+	bool onground = (GetFlags() & FL_ONGROUND);
+	bool movingalongground = (groundspeed > 0.0001f);
+	bool moving_fast_enough = (speed >= velwalk);
 
 #ifdef PORTAL
 	// In Portal we MUST play footstep sounds even when the player is moving very slowly
@@ -558,101 +523,94 @@ void CBasePlayer::UpdateStepSound( surfacedata_t *psurface, const Vector &vecOri
 	// To hear step sounds you must be either on a ladder or moving along the ground AND
 	// You must be moving fast enough
 
-	if ( !moving_fast_enough || !(fLadder || ( onground && movingalongground )) )
-			return;
+	if(!moving_fast_enough || !(fLadder || (onground && movingalongground)))
+		return;
 
-//	MoveHelper()->PlayerSetAnimation( PLAYER_WALK );
+	//	MoveHelper()->PlayerSetAnimation( PLAYER_WALK );
 
-	bWalking = speed < velrun;		
+	bWalking = speed < velrun;
 
 	VectorCopy( vecOrigin, knee );
 	VectorCopy( vecOrigin, feet );
 
-	height = GetPlayerMaxs()[ 2 ] - GetPlayerMins()[ 2 ];
+	height = GetPlayerMaxs()[2] - GetPlayerMins()[2];
 
 	knee[2] = vecOrigin[2] + 0.2 * height;
 
 	// find out what we're stepping in or on...
-	if ( fLadder )
-	{
-		psurface = GetLadderSurface(vecOrigin);
+	if(fLadder) {
+		psurface = GetLadderSurface( vecOrigin );
 		fvol = 0.5;
 
 		SetStepSoundTime( STEPSOUNDTIME_ON_LADDER, bWalking );
 	}
 #ifdef CSTRIKE_DLL
-	else if ( enginetrace->GetPointContents( knee ) & MASK_WATER )  // we want to use the knee for Cstrike, not the waist
+	else if(enginetrace->GetPointContents( knee ) & MASK_WATER)  // we want to use the knee for Cstrike, not the waist
 #else
-	else if ( GetWaterLevel() == WL_Waist )
+	else if(GetWaterLevel() == WL_Waist)
 #endif // CSTRIKE_DLL
 	{
 		static int iSkipStep = 0;
 
-		if ( iSkipStep == 0 )
-		{
+		if(iSkipStep == 0) {
 			iSkipStep++;
 			return;
 		}
 
-		if ( iSkipStep++ == 3 )
-		{
+		if(iSkipStep++ == 3) {
 			iSkipStep = 0;
 		}
 		psurface = physprops->GetSurfaceData( physprops->GetSurfaceIndex( "wade" ) );
 		fvol = 0.65;
 		SetStepSoundTime( STEPSOUNDTIME_WATER_KNEE, bWalking );
 	}
-	else if ( GetWaterLevel() == WL_Feet )
-	{
+	else if(GetWaterLevel() == WL_Feet) {
 		psurface = physprops->GetSurfaceData( physprops->GetSurfaceIndex( "water" ) );
 		fvol = bWalking ? 0.2 : 0.5;
 
 		SetStepSoundTime( STEPSOUNDTIME_WATER_FOOT, bWalking );
 	}
-	else
-	{
-		if ( !psurface )
+	else {
+		if(!psurface)
 			return;
 
 		SetStepSoundTime( STEPSOUNDTIME_NORMAL, bWalking );
 
-		switch ( psurface->game.material )
-		{
-		default:
-		case CHAR_TEX_CONCRETE:						
-			fvol = bWalking ? 0.2 : 0.5;
-			break;
+		switch(psurface->game.material) {
+			default:
+			case CHAR_TEX_CONCRETE:
+				fvol = bWalking ? 0.2 : 0.5;
+				break;
 
-		case CHAR_TEX_METAL:	
-			fvol = bWalking ? 0.2 : 0.5;
-			break;
+			case CHAR_TEX_METAL:
+				fvol = bWalking ? 0.2 : 0.5;
+				break;
 
-		case CHAR_TEX_DIRT:
-			fvol = bWalking ? 0.25 : 0.55;
-			break;
+			case CHAR_TEX_DIRT:
+				fvol = bWalking ? 0.25 : 0.55;
+				break;
 
-		case CHAR_TEX_VENT:	
-			fvol = bWalking ? 0.4 : 0.7;
-			break;
+			case CHAR_TEX_VENT:
+				fvol = bWalking ? 0.4 : 0.7;
+				break;
 
-		case CHAR_TEX_GRATE:
-			fvol = bWalking ? 0.2 : 0.5;
-			break;
+			case CHAR_TEX_GRATE:
+				fvol = bWalking ? 0.2 : 0.5;
+				break;
 
-		case CHAR_TEX_TILE:	
-			fvol = bWalking ? 0.2 : 0.5;
-			break;
+			case CHAR_TEX_TILE:
+				fvol = bWalking ? 0.2 : 0.5;
+				break;
 
-		case CHAR_TEX_SLOSH:
-			fvol = bWalking ? 0.2 : 0.5;
-			break;
+			case CHAR_TEX_SLOSH:
+				fvol = bWalking ? 0.2 : 0.5;
+				break;
 		}
 	}
-	
+
 	// play the sound
 	// 65% volume if ducking
-	if ( GetFlags() & FL_DUCKING )
-	{
+	if(GetFlags() & FL_DUCKING) {
 		fvol *= 0.65;
 	}
 
@@ -667,21 +625,21 @@ void CBasePlayer::UpdateStepSound( surfacedata_t *psurface, const Vector &vecOri
 //-----------------------------------------------------------------------------
 void CBasePlayer::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, float fvol, bool force )
 {
-	if ( gpGlobals->maxClients > 1 && !sv_footsteps.GetFloat() )
+	if(gpGlobals->maxClients > 1 && !sv_footsteps.GetFloat())
 		return;
 
 #if defined( CLIENT_DLL )
 	// during prediction play footstep sounds only once
-	if ( prediction->InPrediction() && !prediction->IsFirstTimePredicted() )
+	if(prediction->InPrediction() && !prediction->IsFirstTimePredicted())
 		return;
 #endif
 
-	if ( !psurface )
+	if(!psurface)
 		return;
 
 	int nSide = m_Local.m_nStepside;
 	unsigned short stepSoundName = nSide ? psurface->sounds.stepleft : psurface->sounds.stepright;
-	if ( !stepSoundName )
+	if(!stepSoundName)
 		return;
 
 	m_Local.m_nStepside = !nSide;
@@ -690,26 +648,23 @@ void CBasePlayer::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, flo
 
 	Assert( nSide == 0 || nSide == 1 );
 
-	if ( m_StepSoundCache[ nSide ].m_usSoundNameIndex == stepSoundName )
-	{
-		params = m_StepSoundCache[ nSide ].m_SoundParameters;
+	if(m_StepSoundCache[nSide].m_usSoundNameIndex == stepSoundName) {
+		params = m_StepSoundCache[nSide].m_SoundParameters;
 	}
-	else
-	{
+	else {
 		IPhysicsSurfaceProps *physprops = MoveHelper()->GetSurfaceProps();
 		const char *pSoundName = physprops->GetString( stepSoundName );
 
 		// Give child classes an opportunity to override.
 		pSoundName = GetOverrideStepSound( pSoundName );
 
-		if ( !CBaseEntity::GetParametersForSound( pSoundName, params, NULL ) )
+		if(!CBaseEntity::GetParametersForSound( pSoundName, params, NULL ))
 			return;
 
 		// Only cache if there's one option.  Otherwise we'd never here any other sounds
-		if ( params.count == 1 )
-		{
-			m_StepSoundCache[ nSide ].m_usSoundNameIndex = stepSoundName;
-			m_StepSoundCache[ nSide ].m_SoundParameters = params;
+		if(params.count == 1) {
+			m_StepSoundCache[nSide].m_usSoundNameIndex = stepSoundName;
+			m_StepSoundCache[nSide].m_SoundParameters = params;
 		}
 	}
 
@@ -718,8 +673,7 @@ void CBasePlayer::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, flo
 
 #ifndef CLIENT_DLL
 	// in MP, server removes all players in the vecOrigin's PVS, these players generate the footsteps client side
-	if ( gpGlobals->maxClients > 1 )
-	{
+	if(gpGlobals->maxClients > 1) {
 		filter.RemoveRecipientsByPVS( vecOrigin );
 	}
 #endif
@@ -728,12 +682,10 @@ void CBasePlayer::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, flo
 	ep.m_nChannel = CHAN_BODY;
 	ep.m_pSoundName = params.soundname;
 #if defined ( TF_DLL ) || defined ( TF_CLIENT_DLL )
-	if( TFGameRules()->IsMannVsMachineMode() )
-	{
+	if(TFGameRules()->IsMannVsMachineMode()) {
 		ep.m_flVolume = params.volume;
 	}
-	else
-	{
+	else {
 		ep.m_flVolume = fvol;
 	}
 #else
@@ -757,11 +709,11 @@ void CBasePlayer::UpdateButtonState( int nUserCmdButtonMask )
 
 	// Get button states
 	m_nButtons = nUserCmdButtonMask;
- 	int buttonsChanged = m_afButtonLast ^ m_nButtons;
-	
+	int buttonsChanged = m_afButtonLast ^ m_nButtons;
+
 	// Debounced button codes for pressed/released
 	// UNDONE: Do we need auto-repeat?
-	m_afButtonPressed =  buttonsChanged & m_nButtons;		// The changed ones still down are "pressed"
+	m_afButtonPressed = buttonsChanged & m_nButtons;		// The changed ones still down are "pressed"
 	m_afButtonReleased = buttonsChanged & (~m_nButtons);	// The ones not down are "released"
 }
 
@@ -771,13 +723,11 @@ void CBasePlayer::UpdateButtonState( int nUserCmdButtonMask )
 void CBasePlayer::GetStepSoundVelocities( float *velwalk, float *velrun )
 {
 	// UNDONE: need defined numbers for run, walk, crouch, crouch run velocities!!!!	
-	if ( ( GetFlags() & FL_DUCKING) || ( GetMoveType() == MOVETYPE_LADDER ) )
-	{
+	if((GetFlags() & FL_DUCKING) || (GetMoveType() == MOVETYPE_LADDER)) {
 		*velwalk = 60;		// These constants should be based on cl_movespeedkey * cl_forwardspeed somehow
-		*velrun = 80;		
+		*velrun = 80;
 	}
-	else
-	{
+	else {
 		*velwalk = 90;
 		*velrun = 220;
 	}
@@ -788,41 +738,39 @@ void CBasePlayer::GetStepSoundVelocities( float *velwalk, float *velrun )
 //-----------------------------------------------------------------------------
 void CBasePlayer::SetStepSoundTime( stepsoundtimes_t iStepSoundTime, bool bWalking )
 {
-	switch ( iStepSoundTime )
-	{
-	case STEPSOUNDTIME_NORMAL:
-	case STEPSOUNDTIME_WATER_FOOT:
-		m_flStepSoundTime = bWalking ? 400 : 300;
-		break;
+	switch(iStepSoundTime) {
+		case STEPSOUNDTIME_NORMAL:
+		case STEPSOUNDTIME_WATER_FOOT:
+			m_flStepSoundTime = bWalking ? 400 : 300;
+			break;
 
-	case STEPSOUNDTIME_ON_LADDER:
-		m_flStepSoundTime = 350;
-		break;
+		case STEPSOUNDTIME_ON_LADDER:
+			m_flStepSoundTime = 350;
+			break;
 
-	case STEPSOUNDTIME_WATER_KNEE:
-		m_flStepSoundTime = 600;
-		break;
+		case STEPSOUNDTIME_WATER_KNEE:
+			m_flStepSoundTime = 600;
+			break;
 
-	default:
-		Assert(0);
-		break;
+		default:
+			Assert( 0 );
+			break;
 	}
 
 	// UNDONE: need defined numbers for run, walk, crouch, crouch run velocities!!!!	
-	if ( ( GetFlags() & FL_DUCKING) || ( GetMoveType() == MOVETYPE_LADDER ) )
-	{
+	if((GetFlags() & FL_DUCKING) || (GetMoveType() == MOVETYPE_LADDER)) {
 		m_flStepSoundTime += 100;
 	}
 }
 
-Vector CBasePlayer::Weapon_ShootPosition( )
+Vector CBasePlayer::Weapon_ShootPosition()
 {
 	return EyePosition();
 }
 
 void CBasePlayer::SetAnimationExtension( const char *pExtension )
 {
-	Q_strncpy( m_szAnimExtension, pExtension, sizeof(m_szAnimExtension) );
+	Q_strncpy( m_szAnimExtension, pExtension, sizeof( m_szAnimExtension ) );
 }
 
 
@@ -839,33 +787,31 @@ void CBasePlayer::Weapon_SetLast( CBaseCombatWeapon *pWeapon )
 // Input  :
 // Output :
 //-----------------------------------------------------------------------------
-bool CBasePlayer::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex /*=0*/ ) 
+bool CBasePlayer::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex /*=0*/ )
 {
 	CBaseCombatWeapon *pLastWeapon = GetActiveWeapon();
 
-	if ( BaseClass::Weapon_Switch( pWeapon, viewmodelindex ))
-	{
-		if ( pLastWeapon && Weapon_ShouldSetLast( pLastWeapon, GetActiveWeapon() ) )
-		{
+	if(BaseClass::Weapon_Switch( pWeapon, viewmodelindex )) {
+		if(pLastWeapon && Weapon_ShouldSetLast( pLastWeapon, GetActiveWeapon() )) {
 			Weapon_SetLast( pLastWeapon->GetLastWeapon() );
 		}
 
 		CBaseViewModel *pViewModel = GetViewModel( viewmodelindex );
 		Assert( pViewModel );
-		if ( pViewModel )
+		if(pViewModel)
 			pViewModel->RemoveEffects( EF_NODRAW );
-		ResetAutoaim( );
+		ResetAutoaim();
 		return true;
 	}
 	return false;
 }
 
-void CBasePlayer::SelectLastItem(void)
+void CBasePlayer::SelectLastItem( void )
 {
-	if ( m_hLastWeapon.Get() == NULL )
+	if(m_hLastWeapon.Get() == NULL)
 		return;
 
-	if ( GetActiveWeapon() && !GetActiveWeapon()->CanHolster() )
+	if(GetActiveWeapon() && !GetActiveWeapon()->CanHolster())
 		return;
 
 	SelectItem( m_hLastWeapon.Get()->GetClassname(), m_hLastWeapon.Get()->GetSubType() );
@@ -877,8 +823,7 @@ void CBasePlayer::SelectLastItem(void)
 //-----------------------------------------------------------------------------
 void CBasePlayer::AbortReload( void )
 {
-	if ( GetActiveWeapon() )
-	{
+	if(GetActiveWeapon()) {
 		GetActiveWeapon()->AbortReload();
 	}
 }
@@ -889,7 +834,7 @@ void CBasePlayer::AddToPlayerSimulationList( CBaseEntity *other )
 	CHandle< CBaseEntity > h;
 	h = other;
 	// Already in list
-	if ( m_SimulatedByThisPlayer.Find( h ) != m_SimulatedByThisPlayer.InvalidIndex() )
+	if(m_SimulatedByThisPlayer.Find( h ) != m_SimulatedByThisPlayer.InvalidIndex())
 		return;
 
 	Assert( other->IsPlayerSimulated() );
@@ -904,7 +849,7 @@ void CBasePlayer::AddToPlayerSimulationList( CBaseEntity *other )
 //-----------------------------------------------------------------------------
 void CBasePlayer::RemoveFromPlayerSimulationList( CBaseEntity *other )
 {
-	if ( !other )
+	if(!other)
 		return;
 
 	Assert( other->IsPlayerSimulated() );
@@ -922,22 +867,19 @@ void CBasePlayer::SimulatePlayerSimulatedEntities( void )
 	int c = m_SimulatedByThisPlayer.Count();
 	int i;
 
-	for ( i = c - 1; i >= 0; i-- )
-	{
+	for(i = c - 1; i >= 0; i--) {
 		CHandle< CBaseEntity > h;
-		
-		h = m_SimulatedByThisPlayer[ i ];
+
+		h = m_SimulatedByThisPlayer[i];
 		CBaseEntity *e = h;
 
-		if ( !e || !e->IsPlayerSimulated() )
-		{
+		if(!e || !e->IsPlayerSimulated()) {
 			m_SimulatedByThisPlayer.Remove( i );
 			continue;
 		}
 
 #if defined( CLIENT_DLL )
-		if ( e->IsClientCreated() && prediction->InPrediction() && !prediction->IsFirstTimePredicted() )
-		{
+		if(e->IsClientCreated() && prediction->InPrediction() && !prediction->IsFirstTimePredicted()) {
 			continue;
 		}
 #endif
@@ -950,22 +892,19 @@ void CBasePlayer::SimulatePlayerSimulatedEntities( void )
 	// Loop through all entities again, checking their untouch if flagged to do so
 	c = m_SimulatedByThisPlayer.Count();
 
-	for ( i = c - 1; i >= 0; i-- )
-	{
+	for(i = c - 1; i >= 0; i--) {
 		CHandle< CBaseEntity > h;
-		
-		h = m_SimulatedByThisPlayer[ i ];
+
+		h = m_SimulatedByThisPlayer[i];
 
 		CBaseEntity *e = h;
-		if ( !e || !e->IsPlayerSimulated() )
-		{
+		if(!e || !e->IsPlayerSimulated()) {
 			m_SimulatedByThisPlayer.Remove( i );
 			continue;
 		}
 
 #if defined( CLIENT_DLL )
-		if ( e->IsClientCreated() && prediction->InPrediction() && !prediction->IsFirstTimePredicted() )
-		{
+		if(e->IsClientCreated() && prediction->InPrediction() && !prediction->IsFirstTimePredicted()) {
 			continue;
 		}
 #endif
@@ -973,7 +912,7 @@ void CBasePlayer::SimulatePlayerSimulatedEntities( void )
 		Assert( e->IsPlayerSimulated() );
 		Assert( e->GetSimulatingPlayer() == this );
 
-		if ( !e->GetCheckUntouch() )
+		if(!e->GetCheckUntouch())
 			continue;
 
 		e->PhysicsCheckForEntityUntouch();
@@ -988,14 +927,12 @@ void CBasePlayer::ClearPlayerSimulationList( void )
 	int c = m_SimulatedByThisPlayer.Size();
 	int i;
 
-	for ( i = c - 1; i >= 0; i-- )
-	{
+	for(i = c - 1; i >= 0; i--) {
 		CHandle< CBaseEntity > h;
-		
-		h = m_SimulatedByThisPlayer[ i ];
+
+		h = m_SimulatedByThisPlayer[i];
 		CBaseEntity *e = h;
-		if ( e )
-		{
+		if(e) {
 			e->UnsetPlayerSimulated();
 		}
 	}
@@ -1009,7 +946,7 @@ void CBasePlayer::ClearPlayerSimulationList( void )
 //-----------------------------------------------------------------------------
 bool CBasePlayer::Weapon_ShouldSelectItem( CBaseCombatWeapon *pWeapon )
 {
-	return ( pWeapon != GetActiveWeapon() );
+	return (pWeapon != GetActiveWeapon());
 }
 
 //-----------------------------------------------------------------------------
@@ -1017,28 +954,27 @@ bool CBasePlayer::Weapon_ShouldSelectItem( CBaseCombatWeapon *pWeapon )
 //-----------------------------------------------------------------------------
 void CBasePlayer::SelectItem( const char *pstr, int iSubType )
 {
-	if (!pstr)
+	if(!pstr)
 		return;
 
 	CBaseCombatWeapon *pItem = Weapon_OwnsThisType( pstr, iSubType );
 
-	if (!pItem)
+	if(!pItem)
 		return;
 
-	if( GetObserverMode() != OBS_MODE_NONE )
+	if(GetObserverMode() != OBS_MODE_NONE)
 		return;// Observers can't select things.
 
-	if ( !Weapon_ShouldSelectItem( pItem ) )
+	if(!Weapon_ShouldSelectItem( pItem ))
 		return;
 
 	// FIX, this needs to queue them up and delay
 	// Make sure the current weapon can be holstered
-	if ( GetActiveWeapon() )
-	{
-		if ( !GetActiveWeapon()->CanHolster() )
+	if(GetActiveWeapon()) {
+		if(!GetActiveWeapon()->CanHolster())
 			return;
 
-		ResetAutoaim( );
+		ResetAutoaim();
 	}
 
 	Weapon_Switch( pItem );
@@ -1051,219 +987,210 @@ ConVar sv_debug_player_use( "sv_debug_player_use", "0", FCVAR_REPLICATED, "Visua
 float IntervalDistance( float x, float x0, float x1 )
 {
 	// swap so x0 < x1
-	if ( x0 > x1 )
-	{
+	if(x0 > x1) {
 		float tmp = x0;
 		x0 = x1;
 		x1 = tmp;
 	}
 
-	if ( x < x0 )
-		return x0-x;
-	else if ( x > x1 )
+	if(x < x0)
+		return x0 - x;
+	else if(x > x1)
 		return x - x1;
 	return 0;
 }
 
+static float EstimatedDistanceSquared( const Vector &point, const CBaseEntity *pEntity )
+{
+	Vector nearestPoint;
+	pEntity->CollisionProp()->CalcNearestPoint( point, &nearestPoint );
+	return (nearestPoint - point).LengthSqr();
+}
+
 CBaseEntity *CBasePlayer::FindUseEntity()
 {
-	Vector forward, up;
-	EyeVectors( &forward, NULL, &up );
-
-	trace_t tr;
-	// Search for objects in a sphere (tests for entities that are not solid, yet still useable)
+	Vector forward;
+	EyeVectors( &forward, NULL, NULL );
 	Vector searchCenter = EyePosition();
 
-	// NOTE: Some debris objects are useable too, so hit those as well
-	// A button, etc. can be made out of clip brushes, make sure it's +useable via a traceline, too.
-	int useableContents = MASK_SOLID | CONTENTS_DEBRIS | CONTENTS_PLAYERCLIP;
+	// Some debris objects are +usable, and clip brushes can be made into
+	// +usable entities.
+	int usableContents = MASK_SOLID | CONTENTS_DEBRIS | CONTENTS_PLAYERCLIP;
+
+	// However, we occasionally need to ignore clip brushes so that objects
+	// inside of or beyond them can be +used.
+	const int usableContentsIgnoreClip = usableContents & ~CONTENTS_PLAYERCLIP;
 
 #ifdef CSTRIKE_DLL
-	useableContents = MASK_NPCSOLID_BRUSHONLY | MASK_OPAQUE_AND_NPCS;
+	usableContents = MASK_NPCSOLID_BRUSHONLY | MASK_OPAQUE_AND_NPCS;
 #endif
 
 #ifdef HL1_DLL
-	useableContents = MASK_SOLID;
-#endif
-#ifndef CLIENT_DLL
-	CBaseEntity *pFoundByTrace = NULL;
+	usableContents = MASK_SOLID;
 #endif
 
-	// UNDONE: Might be faster to just fold this range into the sphere query
-	CBaseEntity *pObject = NULL;
+	// First, try to hit an entity directly in front of the player.
+	trace_t directTrace;
+	UTIL_TraceLine( searchCenter, searchCenter + PLAYER_USE_RADIUS * forward, usableContents, this, COLLISION_GROUP_NONE, &directTrace );
 
-	float nearestDist = FLT_MAX;
-	// try the hit entity if there is one, or the ground entity if there isn't.
 	CBaseEntity *pNearest = NULL;
+	CBaseEntity *pObject = directTrace.m_pEnt;
+	bool bUsable = IsUseableEntity( pObject, 0 );
 
-	const int NUM_TANGENTS = 8;
-	// trace a box at successive angles down
-	//							forward, 45 deg, 30 deg, 20 deg, 15 deg, 10 deg, -10, -15
-	const float tangents[NUM_TANGENTS] = { 0, 1, 0.57735026919f, 0.3639702342f, 0.267949192431f, 0.1763269807f, -0.1763269807f, -0.267949192431f };
-	for ( int i = 0; i < NUM_TANGENTS; i++ )
-	{
-		if ( i == 0 )
-		{
-			UTIL_TraceLine( searchCenter, searchCenter + forward * 1024, useableContents, this, COLLISION_GROUP_NONE, &tr );
+	if(!bUsable && (directTrace.contents & CONTENTS_PLAYERCLIP)) {
+		// We hit a non-usable clip brush. Try tracing again, ignoring clip
+		// brushes, so that objects inside of or beyond them can be +used.
+
+		// NOTE: If a usable clip brush is behind a non-usable clip brush,
+		// then we won't be able to +use it, unfortunately. This is difficult
+		// to workaround. For example, the non-usable clip brush cannot be added
+		// to a list of ignored entities, because it is part of the worldspawn,
+		// and we cannot ignore that.
+		UTIL_TraceLine( searchCenter, searchCenter + PLAYER_USE_RADIUS * forward, usableContentsIgnoreClip, this, COLLISION_GROUP_NONE, &directTrace );
+
+		pObject = directTrace.m_pEnt;
+		bUsable = IsUseableEntity( pObject, 0 );
+	}
+
+	// If the object is not usable, determine if a move ancestor is.
+	while(pObject && !bUsable && pObject->GetMoveParent()) {
+		pObject = pObject->GetMoveParent();
+		bUsable = IsUseableEntity( pObject, 0 );
+	}
+
+	if(bUsable) {
+		pNearest = pObject;
+
+		if(sv_debug_player_use.GetBool()) {
+			const float distSquared = EstimatedDistanceSquared( searchCenter, pNearest );
+			Msg( "Line trace found usable entity: %s, distance: %.2f\n", pNearest->GetDebugName(), sqrt( distSquared ) );
 		}
-		else
-		{
-			Vector down = forward - tangents[i]*up;
-			VectorNormalize(down);
-			UTIL_TraceHull( searchCenter, searchCenter + down * 72, -Vector(16,16,16), Vector(16,16,16), useableContents, this, COLLISION_GROUP_NONE, &tr );
+	}
+	else {
+		// Any objects directly in front of us weren't usable and close enough.
+		// Next, determine if the ground entity is usable.
+		float nearestDistSquared = FLT_MAX;
+
+		if(GetGroundEntity() && IsUseableEntity( GetGroundEntity(), FCAP_USE_ONGROUND )) {
+			pNearest = GetGroundEntity();
+			nearestDistSquared = EstimatedDistanceSquared( searchCenter, pNearest );
+
+			if(sv_debug_player_use.GetBool()) {
+				Msg( "Ground query found usable entity: %s, distance: %.2f\n", pNearest->GetDebugName(), sqrt( nearestDistSquared ) );
+			}
 		}
+
+		// Next, determine which of the reachable and usable objects in the cone
+		// volume directly in front of player is closest, and whether or not any
+		// is closer than the ground entity.
+		for(CEntitySphereQuery sphere( searchCenter, PLAYER_USE_RADIUS ); (pObject = sphere.GetCurrentEntity()) != NULL; sphere.NextEntity()) {
+			if(!IsUseableEntity( pObject, 0 ))
+				continue;
+
+			// Determine if the object is nearer than the previous nearest object.
+			Vector nearestPoint;
+			pObject->CollisionProp()->CalcNearestPoint( searchCenter, &nearestPoint );
+
+			Vector dir = nearestPoint - searchCenter;
+			VectorNormalize( dir );
+
+			// Need to be looking at the object more or less.
+			// NOTE: If the closest point on the object happens to be off to the
+			// side, even though the object is predominantly if front of the player,
+			// then it will be rejected, unfortunately.
+			if(DotProduct( dir, forward ) < 0.8)
+				continue;
+
+			const float distSquared = (nearestPoint - searchCenter).LengthSqr();
+
+			if(sv_debug_player_use.GetBool()) {
+				Msg( "Cone query found usable entity: %s, distance: %.2f\n", pObject->GetDebugName(), sqrt( distSquared ) );
+			}
+
+			if(distSquared < nearestDistSquared) {
+				// The object is inside the cone, but it may be blocked by another
+				// object. Verify that we can trace to the object directly.
+
+				// NOTE: this traces to a particular point on the object's collision
+				// prop. If the trace to that point happens to be blocked by another
+				// object, even though other nearby visible points aren't, then we
+				// won't be able to +use the object, unfortunately.
+
+				// We ignore clip brushes here so that objects in or behind clip
+				// brushes can be +used. If the current object itself is a usable
+				// clip brush, this trace will fail to hit it, but unless it is
+				// blocked, the trace fraction will typically be 1.0 anyway, and
+				// pNearest will be set to the usable clip brush object.
+				trace_t tr;
+				UTIL_TraceLine( searchCenter, nearestPoint, usableContentsIgnoreClip, this, COLLISION_GROUP_NONE, &tr );
+
+				if(tr.fraction == 1.0 || tr.m_pEnt == pObject) {
+					pNearest = pObject;
+					nearestDistSquared = distSquared;
+				}
+			}
+		}
+
+	}
+
+#ifndef CLIENT_DLL
+	if(!pNearest) {
+		// If we haven't found an object that the player can use yet,
+		// allow a player to use an NPC through 'see-through' volumes
+		// (rails, fenches, windows, grates, etc.).
+		UTIL_TraceLine( searchCenter, searchCenter + PLAYER_USE_RADIUS * forward, MASK_OPAQUE_AND_NPCS, this, COLLISION_GROUP_NONE, &directTrace );
+		pObject = directTrace.m_pEnt;
+
+		if(pObject && IsUseableEntity( pObject, 0 ) && pObject->MyNPCPointer() && pObject->MyNPCPointer()->IsPlayerAlly( this )) {
+			// This is an NPC, take it!
+			pNearest = pObject;
+
+			if(sv_debug_player_use.GetBool()) {
+				const float distSquared = EstimatedDistanceSquared( searchCenter, pNearest );
+				Msg( "Line trace found usable entity: %s, distance: %.2f\n", pNearest->GetDebugName(), sqrt( distSquared ) );
+			}
+		}
+	}
+
+	if(pNearest == directTrace.m_pEnt && pNearest && pNearest->MyNPCPointer() && pNearest->MyNPCPointer()->IsPlayerAlly( this )) {
+		// If about to select an NPC with a line trace, do a more thorough
+		// check to ensure that we're selecting the right one from a group.
+		// Lengthen trace slightly to account for the fact that we're
+		// tracing for hitboxes, which are usually farther away than OBBs.
+		trace_t tr;
+		UTIL_TraceLine( searchCenter, searchCenter + 1.1 * PLAYER_USE_RADIUS * forward, MASK_SHOT, this, COLLISION_GROUP_NONE, &tr );
 		pObject = tr.m_pEnt;
 
-#ifndef CLIENT_DLL
-		pFoundByTrace = pObject;
-#endif
-		bool bUsable = IsUseableEntity(pObject, 0);
-		while ( pObject && !bUsable && pObject->GetMoveParent() )
-		{
-			pObject = pObject->GetMoveParent();
-			bUsable = IsUseableEntity(pObject, 0);
-		}
+		if(pObject != pNearest && pObject && pObject->MyNPCPointer() && pObject->MyNPCPointer()->IsPlayerAlly( this )) {
+			// Player is selecting a different NPC through some negative space
+			// in the first NPC's hitboxes (between legs, over shoulder, etc).
+			pNearest = tr.m_pEnt;
+			directTrace = tr;
 
-		if ( bUsable )
-		{
-			Vector delta = tr.endpos - tr.startpos;
-			float centerZ = CollisionProp()->WorldSpaceCenter().z;
-			delta.z = IntervalDistance( tr.endpos.z, centerZ + CollisionProp()->OBBMins().z, centerZ + CollisionProp()->OBBMaxs().z );
-			float dist = delta.Length();
-			if ( dist < PLAYER_USE_RADIUS )
-			{
-#ifndef CLIENT_DLL
-
-				if ( sv_debug_player_use.GetBool() )
-				{
-					NDebugOverlay::Line( searchCenter, tr.endpos, 0, 255, 0, true, 30 );
-					NDebugOverlay::Cross3D( tr.endpos, 16, 0, 255, 0, true, 30 );
-				}
-
-				if ( pObject->MyNPCPointer() && pObject->MyNPCPointer()->IsPlayerAlly( this ) )
-				{
-					// If about to select an NPC, do a more thorough check to ensure
-					// that we're selecting the right one from a group.
-					pObject = DoubleCheckUseNPC( pObject, searchCenter, forward );
-				}
-#endif
-				if ( sv_debug_player_use.GetBool() )
-				{
-					Msg( "Trace using: %s\n", pObject ? pObject->GetDebugName() : "no usable entity found" );
-				}
-
-				pNearest = pObject;
-				
-				// if this is directly under the cursor just return it now
-				if ( i == 0 )
-					return pObject;
+			if(sv_debug_player_use.GetBool()) {
+				const float distSquared = EstimatedDistanceSquared( searchCenter, pNearest );
+				Msg( "Hitbox line trace found usable entity: %s, distance: %.2f\n", pNearest->GetDebugName(), sqrt( distSquared ) );
 			}
 		}
 	}
-
-	// check ground entity first
-	// if you've got a useable ground entity, then shrink the cone of this search to 45 degrees
-	// otherwise, search out in a 90 degree cone (hemisphere)
-	if ( GetGroundEntity() && IsUseableEntity(GetGroundEntity(), FCAP_USE_ONGROUND) )
-	{
-		pNearest = GetGroundEntity();
-	}
-	if ( pNearest )
-	{
-		// estimate nearest object by distance from the view vector
-		Vector point;
-		pNearest->CollisionProp()->CalcNearestPoint( searchCenter, &point );
-		nearestDist = CalcDistanceToLine( point, searchCenter, forward );
-		if ( sv_debug_player_use.GetBool() )
-		{
-			Msg("Trace found %s, dist %.2f\n", pNearest->GetClassname(), nearestDist );
-		}
-	}
-
-	for ( CEntitySphereQuery sphere( searchCenter, PLAYER_USE_RADIUS ); ( pObject = sphere.GetCurrentEntity() ) != NULL; sphere.NextEntity() )
-	{
-		if ( !pObject )
-			continue;
-
-		if ( !IsUseableEntity( pObject, FCAP_USE_IN_RADIUS ) )
-			continue;
-
-		// see if it's more roughly in front of the player than previous guess
-		Vector point;
-		pObject->CollisionProp()->CalcNearestPoint( searchCenter, &point );
-
-		Vector dir = point - searchCenter;
-		VectorNormalize(dir);
-		float dot = DotProduct( dir, forward );
-
-		// Need to be looking at the object more or less
-		if ( dot < 0.8 )
-			continue;
-
-		float dist = CalcDistanceToLine( point, searchCenter, forward );
-
-		if ( sv_debug_player_use.GetBool() )
-		{
-			Msg("Radius found %s, dist %.2f\n", pObject->GetClassname(), dist );
-		}
-
-		if ( dist < nearestDist )
-		{
-			// Since this has purely been a radius search to this point, we now
-			// make sure the object isn't behind glass or a grate.
-			trace_t trCheckOccluded;
-			UTIL_TraceLine( searchCenter, point, useableContents, this, COLLISION_GROUP_NONE, &trCheckOccluded );
-
-			if ( trCheckOccluded.fraction == 1.0 || trCheckOccluded.m_pEnt == pObject )
-			{
-				pNearest = pObject;
-				nearestDist = dist;
-			}
-		}
-	}
-
-#ifndef CLIENT_DLL
-	if ( !pNearest )
-	{
-		// Haven't found anything near the player to use, nor any NPC's at distance.
-		// Check to see if the player is trying to select an NPC through a rail, fence, or other 'see-though' volume.
-		trace_t trAllies;
-		UTIL_TraceLine( searchCenter, searchCenter + forward * PLAYER_USE_RADIUS, MASK_OPAQUE_AND_NPCS, this, COLLISION_GROUP_NONE, &trAllies );
-
-		if ( trAllies.m_pEnt && IsUseableEntity( trAllies.m_pEnt, 0 ) && trAllies.m_pEnt->MyNPCPointer() && trAllies.m_pEnt->MyNPCPointer()->IsPlayerAlly( this ) )
-		{
-			// This is an NPC, take it!
-			pNearest = trAllies.m_pEnt;
-		}
-	}
-
-	if ( pNearest && pNearest->MyNPCPointer() && pNearest->MyNPCPointer()->IsPlayerAlly( this ) )
-	{
-		pNearest = DoubleCheckUseNPC( pNearest, searchCenter, forward );
-	}
-
-	if ( sv_debug_player_use.GetBool() )
-	{
-		if ( !pNearest )
-		{
-			NDebugOverlay::Line( searchCenter, tr.endpos, 255, 0, 0, true, 30 );
-			NDebugOverlay::Cross3D( tr.endpos, 16, 255, 0, 0, true, 30 );
-		}
-		else if ( pNearest == pFoundByTrace )
-		{
-			NDebugOverlay::Line( searchCenter, tr.endpos, 0, 255, 0, true, 30 );
-			NDebugOverlay::Cross3D( tr.endpos, 16, 0, 255, 0, true, 30 );
-		}
-		else
-		{
-			NDebugOverlay::Box( pNearest->WorldSpaceCenter(), Vector(-8, -8, -8), Vector(8, 8, 8), 0, 255, 0, true, 30 );
-		}
-	}
 #endif
 
-	if ( sv_debug_player_use.GetBool() )
-	{
-		Msg( "Radial using: %s\n", pNearest ? pNearest->GetDebugName() : "no usable entity found" );
+	// Draw debug overlays and print debug messages.
+	if(sv_debug_player_use.GetBool()) {
+#ifndef CLIENT_DLL
+		if(!pNearest) {
+			NDebugOverlay::Line( searchCenter, directTrace.endpos, 255, 0, 0, true, 30 );
+			NDebugOverlay::Cross3D( directTrace.endpos, 16, 255, 0, 0, true, 30 );
+		}
+		else if(pNearest == directTrace.m_pEnt) {
+			NDebugOverlay::Line( searchCenter, directTrace.endpos, 0, 255, 0, true, 30 );
+			NDebugOverlay::Cross3D( directTrace.endpos, 16, 0, 255, 0, true, 30 );
+		}
+		else {
+			NDebugOverlay::Box( pNearest->WorldSpaceCenter(), Vector( -8, -8, -8 ), Vector( 8, 8, 8 ), 0, 255, 0, true, 30 );
+		}
+#endif
+		Msg( "Using: %s\n", pNearest ? pNearest->GetDebugName() : "no usable entity found" );
 	}
 
 	return pNearest;
@@ -1272,33 +1199,31 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 //-----------------------------------------------------------------------------
 // Purpose: Handles USE keypress
 //-----------------------------------------------------------------------------
-void CBasePlayer::PlayerUse ( void )
+void CBasePlayer::PlayerUse( void )
 {
 #ifdef GAME_DLL
 	// Was use pressed or released?
-	if ( ! ((m_nButtons | m_afButtonPressed | m_afButtonReleased) & IN_USE) )
+	if(!((m_nButtons | m_afButtonPressed | m_afButtonReleased) & IN_USE))
 		return;
 
-	if ( IsObserver() )
-	{
+	if(IsObserver()) {
 		// do special use operation in oberserver mode
-		if ( m_afButtonPressed & IN_USE )
+		if(m_afButtonPressed & IN_USE)
 			ObserverUse( true );
-		else if ( m_afButtonReleased & IN_USE )
+		else if(m_afButtonReleased & IN_USE)
 			ObserverUse( false );
-		
+
 		return;
 	}
 
 #if !defined(_XBOX)
 	// push objects in turbo physics mode
-	if ( (m_nButtons & IN_USE) && sv_turbophysics.GetBool() )
-	{
+	if((m_nButtons & IN_USE) && sv_turbophysics.GetBool()) {
 		Vector forward, up;
 		EyeVectors( &forward, NULL, &up );
 
 		trace_t tr;
-		// Search for objects in a sphere (tests for entities that are not solid, yet still useable)
+		// Search for objects in a sphere (tests for entities that are not solid, yet still usable)
 		Vector searchCenter = EyePosition();
 
 		CUsePushFilter filter;
@@ -1308,12 +1233,10 @@ void CBasePlayer::PlayerUse ( void )
 		// try the hit entity if there is one, or the ground entity if there isn't.
 		CBaseEntity *entity = tr.m_pEnt;
 
-		if ( entity )
-		{
+		if(entity) {
 			IPhysicsObject *pObj = entity->VPhysicsGetObject();
 
-			if ( pObj )
-			{
+			if(pObj) {
 				Vector vPushAway = (entity->WorldSpaceCenter() - WorldSpaceCenter());
 				vPushAway.z = 0;
 
@@ -1329,28 +1252,22 @@ void CBasePlayer::PlayerUse ( void )
 	}
 #endif
 
-	if ( m_afButtonPressed & IN_USE )
-	{
+	if(m_afButtonPressed & IN_USE) {
 		// Controlling some latched entity?
-		if ( ClearUseEntity() )
-		{
+		if(ClearUseEntity()) {
 			return;
 		}
-		else
-		{
-			if ( m_afPhysicsFlags & PFLAG_DIROVERRIDE )
-			{
+		else {
+			if(m_afPhysicsFlags & PFLAG_DIROVERRIDE) {
 				m_afPhysicsFlags &= ~PFLAG_DIROVERRIDE;
-				m_iTrain = TRAIN_NEW|TRAIN_OFF;
+				m_iTrain = TRAIN_NEW | TRAIN_OFF;
 				return;
 			}
-			else
-			{	// Start controlling the train!
+			else {	// Start controlling the train!
 				CBaseEntity *pTrain = GetGroundEntity();
-				if ( pTrain && !(m_nButtons & IN_JUMP) && (GetFlags() & FL_ONGROUND) && (pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) && pTrain->OnControls(this) )
-				{
+				if(pTrain && !(m_nButtons & IN_JUMP) && (GetFlags() & FL_ONGROUND) && (pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) && pTrain->OnControls( this )) {
 					m_afPhysicsFlags |= PFLAG_DIROVERRIDE;
-					m_iTrain = TrainSpeed(pTrain->m_flSpeed, ((CFuncTrackTrain*)pTrain)->GetMaxSpeed());
+					m_iTrain = TrainSpeed( pTrain->m_flSpeed, ((CFuncTrackTrain*)pTrain)->GetMaxSpeed() );
 					m_iTrain |= TRAIN_NEW;
 					EmitSound( "Player.UseTrain" );
 					return;
@@ -1362,37 +1279,31 @@ void CBasePlayer::PlayerUse ( void )
 	CBaseEntity *pUseEntity = FindUseEntity();
 
 	// Found an object
-	if ( pUseEntity )
-	{
+	if(pUseEntity) {
 
 		//!!!UNDONE: traceline here to prevent +USEing buttons through walls			
 
 		int caps = pUseEntity->ObjectCaps();
 		variant_t emptyVariant;
-		if ( ( (m_nButtons & IN_USE) && (caps & FCAP_CONTINUOUS_USE) ) || ( (m_afButtonPressed & IN_USE) && (caps & (FCAP_IMPULSE_USE|FCAP_ONOFF_USE)) ) )
-		{
-			if ( caps & FCAP_CONTINUOUS_USE )
-			{
+		if(((m_nButtons & IN_USE) && (caps & FCAP_CONTINUOUS_USE)) || ((m_afButtonPressed & IN_USE) && (caps & (FCAP_IMPULSE_USE | FCAP_ONOFF_USE)))) {
+			if(caps & FCAP_CONTINUOUS_USE) {
 				m_afPhysicsFlags |= PFLAG_USING;
 			}
 
-			if ( pUseEntity->ObjectCaps() & FCAP_ONOFF_USE )
-			{
+			if(pUseEntity->ObjectCaps() & FCAP_ONOFF_USE) {
 				pUseEntity->AcceptInput( "Use", this, this, emptyVariant, USE_ON );
 			}
-			else
-			{
+			else {
 				pUseEntity->AcceptInput( "Use", this, this, emptyVariant, USE_TOGGLE );
 			}
 		}
 		// UNDONE: Send different USE codes for ON/OFF.  Cache last ONOFF_USE object to send 'off' if you turn away
-		else if ( (m_afButtonReleased & IN_USE) && (pUseEntity->ObjectCaps() & FCAP_ONOFF_USE) )	// BUGBUG This is an "off" use
+		else if((m_afButtonReleased & IN_USE) && (pUseEntity->ObjectCaps() & FCAP_ONOFF_USE))	// BUGBUG This is an "off" use
 		{
 			pUseEntity->AcceptInput( "Use", this, this, emptyVariant, USE_OFF );
 		}
 	}
-	else if ( m_afButtonPressed & IN_USE )
-	{
+	else if(m_afButtonPressed & IN_USE) {
 		PlayUseDenySound();
 	}
 #endif
@@ -1406,11 +1317,11 @@ ConVar	sv_suppress_viewpunch( "sv_suppress_viewpunch", "0", FCVAR_REPLICATED | F
 void CBasePlayer::ViewPunch( const QAngle &angleOffset )
 {
 	//See if we're suppressing the view punching
-	if ( sv_suppress_viewpunch.GetBool() )
+	if(sv_suppress_viewpunch.GetBool())
 		return;
 
 	// We don't allow view kicks in the vehicle
-	if ( IsInAVehicle() )
+	if(IsInAVehicle())
 		return;
 
 	m_Local.m_vecPunchAngleVel += angleOffset * 20;
@@ -1421,11 +1332,10 @@ void CBasePlayer::ViewPunch( const QAngle &angleOffset )
 //-----------------------------------------------------------------------------
 void CBasePlayer::ViewPunchReset( float tolerance )
 {
-	if ( tolerance != 0 )
-	{
+	if(tolerance != 0) {
 		tolerance *= tolerance;	// square
 		float check = m_Local.m_vecPunchAngleVel->LengthSqr() + m_Local.m_vecPunchAngle->LengthSqr();
-		if ( check > tolerance )
+		if(check > tolerance)
 			return;
 	}
 	m_Local.m_vecPunchAngle = vec3_angle;
@@ -1452,14 +1362,12 @@ void CBasePlayer::SmoothViewOnStairs( Vector& eyeOrigin )
 
 	// Smooth out stair step ups
 	// NOTE: Don't want to do this when the ground entity is moving the player
-	if ( ( pGroundEntity != NULL && pGroundEntity->GetMoveType() == MOVETYPE_NONE ) && ( flCurrentPlayerZ != m_flOldPlayerZ ) && smoothstairs.GetBool() &&
-		 m_flOldPlayerViewOffsetZ == flCurrentPlayerViewOffsetZ )
-	{
-		int dir = ( flCurrentPlayerZ > m_flOldPlayerZ ) ? 1 : -1;
+	if((pGroundEntity != NULL && pGroundEntity->GetMoveType() == MOVETYPE_NONE) && (flCurrentPlayerZ != m_flOldPlayerZ) && smoothstairs.GetBool() &&
+		m_flOldPlayerViewOffsetZ == flCurrentPlayerViewOffsetZ) {
+		int dir = (flCurrentPlayerZ > m_flOldPlayerZ) ? 1 : -1;
 
 		float steptime = gpGlobals->frametime;
-		if (steptime < 0)
-		{
+		if(steptime < 0) {
 			steptime = 0;
 		}
 
@@ -1467,33 +1375,26 @@ void CBasePlayer::SmoothViewOnStairs( Vector& eyeOrigin )
 
 		const float stepSize = 18.0f;
 
-		if ( dir > 0 )
-		{
-			if (m_flOldPlayerZ > flCurrentPlayerZ)
-			{
+		if(dir > 0) {
+			if(m_flOldPlayerZ > flCurrentPlayerZ) {
 				m_flOldPlayerZ = flCurrentPlayerZ;
 			}
-			if (flCurrentPlayerZ - m_flOldPlayerZ > stepSize)
-			{
+			if(flCurrentPlayerZ - m_flOldPlayerZ > stepSize) {
 				m_flOldPlayerZ = flCurrentPlayerZ - stepSize;
 			}
 		}
-		else
-		{
-			if (m_flOldPlayerZ < flCurrentPlayerZ)
-			{
+		else {
+			if(m_flOldPlayerZ < flCurrentPlayerZ) {
 				m_flOldPlayerZ = flCurrentPlayerZ;
 			}
-			if (flCurrentPlayerZ - m_flOldPlayerZ < -stepSize)
-			{
+			if(flCurrentPlayerZ - m_flOldPlayerZ < -stepSize) {
 				m_flOldPlayerZ = flCurrentPlayerZ + stepSize;
 			}
 		}
 
 		eyeOrigin[2] += m_flOldPlayerZ - flCurrentPlayerZ;
 	}
-	else
-	{
+	else {
 		m_flOldPlayerZ = flCurrentPlayerZ;
 		m_flOldPlayerViewOffsetZ = flCurrentPlayerViewOffsetZ;
 	}
@@ -1501,11 +1402,11 @@ void CBasePlayer::SmoothViewOnStairs( Vector& eyeOrigin )
 
 static bool IsWaterContents( int contents )
 {
-	if ( contents & MASK_WATER )
+	if(contents & MASK_WATER)
 		return true;
 
-//	if ( contents & CONTENTS_TESTFOGVOLUME )
-//		return true;
+	//	if ( contents & CONTENTS_TESTFOGVOLUME )
+	//		return true;
 
 	return false;
 }
@@ -1534,48 +1435,43 @@ void CBasePlayer::ResetObserverMode()
 void CBasePlayer::CalcView( Vector &eyeOrigin, QAngle &eyeAngles, float &zNear, float &zFar, float &fov )
 {
 #if defined( CLIENT_DLL )
-	IClientVehicle *pVehicle; 
+	IClientVehicle *pVehicle;
 #else
 	IServerVehicle *pVehicle;
 #endif
 	pVehicle = GetVehicle();
 
-	if ( !pVehicle )
-	{
+	if(!pVehicle) {
 #if defined( CLIENT_DLL )
-		if( UseVR() )
+		if(UseVR())
 			g_ClientVirtualReality.CancelTorsoTransformOverride();
 #endif
 
-		if ( IsObserver() )
-		{
+		if(IsObserver()) {
 			CalcObserverView( eyeOrigin, eyeAngles, fov );
 		}
-		else
-		{
+		else {
 			CalcPlayerView( eyeOrigin, eyeAngles, fov );
 		}
 	}
-	else
-	{
+	else {
 		CalcVehicleView( pVehicle, eyeOrigin, eyeAngles, zNear, zFar, fov );
 	}
 	// NVNT update fov on the haptics dll for input scaling.
 #if defined( CLIENT_DLL )
 	if(IsLocalPlayer() && haptics)
-		haptics->UpdatePlayerFOV(fov);
+		haptics->UpdatePlayerFOV( fov );
 #endif
 }
 
 
-void CBasePlayer::CalcViewModelView( const Vector& eyeOrigin, const QAngle& eyeAngles)
+void CBasePlayer::CalcViewModelView( const Vector& eyeOrigin, const QAngle& eyeAngles )
 {
-	for ( int i = 0; i < MAX_VIEWMODELS; i++ )
-	{
+	for(int i = 0; i < MAX_VIEWMODELS; i++) {
 		CBaseViewModel *vm = GetViewModel( i );
-		if ( !vm )
+		if(!vm)
 			continue;
-	
+
 		vm->CalcViewModelView( this, eyeOrigin, eyeAngles );
 	}
 }
@@ -1583,8 +1479,7 @@ void CBasePlayer::CalcViewModelView( const Vector& eyeOrigin, const QAngle& eyeA
 void CBasePlayer::CalcPlayerView( Vector& eyeOrigin, QAngle& eyeAngles, float& fov )
 {
 #if defined( CLIENT_DLL )
-	if ( !prediction->InPrediction() )
-	{
+	if(!prediction->InPrediction()) {
 		// FIXME: Move into prediction
 		view->DriftPitch();
 	}
@@ -1592,12 +1487,10 @@ void CBasePlayer::CalcPlayerView( Vector& eyeOrigin, QAngle& eyeAngles, float& f
 
 	VectorCopy( EyePosition(), eyeOrigin );
 #ifdef SIXENSE
-	if ( g_pSixenseInput->IsEnabled() )
-	{
+	if(g_pSixenseInput->IsEnabled()) {
 		VectorCopy( EyeAngles() + GetEyeAngleOffset(), eyeAngles );
 	}
-	else
-	{
+	else {
 		VectorCopy( EyeAngles(), eyeAngles );
 	}
 #else
@@ -1605,7 +1498,7 @@ void CBasePlayer::CalcPlayerView( Vector& eyeOrigin, QAngle& eyeAngles, float& f
 #endif
 
 #if defined( CLIENT_DLL )
-	if ( !prediction->InPrediction() )
+	if(!prediction->InPrediction())
 #endif
 	{
 		SmoothViewOnStairs( eyeOrigin );
@@ -1620,8 +1513,7 @@ void CBasePlayer::CalcPlayerView( Vector& eyeOrigin, QAngle& eyeAngles, float& f
 	VectorAdd( eyeAngles, m_Local.m_vecPunchAngle, eyeAngles );
 
 #if defined( CLIENT_DLL )
-	if ( !prediction->InPrediction() )
-	{
+	if(!prediction->InPrediction()) {
 		// Shake it up baby!
 		vieweffects->CalcShake();
 		vieweffects->ApplyShake( eyeOrigin, eyeAngles, 1.0 );
@@ -1643,9 +1535,9 @@ void CBasePlayer::CalcPlayerView( Vector& eyeOrigin, QAngle& eyeAngles, float& f
 //-----------------------------------------------------------------------------
 // Purpose: The main view setup function for vehicles
 //-----------------------------------------------------------------------------
-void CBasePlayer::CalcVehicleView( 
+void CBasePlayer::CalcVehicleView(
 #if defined( CLIENT_DLL )
-	IClientVehicle *pVehicle, 
+	IClientVehicle *pVehicle,
 #else
 	IServerVehicle *pVehicle,
 #endif
@@ -1676,8 +1568,7 @@ void CBasePlayer::CalcVehicleView(
 	VectorAdd( eyeAngles, m_Local.m_vecPunchAngle, eyeAngles );
 
 #if defined( CLIENT_DLL )
-	if ( !prediction->InPrediction() )
-	{
+	if(!prediction->InPrediction()) {
 		// Shake it up baby!
 		vieweffects->CalcShake();
 		vieweffects->ApplyShake( eyeOrigin, eyeAngles, 1.0 );
@@ -1690,24 +1581,23 @@ void CBasePlayer::CalcVehicleView(
 void CBasePlayer::CalcObserverView( Vector& eyeOrigin, QAngle& eyeAngles, float& fov )
 {
 #if defined( CLIENT_DLL )
-	switch ( GetObserverMode() )
-	{
+	switch(GetObserverMode()) {
 
-		case OBS_MODE_DEATHCAM	:	CalcDeathCamView( eyeOrigin, eyeAngles, fov );
-									break;
+		case OBS_MODE_DEATHCAM:	CalcDeathCamView( eyeOrigin, eyeAngles, fov );
+			break;
 
-		case OBS_MODE_ROAMING	:	// just copy current position without view offset
-		case OBS_MODE_FIXED		:	CalcRoamingView( eyeOrigin, eyeAngles, fov );
-									break;
+		case OBS_MODE_ROAMING:	// just copy current position without view offset
+		case OBS_MODE_FIXED:	CalcRoamingView( eyeOrigin, eyeAngles, fov );
+			break;
 
-		case OBS_MODE_IN_EYE	:	CalcInEyeCamView( eyeOrigin, eyeAngles, fov );
-									break;
+		case OBS_MODE_IN_EYE:	CalcInEyeCamView( eyeOrigin, eyeAngles, fov );
+			break;
 
-		case OBS_MODE_CHASE		:	CalcChaseCamView( eyeOrigin, eyeAngles, fov  );
-									break;
+		case OBS_MODE_CHASE:	CalcChaseCamView( eyeOrigin, eyeAngles, fov );
+			break;
 
-		case OBS_MODE_FREEZECAM	:	CalcFreezeCamView( eyeOrigin, eyeAngles, fov  );
-									break;
+		case OBS_MODE_FREEZECAM:	CalcFreezeCamView( eyeOrigin, eyeAngles, fov );
+			break;
 	}
 #else
 	// on server just copy target postions, final view positions will be calculated on client
@@ -1724,35 +1614,33 @@ void CBasePlayer::CalcObserverView( Vector& eyeOrigin, QAngle& eyeAngles, float&
 //			rollspeed - 
 // Output : float CViewRender::CalcRoll
 //-----------------------------------------------------------------------------
-float CBasePlayer::CalcRoll (const QAngle& angles, const Vector& velocity, float rollangle, float rollspeed)
+float CBasePlayer::CalcRoll( const QAngle& angles, const Vector& velocity, float rollangle, float rollspeed )
 {
-    float   sign;
-    float   side;
-    float   value;
-	
+	float   sign;
+	float   side;
+	float   value;
+
 	Vector  forward, right, up;
-	
-    AngleVectors (angles, &forward, &right, &up);
-	
+
+	AngleVectors( angles, &forward, &right, &up );
+
 	// Get amount of lateral movement
-    side = DotProduct( velocity, right );
+	side = DotProduct( velocity, right );
 	// Right or left side?
-    sign = side < 0 ? -1 : 1;
-    side = fabs(side);
-    
+	sign = side < 0 ? -1 : 1;
+	side = fabs( side );
+
 	value = rollangle;
 	// Hit 100% of rollangle at rollspeed.  Below that get linear approx.
-    if ( side < rollspeed )
-	{
+	if(side < rollspeed) {
 		side = side * value / rollspeed;
 	}
-    else
-	{
+	else {
 		side = value;
 	}
 
 	// Scale by right/left sign
-    return side*sign;
+	return side*sign;
 }
 
 //-----------------------------------------------------------------------------
@@ -1760,7 +1648,7 @@ float CBasePlayer::CalcRoll (const QAngle& angles, const Vector& velocity, float
 //-----------------------------------------------------------------------------
 void CBasePlayer::CalcViewRoll( QAngle& eyeAngles )
 {
-	if ( GetMoveType() == MOVETYPE_NOCLIP )
+	if(GetMoveType() == MOVETYPE_NOCLIP)
 		return;
 
 	float side = CalcRoll( GetAbsAngles(), GetAbsVelocity(), sv_rollangle.GetFloat(), sv_rollspeed.GetFloat() );
@@ -1770,10 +1658,9 @@ void CBasePlayer::CalcViewRoll( QAngle& eyeAngles )
 
 void CBasePlayer::DoMuzzleFlash()
 {
-	for ( int i = 0; i < MAX_VIEWMODELS; i++ )
-	{
+	for(int i = 0; i < MAX_VIEWMODELS; i++) {
 		CBaseViewModel *vm = GetViewModel( i );
-		if ( !vm )
+		if(!vm)
 			continue;
 
 		vm->DoMuzzleFlash();
@@ -1785,11 +1672,10 @@ void CBasePlayer::DoMuzzleFlash()
 
 float CBasePlayer::GetFOVDistanceAdjustFactor()
 {
-	float defaultFOV	= (float)GetDefaultFOV();
-	float localFOV		= (float)GetFOV();
+	float defaultFOV = (float)GetDefaultFOV();
+	float localFOV = (float)GetFOV();
 
-	if ( localFOV == defaultFOV || defaultFOV < 0.001f )
-	{
+	if(localFOV == defaultFOV || defaultFOV < 0.001f) {
 		return 1.0f;
 	}
 
@@ -1807,8 +1693,7 @@ float CBasePlayer::GetFOVDistanceAdjustFactor()
 //-----------------------------------------------------------------------------
 void CBasePlayer::MakeTracer( const Vector &vecTracerSrc, const trace_t &tr, int iTracerType )
 {
-	if ( GetActiveWeapon() )
-	{
+	if(GetActiveWeapon()) {
 		GetActiveWeapon()->MakeTracer( vecTracerSrc, tr, iTracerType );
 		return;
 	}
@@ -1824,23 +1709,23 @@ void CBasePlayer::SharedSpawn()
 	AddSolidFlags( FSOLID_NOT_STANDABLE );
 	SetFriction( 1.0f );
 
-	pl.deadflag	= false;
-	m_lifeState	= LIFE_ALIVE;
+	pl.deadflag = false;
+	m_lifeState = LIFE_ALIVE;
 	m_iHealth = 100;
-	m_takedamage		= DAMAGE_YES;
+	m_takedamage = DAMAGE_YES;
 
 	m_Local.m_bDrawViewmodel = true;
 	m_Local.m_flStepSize = sv_stepsize.GetFloat();
 	m_Local.m_bAllowAutoMovement = true;
 
 	m_nRenderFX = kRenderFxNone;
-	m_flNextAttack	= gpGlobals->curtime;
-	m_flMaxspeed		= 0.0f;
+	m_flNextAttack = gpGlobals->curtime;
+	m_flMaxspeed = 0.0f;
 
 	MDLCACHE_CRITICAL_SECTION();
 	SetSequence( SelectWeightedSequence( ACT_IDLE ) );
 
-	if ( GetFlags() & FL_DUCKING ) 
+	if(GetFlags() & FL_DUCKING)
 		SetCollisionBounds( VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX );
 	else
 		SetCollisionBounds( VEC_HULL_MIN, VEC_HULL_MAX );
@@ -1851,7 +1736,7 @@ void CBasePlayer::SharedSpawn()
 	SetBloodColor( BLOOD_COLOR_RED );
 	// NVNT inform haptic dll we have just spawned local player
 #ifdef CLIENT_DLL
-	if(IsLocalPlayer() &&haptics)
+	if(IsLocalPlayer() && haptics)
 		haptics->LocalPlayerReset();
 #endif
 }
@@ -1864,19 +1749,17 @@ void CBasePlayer::SharedSpawn()
 int CBasePlayer::GetDefaultFOV( void ) const
 {
 #if defined( CLIENT_DLL )
-	if ( GetObserverMode() == OBS_MODE_IN_EYE )
-	{
-		C_BasePlayer *pTargetPlayer = dynamic_cast<C_BasePlayer*>( GetObserverTarget() );
+	if(GetObserverMode() == OBS_MODE_IN_EYE) {
+		C_BasePlayer *pTargetPlayer = dynamic_cast<C_BasePlayer*>(GetObserverTarget());
 
-		if ( pTargetPlayer && !pTargetPlayer->IsObserver() )
-		{
+		if(pTargetPlayer && !pTargetPlayer->IsObserver()) {
 			return pTargetPlayer->GetDefaultFOV();
 		}
 	}
 #endif
 
-	int iFOV = ( m_iDefaultFOV == 0 ) ? g_pGameRules->DefaultFOV() : m_iDefaultFOV;
-	if ( iFOV > MAX_FOV )
+	int iFOV = (m_iDefaultFOV == 0) ? g_pGameRules->DefaultFOV() : m_iDefaultFOV;
+	if(iFOV > MAX_FOV)
 		iFOV = MAX_FOV;
 
 	return iFOV;
@@ -1886,17 +1769,16 @@ void CBasePlayer::AvoidPhysicsProps( CUserCmd *pCmd )
 {
 #ifndef _XBOX
 	// Don't avoid if noclipping or in movetype none
-	switch ( GetMoveType() )
-	{
-	case MOVETYPE_NOCLIP:
-	case MOVETYPE_NONE:
-	case MOVETYPE_OBSERVER:
-		return;
-	default:
-		break;
+	switch(GetMoveType()) {
+		case MOVETYPE_NOCLIP:
+		case MOVETYPE_NONE:
+		case MOVETYPE_OBSERVER:
+			return;
+		default:
+			break;
 	}
 
-	if ( GetObserverMode() != OBS_MODE_NONE || !IsAlive() )
+	if(GetObserverMode() != OBS_MODE_NONE || !IsAlive())
 		return;
 
 	AvoidPushawayProps( this, pCmd );
@@ -1909,8 +1791,7 @@ void CBasePlayer::AvoidPhysicsProps( CUserCmd *pCmd )
 //-----------------------------------------------------------------------------
 const char *CBasePlayer::GetTracerType( void )
 {
-	if ( GetActiveWeapon() )
-	{
+	if(GetActiveWeapon()) {
 		return GetActiveWeapon()->GetTracerType();
 	}
 
@@ -1934,45 +1815,39 @@ bool CBasePlayer::SetFOV( CBaseEntity *pRequester, int FOV, float zoomRate, int 
 {
 	//NOTENOTE: You MUST specify who is requesting the zoom change
 	assert( pRequester != NULL );
-	if ( pRequester == NULL )
+	if(pRequester == NULL)
 		return false;
 
 	// If we already have an owner, we only allow requests from that owner
-	if ( ( m_hZoomOwner.Get() != NULL ) && ( m_hZoomOwner.Get() != pRequester ) )
-	{
+	if((m_hZoomOwner.Get() != NULL) && (m_hZoomOwner.Get() != pRequester)) {
 #ifdef GAME_DLL
-		if ( CanOverrideEnvZoomOwner( m_hZoomOwner.Get() ) == false )
+		if(CanOverrideEnvZoomOwner( m_hZoomOwner.Get() ) == false)
 #endif
 			return false;
 	}
-	else
-	{
+	else {
 		//FIXME: Maybe do this is as an accessor instead
-		if ( FOV == 0 )
-		{
+		if(FOV == 0) {
 			m_hZoomOwner = NULL;
 		}
-		else
-		{
+		else {
 			m_hZoomOwner = pRequester;
 		}
 	}
 
 	// Setup our FOV and our scaling time
 
-	if ( iZoomStart > 0 )
-	{
+	if(iZoomStart > 0) {
 		m_iFOVStart = iZoomStart;
 	}
-	else
-	{
+	else {
 		m_iFOVStart = GetFOV();
 	}
 
 	m_flFOVTime = gpGlobals->curtime;
 	m_iFOV = FOV;
 
-	m_Local.m_flFOVRate	= zoomRate;
+	m_Local.m_flFOVRate = zoomRate;
 
 	return true;
 }
@@ -1982,39 +1857,31 @@ bool CBasePlayer::SetFOV( CBaseEntity *pRequester, int FOV, float zoomRate, int 
 //-----------------------------------------------------------------------------
 void CBasePlayer::UpdateUnderwaterState( void )
 {
-	if ( GetWaterLevel() == WL_Eyes )
-	{
-		if ( IsPlayerUnderwater() == false )
-		{
+	if(GetWaterLevel() == WL_Eyes) {
+		if(IsPlayerUnderwater() == false) {
 			SetPlayerUnderwater( true );
 		}
 		return;
 	}
 
-	if ( IsPlayerUnderwater() )
-	{
+	if(IsPlayerUnderwater()) {
 		SetPlayerUnderwater( false );
 	}
 
-	if ( GetWaterLevel() == 0 )
-	{
-		if ( GetFlags() & FL_INWATER )
-		{
+	if(GetWaterLevel() == 0) {
+		if(GetFlags() & FL_INWATER) {
 #ifndef CLIENT_DLL
-			if ( m_iHealth > 0 && IsAlive() )
-			{
+			if(m_iHealth > 0 && IsAlive()) {
 				EmitSound( "Player.Wade" );
 			}
 #endif
 			RemoveFlag( FL_INWATER );
 		}
 	}
-	else if ( !(GetFlags() & FL_INWATER) )
-	{
+	else if(!(GetFlags() & FL_INWATER)) {
 #ifndef CLIENT_DLL
 		// player enter water sound
-		if (GetWaterType() == CONTENTS_WATER)
-		{
+		if(GetWaterType() == CONTENTS_WATER) {
 			EmitSound( "Player.Wade" );
 		}
 #endif
@@ -2029,22 +1896,21 @@ void CBasePlayer::UpdateUnderwaterState( void )
 //-----------------------------------------------------------------------------
 void CBasePlayer::SetPlayerUnderwater( bool state )
 {
-	if ( m_bPlayerUnderwater != state )
-	{
+	if(m_bPlayerUnderwater != state) {
 #if defined( WIN32 ) && !defined( _X360 ) 
 		// NVNT turn on haptic drag when underwater
 		if(state)
-			HapticSetDrag(this,1);
+			HapticSetDrag( this, 1 );
 		else
-			HapticSetDrag(this,0);
+			HapticSetDrag( this, 0 );
 #endif
 		m_bPlayerUnderwater = state;
 
 #ifdef CLIENT_DLL
-		if ( state )
+		if(state)
 			EmitSound( "Player.AmbientUnderWater" );
 		else
-			StopSound( "Player.AmbientUnderWater" );		
+			StopSound( "Player.AmbientUnderWater" );
 #endif
 	}
 }
@@ -2060,11 +1926,11 @@ const Vector &CBasePlayer::GetPreviouslyPredictedOrigin() const
 	return m_vecPreviouslyPredictedOrigin;
 }
 
-bool fogparams_t::operator !=( const fogparams_t& other ) const
+bool fogparams_t::operator !=(const fogparams_t& other) const
 {
-	if ( this->enable != other.enable ||
+	if(this->enable != other.enable ||
 		this->blend != other.blend ||
-		!VectorsAreEqual(this->dirPrimary, other.dirPrimary, 0.01f ) || 
+		!VectorsAreEqual( this->dirPrimary, other.dirPrimary, 0.01f ) ||
 		this->colorPrimary.Get() != other.colorPrimary.Get() ||
 		this->colorSecondary.Get() != other.colorSecondary.Get() ||
 		this->start != other.start ||
@@ -2076,9 +1942,8 @@ bool fogparams_t::operator !=( const fogparams_t& other ) const
 		this->startLerpTo != other.startLerpTo ||
 		this->endLerpTo != other.endLerpTo ||
 		this->lerptime != other.lerptime ||
-		this->duration != other.duration )
+		this->duration != other.duration)
 		return true;
 
 	return false;
 }
-
