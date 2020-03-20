@@ -1,6 +1,6 @@
 "GameInfo"
 {
-	game								"Refraction vREF-0.1.00-DEV"
+	game								"Refraction vREF-0.1.01-DEV (HLSL30)"
 	title								"REFRACTION"
 	type								singleplayer_only
 	supportsvr							1
@@ -13,8 +13,8 @@
 			// Refraction data
 			game+mod+mod_write+default_write_path		|gameinfo_path|.
 			gamebin						|gameinfo_path|bin
-			game+mod					|gameinfo_path|shadereditor/.
-			game+mod					|gameinfo_path|refraction_unpack/.
+//			game+mod					|gameinfo_path|shadereditor/.
+//			game+mod					|gameinfo_path|refraction_unpack/.
 
 			game_lv						|all_source_engine_paths|hl2/hl2_lv.vpk
 //			game+mod					|all_source_engine_paths|ep2/ep2_english.vpk

@@ -50,8 +50,6 @@ $Project
 	$Folder	"Source Files"
 	{
 		$File	"BaseVSShader.cpp"
-
-		$File	"Bloom.cpp"
 		$File	"screenspace_general.cpp"
 	}
 

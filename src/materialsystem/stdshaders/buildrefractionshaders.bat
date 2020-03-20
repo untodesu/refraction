@@ -19,3 +19,4 @@ rem ====================================
 
 
 call buildsdkshaders.bat
+@pause

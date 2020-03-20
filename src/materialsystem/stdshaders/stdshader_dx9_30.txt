@@ -7,4 +7,5 @@
 //	    _vs30.vcs
 //
 
-// There are no examples of such shaders in the SDK, but add yours here.
+screenspaceeffect_vs30.fxc
+post_chromatic_aberration_ps30.fxc

@@ -1,0 +1,20 @@
+#include "common_ps_fxc.h"
+
+struct PS_INPUT {
+	float2 texCoord	: TEXCOORD0;
+};
+
+sampler2D	FBTEXTURE	: register( s0 );
+float		AMOUNT		: register( c0 );
+
+float4 main( PS_INPUT input ) : COLOR
+{
+	float dst = pow( distance( input.texCoord, float2( 0.5, 0.5 ) ), 3.0 );
+
+	float r = tex2D( FBTEXTURE, input.texCoord + float2(AMOUNT * dst, 0.0) ).r;
+	float g = tex2D( FBTEXTURE, input.texCoord ).g;
+	float b = tex2D( FBTEXTURE, input.texCoord - float2(AMOUNT * dst, 0.0) ).b;
+	float a = tex2D( FBTEXTURE, input.texCoord ).a;
+
+	return float4(r, g, b, a);
+}
