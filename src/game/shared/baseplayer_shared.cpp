@@ -1619,18 +1619,19 @@ float CBasePlayer::CalcRoll( const QAngle& angles, const Vector& velocity, float
 	float   sign;
 	float   side;
 	float   value;
-
 	Vector  forward, right, up;
 
 	AngleVectors( angles, &forward, &right, &up );
 
 	// Get amount of lateral movement
 	side = DotProduct( velocity, right );
+
 	// Right or left side?
 	sign = side < 0 ? -1 : 1;
 	side = fabs( side );
 
 	value = rollangle;
+
 	// Hit 100% of rollangle at rollspeed.  Below that get linear approx.
 	if(side < rollspeed) {
 		side = side * value / rollspeed;
