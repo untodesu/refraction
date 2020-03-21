@@ -381,16 +381,15 @@ int CNPC_CombineDropship::m_poseWeapon_Yaw = 0;
 //-----------------------------------------------------------------------------
 // Purpose: Cache whatever pose parameters we intend to use
 //-----------------------------------------------------------------------------
-void	CNPC_CombineDropship::PopulatePoseParameters( void )
+void CNPC_CombineDropship::PopulatePoseParameters( void )
 {
-	if (!m_sbStaticPoseParamsLoaded)
-	{
+	if (!m_sbStaticPoseParamsLoaded) {
 		m_poseBody_Accel		= LookupPoseParameter( "body_accel");
 		m_poseBody_Sway			= LookupPoseParameter( "body_sway" );
 		m_poseCargo_Body_Accel  = LookupPoseParameter( "cargo_body_accel" );
 		m_poseCargo_Body_Sway   = LookupPoseParameter( "cargo_body_sway" );
-		m_poseWeapon_Pitch		= LookupPoseParameter( "weapon_pitch" );
-		m_poseWeapon_Yaw		= LookupPoseParameter( "weapon_yaw" );
+		m_poseWeapon_Pitch		= m_hContainer->LookupPoseParameter( "weapon_pitch" );
+		m_poseWeapon_Yaw		= m_hContainer->LookupPoseParameter( "weapon_yaw" );
 
 		m_sbStaticPoseParamsLoaded = true;
 	}
