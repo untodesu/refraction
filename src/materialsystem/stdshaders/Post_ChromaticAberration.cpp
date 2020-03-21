@@ -10,7 +10,7 @@
 BEGIN_SHADER( ChromaticAberration, "Adds a little color displacement at the screen borders" )
 	BEGIN_SHADER_PARAMS
 		SHADER_PARAM( FBTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_FullFrameFB", "Framebuffer texture." )
-		SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.002", "Amount of color displacement" )
+		SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.4", "Amount of color displacement." )
 	END_SHADER_PARAMS
 
 	SHADER_INIT
@@ -20,8 +20,9 @@ BEGIN_SHADER( ChromaticAberration, "Adds a little color displacement at the scre
 		}
 
 		if( !params[AMOUNT]->IsDefined() ) {
-			params[AMOUNT]->SetFloatValue( 0.002 );
+			params[AMOUNT]->SetFloatValue( 0.4 );
 		}
+
  	}
 
 	bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame /* = true */ ) const

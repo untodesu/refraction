@@ -1,6 +1,6 @@
 "ChromaticAberration"
 {
 	"$FBTEXTURE"		"_rt_FullFrameFB"
-	"$AMOUNT"		"0.002"
+	"$AMOUNT"		"0.4"
 	// anyway unity shader system is better.
 }
