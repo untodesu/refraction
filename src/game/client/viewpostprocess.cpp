@@ -13,6 +13,7 @@
 #include "materialsystem/materialsystem_config.h"
 #include "tier1/callqueue.h"
 #include "colorcorrectionmgr.h"
+#include "clienteffectprecachesystem.h"	// refraction stores precache shit right here
 #include "view_scene.h"
 #include "c_world.h"
 #include "bitmap/tgawriter.h"
@@ -1495,6 +1496,28 @@ static ConVar r_queued_post_processing	( "r_queued_post_processing", "0" );
 static ConVar mat_postprocess_x			( "mat_postprocess_x", "4" );
 static ConVar mat_postprocess_y			( "mat_postprocess_y", "1" );
 
+// Post-processing effects' convars
+static ConVar mat_post_chromatic_aberration	( "mat_post_chromatic_aberration", "1", FCVAR_ARCHIVE, "Chromatic aberration post-effect" );
+
+// Post-processing effects' materials precache
+CLIENTEFFECT_REGISTER_BEGIN( RefractionPostEffects )
+	CLIENTEFFECT_MATERIAL( "shaders/post_chromatic_aberration" )
+CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
+
+// Draw post-processing effects
+void DoRefractionPostProcessing( int x, int y, int w, int h )
+{
+	CMatRenderContextPtr pRenderContext( materials );
+
+	// Chromatic aberration
+	if( mat_post_chromatic_aberration.GetBool() ) {
+		IMaterial *post_chromatic_aberration = materials->FindMaterial( "shaders/post_chromatic_aberration", TEXTURE_GROUP_CLIENT_EFFECTS );
+		if( post_chromatic_aberration ) {
+			DrawScreenEffectMaterial( post_chromatic_aberration, x, y, w, h );
+		}
+	}
+}
+
 void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, bool bPostVGui )
 {
 	tmZone( TELEMETRY_LEVEL0, TMZF_NONE, "%s", __FUNCTION__ );
@@ -1526,9 +1549,7 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 	}
 
 	float flBloomScale = GetBloomAmount();
-
 	HDRType_t hdrType = g_pMaterialSystemHardwareConfig->GetHDRType();
-
 	g_bFlashlightIsOn = bFlashlightIsOn;
 
 	// Use the appropriate autoexposure min / max settings.
@@ -1804,6 +1825,8 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 			break;
 		}
 	}
+
+	DoRefractionPostProcessing( x, y, w, h );
 
 #if defined( _X360 )
 	pRenderContext->PopVertexShaderGPRAllocation();

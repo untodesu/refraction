@@ -1,6 +1,6 @@
 "GameInfo"
 {
-	game								"Refraction vREF-0.1.01-DEV (HLSL30)"
+	game								"Refraction vREF-0.1.01-DEV [Unified Shader Model 3.0]"
 	title								"REFRACTION"
 	type								singleplayer_only
 	supportsvr							1
