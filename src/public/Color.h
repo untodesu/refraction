@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -14,89 +14,89 @@
 
 //-----------------------------------------------------------------------------
 // Purpose: Basic handler for an rgb set of colors
-//			This class is fully inline
+//          This class is fully inline
 //-----------------------------------------------------------------------------
 class Color
 {
 public:
-	// constructors
-	Color()
-	{
-		*((int *)this) = 0;
-	}
-	Color(int _r,int _g,int _b)
-	{
-		SetColor(_r, _g, _b, 0);
-	}
-	Color(int _r,int _g,int _b,int _a)
-	{
-		SetColor(_r, _g, _b, _a);
-	}
-	
-	// set the color
-	// r - red component (0-255)
-	// g - green component (0-255)
-	// b - blue component (0-255)
-	// a - alpha component, controls transparency (0 - transparent, 255 - opaque);
-	void SetColor(int _r, int _g, int _b, int _a = 0)
-	{
-		_color[0] = (unsigned char)_r;
-		_color[1] = (unsigned char)_g;
-		_color[2] = (unsigned char)_b;
-		_color[3] = (unsigned char)_a;
-	}
+    // constructors
+    Color()
+    {
+        *((int *)this) = 0;
+    }
+    Color(int _r,int _g,int _b)
+    {
+        SetColor(_r, _g, _b, 0);
+    }
+    Color(int _r,int _g,int _b,int _a)
+    {
+        SetColor(_r, _g, _b, _a);
+    }
 
-	void GetColor(int &_r, int &_g, int &_b, int &_a) const
-	{
-		_r = _color[0];
-		_g = _color[1];
-		_b = _color[2];
-		_a = _color[3];
-	}
+    // set the color
+    // r - red component (0-255)
+    // g - green component (0-255)
+    // b - blue component (0-255)
+    // a - alpha component, controls transparency (0 - transparent, 255 - opaque);
+    void SetColor(int _r, int _g, int _b, int _a = 0)
+    {
+        _color[0] = (unsigned char)_r;
+        _color[1] = (unsigned char)_g;
+        _color[2] = (unsigned char)_b;
+        _color[3] = (unsigned char)_a;
+    }
 
-	void SetRawColor( int color32 )
-	{
-		*((int *)this) = color32;
-	}
+    void GetColor(int &_r, int &_g, int &_b, int &_a) const
+    {
+        _r = _color[0];
+        _g = _color[1];
+        _b = _color[2];
+        _a = _color[3];
+    }
 
-	int GetRawColor() const
-	{
-		return *((int *)this);
-	}
+    void SetRawColor( int color32 )
+    {
+        *((int *)this) = color32;
+    }
 
-	inline int r() const	{ return _color[0]; }
-	inline int g() const	{ return _color[1]; }
-	inline int b() const	{ return _color[2]; }
-	inline int a() const	{ return _color[3]; }
-	
-	unsigned char &operator[](int index)
-	{
-		return _color[index];
-	}
+    int GetRawColor() const
+    {
+        return *((int *)this);
+    }
 
-	const unsigned char &operator[](int index) const
-	{
-		return _color[index];
-	}
+    inline int r() const    { return _color[0]; }
+    inline int g() const    { return _color[1]; }
+    inline int b() const    { return _color[2]; }
+    inline int a() const    { return _color[3]; }
 
-	bool operator == (const Color &rhs) const
-	{
-		return ( *((int *)this) == *((int *)&rhs) );
-	}
+    unsigned char &operator[](int index)
+    {
+        return _color[index];
+    }
 
-	bool operator != (const Color &rhs) const
-	{
-		return !(operator==(rhs));
-	}
+    const unsigned char &operator[](int index) const
+    {
+        return _color[index];
+    }
 
-	Color &operator=( const Color &rhs )
-	{
-		SetRawColor( rhs.GetRawColor() );
-		return *this;
-	}
+    bool operator == (const Color &rhs) const
+    {
+        return ( *((int *)this) == *((int *)&rhs) );
+    }
+
+    bool operator != (const Color &rhs) const
+    {
+        return !(operator==(rhs));
+    }
+
+    Color &operator=( const Color &rhs )
+    {
+        SetRawColor( rhs.GetRawColor() );
+        return *this;
+    }
 
 private:
-	unsigned char _color[4];
+    unsigned char _color[4];
 };
 
 

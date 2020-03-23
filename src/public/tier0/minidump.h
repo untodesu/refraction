@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -35,9 +35,9 @@ typedef void (*FnVoidPtrFn)( void * );
 
 enum ECatchAndWriteMinidumpAction
 {
-	k_ECatchAndWriteMiniDumpAbort = 0,
-	k_ECatchAndWriteMiniDumpReThrow = 1,
-	k_ECatchAndWriteMiniDumpIgnore = 2,
+    k_ECatchAndWriteMiniDumpAbort = 0,
+    k_ECatchAndWriteMiniDumpReThrow = 1,
+    k_ECatchAndWriteMiniDumpIgnore = 2,
 };
 
 PLATFORM_INTERFACE void CatchAndWriteMiniDump( FnWMain pfn, int argc, tchar *argv[] ); // action = Abort
@@ -67,13 +67,13 @@ PLATFORM_INTERFACE FnMiniDump SetMiniDumpFunction( FnMiniDump pfn );
 // If ptchMinidumpFileNameBuffer is NULL the name of the minidump file written will not
 // be available after the function returns.
 //
-PLATFORM_INTERFACE bool WriteMiniDumpUsingExceptionInfo( 
-	unsigned int uStructuredExceptionCode,
-	_EXCEPTION_POINTERS * pExceptionInfo, 
-	int /* MINIDUMP_TYPE */ minidumpType,
-	const char *pszFilenameSuffix = NULL,
-	tchar *ptchMinidumpFileNameBuffer = NULL
-	);
+PLATFORM_INTERFACE bool WriteMiniDumpUsingExceptionInfo(
+    unsigned int uStructuredExceptionCode,
+    _EXCEPTION_POINTERS * pExceptionInfo,
+    int /* MINIDUMP_TYPE */ minidumpType,
+    const char *pszFilenameSuffix = NULL,
+    tchar *ptchMinidumpFileNameBuffer = NULL
+    );
 
 // Call this to enable a handler for unhandled exceptions.
 PLATFORM_INTERFACE void MinidumpSetUnhandledExceptionFunction( FnMiniDump pfn );

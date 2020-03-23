@@ -14,10 +14,10 @@
 #include "tier0/memdbgon.h"
 
 //Global singelton accessor
-CClientEffectPrecacheSystem	*ClientEffectPrecacheSystem( void )
+CClientEffectPrecacheSystem *ClientEffectPrecacheSystem( void )
 {
-	static CClientEffectPrecacheSystem	s_ClientEffectPrecacheSystem;
-	return &s_ClientEffectPrecacheSystem;
+    static CClientEffectPrecacheSystem  s_ClientEffectPrecacheSystem;
+    return &s_ClientEffectPrecacheSystem;
 }
 
 //-----------------------------------------------------------------------------
@@ -25,18 +25,18 @@ CClientEffectPrecacheSystem	*ClientEffectPrecacheSystem( void )
 //-----------------------------------------------------------------------------
 void CClientEffectPrecacheSystem::LevelInitPreEntity( void )
 {
-	//Precache all known effects
-	for ( int i = 0; i < m_Effects.Size(); i++ )
-	{
-		m_Effects[i]->Cache();
-	}
-	
-	//FIXME: Double check this
-	//Finally, force the cache of these materials
-	materials->CacheUsedMaterials();
+    //Precache all known effects
+    for ( int i = 0; i < m_Effects.Size(); i++ )
+    {
+        m_Effects[i]->Cache();
+    }
 
-	// Now, cache off our material handles
-	FX_CacheMaterialHandles();
+    //FIXME: Double check this
+    //Finally, force the cache of these materials
+    materials->CacheUsedMaterials();
+
+    // Now, cache off our material handles
+    FX_CacheMaterialHandles();
 }
 
 //-----------------------------------------------------------------------------
@@ -51,11 +51,11 @@ void CClientEffectPrecacheSystem::LevelShutdownPreEntity( void )
 //-----------------------------------------------------------------------------
 void CClientEffectPrecacheSystem::LevelShutdownPostEntity( void )
 {
-	// mark all known effects as free
-	for ( int i = 0; i < m_Effects.Size(); i++ )
-	{
-		m_Effects[i]->Cache( false );
-	}
+    // mark all known effects as free
+    for ( int i = 0; i < m_Effects.Size(); i++ )
+    {
+        m_Effects[i]->Cache( false );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -63,8 +63,8 @@ void CClientEffectPrecacheSystem::LevelShutdownPostEntity( void )
 //-----------------------------------------------------------------------------
 void CClientEffectPrecacheSystem::Shutdown( void )
 {
-	//Release all effects
-	m_Effects.Purge();
+    //Release all effects
+    m_Effects.Purge();
 }
 
 //-----------------------------------------------------------------------------
@@ -73,6 +73,6 @@ void CClientEffectPrecacheSystem::Shutdown( void )
 //-----------------------------------------------------------------------------
 void CClientEffectPrecacheSystem::Register( IClientEffect *effect )
 {
-	//Hold onto this effect for precaching later
-	m_Effects.AddToTail( effect );
+    //Hold onto this effect for precaching later
+    m_Effects.AddToTail( effect );
 }

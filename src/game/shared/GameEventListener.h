@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,52 +15,52 @@
 extern IGameEventManager2 *gameeventmanager;
 
 // A safer method than inheriting straight from IGameEventListener2.
-// Avoids requiring the user to remove themselves as listeners in 
+// Avoids requiring the user to remove themselves as listeners in
 // their deconstructor, and sets the serverside variable based on
 // our dll location.
 class CGameEventListener : public IGameEventListener2
 {
 public:
-	CGameEventListener() : m_bRegisteredForEvents(false)
-	{
-	}
+    CGameEventListener() : m_bRegisteredForEvents(false)
+    {
+    }
 
-	~CGameEventListener()
-	{
-		StopListeningForAllEvents();
-	}
+    ~CGameEventListener()
+    {
+        StopListeningForAllEvents();
+    }
 
-	void ListenForGameEvent( const char *name )
-	{
-		m_bRegisteredForEvents = true;
+    void ListenForGameEvent( const char *name )
+    {
+        m_bRegisteredForEvents = true;
 
 #ifdef CLIENT_DLL
-		bool bServerSide = false;
+        bool bServerSide = false;
 #else
-		bool bServerSide = true;
+        bool bServerSide = true;
 #endif
-		if ( gameeventmanager )
-			gameeventmanager->AddListener( this, name, bServerSide );
-	}
+        if ( gameeventmanager )
+            gameeventmanager->AddListener( this, name, bServerSide );
+    }
 
-	void StopListeningForAllEvents()
-	{
-		// remove me from list
-		if ( m_bRegisteredForEvents )
-		{
-			if ( gameeventmanager )
-				gameeventmanager->RemoveListener( this );
-			m_bRegisteredForEvents = false;
-		}
-	}
+    void StopListeningForAllEvents()
+    {
+        // remove me from list
+        if ( m_bRegisteredForEvents )
+        {
+            if ( gameeventmanager )
+                gameeventmanager->RemoveListener( this );
+            m_bRegisteredForEvents = false;
+        }
+    }
 
-	// Intentionally abstract
-	virtual void FireGameEvent( IGameEvent *event ) = 0;
+    // Intentionally abstract
+    virtual void FireGameEvent( IGameEvent *event ) = 0;
 
 private:
 
-	// Have we registered for any events?
-	bool m_bRegisteredForEvents;
+    // Have we registered for any events?
+    bool m_bRegisteredForEvents;
 };
 
 #endif

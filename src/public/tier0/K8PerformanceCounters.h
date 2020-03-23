@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -22,10 +22,10 @@ typedef union EVENT_MASK(NULL_MASK)
 } EVENT_MASK(NULL_MASK);
 
 
-#define MSR_K8_EVNTSEL0		0xC0010000	/* .. 0xC0010003 */
-#define MSR_K8_PERFCTR0		0xC0010004	/* .. 0xC0010007 */
+#define MSR_K8_EVNTSEL0     0xC0010000  /* .. 0xC0010003 */
+#define MSR_K8_PERFCTR0     0xC0010004  /* .. 0xC0010007 */
 
-#	pragma pack(push, 1)
+#   pragma pack(push, 1)
 
 
 
@@ -34,18 +34,18 @@ typedef union PerfEvtSel
 {
     struct
     {
-        uint64	EventMask   : 8; 
+        uint64  EventMask   : 8;
 
-        uint64	UnitMask    : 8; 
-        uint64	USR         : 1; 
-        uint64	OS          : 1; 
-        uint64	Edge        : 1; 
-        uint64	PC          : 1; 
-        uint64	INTAPIC     : 1; 
-        uint64	Reserved21  : 1; 
-        uint64	Enable      : 1; 
-        uint64	Complement  : 1; // aka INV
-        uint64	Threshold   : 8; // aka CounterMask
+        uint64  UnitMask    : 8;
+        uint64  USR         : 1;
+        uint64  OS          : 1;
+        uint64  Edge        : 1;
+        uint64  PC          : 1;
+        uint64  INTAPIC     : 1;
+        uint64  Reserved21  : 1;
+        uint64  Enable      : 1;
+        uint64  Complement  : 1; // aka INV
+        uint64  Threshold   : 8; // aka CounterMask
         uint64  Reserver32  : 32;
     };
     uint64 flat;
@@ -65,10 +65,10 @@ enum UnitEncode
     NB
 };
 
-#	pragma pack(pop)
+#   pragma pack(pop)
 
 // Turn off the no return value warning in ReadCounter.
-#pragma warning( disable : 4035 )		
+#pragma warning( disable : 4035 )
 #define k8NUM_COUNTERS 4
 class k8BaseEvent
 {
@@ -109,14 +109,14 @@ public:
         m_eventMask = 0;
         event_id = 0;
         name = 0;
-        revRequired = 'A'; 
+        revRequired = 'A';
 
 
     }
 
     void SetCaptureMode(PrivilegeCapture priv)
     {
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
+        PerfEvtSel & select = eventSelect[eventSelectNum];
         StopCounter();
 
         switch (priv)
@@ -137,10 +137,10 @@ public:
             break;
         }
 
-       
+
         select.UnitMask = m_eventMask;
         select.EventMask = event_id;
-        
+
 
         int selectPort = MSR_K8_EVNTSEL0 + eventSelectNum;
         pme->WriteMSR(selectPort, select.flat);
@@ -153,8 +153,8 @@ public:
         EdgeState edgeEnable)
     {
 
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
-        
+        PerfEvtSel & select = eventSelect[eventSelectNum];
+
         StopCounter();
 
         if (compareEnable == CompareDisable)
@@ -172,10 +172,10 @@ public:
 
     }
 
-    
+
     void StartCounter()
     {
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
+        PerfEvtSel & select = eventSelect[eventSelectNum];
 
         select.Enable = 1;
         int selectPort = MSR_K8_EVNTSEL0 + eventSelectNum;
@@ -185,7 +185,7 @@ public:
     }
     void StopCounter()
     {
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
+        PerfEvtSel & select = eventSelect[eventSelectNum];
         select.Enable = 0;
         int selectPort = MSR_K8_EVNTSEL0 + eventSelectNum;
 
@@ -196,8 +196,8 @@ public:
 
     void ClearCounter()
     {
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
-        
+        PerfEvtSel & select = eventSelect[eventSelectNum];
+
         int counterPort = MSR_K8_PERFCTR0 + eventSelectNum;
 
         pme->WriteMSR(counterPort, 0ui64 ); // clear
@@ -206,7 +206,7 @@ public:
     void WriteCounter(int64 value)
     {
 
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
+        PerfEvtSel & select = eventSelect[eventSelectNum];
 
         int counterPort = MSR_K8_PERFCTR0 + eventSelectNum;
         pme->WriteMSR(counterPort, value); // clear
@@ -216,7 +216,7 @@ public:
     {
 
 #if PME_DEBUG
-        PerfEvtSel & select = eventSelect[eventSelectNum]; 
+        PerfEvtSel & select = eventSelect[eventSelectNum];
 
         if (select.USR == 0 && select.OS == 0)
             return -1; // no area to collect, use SetCaptureMode
@@ -232,21 +232,21 @@ public:
 #endif
 
         // ReadMSR should work here too, but RDPMC should be faster
-        //ReadMSR(counterPort, int64); 
+        //ReadMSR(counterPort, int64);
 
         // we need to copy this into a temp for some reason
 #ifdef COMPILER_MSVC64
-	return __readpmc((unsigned long) eventSelectNum);
+    return __readpmc((unsigned long) eventSelectNum);
 #else
         int temp = eventSelectNum;
-        _asm 
+        _asm
         {
             mov ecx, temp
-            RDPMC 
+            RDPMC
         }
 #endif
 
-	}
+    }
 
 
 };
@@ -258,7 +258,7 @@ public:
 typedef union EVENT_MASK(k8_dispatched_fpu_ops)
 {
     // event 0
-    struct 
+    struct
     {
         uint16 AddPipeOps:1; // Add pipe ops excluding junk ops" },
         uint16 MulPipeOps:1; // Multiply pipe ops excluding junk ops" },,
@@ -271,7 +271,7 @@ typedef union EVENT_MASK(k8_dispatched_fpu_ops)
 } EVENT_MASK(k8_dispatched_fpu_ops);
 
 class k8Event_DISPATCHED_FPU_OPS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCHED_FPU_OPS()
@@ -282,7 +282,7 @@ public:
         unitEncode = FP;
         name = _T("Dispatched FPU ops");
         revRequired = 'B';
-    } 
+    }
     EVENT_MASK(k8_dispatched_fpu_ops) * eventMask;
 
 };
@@ -292,7 +292,7 @@ public:
 
 
 class k8Event_NO_FPU_OPS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_NO_FPU_OPS()
@@ -303,7 +303,7 @@ public:
 
         name = _T("Cycles with no FPU ops retired");
         revRequired = 'B';
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
 
 };
@@ -311,7 +311,7 @@ public:
 //////////////////////////////////////////////////////////
 
 class k8Event_FAST_FPU_OPS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_FAST_FPU_OPS()
@@ -323,7 +323,7 @@ public:
         name = _T("Dispatched FPU ops that use the fast flag interface");
         revRequired = 'B';
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
 
 };
@@ -335,22 +335,22 @@ public:
 typedef union EVENT_MASK(k8_segment_register_load)
 {
 
-    struct 
+    struct
     {
-        uint16 ES:1; 
-        uint16 CS:1; 
-        uint16 SS:1; 
-        uint16 DS:1; 
-        uint16 FS:1; 
-        uint16 GS:1; 
-        uint16 HS:1; 
+        uint16 ES:1;
+        uint16 CS:1;
+        uint16 SS:1;
+        uint16 DS:1;
+        uint16 FS:1;
+        uint16 GS:1;
+        uint16 HS:1;
     };
     uint16 flat;
 } EVENT_MASK(k8_segment_register_load);
 
 
 class k8Event_SEG_REG_LOAD : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_SEG_REG_LOAD()
@@ -360,14 +360,14 @@ public:
         event_id = 0x20;
         unitEncode = LS;
 
-    } 
+    }
     EVENT_MASK(k8_segment_register_load) * eventMask;
 
 };
 
 
 class k8Event_SELF_MODIFY_RESYNC : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_SELF_MODIFY_RESYNC()
@@ -377,13 +377,13 @@ public:
         event_id = 0x21;
         unitEncode = LS;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
 
 
 };
 class k8Event_LS_RESYNC_BY_SNOOP : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_LS_RESYNC_BY_SNOOP()
@@ -393,13 +393,13 @@ public:
         unitEncode = LS;
 
         name = _T("Microarchitectural resync caused by snoop");
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
 
 
 };
 class k8Event_LS_BUFFER_FULL : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_LS_BUFFER_FULL()
@@ -409,7 +409,7 @@ public:
         event_id = 0x23;
         unitEncode = LS;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
 
 };
@@ -419,14 +419,14 @@ typedef union EVENT_MASK(k8_locked_op)
 {
 
 
-    struct 
+    struct
     {
         uint16 NumLockInstr : 1;  //Number of lock instructions executed
         uint16 NumCyclesInRequestGrant : 1;  //Number of cycles spent in the lock request/grant stage
 
-        uint16 NumCyclesForLock:1;  
-        /*Number of cycles a lock takes to complete once it is 
-        non-speculative and is the oldest load/store operation 
+        uint16 NumCyclesForLock:1;
+        /*Number of cycles a lock takes to complete once it is
+        non-speculative and is the oldest load/store operation
         (non-speculative cycles in Ls2 entry 0)*/
 
 
@@ -439,7 +439,7 @@ typedef union EVENT_MASK(k8_locked_op)
 
 
 class k8Event_LOCKED_OP : public k8BaseEvent
-{ 
+{
 public:
 
     EVENT_MASK(k8_locked_op) * eventMask;
@@ -448,61 +448,61 @@ public:
     {
         eventMask = (EVENT_MASK(k8_locked_op) *)&m_eventMask;
         name = _T("Locked operation");
-        event_id = 0x24; 
+        event_id = 0x24;
         unitEncode = LS;
 
         revRequired = 'C';
-    }     
+    }
 
 
 };
 
 class k8Event_OP_LATE_CANCEL : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_OP_LATE_CANCEL()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Microarchitectural late cancel of an operation");
-        event_id = 0x25; 
+        event_id = 0x25;
         unitEncode = LS;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("OP_LATE_CANCEL");
 
 
 };
 class k8Event_CFLUSH_RETIRED : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_CFLUSH_RETIRED()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Retired CFLUSH instructions");
-        event_id = 0x26; 
+        event_id = 0x26;
         unitEncode = LS;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("CFLUSH_RETIRED");
 
 
 };
 class k8Event_CPUID_RETIRED : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_CPUID_RETIRED()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Retired CPUID instructions");
-        event_id = 0x27; 
+        event_id = 0x27;
         unitEncode = LS;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("CPUID_RETIRED");
 
@@ -512,13 +512,13 @@ public:
 typedef union EVENT_MASK( k8_cache)
 {
 
-    struct 
+    struct
     {
-        uint16 Invalid:1;  
-        uint16 Exclusive:1;   
-        uint16 Shared:1;   
-        uint16 Owner:1;    
-        uint16 Modified:1; 
+        uint16 Invalid:1;
+        uint16 Exclusive:1;
+        uint16 Shared:1;
+        uint16 Owner:1;
+        uint16 Modified:1;
     };
     uint16 flat;
 
@@ -526,12 +526,12 @@ typedef union EVENT_MASK( k8_cache)
     /* 0x40-0x47: from K7 official event set */
 
 
-class k8Event_DATA_CACHE_ACCESSES  : public k8BaseEvent 
-{ 
+class k8Event_DATA_CACHE_ACCESSES  : public k8BaseEvent
+{
     k8Event_DATA_CACHE_ACCESSES()
     {
 
-        event_id = 0x40; 
+        event_id = 0x40;
         unitEncode = DC;
 
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
@@ -544,7 +544,7 @@ class k8Event_DATA_CACHE_ACCESSES  : public k8BaseEvent
 };
 
 class k8Event_DATA_CACHE_MISSES     : public k8BaseEvent
-{ 
+{
     k8Event_DATA_CACHE_MISSES()
     {
 
@@ -560,7 +560,7 @@ class k8Event_DATA_CACHE_MISSES     : public k8BaseEvent
 };
 
 class k8Event_DATA_CACHE_REFILLS_FROM_L2     : public k8BaseEvent
-{ 
+{
     k8Event_DATA_CACHE_REFILLS_FROM_L2()
     {
 
@@ -577,7 +577,7 @@ class k8Event_DATA_CACHE_REFILLS_FROM_L2     : public k8BaseEvent
 };
 
 class k8Event_DATA_CACHE_REFILLS_FROM_SYSTEM     : public k8BaseEvent
-{ 
+{
     k8Event_DATA_CACHE_REFILLS_FROM_SYSTEM()
     {
 
@@ -587,7 +587,7 @@ class k8Event_DATA_CACHE_REFILLS_FROM_SYSTEM     : public k8BaseEvent
 
         eventMask = (EVENT_MASK(k8_cache) *)&m_eventMask;
 
-        //UM(k7_um_moesi), 
+        //UM(k7_um_moesi),
         //_T("DATA_CACHE_REFILLS_FROM_SYSTEM"),
         name = _T("Data cache refills from system");
     }
@@ -596,7 +596,7 @@ class k8Event_DATA_CACHE_REFILLS_FROM_SYSTEM     : public k8BaseEvent
 };
 
 class k8Event_DATA_CACHE_WRITEBACKS     : public k8BaseEvent
-{ 
+{
     k8Event_DATA_CACHE_WRITEBACKS()
     {
 
@@ -605,7 +605,7 @@ class k8Event_DATA_CACHE_WRITEBACKS     : public k8BaseEvent
 
         eventMask = (EVENT_MASK(k8_cache) *)&m_eventMask;
 
-        //UM(k7_um_moesi), 
+        //UM(k7_um_moesi),
         //_T("DATA_CACHE_WRITEBACKS"),
         name = _T("Data cache writebacks");
     }
@@ -615,7 +615,7 @@ class k8Event_DATA_CACHE_WRITEBACKS     : public k8BaseEvent
 };
 
 class k8Event_L1_DTLB_MISSES_AND_L2_DTLB_HITS     : public k8BaseEvent
-{ 
+{
     k8Event_L1_DTLB_MISSES_AND_L2_DTLB_HITS()
     {
 
@@ -632,7 +632,7 @@ class k8Event_L1_DTLB_MISSES_AND_L2_DTLB_HITS     : public k8BaseEvent
 };
 
 class k8Event_L1_AND_L2_DTLB_MISSES     : public k8BaseEvent
-{ 
+{
     k8Event_L1_AND_L2_DTLB_MISSES()
     {
 
@@ -648,7 +648,7 @@ class k8Event_L1_AND_L2_DTLB_MISSES     : public k8BaseEvent
 };
 
 class k8Event_MISALIGNED_DATA_REFERENCES     : public k8BaseEvent
-{ 
+{
     k8Event_MISALIGNED_DATA_REFERENCES()
     {
 
@@ -667,7 +667,7 @@ class k8Event_MISALIGNED_DATA_REFERENCES     : public k8BaseEvent
 
 
 class k8Event_ACCESS_CANCEL_LATE : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_ACCESS_CANCEL_LATE()
@@ -677,24 +677,24 @@ public:
         event_id = 0x48;
         unitEncode = DC;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("ACCESS_CANCEL_LATE");
 
 
 };
 class k8Event_ACCESS_CANCEL_EARLY : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_ACCESS_CANCEL_EARLY()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Microarchitectural early cancel of an access");
-        event_id = 0x49; 
+        event_id = 0x49;
         unitEncode = DC;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("ACCESS_CANCEL_EARLY");
 
@@ -702,7 +702,7 @@ public:
 };
 typedef union EVENT_MASK(  k8_ecc)
 {
-    struct 
+    struct
     {
         uint16 ScrubberError : 1; // Scrubber error" },
         uint16 PiggybackScrubberErrors : 1; // Piggyback scrubber errors" } }
@@ -713,17 +713,17 @@ typedef union EVENT_MASK(  k8_ecc)
 
 
 class k8Event_ECC_BIT_ERR : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_ECC_BIT_ERR()
     {
         eventMask = (EVENT_MASK(k8_ecc) *)&m_eventMask;
         name = _T("One bit ECC error recorded found by scrubber");
-        event_id = 0x4A; 
+        event_id = 0x4A;
         unitEncode = DC;
 
-    }     
+    }
     EVENT_MASK(k8_ecc) * eventMask;
     // name = _T("ECC_BIT_ERR");
 
@@ -733,11 +733,11 @@ public:
 // 4B
 typedef union EVENT_MASK(  k8_distpatch_prefetch_instructions)
 {
-    struct 
+    struct
     {
-        uint16 Load : 1; 
-        uint16 Store : 1; 
-        uint16 NTA : 1; 
+        uint16 Load : 1;
+        uint16 Store : 1;
+        uint16 NTA : 1;
     };
     uint16 flat;
 
@@ -745,17 +745,17 @@ typedef union EVENT_MASK(  k8_distpatch_prefetch_instructions)
 }EVENT_MASK(  k8_distpatch_prefetch_instructions);
 
 class k8Event_DISPATCHED_PRE_INSTRS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCHED_PRE_INSTRS()
     {
         eventMask = (EVENT_MASK(k8_distpatch_prefetch_instructions) *)&m_eventMask;
         name = _T("Dispatched prefetch instructions");
-        event_id = 0x4B; 
+        event_id = 0x4B;
         unitEncode = DC;
 
-    }     
+    }
     EVENT_MASK(k8_distpatch_prefetch_instructions) * eventMask;
     // name = _T("DISPATCHED_PRE_INSTRS");
 
@@ -767,7 +767,7 @@ public:
 
 typedef union EVENT_MASK(  k8_lock_accesses)
 {
-    struct 
+    struct
     {
         uint16 DcacheAccesses:1;       // Number of dcache accesses by lock instructions" },
         uint16 DcacheMisses:1;       // Number of dcache misses by lock instructions" } }
@@ -779,18 +779,18 @@ typedef union EVENT_MASK(  k8_lock_accesses)
 
 
 class k8Event_LOCK_ACCESSES : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_LOCK_ACCESSES()
     {
         eventMask = (EVENT_MASK(k8_lock_accesses) *)&m_eventMask;
         name = _T("DCACHE accesses by locks") ;
-        event_id = 0x4C; 
+        event_id = 0x4C;
         unitEncode = DC;
 
         revRequired = 'C';
-    }     
+    }
     EVENT_MASK(k8_lock_accesses) * eventMask;
 
 
@@ -798,7 +798,7 @@ public:
 
 
 class k8Event_CYCLES_PROCESSOR_IS_RUNNING : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_CYCLES_PROCESSOR_IS_RUNNING()
@@ -808,7 +808,7 @@ public:
         event_id = 0x76;
         unitEncode = BU;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("CYCLES_PROCESSOR_IS_RUNNING"); /* undocumented *;
 
@@ -818,7 +818,7 @@ public:
 
 typedef union EVENT_MASK(  k8_internal_L2_request)
 {
-    struct 
+    struct
     {
         uint16 ICFill:1;     // IC fill" },
         uint16 DCFill:1;     // DC fill" },
@@ -832,7 +832,7 @@ typedef union EVENT_MASK(  k8_internal_L2_request)
 }EVENT_MASK(  k8_internal_L2_request);
 
 class k8Event_BU_INT_L2_REQ : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_BU_INT_L2_REQ()
@@ -840,8 +840,8 @@ public:
         eventMask = (EVENT_MASK(k8_internal_L2_request) *)&m_eventMask;
         name = _T("Internal L2 request");
         unitEncode = BU;
-        event_id = 0x7D; 
-    }     
+        event_id = 0x7D;
+    }
 
     EVENT_MASK(k8_internal_L2_request) * eventMask;
 } ;
@@ -854,7 +854,7 @@ public:
 typedef union EVENT_MASK(  k8_fill_request_missed_L2)
 {
 
-    struct 
+    struct
     {
         uint16 ICFill:1;     // IC fill" },
         uint16 DCFill:1;     // DC fill" },
@@ -866,17 +866,17 @@ typedef union EVENT_MASK(  k8_fill_request_missed_L2)
 
 
 class k8Event_BU_FILL_REQ : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_BU_FILL_REQ()
     {
         eventMask = (EVENT_MASK(k8_fill_request_missed_L2) *)&m_eventMask;
         name = _T("Fill request that missed in L2");
-        event_id = 0x7E; 
+        event_id = 0x7E;
         unitEncode = BU;
 
-    }     
+    }
     EVENT_MASK(k8_fill_request_missed_L2) * eventMask;
     // name = _T("BU_FILL_REQ");
 
@@ -891,7 +891,7 @@ public:
 typedef union EVENT_MASK(  k8_fill_into_L2)
 {
 
-    struct 
+    struct
     {
         uint16 DirtyL2Victim:1;     // Dirty L2 victim
         uint16 VictimFromL2:1;     // Victim from L2
@@ -901,17 +901,17 @@ typedef union EVENT_MASK(  k8_fill_into_L2)
 }EVENT_MASK(  k8_fill_into_L2);
 
 class k8Event_BU_FILL_L2 : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_BU_FILL_L2()
     {
         eventMask = (EVENT_MASK(k8_fill_into_L2) *)&m_eventMask;
         name = _T("Fill into L2");
-        event_id = 0x7F; 
+        event_id = 0x7F;
         unitEncode = BU;
 
-    }     
+    }
     EVENT_MASK(k8_fill_into_L2) * eventMask;
     // name = _T("BU_FILL_L2");
 
@@ -954,7 +954,7 @@ public:
 
 
 class k8Event_IC_REFILL_FROM_L2 : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_IC_REFILL_FROM_L2()
@@ -964,7 +964,7 @@ public:
         event_id = 0x82;
         unitEncode = IC;
 
-    } 
+    }
     EVENT_MASK(k8_cache) * eventMask;
     // name = _T("IC_REFILL_FROM_L2");
 
@@ -972,22 +972,22 @@ public:
 
 };
 class k8Event_IC_REFILL_FROM_SYS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_IC_REFILL_FROM_SYS()
     {
         eventMask = (EVENT_MASK(k8_cache) *)&m_eventMask;
         name = _T("Refill from system");
-        event_id = 0x83; 
+        event_id = 0x83;
         unitEncode = IC;
 
-    }     
+    }
     EVENT_MASK(k8_cache) * eventMask;
     // name = _T("IC_REFILL_FROM_SYS");
 
 
- 
+
 };
 class k8Event_L1_ITLB_MISSES_AND_L2_ITLB_HITS : public k8BaseEvent
 {
@@ -1028,7 +1028,7 @@ public:
 
 
 class k8Event_IC_RESYNC_BY_SNOOP : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_IC_RESYNC_BY_SNOOP()
@@ -1038,7 +1038,7 @@ public:
         unitEncode = IC;
 
         name = _T("Microarchitectural resync caused by snoop");
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("IC_RESYNC_BY_SNOOP");
     /* similar to 0x22; but IC unit instead of LS unit */
@@ -1047,17 +1047,17 @@ public:
 
 };
 class k8Event_IC_FETCH_STALL : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_IC_FETCH_STALL()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Instruction fetch stall");
-        event_id = 0x87; 
+        event_id = 0x87;
         unitEncode = IC;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("IC_FETCH_STALL");
 
@@ -1065,7 +1065,7 @@ public:
 
 };
 class k8Event_IC_STACK_HIT : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_IC_STACK_HIT()
@@ -1075,7 +1075,7 @@ public:
         event_id = 0x88;
         unitEncode = IC;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("IC_STACK_HIT");
 
@@ -1083,28 +1083,28 @@ public:
 
 };
 class k8Event_IC_STACK_OVERFLOW : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_IC_STACK_OVERFLOW()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Return stack overflow");
-        event_id = 0x89; 
+        event_id = 0x89;
         unitEncode = IC;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("IC_STACK_OVERFLOW");
 
- 
+
 
 
 };
 
    /* 0xC0-0xC7: from K7 official event set */
 class k8Event_RETIRED_INSTRUCTIONS   : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_INSTRUCTIONS()
     {
@@ -1120,7 +1120,7 @@ public:
 };
 
 class k8Event_RETIRED_OPS     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_OPS()
     {
@@ -1134,7 +1134,7 @@ public:
     EVENT_MASK(NULL_MASK) * eventMask;
 };
 class k8Event_RETIRED_BRANCHES     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_BRANCHES()
     {
@@ -1148,7 +1148,7 @@ public:
     EVENT_MASK(NULL_MASK) * eventMask;
 };
 class k8Event_RETIRED_BRANCHES_MISPREDICTED     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_BRANCHES_MISPREDICTED()
     {
@@ -1162,7 +1162,7 @@ public:
     EVENT_MASK(NULL_MASK) * eventMask;
 };
 class k8Event_RETIRED_TAKEN_BRANCHES     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_TAKEN_BRANCHES()
     {
@@ -1176,7 +1176,7 @@ public:
     EVENT_MASK(NULL_MASK) * eventMask;
 };
 class k8Event_RETIRED_TAKEN_BRANCHES_MISPREDICTED     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_TAKEN_BRANCHES_MISPREDICTED()
     {
@@ -1190,7 +1190,7 @@ public:
     EVENT_MASK(NULL_MASK) * eventMask;
 };
 class k8Event_RETIRED_FAR_CONTROL_TRANSFERS     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_FAR_CONTROL_TRANSFERS()
     {
@@ -1204,7 +1204,7 @@ public:
     EVENT_MASK(NULL_MASK) * eventMask;
 };
 class k8Event_RETIRED_RESYNC_BRANCHES     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_RETIRED_RESYNC_BRANCHES()
     {
@@ -1219,41 +1219,41 @@ public:
 };
 
 class k8Event_RETIRED_NEAR_RETURNS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_RETIRED_NEAR_RETURNS()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Retired near returns");
-        event_id = 0xC8; 
+        event_id = 0xC8;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
 
 
 
 };
 class k8Event_RETIRED_RETURNS_MISPREDICT : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_RETIRED_RETURNS_MISPREDICT()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Retired near returns mispredicted");
-        event_id = 0xC9; 
+        event_id = 0xC9;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("RETIRED_RETURNS_MISPREDICT");
 
 
 };
 class k8Event_RETIRED_BRANCH_MISCOMPARE : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_RETIRED_BRANCH_MISCOMPARE()
@@ -1263,7 +1263,7 @@ public:
         event_id = 0xCA;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("RETIRED_BRANCH_MISCOMPARE");
 
@@ -1275,7 +1275,7 @@ public:
 
 typedef union EVENT_MASK(  k8_retired_fpu_instr)
 {
-    struct 
+    struct
     {
         uint16 DirtyL2Victim:1;     // x87 instructions
         uint16 CombinedMMX_3DNow:1;     // Combined MMX & 3DNow! instructions" },
@@ -1289,18 +1289,18 @@ typedef union EVENT_MASK(  k8_retired_fpu_instr)
 
 
 class k8Event_RETIRED_FPU_INSTRS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_RETIRED_FPU_INSTRS()
     {
         eventMask = (EVENT_MASK(k8_retired_fpu_instr) *)&m_eventMask;
-        event_id = 0xCB; 
+        event_id = 0xCB;
         unitEncode = FR;
 
         name = _T("Retired FPU instructions");
         revRequired = 'B';
-    }     
+    }
     EVENT_MASK(k8_retired_fpu_instr) * eventMask;
     /* Revision B and later */
 
@@ -1312,7 +1312,7 @@ public:
 typedef union EVENT_MASK(  k8_retired_fastpath_double_op_instr )
 {
 
-    struct 
+    struct
     {
         uint16 LowOpPosition0:1;             // With low op in position 0" },
         uint16 LowOpPosition1:1;         // With low op in position 1" },
@@ -1324,26 +1324,26 @@ typedef union EVENT_MASK(  k8_retired_fastpath_double_op_instr )
 }EVENT_MASK(  k8_retired_fastpath_double_op_instr);
 
 class k8Event_RETIRED_FASTPATH_INSTRS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_RETIRED_FASTPATH_INSTRS()
     {
         eventMask = (EVENT_MASK(k8_retired_fastpath_double_op_instr) *)&m_eventMask;
-        event_id = 0xCC; 
+        event_id = 0xCC;
         unitEncode = FR;
 
         name = _T("Retired fastpath double op instructions");
         revRequired = 'B';
 
-    }     
+    }
     EVENT_MASK(k8_retired_fastpath_double_op_instr) * eventMask;
 
 
 };
 
 class k8Event_INTERRUPTS_MASKED_CYCLES     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_INTERRUPTS_MASKED_CYCLES()
     {
@@ -1359,7 +1359,7 @@ public:
 
 };
 class k8Event_INTERRUPTS_MASKED_WHILE_PENDING_CYCLES     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_INTERRUPTS_MASKED_WHILE_PENDING_CYCLES()
     {
@@ -1374,7 +1374,7 @@ public:
 
 };
 class k8Event_NUMBER_OF_TAKEN_HARDWARE_INTERRUPTS     : public k8BaseEvent
-{ 
+{
 public:
     k8Event_NUMBER_OF_TAKEN_HARDWARE_INTERRUPTS()
     {
@@ -1391,7 +1391,7 @@ public:
 
 
 class k8Event_DECODER_EMPTY : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DECODER_EMPTY()
@@ -1401,24 +1401,24 @@ public:
         event_id = 0xD0;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DECODER_EMPTY");
 
 
 };
 class k8Event_DISPATCH_STALLS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALLS()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stalls (events 0xD2-0xDA combined)");
-        event_id = 0xD1; 
+        event_id = 0xD1;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALLS");
 
@@ -1426,17 +1426,17 @@ public:
 
 };
 class k8Event_DISPATCH_STALL_FROM_BRANCH_ABORT : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_FROM_BRANCH_ABORT()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall from branch abort to retire");
-        event_id = 0xD2; 
+        event_id = 0xD2;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_FROM_BRANCH_ABORT");
 
@@ -1444,34 +1444,34 @@ public:
 
 };
 class k8Event_DISPATCH_STALL_SERIALIZATION : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_SERIALIZATION()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall for serialization");
-        event_id = 0xD3; 
+        event_id = 0xD3;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_SERIALIZATION");
 
 
 };
 class k8Event_DISPATCH_STALL_SEG_LOAD : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_SEG_LOAD()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall for segment load");
-        event_id = 0xD4; 
+        event_id = 0xD4;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_SEG_LOAD");
 
@@ -1479,7 +1479,7 @@ public:
 
 };
 class k8Event_DISPATCH_STALL_REORDER_BUFFER : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_REORDER_BUFFER()
@@ -1489,75 +1489,75 @@ public:
         event_id = 0xD5;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_REORDER_BUFFER");
 
 
 };
 class k8Event_DISPATCH_STALL_RESERVE_STATIONS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_RESERVE_STATIONS()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall when reservation stations are full");
-        event_id = 0xD6; 
+        event_id = 0xD6;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_RESERVE_STATIONS");
 
 
 };
 class k8Event_DISPATCH_STALL_FPU : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_FPU()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall when FPU is full");
-        event_id = 0xD7; 
+        event_id = 0xD7;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_FPU");
 
 
 };
 class k8Event_DISPATCH_STALL_LS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_LS()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall when LS is full");
-        event_id = 0xD8; 
+        event_id = 0xD8;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_LS");
 
 
 };
 class k8Event_DISPATCH_STALL_QUIET_WAIT : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_QUIET_WAIT()
     {
         eventMask = (EVENT_MASK(NULL_MASK) *)&m_eventMask;
         name = _T("Dispatch stall when waiting for all to be quiet");
-        event_id = 0xD9; 
+        event_id = 0xD9;
         unitEncode = FR;
 
-    }     
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_QUIET_WAIT");
 
@@ -1565,7 +1565,7 @@ public:
 
 };
 class k8Event_DISPATCH_STALL_PENDING : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DISPATCH_STALL_PENDING()
@@ -1575,7 +1575,7 @@ public:
         event_id = 0xDA;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DISPATCH_STALL_PENDING");
 
@@ -1589,7 +1589,7 @@ typedef union EVENT_MASK(  k8_fpu_exceptions)
 
 
 
-    struct 
+    struct
     {
         uint16 x87ReclassMicrofaults:1;     // x87 reclass microfaults" },
         uint16 SSERetypeMicrofaults:1;      // SSE retype microfaults" },
@@ -1603,19 +1603,19 @@ typedef union EVENT_MASK(  k8_fpu_exceptions)
 }EVENT_MASK(  k8_fpu_exceptions);
 
 class k8Event_FPU_EXCEPTIONS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_FPU_EXCEPTIONS()
     {
         eventMask = (EVENT_MASK(k8_fpu_exceptions) *)&m_eventMask;
-        event_id = 0xDB; 
+        event_id = 0xDB;
         unitEncode = FR;
 
         name = _T("FPU exceptions");
         revRequired = 'B';
 
-    }     
+    }
     EVENT_MASK(k8_fpu_exceptions) * eventMask;
     // name = _T("FPU_EXCEPTIONS");
     /* Revision B and later */
@@ -1624,7 +1624,7 @@ public:
 
 };
 class k8Event_DR0_BREAKPOINTS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DR0_BREAKPOINTS()
@@ -1634,7 +1634,7 @@ public:
         event_id = 0xDC;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DR0_BREAKPOINTS");
 
@@ -1642,7 +1642,7 @@ public:
 
 };
 class k8Event_DR1_BREAKPOINTS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DR1_BREAKPOINTS()
@@ -1652,7 +1652,7 @@ public:
         event_id = 0xDD;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DR1_BREAKPOINTS");
 
@@ -1660,7 +1660,7 @@ public:
 
 };
 class k8Event_DR2_BREAKPOINTS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DR2_BREAKPOINTS()
@@ -1670,14 +1670,14 @@ public:
         event_id = 0xDE;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DR2_BREAKPOINTS");
 
 
 };
 class k8Event_DR3_BREAKPOINTS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DR3_BREAKPOINTS()
@@ -1687,7 +1687,7 @@ public:
         event_id = 0xDF;
         unitEncode = FR;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DR3_BREAKPOINTS");
 
@@ -1699,7 +1699,7 @@ public:
 // E0
 typedef union EVENT_MASK(  k8_page_access_event)
 {
-    struct 
+    struct
     {
         uint16 PageHit:1;       // Page hit" },
         uint16 PageMiss:1;      // Page miss" },
@@ -1710,7 +1710,7 @@ typedef union EVENT_MASK(  k8_page_access_event)
 }EVENT_MASK(  k8_page_access_event);
 
 class k8Event_MEM_PAGE_ACCESS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_MEM_PAGE_ACCESS()
@@ -1720,14 +1720,14 @@ public:
         event_id = 0xE0;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_page_access_event) * eventMask;
     // name = _T("MEM_PAGE_ACCESS");
 
 
 };
 class k8Event_MEM_PAGE_TBL_OVERFLOW : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_MEM_PAGE_TBL_OVERFLOW()
@@ -1737,14 +1737,14 @@ public:
         event_id = 0xE1;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("MEM_PAGE_TBL_OVERFLOW");
 
 
 };
 class k8Event_DRAM_SLOTS_MISSED : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_DRAM_SLOTS_MISSED()
@@ -1754,7 +1754,7 @@ public:
         event_id = 0xE2;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(NULL_MASK) * eventMask;
     // name = _T("DRAM_SLOTS_MISSED");
 
@@ -1766,7 +1766,7 @@ public:
 typedef union EVENT_MASK(  k8_turnaround)
 {
 
-    struct 
+    struct
     {
         uint16 DIMMTurnaround:1;       //DIMM turnaround" },
         uint16 ReadToWriteTurnaround:1;      //Read to write turnaround" },
@@ -1778,7 +1778,7 @@ typedef union EVENT_MASK(  k8_turnaround)
 }EVENT_MASK(  k8_turnaround);
 
 class k8Event_MEM_TURNAROUND : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_MEM_TURNAROUND()
@@ -1788,7 +1788,7 @@ public:
         event_id = 0xE3;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_turnaround) * eventMask;
     // name = _T("MEM_TURNAROUND");
 
@@ -1801,7 +1801,7 @@ public:
 // E4
 typedef union EVENT_MASK(  k8_bypass_counter_saturation)
 {
-    struct 
+    struct
     {
         uint16 MEM_HighPriorityBypass:1;       // Memory controller high priority bypass" },
         uint16 MEM_LowPriorityBypass:1;      // Memory controller low priority bypass" },
@@ -1813,7 +1813,7 @@ typedef union EVENT_MASK(  k8_bypass_counter_saturation)
 }EVENT_MASK(  k8_bypass_counter_saturation);
 
 class k8Event_MEM_BYPASS_SAT : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_MEM_BYPASS_SAT()
@@ -1823,7 +1823,7 @@ public:
         event_id = 0xE4;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_bypass_counter_saturation) * eventMask;
     // name = _T("MEM_BYPASS_SAT");
 
@@ -1836,7 +1836,7 @@ public:
 typedef union EVENT_MASK(  k8_sized_commands)
 {
 
-    struct 
+    struct
     {
         uint16 NonPostWrSzByte:1;       // NonPostWrSzByte" },
         uint16 NonPostWrSzDword:1;       // NonPostWrSzDword" },
@@ -1853,7 +1853,7 @@ typedef union EVENT_MASK(  k8_sized_commands)
 
 
 class k8Event_SIZED_COMMANDS : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_SIZED_COMMANDS()
@@ -1863,7 +1863,7 @@ public:
         event_id = 0xEB;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_sized_commands) * eventMask;
     // name = _T("SIZED_COMMANDS");
 
@@ -1872,7 +1872,7 @@ public:
 
 typedef union EVENT_MASK(  k8_probe_result)
 {
-    struct 
+    struct
     {
         uint16 ProbeMiss:1;       // Probe miss" },
         uint16 ProbeHit:1;       // Probe hit" },
@@ -1889,7 +1889,7 @@ typedef union EVENT_MASK(  k8_probe_result)
 
 
 class k8Event_PROBE_RESULT : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_PROBE_RESULT()
@@ -1899,7 +1899,7 @@ public:
         event_id = 0xEC;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_probe_result) * eventMask;
     // name = _T("PROBE_RESULT");
 
@@ -1909,11 +1909,11 @@ public:
 typedef union EVENT_MASK(  k8_ht)
 {
 
-    struct 
+    struct
     {
         uint16 CommandSent:1;       //Command sent" },
         uint16 DataSent:1;       //Data sent" },
-        uint16 BufferReleaseSent:1;       //Buffer release sent" 
+        uint16 BufferReleaseSent:1;       //Buffer release sent"
         uint16 NopSent:1;       //Nop sent" } }
     };
     uint16 flat;
@@ -1923,7 +1923,7 @@ typedef union EVENT_MASK(  k8_ht)
 
 
 class k8Event_HYPERTRANSPORT_BUS0_WIDTH : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_HYPERTRANSPORT_BUS0_WIDTH()
@@ -1933,14 +1933,14 @@ public:
         event_id = 0xF6;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_ht) * eventMask;
     // name = _T("HYPERTRANSPORT_BUS0_WIDTH");
 
 
 };
 class k8Event_HYPERTRANSPORT_BUS1_WIDTH : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_HYPERTRANSPORT_BUS1_WIDTH()
@@ -1950,14 +1950,14 @@ public:
         event_id = 0xF7;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_ht) * eventMask;
     // name = _T("HYPERTRANSPORT_BUS1_WIDTH");
 
 
 };
 class k8Event_HYPERTRANSPORT_BUS2_WIDTH : public k8BaseEvent
-{ 
+{
 public:
 
     k8Event_HYPERTRANSPORT_BUS2_WIDTH()
@@ -1967,7 +1967,7 @@ public:
         event_id = 0xF8;
         unitEncode = NB;
 
-    } 
+    }
     EVENT_MASK(k8_ht) * eventMask;
     // name = _T("HYPERTRANSPORT_BUS2_WIDTH");
 
@@ -2019,7 +2019,7 @@ public:
 //
 //typedef union EVENT_MASK(  k8_lock_accesses)
 //{
-//    struct 
+//    struct
 //    {
 //        uint16 DcacheAccesses:1;       // Number of dcache accesses by lock instructions" },
 //        uint16 DcacheMisses:1;       // Number of dcache misses by lock instructions" } }

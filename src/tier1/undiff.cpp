@@ -29,7 +29,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
       if (copy_ofs>32767)
         copy_ofs|=0xffff0000;
     //    printf("long cp from %x to %x len=%d\n", copy_src+copy_ofs-OldBlock,Output-obuf,copy_sz);
-      
+
       memcpy(Output,copy_src+copy_ofs,copy_sz);
       Output+=copy_sz;
       copy_src=copy_src+copy_ofs+copy_sz;
@@ -50,7 +50,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
             copy_sz=DiffList[1]+256*DiffList[2]+65536*DiffList[3];
             memcpy(Output,DiffList+4,copy_sz);
     //          printf("big rawcopy to %x len=%d\n", Output-obuf,copy_sz);
-            
+
             DiffList+=copy_sz+4;
             Output+=copy_sz;
           }
@@ -60,7 +60,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
             if (copy_ofs>32767)
               copy_ofs|=0xffff0000;
     //          printf("long ofs cp from %x to %x len=%d\n", copy_src+copy_ofs-OldBlock,Output-obuf,copy_sz);
-            
+
             memcpy(Output,copy_src+copy_ofs,copy_sz);
             Output+=copy_sz;
             copy_src=copy_src+copy_ofs+copy_sz;
@@ -73,7 +73,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
           if (copy_ofs>127)
             copy_ofs|=0xffffff80;
     //        printf("cp from %x to %x len=%d\n", copy_src+copy_ofs-OldBlock,Output-obuf,copy_sz);
-          
+
           memcpy(Output,copy_src+copy_ofs,copy_sz);
           Output+=copy_sz;
           copy_src=copy_src+copy_ofs+copy_sz;
@@ -90,5 +90,5 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
     }
   }
   ResultListSize=Output-obuf;
-  
+
 }

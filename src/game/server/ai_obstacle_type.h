@@ -18,19 +18,19 @@
 //-------------------------------------
 enum AI_MoveSuggType_t
 {
-	// Positive suggestions
-	AIMST_MOVE,
+    // Positive suggestions
+    AIMST_MOVE,
 
-	// Negative suggestions
-	AIMST_AVOID_DANGER,
-	AIMST_AVOID_OBJECT,
-	AIMST_AVOID_NPC,
-	AIMST_AVOID_WORLD,
+    // Negative suggestions
+    AIMST_AVOID_DANGER,
+    AIMST_AVOID_OBJECT,
+    AIMST_AVOID_NPC,
+    AIMST_AVOID_WORLD,
 
-	AIMST_NO_KNOWLEDGE,
-	AIMST_OSCILLATION_DETERRANCE,
+    AIMST_NO_KNOWLEDGE,
+    AIMST_OSCILLATION_DETERRANCE,
 
-	AIMS_INVALID
+    AIMS_INVALID
 };
 
 #endif // AI_OBSTACLE_TYPE_H

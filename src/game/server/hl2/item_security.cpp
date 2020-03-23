@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -21,23 +21,23 @@
 class CItemSecurity : public CItem
 {
 public:
-	DECLARE_CLASS( CItemSecurity, CItem );
+    DECLARE_CLASS( CItemSecurity, CItem );
 
-	void Spawn( void )
-	{ 
-		Precache( );
-		SetModel( "models/w_security.mdl" );
-		BaseClass::Spawn( );
-	}
-	void Precache( void )
-	{
-		PrecacheModel ("models/w_security.mdl");
-	}
-	bool MyTouch( CBasePlayer *pPlayer )
-	{
-		pPlayer->m_rgItems[ITEM_SECURITY] += 1;
-		return true;
-	}
+    void Spawn( void )
+    {
+        Precache( );
+        SetModel( "models/w_security.mdl" );
+        BaseClass::Spawn( );
+    }
+    void Precache( void )
+    {
+        PrecacheModel ("models/w_security.mdl");
+    }
+    bool MyTouch( CBasePlayer *pPlayer )
+    {
+        pPlayer->m_rgItems[ITEM_SECURITY] += 1;
+        return true;
+    }
 };
 
 LINK_ENTITY_TO_CLASS(item_security, CItemSecurity);

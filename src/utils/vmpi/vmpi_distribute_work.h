@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -18,27 +18,27 @@
 class IWorkUnitDistributorCallbacks
 {
 public:
-	// Called every 200ms or so as it does the work.
-	// Return true to stop distributing work.
-	virtual bool Update() { return false; }
+    // Called every 200ms or so as it does the work.
+    // Return true to stop distributing work.
+    virtual bool Update() { return false; }
 
-	// Called when a subsequent number of work units is completed.
-	// e.g. results received in the following order will trigger
-	// the following calls to OnWorkUnitsCompleted:
-	// Work unit numbers:                         wu2 wu4 wu5 wu1 wu0 wu6 wu3
-	// Calling OnWorkUnitsCompleted with arg:      -   -   -   -   3   -   7
-	// because when wu0 is received we already have { wu0, wu1, wu2 } so we signal
-	// that 3 subsequent work units completed, like wise by the time when wu3 is
-	// received we already have a full set { wu0, wu1, wu2, wu3, wu4, wu5, wu6 }
-	// and signal that 7 work units completed.
-	virtual void OnWorkUnitsCompleted( uint64 numWorkUnits ) { return; }
+    // Called when a subsequent number of work units is completed.
+    // e.g. results received in the following order will trigger
+    // the following calls to OnWorkUnitsCompleted:
+    // Work unit numbers:                         wu2 wu4 wu5 wu1 wu0 wu6 wu3
+    // Calling OnWorkUnitsCompleted with arg:      -   -   -   -   3   -   7
+    // because when wu0 is received we already have { wu0, wu1, wu2 } so we signal
+    // that 3 subsequent work units completed, like wise by the time when wu3 is
+    // received we already have a full set { wu0, wu1, wu2, wu3, wu4, wu5, wu6 }
+    // and signal that 7 work units completed.
+    virtual void OnWorkUnitsCompleted( uint64 numWorkUnits ) { return; }
 };
 
 
 enum EWorkUnitDistributor
 {
-	k_eWorkUnitDistributor_Default,
-	k_eWorkUnitDistributor_SDK
+    k_eWorkUnitDistributor_Default,
+    k_eWorkUnitDistributor_SDK
 };
 
 // Tells which work unit distributor is going to be used.
@@ -72,13 +72,13 @@ bool DistributeWorkDispatch( MessageBuffer *pBuf, int iSource, int iPacketID );
 // The masters implement receiveFn to receive a work unit's results.
 //
 // Returns time it took to finish the work.
-double DistributeWork( 
-	uint64 nWorkUnits,				// how many work units to dole out
-	char cPacketID,					// This packet ID must be reserved for DistributeWork and DistributeWorkDispatch
-									// must be registered with it.
-	ProcessWorkUnitFn processFn,	// workers implement this to process a work unit and send results back
-	ReceiveWorkUnitFn receiveFn		// the master implements this to receive a work unit
-	);
+double DistributeWork(
+    uint64 nWorkUnits,              // how many work units to dole out
+    char cPacketID,                 // This packet ID must be reserved for DistributeWork and DistributeWorkDispatch
+                                    // must be registered with it.
+    ProcessWorkUnitFn processFn,    // workers implement this to process a work unit and send results back
+    ReceiveWorkUnitFn receiveFn     // the master implements this to receive a work unit
+    );
 
 
 // VMPI calls this before shutting down because any threads that DistributeWork has running must stop,

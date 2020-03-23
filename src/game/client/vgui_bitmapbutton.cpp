@@ -18,14 +18,14 @@
 //-----------------------------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------------------------
-CBitmapButton::CBitmapButton( vgui::Panel *pParent, const char *pName, const char *pText ) : 
-	BaseClass( pParent, pName, pText )
+CBitmapButton::CBitmapButton( vgui::Panel *pParent, const char *pName, const char *pText ) :
+    BaseClass( pParent, pName, pText )
 {
-	SetPaintBackgroundEnabled( false );
-	for ( int i = 0; i < BUTTON_STATE_COUNT; ++i )
-	{
-		m_bImageLoaded[i] = false;
-	}
+    SetPaintBackgroundEnabled( false );
+    for ( int i = 0; i < BUTTON_STATE_COUNT; ++i )
+    {
+        m_bImageLoaded[i] = false;
+    }
 }
 
 CBitmapButton::~CBitmapButton()
@@ -38,9 +38,9 @@ CBitmapButton::~CBitmapButton()
 //-----------------------------------------------------------------------------
 bool CBitmapButton::Init( KeyValues* pInitData )
 {
-	// Unimplemented
-	Assert( 0 );
-	return true;
+    // Unimplemented
+    Assert( 0 );
+    return true;
 }
 
 
@@ -49,21 +49,21 @@ bool CBitmapButton::Init( KeyValues* pInitData )
 //-----------------------------------------------------------------------------
 void CBitmapButton::ApplySettings(KeyValues *pInitData)
 {
-	BaseClass::ApplySettings(pInitData);
+    BaseClass::ApplySettings(pInitData);
 
-	COMPILE_TIME_ASSERT( BUTTON_STATE_COUNT == 4 );
-	const char *pSectionName[BUTTON_STATE_COUNT] = 
-	{
-		"enabledImage",
-		"mouseOverImage",
-		"pressedImage",
-		"disabledImage"
-	};
+    COMPILE_TIME_ASSERT( BUTTON_STATE_COUNT == 4 );
+    const char *pSectionName[BUTTON_STATE_COUNT] =
+    {
+        "enabledImage",
+        "mouseOverImage",
+        "pressedImage",
+        "disabledImage"
+    };
 
-	for ( int i = 0; i < BUTTON_STATE_COUNT; ++i )
-	{
-		m_bImageLoaded[i] = InitializeImage(pInitData, pSectionName[i], this, &m_pImage[i] );
-	}
+    for ( int i = 0; i < BUTTON_STATE_COUNT; ++i )
+    {
+        m_bImageLoaded[i] = InitializeImage(pInitData, pSectionName[i], this, &m_pImage[i] );
+    }
 }
 
 
@@ -72,17 +72,17 @@ void CBitmapButton::ApplySettings(KeyValues *pInitData)
 //-----------------------------------------------------------------------------
 void CBitmapButton::SetImage( ButtonImageType_t type, const char *pMaterialName, color32 color )
 {
-	m_bImageLoaded[type] = m_pImage[type].Init( GetVPanel(), pMaterialName );
-	if (m_bImageLoaded[type])
-	{
-		Color vcol( color.r, color.g, color.b, color.a );
-		m_pImage[type].SetColor( vcol );
-	}
+    m_bImageLoaded[type] = m_pImage[type].Init( GetVPanel(), pMaterialName );
+    if (m_bImageLoaded[type])
+    {
+        Color vcol( color.r, color.g, color.b, color.a );
+        m_pImage[type].SetColor( vcol );
+    }
 }
 
 bool CBitmapButton::IsImageLoaded( ButtonImageType_t type ) const
 {
-	return m_bImageLoaded[type];
+    return m_bImageLoaded[type];
 }
 
 
@@ -91,30 +91,30 @@ bool CBitmapButton::IsImageLoaded( ButtonImageType_t type ) const
 //-----------------------------------------------------------------------------
 void CBitmapButton::Paint( void )
 {
-	// Determine the image to use based on the state
-	int nCurrentImage = BUTTON_ENABLED;
-	if (IsArmed())
-	{
-		if (IsDepressed())
-		{
-			nCurrentImage = BUTTON_PRESSED;
-		}
-		else
-		{
-			nCurrentImage = BUTTON_ENABLED_MOUSE_OVER;
-		}
-	}
-	else if (!IsEnabled())
-	{
-		nCurrentImage = BUTTON_DISABLED;
-	}
+    // Determine the image to use based on the state
+    int nCurrentImage = BUTTON_ENABLED;
+    if (IsArmed())
+    {
+        if (IsDepressed())
+        {
+            nCurrentImage = BUTTON_PRESSED;
+        }
+        else
+        {
+            nCurrentImage = BUTTON_ENABLED_MOUSE_OVER;
+        }
+    }
+    else if (!IsEnabled())
+    {
+        nCurrentImage = BUTTON_DISABLED;
+    }
 
-	if (m_bImageLoaded[nCurrentImage])
-	{
-		m_pImage[nCurrentImage].DoPaint( GetVPanel() );
-	}
+    if (m_bImageLoaded[nCurrentImage])
+    {
+        m_pImage[nCurrentImage].DoPaint( GetVPanel() );
+    }
 
-	BaseClass::Paint();
+    BaseClass::Paint();
 }
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -22,84 +22,84 @@
 class CTEDecal : public CBaseTempEntity
 {
 public:
-	DECLARE_CLASS( CTEDecal, CBaseTempEntity );
+    DECLARE_CLASS( CTEDecal, CBaseTempEntity );
 
-					CTEDecal( const char *name );
-	virtual			~CTEDecal( void );
+                    CTEDecal( const char *name );
+    virtual         ~CTEDecal( void );
 
-	virtual void	Test( const Vector& current_origin, const QAngle& current_angles );
-	
-	DECLARE_SERVERCLASS();
+    virtual void    Test( const Vector& current_origin, const QAngle& current_angles );
+
+    DECLARE_SERVERCLASS();
 
 public:
-	CNetworkVector( m_vecOrigin );
-	CNetworkVector( m_vecStart );
-	CNetworkVar( int, m_nEntity );
-	CNetworkVar( int, m_nHitbox );
-	CNetworkVar( int, m_nIndex );
+    CNetworkVector( m_vecOrigin );
+    CNetworkVector( m_vecStart );
+    CNetworkVar( int, m_nEntity );
+    CNetworkVar( int, m_nHitbox );
+    CNetworkVar( int, m_nIndex );
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *name - 
+// Purpose:
+// Input  : *name -
 //-----------------------------------------------------------------------------
 CTEDecal::CTEDecal( const char *name ) :
-	CBaseTempEntity( name )
+    CBaseTempEntity( name )
 {
-	m_vecOrigin.Init();
-	m_nEntity = 0;
-	m_nIndex = 0;
+    m_vecOrigin.Init();
+    m_nEntity = 0;
+    m_nIndex = 0;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CTEDecal::~CTEDecal( void )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *current_origin - 
-//			*current_angles - 
+// Purpose:
+// Input  : *current_origin -
+//          *current_angles -
 //-----------------------------------------------------------------------------
 void CTEDecal::Test( const Vector& current_origin, const QAngle& current_angles )
 {
-	// Fill in data
-	m_nEntity = 0;
-	m_nIndex = 0;
-	m_vecOrigin = current_origin;
+    // Fill in data
+    m_nEntity = 0;
+    m_nIndex = 0;
+    m_vecOrigin = current_origin;
 
-	Vector vecEnd;
-	
-	Vector forward;
+    Vector vecEnd;
 
-	m_vecOrigin.GetForModify()[2] += 24;
+    Vector forward;
 
-	AngleVectors( current_angles, &forward );
-	forward[2] = 0.0;
-	VectorNormalize( forward );
+    m_vecOrigin.GetForModify()[2] += 24;
 
-	VectorMA( m_vecOrigin, 50.0, forward, m_vecOrigin.GetForModify() );
-	VectorMA( m_vecOrigin, 1024.0, forward, vecEnd );
+    AngleVectors( current_angles, &forward );
+    forward[2] = 0.0;
+    VectorNormalize( forward );
 
-	trace_t tr;
+    VectorMA( m_vecOrigin, 50.0, forward, m_vecOrigin.GetForModify() );
+    VectorMA( m_vecOrigin, 1024.0, forward, vecEnd );
 
-	UTIL_TraceLine( m_vecOrigin, vecEnd, MASK_SOLID_BRUSHONLY, NULL, COLLISION_GROUP_NONE, &tr );
+    trace_t tr;
 
-	m_vecOrigin = tr.endpos;
+    UTIL_TraceLine( m_vecOrigin, vecEnd, MASK_SOLID_BRUSHONLY, NULL, COLLISION_GROUP_NONE, &tr );
 
-	CBroadcastRecipientFilter filter;
-	Create( filter, 0.0 );
+    m_vecOrigin = tr.endpos;
+
+    CBroadcastRecipientFilter filter;
+    Create( filter, 0.0 );
 }
 
 
 IMPLEMENT_SERVERCLASS_ST(CTEDecal, DT_TEDecal)
-	SendPropVector( SENDINFO(m_vecOrigin), -1, SPROP_COORD),
-	SendPropVector( SENDINFO(m_vecStart), -1, SPROP_COORD),
-	SendPropInt( SENDINFO(m_nEntity), MAX_EDICT_BITS, SPROP_UNSIGNED ),
-	SendPropInt( SENDINFO(m_nHitbox), 12, SPROP_UNSIGNED ),
-	SendPropInt( SENDINFO(m_nIndex), 9, SPROP_UNSIGNED ),
+    SendPropVector( SENDINFO(m_vecOrigin), -1, SPROP_COORD),
+    SendPropVector( SENDINFO(m_vecStart), -1, SPROP_COORD),
+    SendPropInt( SENDINFO(m_nEntity), MAX_EDICT_BITS, SPROP_UNSIGNED ),
+    SendPropInt( SENDINFO(m_nHitbox), 12, SPROP_UNSIGNED ),
+    SendPropInt( SENDINFO(m_nIndex), 9, SPROP_UNSIGNED ),
 END_SEND_TABLE()
 
 
@@ -107,25 +107,25 @@ END_SEND_TABLE()
 static CTEDecal g_TEDecal( "Entity Decal" );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : msg_dest - 
-//			delay - 
-//			*origin - 
-//			*recipient - 
-//			*pos - 
-//			entity - 
-//			index - 
+// Purpose:
+// Input  : msg_dest -
+//          delay -
+//          *origin -
+//          *recipient -
+//          *pos -
+//          entity -
+//          index -
 //-----------------------------------------------------------------------------
 void TE_Decal( IRecipientFilter& filter, float delay,
-	const Vector* pos, const Vector* start, int entity, int hitbox, int index )
+    const Vector* pos, const Vector* start, int entity, int hitbox, int index )
 {
-	Assert( pos && start );
-	g_TEDecal.m_vecOrigin	= *pos;
-	g_TEDecal.m_vecStart	= *start;
-	g_TEDecal.m_nEntity		= entity;	
-	g_TEDecal.m_nHitbox		= hitbox;
-	g_TEDecal.m_nIndex		= index;
+    Assert( pos && start );
+    g_TEDecal.m_vecOrigin   = *pos;
+    g_TEDecal.m_vecStart    = *start;
+    g_TEDecal.m_nEntity     = entity;
+    g_TEDecal.m_nHitbox     = hitbox;
+    g_TEDecal.m_nIndex      = index;
 
-	// Send it over the wire
-	g_TEDecal.Create( filter, delay );
+    // Send it over the wire
+    g_TEDecal.Create( filter, delay );
 }

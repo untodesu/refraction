@@ -1,8 +1,8 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: Dr. Mossman, stalwart heroine, doing what is right in the face of 
-//			near certain doom, all while fighting off the clumsy advances of her
-//			misogynistic colleges.
+// Purpose: Dr. Mossman, stalwart heroine, doing what is right in the face of
+//          near certain doom, all while fighting off the clumsy advances of her
+//          misogynistic colleges.
 //=============================================================================//
 
 
@@ -25,39 +25,39 @@
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class CNPC_Mossman : public CAI_PlayerAlly
 {
 public:
-	DECLARE_CLASS( CNPC_Mossman, CAI_PlayerAlly );
-	DECLARE_DATADESC();
+    DECLARE_CLASS( CNPC_Mossman, CAI_PlayerAlly );
+    DECLARE_DATADESC();
 
-	void	Spawn( void );
-	void	Precache( void );
-	Class_T Classify ( void );
-	void	HandleAnimEvent( animevent_t *pEvent );
-	int		GetSoundInterests ( void );
-	bool	CreateBehaviors( void );
-	int		SelectSchedule( void );
+    void    Spawn( void );
+    void    Precache( void );
+    Class_T Classify ( void );
+    void    HandleAnimEvent( animevent_t *pEvent );
+    int     GetSoundInterests ( void );
+    bool    CreateBehaviors( void );
+    int     SelectSchedule( void );
 
 private:
-	CAI_FollowBehavior		m_FollowBehavior;
+    CAI_FollowBehavior      m_FollowBehavior;
 };
 
 LINK_ENTITY_TO_CLASS( npc_mossman, CNPC_Mossman );
 
 BEGIN_DATADESC( CNPC_Mossman )
-//	DEFINE_FIELD( m_FollowBehavior, FIELD_EMBEDDED ),	(auto saved by AI)
+//  DEFINE_FIELD( m_FollowBehavior, FIELD_EMBEDDED ),   (auto saved by AI)
 END_DATADESC()
 
 //-----------------------------------------------------------------------------
-// Classify - indicates this NPC's place in the 
+// Classify - indicates this NPC's place in the
 // relationship table.
 //-----------------------------------------------------------------------------
-Class_T	CNPC_Mossman::Classify ( void )
+Class_T CNPC_Mossman::Classify ( void )
 {
-	return	CLASS_PLAYER_ALLY_VITAL;
+    return  CLASS_PLAYER_ALLY_VITAL;
 }
 
 
@@ -68,13 +68,13 @@ Class_T	CNPC_Mossman::Classify ( void )
 //-----------------------------------------------------------------------------
 void CNPC_Mossman::HandleAnimEvent( animevent_t *pEvent )
 {
-	switch( pEvent->event )
-	{
-	case 1:
-	default:
-		BaseClass::HandleAnimEvent( pEvent );
-		break;
-	}
+    switch( pEvent->event )
+    {
+    case 1:
+    default:
+        BaseClass::HandleAnimEvent( pEvent );
+        break;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ void CNPC_Mossman::HandleAnimEvent( animevent_t *pEvent )
 //-----------------------------------------------------------------------------
 int CNPC_Mossman::GetSoundInterests ( void )
 {
-	return	NULL;
+    return  NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -90,28 +90,28 @@ int CNPC_Mossman::GetSoundInterests ( void )
 //-----------------------------------------------------------------------------
 void CNPC_Mossman::Spawn()
 {
-	Precache();
+    Precache();
 
-	BaseClass::Spawn();
+    BaseClass::Spawn();
 
-	SetModel( "models/mossman.mdl" );
+    SetModel( "models/mossman.mdl" );
 
-	SetHullType(HULL_HUMAN);
-	SetHullSizeNormal();
+    SetHullType(HULL_HUMAN);
+    SetHullSizeNormal();
 
-	SetSolid( SOLID_BBOX );
-	AddSolidFlags( FSOLID_NOT_STANDABLE );
-	SetMoveType( MOVETYPE_STEP );
-	SetBloodColor( BLOOD_COLOR_RED );
-	m_iHealth			= 8;
-	m_flFieldOfView		= 0.5;// indicates the width of this NPC's forward view cone ( as a dotproduct result )
-	m_NPCState			= NPC_STATE_NONE;
-	
-	CapabilitiesAdd( bits_CAP_MOVE_GROUND | bits_CAP_OPEN_DOORS | bits_CAP_ANIMATEDFACE | bits_CAP_TURN_HEAD );
-	CapabilitiesAdd( bits_CAP_FRIENDLY_DMG_IMMUNE );
-	AddEFlags( EFL_NO_DISSOLVE | EFL_NO_MEGAPHYSCANNON_RAGDOLL | EFL_NO_PHYSCANNON_INTERACTION );
+    SetSolid( SOLID_BBOX );
+    AddSolidFlags( FSOLID_NOT_STANDABLE );
+    SetMoveType( MOVETYPE_STEP );
+    SetBloodColor( BLOOD_COLOR_RED );
+    m_iHealth           = 8;
+    m_flFieldOfView     = 0.5;// indicates the width of this NPC's forward view cone ( as a dotproduct result )
+    m_NPCState          = NPC_STATE_NONE;
 
-	NPCInit();
+    CapabilitiesAdd( bits_CAP_MOVE_GROUND | bits_CAP_OPEN_DOORS | bits_CAP_ANIMATEDFACE | bits_CAP_TURN_HEAD );
+    CapabilitiesAdd( bits_CAP_FRIENDLY_DMG_IMMUNE );
+    AddEFlags( EFL_NO_DISSOLVE | EFL_NO_MEGAPHYSCANNON_RAGDOLL | EFL_NO_PHYSCANNON_INTERACTION );
+
+    NPCInit();
 }
 
 //-----------------------------------------------------------------------------
@@ -119,31 +119,31 @@ void CNPC_Mossman::Spawn()
 //-----------------------------------------------------------------------------
 void CNPC_Mossman::Precache()
 {
-	PrecacheModel( "models/mossman.mdl" );
-	
-	BaseClass::Precache();
-}	
+    PrecacheModel( "models/mossman.mdl" );
+
+    BaseClass::Precache();
+}
 
 //=========================================================
 // Purpose:
 //=========================================================
 bool CNPC_Mossman::CreateBehaviors()
 {
-	AddBehavior( &m_FollowBehavior );
-	
-	return BaseClass::CreateBehaviors();
+    AddBehavior( &m_FollowBehavior );
+
+    return BaseClass::CreateBehaviors();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 int CNPC_Mossman::SelectSchedule( void )
 {
-	if ( !BehaviorSelectSchedule() )
-	{
-	}
+    if ( !BehaviorSelectSchedule() )
+    {
+    }
 
-	return BaseClass::SelectSchedule();
+    return BaseClass::SelectSchedule();
 }
 
 //-----------------------------------------------------------------------------

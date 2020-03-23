@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -18,35 +18,35 @@
 #pragma warning(pop)
 
 
-#define KEYVALUE_MAX_KEY_LENGTH			80
-#define KEYVALUE_MAX_VALUE_LENGTH		512
+#define KEYVALUE_MAX_KEY_LENGTH         80
+#define KEYVALUE_MAX_VALUE_LENGTH       512
 
 
-class MDkeyvalue 
+class MDkeyvalue
 {
-	public:
+    public:
 
-		//
-		// Constructors/Destructor.
-		//
-		inline MDkeyvalue(void);
-		inline MDkeyvalue(const char *pszKey, const char *pszValue);
-		~MDkeyvalue(void);
+        //
+        // Constructors/Destructor.
+        //
+        inline MDkeyvalue(void);
+        inline MDkeyvalue(const char *pszKey, const char *pszValue);
+        ~MDkeyvalue(void);
 
-		MDkeyvalue &operator =(const MDkeyvalue &other);
-		
-		inline void Set(const char *pszKey, const char *pszValue);
-		inline const char *Key(void) const;
-		inline const char *Value(void) const;
+        MDkeyvalue &operator =(const MDkeyvalue &other);
 
-		//
-		// Serialization functions.
-		//
-		int SerializeRMF(std::fstream &f, BOOL bRMF);
-		int SerializeMAP(std::fstream &f, BOOL bRMF);
+        inline void Set(const char *pszKey, const char *pszValue);
+        inline const char *Key(void) const;
+        inline const char *Value(void) const;
 
-		char szKey[KEYVALUE_MAX_KEY_LENGTH];			// The name of this key.
-		char szValue[KEYVALUE_MAX_VALUE_LENGTH];		// The value of this key, stored as a string.
+        //
+        // Serialization functions.
+        //
+        int SerializeRMF(std::fstream &f, BOOL bRMF);
+        int SerializeMAP(std::fstream &f, BOOL bRMF);
+
+        char szKey[KEYVALUE_MAX_KEY_LENGTH];            // The name of this key.
+        char szValue[KEYVALUE_MAX_VALUE_LENGTH];        // The value of this key, stored as a string.
 };
 
 
@@ -55,8 +55,8 @@ class MDkeyvalue
 //-----------------------------------------------------------------------------
 MDkeyvalue::MDkeyvalue(void)
 {
-	szKey[0] = '\0';
-	szValue[0] = '\0';
+    szKey[0] = '\0';
+    szValue[0] = '\0';
 }
 
 
@@ -65,10 +65,10 @@ MDkeyvalue::MDkeyvalue(void)
 //-----------------------------------------------------------------------------
 MDkeyvalue::MDkeyvalue(const char *pszKey, const char *pszValue)
 {
-	szKey[0] = '\0';
-	szValue[0] = '\0';
+    szKey[0] = '\0';
+    szValue[0] = '\0';
 
-	Set(pszKey, pszValue);
+    Set(pszKey, pszValue);
 }
 
 
@@ -77,11 +77,11 @@ MDkeyvalue::MDkeyvalue(const char *pszKey, const char *pszValue)
 //-----------------------------------------------------------------------------
 void MDkeyvalue::Set(const char *pszKey, const char *pszValue)
 {
-	Assert(pszKey);
-	Assert(pszValue);
+    Assert(pszKey);
+    Assert(pszValue);
 
-	strcpy(szKey, pszKey);
-	strcpy(szValue, pszValue);
+    strcpy(szKey, pszKey);
+    strcpy(szValue, pszValue);
 }
 
 
@@ -90,7 +90,7 @@ void MDkeyvalue::Set(const char *pszKey, const char *pszValue)
 //-----------------------------------------------------------------------------
 const char *MDkeyvalue::Key(void) const
 {
-	return szKey;
+    return szKey;
 }
 
 
@@ -99,7 +99,7 @@ const char *MDkeyvalue::Key(void) const
 //-----------------------------------------------------------------------------
 const char *MDkeyvalue::Value(void) const
 {
-	return szValue;
+    return szValue;
 }
 
 
@@ -110,25 +110,25 @@ typedef CUtlVector<MDkeyvalue> KeyValueArray;
 class WCKVBase_Vector
 {
 public:
-	
-	// Iteration helpers.
-	inline int GetCount() const			{ return m_KeyValues.Count(); }
-	inline int GetFirst() const			{ return m_KeyValues.Count() - 1; }
-	inline int GetNext( int i ) const	{ return i - 1; }
-	static inline int GetInvalidIndex()	{ return -1; }
 
-	void RemoveKeyAt(int nIndex);
-	int FindByKeyName( const char *pKeyName ) const; // Returns the same value as GetInvalidIndex if not found.
+    // Iteration helpers.
+    inline int GetCount() const         { return m_KeyValues.Count(); }
+    inline int GetFirst() const         { return m_KeyValues.Count() - 1; }
+    inline int GetNext( int i ) const   { return i - 1; }
+    static inline int GetInvalidIndex() { return -1; }
 
-	// Special function used for non-unique keyvalue lists.
-	void AddKeyValue(const char *pszKey, const char *pszValue);
+    void RemoveKeyAt(int nIndex);
+    int FindByKeyName( const char *pKeyName ) const; // Returns the same value as GetInvalidIndex if not found.
 
-protected:
-
-	void InsertKeyValue( const MDkeyvalue &kv );
+    // Special function used for non-unique keyvalue lists.
+    void AddKeyValue(const char *pszKey, const char *pszValue);
 
 protected:
-	CUtlVector<MDkeyvalue> m_KeyValues;
+
+    void InsertKeyValue( const MDkeyvalue &kv );
+
+protected:
+    CUtlVector<MDkeyvalue> m_KeyValues;
 };
 
 // Used for most key/value sets because it's fast. Does not allow duplicate key names.
@@ -136,20 +136,20 @@ class WCKVBase_Dict
 {
 public:
 
-	// Iteration helpers. Note that there is no GetCount() because you can't iterate
-	// these by incrementing a counter.
-	inline int GetFirst() const			{ return m_KeyValues.First(); }
-	inline int GetNext( int i ) const	{ return m_KeyValues.Next( i ); }
-	static inline int GetInvalidIndex()	{ return CUtlDict<MDkeyvalue,unsigned short>::InvalidIndex(); }
+    // Iteration helpers. Note that there is no GetCount() because you can't iterate
+    // these by incrementing a counter.
+    inline int GetFirst() const         { return m_KeyValues.First(); }
+    inline int GetNext( int i ) const   { return m_KeyValues.Next( i ); }
+    static inline int GetInvalidIndex() { return CUtlDict<MDkeyvalue,unsigned short>::InvalidIndex(); }
 
-	int FindByKeyName( const char *pKeyName ) const; // Returns the same value as GetInvalidIndex if not found.
-	void RemoveKeyAt(int nIndex);
-
-protected:
-	void InsertKeyValue( const MDkeyvalue &kv );
+    int FindByKeyName( const char *pKeyName ) const; // Returns the same value as GetInvalidIndex if not found.
+    void RemoveKeyAt(int nIndex);
 
 protected:
-	CUtlDict<MDkeyvalue,unsigned short> m_KeyValues;
+    void InsertKeyValue( const MDkeyvalue &kv );
+
+protected:
+    CUtlDict<MDkeyvalue,unsigned short> m_KeyValues;
 };
 
 
@@ -159,20 +159,20 @@ class WCKeyValuesT : public Base
 {
 public:
 
-	WCKeyValuesT(void);
-	~WCKeyValuesT(void);
+    WCKeyValuesT(void);
+    ~WCKeyValuesT(void);
 
-	void RemoveAll(void);
-	void RemoveKey(const char *pszKey);
+    void RemoveAll(void);
+    void RemoveKey(const char *pszKey);
 
-	void SetValue(const char *pszKey, const char *pszValue);
-	void SetValue(const char *pszKey, int iValue);
+    void SetValue(const char *pszKey, const char *pszValue);
+    void SetValue(const char *pszKey, int iValue);
 
-	const char *GetKey(int nIndex) const;
-	MDkeyvalue &GetKeyValue(int nIndex);
-	const MDkeyvalue& GetKeyValue(int nIndex) const;
-	const char *GetValue(int nIndex) const;
-	const char *GetValue(const char *pszKey, int *piIndex = NULL) const;
+    const char *GetKey(int nIndex) const;
+    MDkeyvalue &GetKeyValue(int nIndex);
+    const MDkeyvalue& GetKeyValue(int nIndex) const;
+    const char *GetValue(int nIndex) const;
+    const char *GetValue(const char *pszKey, int *piIndex = NULL) const;
 };
 
 
@@ -182,48 +182,48 @@ typedef WCKeyValuesT<WCKVBase_Vector> WCKeyValuesVector;
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : nIndex - 
+// Purpose:
+// Input  : nIndex -
 //-----------------------------------------------------------------------------
 template<class Base>
 inline const char *WCKeyValuesT<Base>::GetKey(int nIndex) const
 {
-	return(m_KeyValues.Element(nIndex).szKey);
+    return(m_KeyValues.Element(nIndex).szKey);
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : nIndex - 
+// Purpose:
+// Input  : nIndex -
 // Output : MDKeyValue
 //-----------------------------------------------------------------------------
 template<class Base>
 inline MDkeyvalue &WCKeyValuesT<Base>::GetKeyValue(int nIndex)
 {
-	return(m_KeyValues.Element(nIndex));
+    return(m_KeyValues.Element(nIndex));
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : nIndex - 
+// Purpose:
+// Input  : nIndex -
 // Output : MDkeyvalue
 //-----------------------------------------------------------------------------
 template<class Base>
 inline const MDkeyvalue& WCKeyValuesT<Base>::GetKeyValue(int nIndex) const
 {
-	return(m_KeyValues.Element(nIndex));
+    return(m_KeyValues.Element(nIndex));
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : nIndex - 
+// Purpose:
+// Input  : nIndex -
 //-----------------------------------------------------------------------------
 template<class Base>
 inline const char *WCKeyValuesT<Base>::GetValue(int nIndex) const
 {
-	return(m_KeyValues.Element(nIndex).szValue);
+    return(m_KeyValues.Element(nIndex).szValue);
 }
 
 

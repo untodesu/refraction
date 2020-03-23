@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -17,14 +17,14 @@ static CDataCollector *collector = NULL;
 //----------------------------------------------------------------------------------------------------------------------
 void StartDataCollection( void )
 {
-	if (collector)
-	{
-		// already collecting
-		return;
-	}
+    if (collector)
+    {
+        // already collecting
+        return;
+    }
 
-	collector = new CDataCollector;
-	Msg( "Data colletion started.\n" );
+    collector = new CDataCollector;
+    Msg( "Data colletion started.\n" );
 }
 ConCommand data_collection_start( "data_collection_start", StartDataCollection, "Start collecting game event data." );
 
@@ -32,13 +32,13 @@ ConCommand data_collection_start( "data_collection_start", StartDataCollection, 
 //----------------------------------------------------------------------------------------------------------------------
 void StopDataCollection( void )
 {
-	if (collector)
-	{
-		delete collector;
-		collector = NULL;
+    if (collector)
+    {
+        delete collector;
+        collector = NULL;
 
-		Msg( "Data collection stopped.\n" );
-	}
+        Msg( "Data collection stopped.\n" );
+    }
 }
 ConCommand data_collection_stop( "data_collection_stop", StopDataCollection, "Stop collecting game event data." );
 
@@ -46,14 +46,14 @@ ConCommand data_collection_stop( "data_collection_stop", StopDataCollection, "St
 //----------------------------------------------------------------------------------------------------------------------
 CDataCollector::CDataCollector( void )
 {
-	// register for all events
-	gameeventmanager->AddListener( this, true );
+    // register for all events
+    gameeventmanager->AddListener( this, true );
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 CDataCollector::~CDataCollector()
 {
-	gameeventmanager->RemoveListener( this );
+    gameeventmanager->RemoveListener( this );
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -62,5 +62,5 @@ CDataCollector::~CDataCollector()
  */
 void CDataCollector::FireGameEvent( KeyValues *event )
 {
-	DevMsg( "Collected event '%s'\n", event->GetName() );
+    DevMsg( "Collected event '%s'\n", event->GetName() );
 }

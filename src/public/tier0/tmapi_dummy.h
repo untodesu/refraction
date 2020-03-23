@@ -28,7 +28,7 @@
 
 #define tmEnter(...)
 #define tmEnterEx(...)
-#define tmZone(...) 
+#define tmZone(...)
 #define tmZoneFiltered(...)
 #define tmLeaveEx(...)
 
@@ -52,7 +52,7 @@
 
 #define tmTryLock(...)
 #define tmTryLockEx(...)
-    
+
 #define tmPlot(...)
 #define tmPlotF32(...)
 #define tmPlotF64(...)
@@ -65,7 +65,7 @@
 
 #define tmPPUGetListener(...) TMERR_DISABLED
 #define tmPPURegisterSPUProgram(...) TMERR_DISABLED
-#define tmSPUBindContextToListener(...) 
+#define tmSPUBindContextToListener(...)
 #define tmSPUUpdateTime(...)
 #define tmSPUFlushImage(...)
 

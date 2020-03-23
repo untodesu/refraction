@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -18,8 +18,8 @@
 class IFileList
 {
 public:
-	virtual bool	IsFileInList( const char *pFilename ) = 0;
-	virtual void	Release() = 0;
+    virtual bool    IsFileInList( const char *pFilename ) = 0;
+    virtual void    Release() = 0;
 };
 
 

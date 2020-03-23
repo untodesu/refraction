@@ -33,7 +33,7 @@ class IDmSerializers : public IAppSystem
 //-----------------------------------------------------------------------------
 // Used only by applications to hook in DmSerializers
 //-----------------------------------------------------------------------------
-#define DMSERIALIZERS_INTERFACE_VERSION		"VDmSerializers001"
+#define DMSERIALIZERS_INTERFACE_VERSION     "VDmSerializers001"
 
 
 //-----------------------------------------------------------------------------

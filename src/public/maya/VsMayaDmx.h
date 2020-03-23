@@ -1,4 +1,4 @@
-//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
+//====== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. =======
 //
 // Purpose:
 //
@@ -21,9 +21,9 @@
 
 class VsMayaDmx
 {
-	static CDmeMesh *MayaMeshToDmeMesh(
-		const MDagPath &i_mDagPath,
-		DmFileId_t fileId );
+    static CDmeMesh *MayaMeshToDmeMesh(
+        const MDagPath &i_mDagPath,
+        DmFileId_t fileId );
 
 };
 

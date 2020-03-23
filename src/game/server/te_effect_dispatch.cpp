@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -24,28 +24,28 @@
 class CTEEffectDispatch : public CBaseTempEntity
 {
 public:
-	DECLARE_CLASS( CTEEffectDispatch, CBaseTempEntity );
+    DECLARE_CLASS( CTEEffectDispatch, CBaseTempEntity );
 
-					CTEEffectDispatch( const char *name );
-	virtual			~CTEEffectDispatch( void );
+                    CTEEffectDispatch( const char *name );
+    virtual         ~CTEEffectDispatch( void );
 
-	DECLARE_SERVERCLASS();
+    DECLARE_SERVERCLASS();
 
 public:
-	CEffectData m_EffectData;
+    CEffectData m_EffectData;
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *name - 
+// Purpose:
+// Input  : *name -
 //-----------------------------------------------------------------------------
 CTEEffectDispatch::CTEEffectDispatch( const char *name ) :
-	CBaseTempEntity( name )
+    CBaseTempEntity( name )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CTEEffectDispatch::~CTEEffectDispatch( void )
 {
@@ -53,7 +53,7 @@ CTEEffectDispatch::~CTEEffectDispatch( void )
 
 IMPLEMENT_SERVERCLASS_ST( CTEEffectDispatch, DT_TEEffectDispatch )
 
-	SendPropDataTable( SENDINFO_DT( m_EffectData ), &REFERENCE_SEND_TABLE( DT_EffectData ) )
+    SendPropDataTable( SENDINFO_DT( m_EffectData ), &REFERENCE_SEND_TABLE( DT_EffectData ) )
 
 END_SEND_TABLE()
 
@@ -62,30 +62,30 @@ END_SEND_TABLE()
 static CTEEffectDispatch g_TEEffectDispatch( "EffectDispatch" );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void TE_DispatchEffect( IRecipientFilter& filter, float delay, const Vector &pos, const char *pName, const CEffectData &data )
 {
-	// Copy the supplied effect data.
-	g_TEEffectDispatch.m_EffectData = data;
+    // Copy the supplied effect data.
+    g_TEEffectDispatch.m_EffectData = data;
 
-	// Get the entry index in the string table.
-	g_TEEffectDispatch.m_EffectData.m_iEffectName = g_pStringTableEffectDispatch->AddString( CBaseEntity::IsServer(), pName );
+    // Get the entry index in the string table.
+    g_TEEffectDispatch.m_EffectData.m_iEffectName = g_pStringTableEffectDispatch->AddString( CBaseEntity::IsServer(), pName );
 
-	// Send it to anyone who can see the effect's origin.
-	g_TEEffectDispatch.Create( filter, 0 );
+    // Send it to anyone who can see the effect's origin.
+    g_TEEffectDispatch.Create( filter, 0 );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void DispatchEffect( const char *pName, const CEffectData &data )
 {
-	CPASFilter filter( data.m_vOrigin );
-	DispatchEffect( pName, data, filter );
+    CPASFilter filter( data.m_vOrigin );
+    DispatchEffect( pName, data, filter );
 }
 
 void DispatchEffect( const char *pName, const CEffectData &data, CRecipientFilter &filter )
 {
-	te->DispatchEffect( filter, 0.0, data.m_vOrigin, pName, data );
+    te->DispatchEffect( filter, 0.0, data.m_vOrigin, pName, data );
 }

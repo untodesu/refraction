@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -12,7 +12,7 @@
 #pragma once
 
 /*
- 
+
 
 
         Event Modes to choose from:
@@ -879,7 +879,7 @@ public:
 
         escr.ESCREventSelect=     0x2E;
         cccr.CCCRSelect=    0;
-        // eventType=EVENT_TYPE(x87_SIMD_moves_uop); 
+        // eventType=EVENT_TYPE(x87_SIMD_moves_uop);
         description=_T("x87_SIMD_moves_uop");
         UseCounter8();
     }

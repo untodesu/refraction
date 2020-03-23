@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
-//	GROUPS.VGC
+//  GROUPS.VGC
 //
-//	Group Configurations for all Source(TM) Projects
+//  Group Configurations for all Source(TM) Projects
 //-----------------------------------------------------------------------------
 
 ///////////////////////
@@ -10,57 +10,57 @@
 
 $Group "gamedlls"
 {
-	"client"
-	"server"
+    "client"
+    "server"
 }
 
 $Group "game"
 {
-	"client"
-	"mathlib"
-	"raytrace"
-	"server"
-	"tier1"
-	"vgui_controls"
+    "client"
+    "mathlib"
+    "raytrace"
+    "server"
+    "tier1"
+    "vgui_controls"
 }
 
 $Group "shaders"
 {
-	"game_shader_dx9"
+    "game_shader_dx9"
 }
 
 $Group "everything"
 {
-	"captioncompiler"
-	"client"
-	"fgdlib"
-	"game_shader_dx9"
-	"glview"
-	"height2normal"
-	"mathlib"
-	"motionmapper"
-	"phonemeextractor"
-	"qc_eyes"
-	"raytrace"
-	"server"
-	"serverplugin_empty"
-	"tgadiff"
-	"tier1"
-	"vbsp"
-	"vgui_controls"
-	"vice"
-	"vrad_dll"
-	"vrad_launcher"
-	"vtf2tga"
-	"vtfdiff"
-	"vvis_dll"
-	"vvis_launcher"
+    "captioncompiler"
+    "client"
+    "fgdlib"
+    "game_shader_dx9"
+    "glview"
+    "height2normal"
+    "mathlib"
+    "motionmapper"
+    "phonemeextractor"
+    "qc_eyes"
+    "raytrace"
+    "server"
+    "serverplugin_empty"
+    "tgadiff"
+    "tier1"
+    "vbsp"
+    "vgui_controls"
+    "vice"
+    "vrad_dll"
+    "vrad_launcher"
+    "vtf2tga"
+    "vtfdiff"
+    "vvis_dll"
+    "vvis_launcher"
 }
 
 $Group "dedicated"
 {
-	"mathlib"
-	"server"
-	"tier1"
+    "mathlib"
+    "server"
+    "tier1"
 }
 

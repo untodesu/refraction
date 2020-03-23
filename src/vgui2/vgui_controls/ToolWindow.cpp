@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -22,65 +22,65 @@ using namespace vgui;
 CUtlVector< ToolWindow * > ToolWindow::s_ToolWindows;
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  :  - 
+// Purpose:
+// Input  :  -
 // Output : int
 //-----------------------------------------------------------------------------
 int ToolWindow::GetToolWindowCount()
 {
-	return s_ToolWindows.Count();
+    return s_ToolWindows.Count();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : index - 
+// Purpose:
+// Input  : index -
 // Output : PropertySheet
 //-----------------------------------------------------------------------------
 ToolWindow *ToolWindow::GetToolWindow( int index )
 {
-	return s_ToolWindows[ index ];
+    return s_ToolWindows[ index ];
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
 ToolWindow::ToolWindow(
-	Panel *parent, 
-	bool contextlabel,
-	IToolWindowFactory *factory /*= 0*/, 
-	Panel *page /*= NULL*/, 
-	char const *title /*= NULL */,
-	bool contextMenu /*=false*/,
-	bool inGlobalList /*= true*/ ) : BaseClass( parent, "ToolWindow" ),
-	m_pFactory( factory )
+    Panel *parent,
+    bool contextlabel,
+    IToolWindowFactory *factory /*= 0*/,
+    Panel *page /*= NULL*/,
+    char const *title /*= NULL */,
+    bool contextMenu /*=false*/,
+    bool inGlobalList /*= true*/ ) : BaseClass( parent, "ToolWindow" ),
+    m_pFactory( factory )
 {
-	if ( inGlobalList )
-	{
-		s_ToolWindows.AddToTail( this );
-	}
+    if ( inGlobalList )
+    {
+        s_ToolWindows.AddToTail( this );
+    }
 
-	// create the property sheet
-	m_pPropertySheet = new PropertySheet(this, "ToolWindowSheet", true );
-	m_pPropertySheet->ShowContextButtons( contextlabel );
-	m_pPropertySheet->AddPage( page, title, 0, contextMenu );
-	m_pPropertySheet->AddActionSignalTarget(this);
-	m_pPropertySheet->SetSmallTabs( true );
-	m_pPropertySheet->SetKBNavigationEnabled( false );
+    // create the property sheet
+    m_pPropertySheet = new PropertySheet(this, "ToolWindowSheet", true );
+    m_pPropertySheet->ShowContextButtons( contextlabel );
+    m_pPropertySheet->AddPage( page, title, 0, contextMenu );
+    m_pPropertySheet->AddActionSignalTarget(this);
+    m_pPropertySheet->SetSmallTabs( true );
+    m_pPropertySheet->SetKBNavigationEnabled( false );
 
-	SetSmallCaption( true );
+    SetSmallCaption( true );
 
-	SetMenuButtonResponsive(false);
-	SetMinimizeButtonVisible(false);
-	SetCloseButtonVisible(true);
-	SetMoveable( true );
-	SetSizeable(true);
+    SetMenuButtonResponsive(false);
+    SetMinimizeButtonVisible(false);
+    SetCloseButtonVisible(true);
+    SetMoveable( true );
+    SetSizeable(true);
 
-	SetClipToParent( false );
-	SetVisible( true );
+    SetClipToParent( false );
+    SetVisible( true );
 
-	SetDeleteSelfOnClose( true );
+    SetDeleteSelfOnClose( true );
 
-	SetTitle( "", false );
+    SetTitle( "", false );
 }
 
 //-----------------------------------------------------------------------------
@@ -88,20 +88,20 @@ ToolWindow::ToolWindow(
 //-----------------------------------------------------------------------------
 ToolWindow::~ToolWindow()
 {
-	// These don't actually kill the children of the property sheet
-	m_pPropertySheet->RemoveAllPages();
+    // These don't actually kill the children of the property sheet
+    m_pPropertySheet->RemoveAllPages();
 
-	s_ToolWindows.FindAndRemove( this );
+    s_ToolWindows.FindAndRemove( this );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Pass through to sheet
-// Input  :  - 
+// Input  :  -
 // Output : Returns true on success, false on failure.
 //-----------------------------------------------------------------------------
 bool ToolWindow::IsDraggableTabContainer() const
 {
-	return m_pPropertySheet->IsDraggableTab();
+    return m_pPropertySheet->IsDraggableTab();
 }
 
 //-----------------------------------------------------------------------------
@@ -110,7 +110,7 @@ bool ToolWindow::IsDraggableTabContainer() const
 //-----------------------------------------------------------------------------
 PropertySheet *ToolWindow::GetPropertySheet()
 {
-	return m_pPropertySheet;
+    return m_pPropertySheet;
 }
 
 //-----------------------------------------------------------------------------
@@ -119,12 +119,12 @@ PropertySheet *ToolWindow::GetPropertySheet()
 //-----------------------------------------------------------------------------
 Panel *ToolWindow::GetActivePage()
 {
-	return m_pPropertySheet->GetActivePage();
+    return m_pPropertySheet->GetActivePage();
 }
 
 void ToolWindow::SetActivePage( Panel *page )
 {
-	m_pPropertySheet->SetActivePage( page );
+    m_pPropertySheet->SetActivePage( page );
 }
 
 //-----------------------------------------------------------------------------
@@ -132,20 +132,20 @@ void ToolWindow::SetActivePage( Panel *page )
 //-----------------------------------------------------------------------------
 void ToolWindow::AddPage(Panel *page, const char *title, bool contextMenu)
 {
-	m_pPropertySheet->AddPage(page, title, 0, contextMenu );
+    m_pPropertySheet->AddPage(page, title, 0, contextMenu );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *page - 
+// Purpose:
+// Input  : *page -
 //-----------------------------------------------------------------------------
 void ToolWindow::RemovePage( Panel *page )
 {
-	m_pPropertySheet->RemovePage( page );
-	if ( m_pPropertySheet->GetNumPages() == 0 )
-	{
-		MarkForDeletion();
-	}
+    m_pPropertySheet->RemovePage( page );
+    if ( m_pPropertySheet->GetNumPages() == 0 )
+    {
+        MarkForDeletion();
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -153,13 +153,13 @@ void ToolWindow::RemovePage( Panel *page )
 //-----------------------------------------------------------------------------
 void ToolWindow::PerformLayout()
 {
-	BaseClass::PerformLayout();
+    BaseClass::PerformLayout();
 
-	int x, y, wide, tall;
-	GetClientArea(x, y, wide, tall);
-	m_pPropertySheet->SetBounds(x, y, wide, tall);
-	m_pPropertySheet->InvalidateLayout(); // tell the propertysheet to redraw!
-	Repaint();
+    int x, y, wide, tall;
+    GetClientArea(x, y, wide, tall);
+    m_pPropertySheet->SetBounds(x, y, wide, tall);
+    m_pPropertySheet->InvalidateLayout(); // tell the propertysheet to redraw!
+    Repaint();
 }
 
 //-----------------------------------------------------------------------------
@@ -167,16 +167,16 @@ void ToolWindow::PerformLayout()
 //-----------------------------------------------------------------------------
 void ToolWindow::ActivateBuildMode()
 {
-	// no subpanel, no build mode
-	EditablePanel *panel = dynamic_cast<EditablePanel *>(GetActivePage());
-	if (!panel)
-		return;
+    // no subpanel, no build mode
+    EditablePanel *panel = dynamic_cast<EditablePanel *>(GetActivePage());
+    if (!panel)
+        return;
 
-	panel->ActivateBuildMode();
+    panel->ActivateBuildMode();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void ToolWindow::RequestFocus(int direction)
 {
@@ -184,199 +184,199 @@ void ToolWindow::RequestFocus(int direction)
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *factory - 
+// Purpose:
+// Input  : *factory -
 //-----------------------------------------------------------------------------
 void ToolWindow::SetToolWindowFactory( IToolWindowFactory *factory )
 {
-	m_pFactory = factory;
+    m_pFactory = factory;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  :  - 
+// Purpose:
+// Input  :  -
 // Output : IToolWindowFactory
 //-----------------------------------------------------------------------------
 IToolWindowFactory *ToolWindow::GetToolWindowFactory()
 {
-	return m_pFactory;
+    return m_pFactory;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: To fill the space left by other tool windows
 // Input  :  edge: 0=all, 1=top, 2=right, 3=bottom, 4=left
-// Output : 
+// Output :
 //-----------------------------------------------------------------------------
 
 void ToolWindow::Grow( int edge, int from_x, int from_y )
 {
-	int status_h = 24;
-	int menubar_h = 27;
+    int status_h = 24;
+    int menubar_h = 27;
 
-	int sw, sh;
-	surface()->GetScreenSize( sw, sh );
+    int sw, sh;
+    surface()->GetScreenSize( sw, sh );
 
-	int old_x, old_y, old_w, old_h;
-	GetBounds( old_x, old_y, old_w, old_h );
+    int old_x, old_y, old_w, old_h;
+    GetBounds( old_x, old_y, old_w, old_h );
 
-	int new_x, new_y, new_w, new_h;
-	new_x = old_x;
-	new_y = old_y;
-	new_w = old_w;
-	new_h = old_h;
+    int new_x, new_y, new_w, new_h;
+    new_x = old_x;
+    new_y = old_y;
+    new_w = old_w;
+    new_h = old_h;
 
-	int c = GetToolWindowCount();
+    int c = GetToolWindowCount();
 
-	// grow up
-	if ( ( edge == 0 ) || ( edge == 1 ) )
-	{
-		// first shrink the edge back to the grow point
-		if ( from_y >= 0 )
-		{
-			old_h = old_h - ( from_y - old_y );
-			old_y = from_y;
-		}
+    // grow up
+    if ( ( edge == 0 ) || ( edge == 1 ) )
+    {
+        // first shrink the edge back to the grow point
+        if ( from_y >= 0 )
+        {
+            old_h = old_h - ( from_y - old_y );
+            old_y = from_y;
+        }
 
-		// now grow the edge as far as it can go
-		new_h = old_h + ( old_y - menubar_h );
-		new_y = menubar_h;
+        // now grow the edge as far as it can go
+        new_h = old_h + ( old_y - menubar_h );
+        new_y = menubar_h;
 
-		for ( int i = 0 ; i < c; ++i )
-		{
-			ToolWindow *tw = GetToolWindow( i );
-			Assert( tw );
-			if ( ( !tw ) || ( tw == this ) )
-				continue;
+        for ( int i = 0 ; i < c; ++i )
+        {
+            ToolWindow *tw = GetToolWindow( i );
+            Assert( tw );
+            if ( ( !tw ) || ( tw == this ) )
+                continue;
 
-			// Get panel bounds
-			int x, y, w, h;
-			tw->GetBounds( x, y, w, h );
+            // Get panel bounds
+            int x, y, w, h;
+            tw->GetBounds( x, y, w, h );
 
-			// grow it
-			if ( ( ( ( old_x > x ) && ( old_x < x + w ) )
-				|| ( ( old_x + old_w > x ) && ( old_x + old_w < x + w ) )
-				|| ( ( old_x <= x ) && old_x + old_w >= x + w ))
-				&& ( ( old_y >= y + h ) && ( new_y < y + h ) ) )
-			{
-				new_h = old_h + ( old_y - ( y + h ) );
-				new_y = y + h;
-			}
-		}
-		old_h = new_h;
-		old_y = new_y;
-	}
+            // grow it
+            if ( ( ( ( old_x > x ) && ( old_x < x + w ) )
+                || ( ( old_x + old_w > x ) && ( old_x + old_w < x + w ) )
+                || ( ( old_x <= x ) && old_x + old_w >= x + w ))
+                && ( ( old_y >= y + h ) && ( new_y < y + h ) ) )
+            {
+                new_h = old_h + ( old_y - ( y + h ) );
+                new_y = y + h;
+            }
+        }
+        old_h = new_h;
+        old_y = new_y;
+    }
 
-	// grow right
-	if ( ( edge == 0 ) || ( edge == 2 ) )
-	{
-		// first shrink the edge back to the grow point
-		if ( from_x >= 0 )
-		{
-			old_w = from_x - old_x;
-		}
+    // grow right
+    if ( ( edge == 0 ) || ( edge == 2 ) )
+    {
+        // first shrink the edge back to the grow point
+        if ( from_x >= 0 )
+        {
+            old_w = from_x - old_x;
+        }
 
-		// now grow the edge as far as it can go
-		new_w = sw - old_x;
+        // now grow the edge as far as it can go
+        new_w = sw - old_x;
 
-		for ( int i = 0 ; i < c; ++i )
-		{
-			ToolWindow *tw = GetToolWindow( i );
-			Assert( tw );
-			if ( ( !tw ) || ( tw == this ) )
-				continue;
+        for ( int i = 0 ; i < c; ++i )
+        {
+            ToolWindow *tw = GetToolWindow( i );
+            Assert( tw );
+            if ( ( !tw ) || ( tw == this ) )
+                continue;
 
-			// Get panel bounds
-			int x, y, w, h;
-			tw->GetBounds( x, y, w, h );
+            // Get panel bounds
+            int x, y, w, h;
+            tw->GetBounds( x, y, w, h );
 
-			// grow it
-			if ( ( ( ( old_y > y ) && ( old_y < y + h ) )
-				|| ( ( old_y + old_h > y ) && ( old_y + old_h < y + h ) )
-				|| ( ( old_y <= y ) && old_y + old_h >= y + h ))
-				&& ( ( old_x + old_w <= x ) && ( new_w > x - old_x ) ) )
-			{
-				new_w = x - old_x;
-			}
-		}
-		old_w = new_w;
-	}
+            // grow it
+            if ( ( ( ( old_y > y ) && ( old_y < y + h ) )
+                || ( ( old_y + old_h > y ) && ( old_y + old_h < y + h ) )
+                || ( ( old_y <= y ) && old_y + old_h >= y + h ))
+                && ( ( old_x + old_w <= x ) && ( new_w > x - old_x ) ) )
+            {
+                new_w = x - old_x;
+            }
+        }
+        old_w = new_w;
+    }
 
-	// grow down
-	if ( ( edge == 0 ) || ( edge == 3 ) )
-	{
-		// first shrink the edge back to the grow point
-		if ( from_y >= 0 )
-		{
-			old_h = from_y - old_y;
-		}
+    // grow down
+    if ( ( edge == 0 ) || ( edge == 3 ) )
+    {
+        // first shrink the edge back to the grow point
+        if ( from_y >= 0 )
+        {
+            old_h = from_y - old_y;
+        }
 
-		// now grow the edge as far as it can go
-		new_h = sh - old_y - status_h;
+        // now grow the edge as far as it can go
+        new_h = sh - old_y - status_h;
 
-		for ( int i = 0 ; i < c; ++i )
-		{
-			ToolWindow *tw = GetToolWindow( i );
-			Assert( tw );
-			if ( ( !tw ) || ( tw == this ) )
-				continue;
+        for ( int i = 0 ; i < c; ++i )
+        {
+            ToolWindow *tw = GetToolWindow( i );
+            Assert( tw );
+            if ( ( !tw ) || ( tw == this ) )
+                continue;
 
-			// Get panel bounds
-			int x, y, w, h;
-			tw->GetBounds( x, y, w, h );
+            // Get panel bounds
+            int x, y, w, h;
+            tw->GetBounds( x, y, w, h );
 
-			// grow it
-			if ( ( ( ( old_x > x ) && ( old_x < x + w ) )
-				|| ( ( old_x + old_w > x ) && ( old_x + old_w < x + w ) )
-				|| ( ( old_x <= x ) && old_x + old_w >= x + w ))
-				&& ( ( old_y + old_h <= y ) && ( new_h > y - old_y ) ) )
-			{
-				new_h = y - old_y;
-			}
-		}
-		old_h = new_h;
-	}
+            // grow it
+            if ( ( ( ( old_x > x ) && ( old_x < x + w ) )
+                || ( ( old_x + old_w > x ) && ( old_x + old_w < x + w ) )
+                || ( ( old_x <= x ) && old_x + old_w >= x + w ))
+                && ( ( old_y + old_h <= y ) && ( new_h > y - old_y ) ) )
+            {
+                new_h = y - old_y;
+            }
+        }
+        old_h = new_h;
+    }
 
-	// grow left
-	if ( ( edge == 0 ) || ( edge == 4 ) )
-	{
-		// first shrink the edge back to the grow point
-		if ( from_x >= 0 )
-		{
-			old_w = old_w - ( from_x - old_x );
-			old_x = from_x;
-		}
+    // grow left
+    if ( ( edge == 0 ) || ( edge == 4 ) )
+    {
+        // first shrink the edge back to the grow point
+        if ( from_x >= 0 )
+        {
+            old_w = old_w - ( from_x - old_x );
+            old_x = from_x;
+        }
 
-		// now grow the edge as far as it can go
-		new_w = old_w + old_x;
-		new_x = 0;
+        // now grow the edge as far as it can go
+        new_w = old_w + old_x;
+        new_x = 0;
 
-		for ( int i = 0 ; i < c; ++i )
-		{
-			ToolWindow *tw = GetToolWindow( i );
-			Assert( tw );
-			if ( ( !tw ) || ( tw == this ) )
-				continue;
+        for ( int i = 0 ; i < c; ++i )
+        {
+            ToolWindow *tw = GetToolWindow( i );
+            Assert( tw );
+            if ( ( !tw ) || ( tw == this ) )
+                continue;
 
-			// Get panel bounds
-			int x, y, w, h;
-			tw->GetBounds( x, y, w, h );
+            // Get panel bounds
+            int x, y, w, h;
+            tw->GetBounds( x, y, w, h );
 
-			// grow it
-			if ( ( ( ( old_y > y ) && ( old_y < y + h ) )
-				|| ( ( old_y + old_h > y ) && ( old_y + old_h < y + h ) )
-				|| ( ( old_y <= y ) && old_y + old_h >= y + h ))
-				&& ( ( old_x >= x + w ) && ( new_x < x + w ) ) )
-			{
-				new_w = old_w + ( old_x - ( x + w ) );
-				new_x = x + w;
-			}
-		}
-		old_w = new_w;
-		old_x = new_x;
-	}
+            // grow it
+            if ( ( ( ( old_y > y ) && ( old_y < y + h ) )
+                || ( ( old_y + old_h > y ) && ( old_y + old_h < y + h ) )
+                || ( ( old_y <= y ) && old_y + old_h >= y + h ))
+                && ( ( old_x >= x + w ) && ( new_x < x + w ) ) )
+            {
+                new_w = old_w + ( old_x - ( x + w ) );
+                new_x = x + w;
+            }
+        }
+        old_w = new_w;
+        old_x = new_x;
+    }
 
-	// Set panel bounds
-	SetBounds( new_x, new_y, new_w, new_h );
+    // Set panel bounds
+    SetBounds( new_x, new_y, new_w, new_h );
 
 }
 
@@ -385,94 +385,94 @@ void ToolWindow::Grow( int edge, int from_x, int from_y )
 //          over titlebar: grows all edges ( from mouse pos )
 //          over edge grab area: grows just that edge
 //          over corner grab area: grows the two adjacent edges
-// Input  : 
-// Output : 
+// Input  :
+// Output :
 //-----------------------------------------------------------------------------
 
 void ToolWindow::GrowFromClick()
 {
-	int mx, my;
-	input()->GetCursorPos( mx, my );
+    int mx, my;
+    input()->GetCursorPos( mx, my );
 
-	int esz, csz, brsz, ch;
-	esz = GetDraggerSize();
-	csz = GetCornerSize();
-	brsz = GetBottomRightSize();
-	ch = GetCaptionHeight();
+    int esz, csz, brsz, ch;
+    esz = GetDraggerSize();
+    csz = GetCornerSize();
+    brsz = GetBottomRightSize();
+    ch = GetCaptionHeight();
 
-	int x, y, w, h;
-	GetBounds( x, y, w, h );
+    int x, y, w, h;
+    GetBounds( x, y, w, h );
 
-	// upper right
-	if ( ( mx > x+w-csz-1 ) && ( my < y+csz ) )
-	{
-		Grow(1);
-		Grow(2);
-	}
-	// lower right (the big one)
-	else if ( ( mx > x+w-brsz-1 ) && ( my > y+h-brsz-1 ) )
-	{
-		Grow(2);
-		Grow(3);
-	}
-	// lower left
-	else if ( ( mx < x+csz ) && ( my > y+h-csz-1 ) )
-	{
-		Grow(3);
-		Grow(4);
-	}
-	// upper left
-	else if ( ( mx < x+csz ) && ( my < y+csz ) )
-	{
-		Grow(4);
-		Grow(1);
-	}
-	// top edge
-	else if ( my < y+esz )
-	{
-		Grow(1);
-	}
-	// right edge
-	else if ( mx > x+w-esz-1 )
-	{
-		Grow(2);
-	}
-	// bottom edge
-	else if ( my > y+h-esz-1 )
-	{
-		Grow(3);
-	}
-	// left edge
-	else if ( mx < x+esz )
-	{
-		Grow(4);
-	}
-	// otherwise (if over the grab bar), grow all edges (from the clicked point)
-	else if ( my < y + ch )
-	{
-		Grow(0, mx, my);
-	}
+    // upper right
+    if ( ( mx > x+w-csz-1 ) && ( my < y+csz ) )
+    {
+        Grow(1);
+        Grow(2);
+    }
+    // lower right (the big one)
+    else if ( ( mx > x+w-brsz-1 ) && ( my > y+h-brsz-1 ) )
+    {
+        Grow(2);
+        Grow(3);
+    }
+    // lower left
+    else if ( ( mx < x+csz ) && ( my > y+h-csz-1 ) )
+    {
+        Grow(3);
+        Grow(4);
+    }
+    // upper left
+    else if ( ( mx < x+csz ) && ( my < y+csz ) )
+    {
+        Grow(4);
+        Grow(1);
+    }
+    // top edge
+    else if ( my < y+esz )
+    {
+        Grow(1);
+    }
+    // right edge
+    else if ( mx > x+w-esz-1 )
+    {
+        Grow(2);
+    }
+    // bottom edge
+    else if ( my > y+h-esz-1 )
+    {
+        Grow(3);
+    }
+    // left edge
+    else if ( mx < x+esz )
+    {
+        Grow(4);
+    }
+    // otherwise (if over the grab bar), grow all edges (from the clicked point)
+    else if ( my < y + ch )
+    {
+        Grow(0, mx, my);
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  :  - 
-// Output : 
+// Purpose:
+// Input  :  -
+// Output :
 //-----------------------------------------------------------------------------
 
 void ToolWindow::OnMouseDoublePressed( MouseCode code )
 {
-	GrowFromClick();
+    GrowFromClick();
 }
 
 void ToolWindow::OnMousePressed( MouseCode code )
 {
-	switch ( code )
-	{
-	case MOUSE_MIDDLE:
-		GrowFromClick();
-		break;
-	default:
-		BaseClass::OnMousePressed( code );
-	}
+    switch ( code )
+    {
+    case MOUSE_MIDDLE:
+        GrowFromClick();
+        break;
+    default:
+        BaseClass::OnMousePressed( code );
+    }
 }

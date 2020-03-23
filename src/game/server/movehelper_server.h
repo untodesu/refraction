@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -30,7 +30,7 @@ class CBaseEntity;
 abstract_class IMoveHelperServer : public IMoveHelper
 {
 public:
-	virtual void SetHost( CBasePlayer *host ) = 0;
+    virtual void SetHost( CBasePlayer *host ) = 0;
 };
 
 //-----------------------------------------------------------------------------

@@ -23,55 +23,55 @@ struct Bitmap_t;
 class PSDImageResources
 {
 public:
-	enum Resource {
-		eResFileInfo = 0x0404
-	};
+    enum Resource {
+        eResFileInfo = 0x0404
+    };
 
-	struct ResElement {
-		Resource		m_eType;
-		// unsigned char	m_pReserved[4];
-		unsigned short	m_numBytes;
-		unsigned char const *m_pvData;
-	};
-
-public:
-	explicit PSDImageResources( unsigned int numBytes, unsigned char const *pvBuffer ) : m_numBytes( numBytes ), m_pvBuffer( pvBuffer ) {}
+    struct ResElement {
+        Resource        m_eType;
+        // unsigned char    m_pReserved[4];
+        unsigned short  m_numBytes;
+        unsigned char const *m_pvData;
+    };
 
 public:
-	ResElement FindElement( Resource eType ) const;
+    explicit PSDImageResources( unsigned int numBytes, unsigned char const *pvBuffer ) : m_numBytes( numBytes ), m_pvBuffer( pvBuffer ) {}
+
+public:
+    ResElement FindElement( Resource eType ) const;
 
 protected:
-	unsigned int			m_numBytes;
-	unsigned char const *	m_pvBuffer;
+    unsigned int            m_numBytes;
+    unsigned char const *   m_pvBuffer;
 };
 
 class PSDResFileInfo
 {
 public:
-	enum ResFileInfo {
-		eTitle					= 0x05,
-		eAuthor					= 0x50,
-		eAuthorTitle			= 0x55,
-		eDescription			= 0x78,
-		eDescriptionWriter		= 0x7A,
-		eKeywords				= 0x19,
-		eCopyrightNotice		= 0x74
-	};
+    enum ResFileInfo {
+        eTitle                  = 0x05,
+        eAuthor                 = 0x50,
+        eAuthorTitle            = 0x55,
+        eDescription            = 0x78,
+        eDescriptionWriter      = 0x7A,
+        eKeywords               = 0x19,
+        eCopyrightNotice        = 0x74
+    };
 
-	struct ResFileInfoElement {
-		ResFileInfo			m_eType;
-		unsigned short		m_numBytes;
-		unsigned char const *m_pvData;
-	};
-
-public:
-	explicit PSDResFileInfo( PSDImageResources::ResElement res ) : m_res( res ) {}
+    struct ResFileInfoElement {
+        ResFileInfo         m_eType;
+        unsigned short      m_numBytes;
+        unsigned char const *m_pvData;
+    };
 
 public:
-	ResFileInfoElement FindElement( ResFileInfo eType ) const;
+    explicit PSDResFileInfo( PSDImageResources::ResElement res ) : m_res( res ) {}
+
+public:
+    ResFileInfoElement FindElement( ResFileInfo eType ) const;
 
 protected:
-	PSDImageResources::ResElement m_res;
+    PSDImageResources::ResElement m_res;
 };
 
 

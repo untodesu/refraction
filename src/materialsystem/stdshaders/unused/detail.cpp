@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //===========================================================================//
@@ -12,26 +12,26 @@
 
 BEGIN_VS_SHADER( Detail, "Help for Detail" )
 
-	BEGIN_SHADER_PARAMS
-	END_SHADER_PARAMS
+    BEGIN_SHADER_PARAMS
+    END_SHADER_PARAMS
 
-	SHADER_INIT_PARAMS()
-	{
-		SET_FLAGS( MATERIAL_VAR_TRANSLUCENT );
-	}
+    SHADER_INIT_PARAMS()
+    {
+        SET_FLAGS( MATERIAL_VAR_TRANSLUCENT );
+    }
 
-	SHADER_FALLBACK
-	{
-		return "UnlitGeneric";
-	}
+    SHADER_FALLBACK
+    {
+        return "UnlitGeneric";
+    }
 
-	SHADER_INIT
-	{
-	}
+    SHADER_INIT
+    {
+    }
 
-	SHADER_DRAW
-	{
-	}
+    SHADER_DRAW
+    {
+    }
 
 END_SHADER
 

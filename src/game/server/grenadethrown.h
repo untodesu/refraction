@@ -19,7 +19,7 @@
 
 class CSprite;
 
-#define GRENADE_TIMER		5		// Try 5 seconds instead of 3?
+#define GRENADE_TIMER       5       // Try 5 seconds instead of 3?
 
 //-----------------------------------------------------------------------------
 // Purpose: Base Thrown-Grenade class
@@ -27,10 +27,10 @@ class CSprite;
 class CThrownGrenade : public CBaseGrenade
 {
 public:
-	DECLARE_CLASS( CThrownGrenade, CBaseGrenade );
+    DECLARE_CLASS( CThrownGrenade, CBaseGrenade );
 
-	void	Spawn( void );
-	void	Thrown( Vector vecOrigin, Vector vecVelocity, float flExplodeTime );
+    void    Spawn( void );
+    void    Thrown( Vector vecOrigin, Vector vecVelocity, float flExplodeTime );
 };
 
 

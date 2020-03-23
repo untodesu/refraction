@@ -14,8 +14,8 @@ UString MultiByteToUnicodeString(const AString &srcString, UINT codePage)
   UString resultString;
   if(!srcString.IsEmpty())
   {
-    int numChars = MultiByteToWideChar(codePage, 0, srcString, 
-      srcString.Length(), resultString.GetBuffer(srcString.Length()), 
+    int numChars = MultiByteToWideChar(codePage, 0, srcString,
+      srcString.Length(), resultString.GetBuffer(srcString.Length()),
       srcString.Length() + 1);
     #ifndef _WIN32_WCE
     if(numChars == 0)
@@ -32,8 +32,8 @@ AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage)
   if(!srcString.IsEmpty())
   {
     int numRequiredBytes = srcString.Length() * 2;
-    int numChars = WideCharToMultiByte(codePage, 0, srcString, 
-      srcString.Length(), resultString.GetBuffer(numRequiredBytes), 
+    int numChars = WideCharToMultiByte(codePage, 0, srcString,
+      srcString.Length(), resultString.GetBuffer(numRequiredBytes),
       numRequiredBytes + 1, NULL, NULL);
     #ifndef _WIN32_WCE
     if(numChars == 0)

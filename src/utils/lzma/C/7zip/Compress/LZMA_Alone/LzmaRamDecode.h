@@ -7,10 +7,10 @@
 
 /*
 LzmaRamGetUncompressedSize:
-  In: 
+  In:
     inBuffer - input data
     inSize   - input data size
-  Out: 
+  Out:
     outSize  - uncompressed size
   Return code:
     0 - OK
@@ -18,21 +18,21 @@ LzmaRamGetUncompressedSize:
 */
 
 int LzmaRamGetUncompressedSize(
-    const unsigned char *inBuffer, 
+    const unsigned char *inBuffer,
     size_t inSize,
     size_t *outSize);
 
 
 /*
 LzmaRamDecompress:
-  In: 
+  In:
     inBuffer  - input data
     inSize    - input data size
     outBuffer - output data
     outSize   - output size
     allocFunc - alloc function (can be malloc)
     freeFunc  - free function (can be free)
-  Out: 
+  Out:
     outSizeProcessed - processed size
   Return code:
     0 - OK
@@ -44,12 +44,12 @@ With default lzma settings it's about 16 KB.
 */
 
 int LzmaRamDecompress(
-    const unsigned char *inBuffer, 
+    const unsigned char *inBuffer,
     size_t inSize,
     unsigned char *outBuffer,
     size_t outSize,
     size_t *outSizeProcessed,
-    void * (*allocFunc)(size_t size), 
+    void * (*allocFunc)(size_t size),
     void (*freeFunc)(void *));
 
 #endif

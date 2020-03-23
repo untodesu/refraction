@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -21,20 +21,20 @@ class CBaseTempEntity;
 class CTempEntTester : public CPointEntity
 {
 public:
-	DECLARE_CLASS( CTempEntTester, CPointEntity );
+    DECLARE_CLASS( CTempEntTester, CPointEntity );
 
-	void				Spawn( void );
-	void				Think( void );
+    void                Spawn( void );
+    void                Think( void );
 
-	static	CBaseEntity *Create( const Vector &vecOrigin, const QAngle &vecAngles, const char *lifetime, const char *single_te );
+    static  CBaseEntity *Create( const Vector &vecOrigin, const QAngle &vecAngles, const char *lifetime, const char *single_te );
 private:
-	// Current temp entity to test
-	CBaseTempEntity		*m_pCurrent;
+    // Current temp entity to test
+    CBaseTempEntity     *m_pCurrent;
 
-	// Lifetime
-	float				m_fLifeTime;
+    // Lifetime
+    float               m_fLifeTime;
 
-	char				m_szClass[ 64 ];
+    char                m_szClass[ 64 ];
 };
 
 #endif // EVENT_TEMPENTITY_TESTER_H

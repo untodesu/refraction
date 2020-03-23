@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -29,4 +29,4 @@ void Host_Say( edict_t *pEdict, bool teamonly );
 
 
 
-#endif		// CLIENT_H
+#endif      // CLIENT_H

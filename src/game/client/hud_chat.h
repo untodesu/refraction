@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,16 +15,16 @@
 
 class CHudChat : public CBaseHudChat
 {
-	DECLARE_CLASS_SIMPLE( CHudChat, CBaseHudChat );
+    DECLARE_CLASS_SIMPLE( CHudChat, CBaseHudChat );
 
 public:
-	CHudChat( const char *pElementName );
+    CHudChat( const char *pElementName );
 
-	virtual void	Init( void );
+    virtual void    Init( void );
 
-	void			MsgFunc_SayText(bf_read &msg);
-	void			MsgFunc_SayText2( bf_read &msg );
-	void			MsgFunc_TextMsg(bf_read &msg);
+    void            MsgFunc_SayText(bf_read &msg);
+    void            MsgFunc_SayText2( bf_read &msg );
+    void            MsgFunc_TextMsg(bf_read &msg);
 };
 
-#endif	//HUD_CHAT_H
+#endif  //HUD_CHAT_H

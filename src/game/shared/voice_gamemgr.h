@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -19,11 +19,11 @@ class CBasePlayer;
 abstract_class IVoiceGameMgrHelper
 {
 public:
-	virtual				~IVoiceGameMgrHelper() {}
+    virtual             ~IVoiceGameMgrHelper() {}
 
-	// Called each frame to determine which players are allowed to hear each other.	This overrides
-	// whatever squelch settings players have.
-	virtual bool		CanPlayerHearPlayer(CBasePlayer *pListener, CBasePlayer *pTalker, bool &bProximity ) = 0;
+    // Called each frame to determine which players are allowed to hear each other. This overrides
+    // whatever squelch settings players have.
+    virtual bool        CanPlayerHearPlayer(CBasePlayer *pListener, CBasePlayer *pTalker, bool &bProximity ) = 0;
 };
 
 
@@ -31,45 +31,45 @@ public:
 class CVoiceGameMgr
 {
 public:
-						CVoiceGameMgr();
-	virtual				~CVoiceGameMgr();
-	
-	bool				Init(
-		IVoiceGameMgrHelper *m_pHelper,
-		int maxClients
-		);
+                        CVoiceGameMgr();
+    virtual             ~CVoiceGameMgr();
 
-	void				SetHelper(IVoiceGameMgrHelper *pHelper);
+    bool                Init(
+        IVoiceGameMgrHelper *m_pHelper,
+        int maxClients
+        );
 
-	// Updates which players can hear which other players.
-	// If gameplay mode is DM, then only players within the PVS can hear each other.
-	// If gameplay mode is teamplay, then only players on the same team can hear each other.
-	// Player masks are always applied.
-	void				Update(double frametime);
+    void                SetHelper(IVoiceGameMgrHelper *pHelper);
 
-	// Called when a new client connects (unsquelches its entity for everyone).
-	void				ClientConnected(struct edict_t *pEdict);
+    // Updates which players can hear which other players.
+    // If gameplay mode is DM, then only players within the PVS can hear each other.
+    // If gameplay mode is teamplay, then only players on the same team can hear each other.
+    // Player masks are always applied.
+    void                Update(double frametime);
 
-	// Called on ClientCommand. Checks for the squelch and unsquelch commands.
-	// Returns true if it handled the command.
-	bool				ClientCommand(CBasePlayer *pPlayer, const CCommand &args );
+    // Called when a new client connects (unsquelches its entity for everyone).
+    void                ClientConnected(struct edict_t *pEdict);
 
-	bool				CheckProximity( int iDistance );
-	void				SetProximityDistance( int iDistance );
+    // Called on ClientCommand. Checks for the squelch and unsquelch commands.
+    // Returns true if it handled the command.
+    bool                ClientCommand(CBasePlayer *pPlayer, const CCommand &args );
 
-	bool				IsPlayerIgnoringPlayer( int iTalker, int iListener );
+    bool                CheckProximity( int iDistance );
+    void                SetProximityDistance( int iDistance );
 
-private:
-
-	// Force it to update the client masks.
-	void				UpdateMasks();
-
+    bool                IsPlayerIgnoringPlayer( int iTalker, int iListener );
 
 private:
-	IVoiceGameMgrHelper	*m_pHelper;
-	int					m_nMaxPlayers;
-	double				m_UpdateInterval;						// How long since the last update.
-	int					m_iProximityDistance;
+
+    // Force it to update the client masks.
+    void                UpdateMasks();
+
+
+private:
+    IVoiceGameMgrHelper *m_pHelper;
+    int                 m_nMaxPlayers;
+    double              m_UpdateInterval;                       // How long since the last update.
+    int                 m_iProximityDistance;
 };
 
 

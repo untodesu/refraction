@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //===========================================================================//
@@ -49,37 +49,37 @@ class IVGui;
 // #include <vgui/IInput.h>
 inline vgui::IInput *input()
 {
-	return g_pVGuiInput;
+    return g_pVGuiInput;
 }
 
 // #include <vgui/IScheme.h>
 inline vgui::ISchemeManager *scheme()
 {
-	return g_pVGuiSchemeManager;
+    return g_pVGuiSchemeManager;
 }
 
 // #include <vgui/ISurface.h>
 inline vgui::ISurface *surface()
 {
-	return g_pVGuiSurface;
+    return g_pVGuiSurface;
 }
 
 // #include <vgui/ISystem.h>
 inline vgui::ISystem *system()
 {
-	return g_pVGuiSystem;
+    return g_pVGuiSystem;
 }
 
 // #include <vgui/IVGui.h>
 inline vgui::IVGui *ivgui()
 {
-	return g_pVGui;
+    return g_pVGui;
 }
 
 // #include <vgui/IPanel.h>
 inline vgui::IPanel *ipanel()
 {
-	return g_pVGuiPanel;
+    return g_pVGuiPanel;
 }
 
 // predeclare all the vgui control class names
@@ -150,12 +150,12 @@ class TextImage;
 #define VGUI_HOTKEYS_ENABLED
 //#define VGUI_DRAW_HOTKEYS_ENABLED
 
-#define USING_BUILD_FACTORY( className )				\
-	extern className *g_##className##LinkerHack;		\
-	className *g_##className##PullInModule = g_##className##LinkerHack;
+#define USING_BUILD_FACTORY( className )                \
+    extern className *g_##className##LinkerHack;        \
+    className *g_##className##PullInModule = g_##className##LinkerHack;
 
-#define USING_BUILD_FACTORY_ALIAS( className, factoryName )				\
-	extern className *g_##factoryName##LinkerHack;		\
-	className *g_##factoryName##PullInModule = g_##factoryName##LinkerHack;
+#define USING_BUILD_FACTORY_ALIAS( className, factoryName )             \
+    extern className *g_##factoryName##LinkerHack;      \
+    className *g_##factoryName##PullInModule = g_##factoryName##LinkerHack;
 
 #endif // CONTROLS_H

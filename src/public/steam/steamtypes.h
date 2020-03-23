@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2008, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2008, Valve LLC, All rights reserved. ============
 //
 // Purpose:
 //
@@ -18,10 +18,10 @@ typedef unsigned char uint8;
 #endif
 
 #if defined( __GNUC__ ) && !defined(POSIX)
-	#if __GNUC__ < 4
-		#error "Steamworks requires GCC 4.X (4.2 or 4.4 have been tested)"
-	#endif
-	#define POSIX 1
+    #if __GNUC__ < 4
+        #error "Steamworks requires GCC 4.X (4.2 or 4.4 have been tested)"
+    #endif
+    #define POSIX 1
 #endif
 
 #if defined(__x86_64__) || defined(_WIN64)
@@ -49,8 +49,8 @@ typedef int64 lint64;
 typedef uint64 ulint64;
 
 #ifdef X64BITS
-typedef __int64 intp;				// intp is an integer that can accomodate a pointer
-typedef unsigned __int64 uintp;		// (ie, sizeof(intp) >= sizeof(int) && sizeof(intp) >= sizeof(void *)
+typedef __int64 intp;               // intp is an integer that can accomodate a pointer
+typedef unsigned __int64 uintp;     // (ie, sizeof(intp) >= sizeof(int) && sizeof(intp) >= sizeof(void *)
 #else
 typedef __int32 intp;
 typedef unsigned __int32 uintp;
@@ -85,7 +85,7 @@ typedef unsigned int uintp;
 #endif // else _WIN32
 
 const int k_cubSaltSize   = 8;
-typedef	uint8 Salt_t[ k_cubSaltSize ];
+typedef uint8 Salt_t[ k_cubSaltSize ];
 
 //-----------------------------------------------------------------------------
 // GID (GlobalID) stuff
@@ -98,21 +98,21 @@ typedef uint64 GID_t;
 const GID_t k_GIDNil = 0xffffffffffffffffull;
 
 // For convenience, we define a number of types that are just new names for GIDs
-typedef GID_t JobID_t;			// Each Job has a unique ID
-typedef GID_t TxnID_t;			// Each financial transaction has a unique ID
+typedef GID_t JobID_t;          // Each Job has a unique ID
+typedef GID_t TxnID_t;          // Each financial transaction has a unique ID
 
 const GID_t k_TxnIDNil = k_GIDNil;
 const GID_t k_TxnIDUnknown = 0;
 
 
-// this is baked into client messages and interfaces as an int, 
+// this is baked into client messages and interfaces as an int,
 // make sure we never break this.
 typedef uint32 PackageId_t;
 const PackageId_t k_uPackageIdFreeSub = 0x0;
 const PackageId_t k_uPackageIdInvalid = 0xFFFFFFFF;
 
 
-// this is baked into client messages and interfaces as an int, 
+// this is baked into client messages and interfaces as an int,
 // make sure we never break this.
 typedef uint32 AppId_t;
 const AppId_t k_uAppIdInvalid = 0x0;
@@ -124,7 +124,7 @@ typedef uint32 PhysicalItemId_t;
 const PhysicalItemId_t k_uPhysicalItemIdInvalid = 0x0;
 
 
-// this is baked into client messages and interfaces as an int, 
+// this is baked into client messages and interfaces as an int,
 // make sure we never break this.  AppIds and DepotIDs also presently
 // share the same namespace, but since we'd like to change that in the future
 // I've defined it seperately here.
@@ -149,7 +149,7 @@ typedef uint32 PartnerId_t;
 const PartnerId_t k_uPartnerIdInvalid = 0;
 
 // ID for a depot content manifest
-typedef uint64 ManifestId_t; 
+typedef uint64 ManifestId_t;
 const ManifestId_t k_uManifestIdInvalid = 0;
 
 

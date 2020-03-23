@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -19,48 +19,48 @@
 namespace vgui
 {
 
-	//-----------------------------------------------------------------------------
-	// Purpose: Progress Bar that rotates an image around its center 
-	//-----------------------------------------------------------------------------
-	class RotatingProgressBar : public ProgressBar
-	{
-		DECLARE_CLASS_SIMPLE( RotatingProgressBar, ProgressBar );
+    //-----------------------------------------------------------------------------
+    // Purpose: Progress Bar that rotates an image around its center
+    //-----------------------------------------------------------------------------
+    class RotatingProgressBar : public ProgressBar
+    {
+        DECLARE_CLASS_SIMPLE( RotatingProgressBar, ProgressBar );
 
-	public:
-		RotatingProgressBar(Panel *parent, const char *panelName);
-		~RotatingProgressBar();
+    public:
+        RotatingProgressBar(Panel *parent, const char *panelName);
+        ~RotatingProgressBar();
 
-		virtual void ApplySettings(KeyValues *inResourceData);
-		virtual void ApplySchemeSettings(IScheme *pScheme);
+        virtual void ApplySettings(KeyValues *inResourceData);
+        virtual void ApplySchemeSettings(IScheme *pScheme);
 
-		void SetImage( const char *imageName );
+        void SetImage( const char *imageName );
 
-	protected:
-		virtual void Paint();
-		virtual void PaintBackground();
-		virtual void OnTick();
+    protected:
+        virtual void Paint();
+        virtual void PaintBackground();
+        virtual void OnTick();
 
-	private:
-		int m_nTextureId;
-		char *m_pszImageName;
+    private:
+        int m_nTextureId;
+        char *m_pszImageName;
 
-		float m_flStartRadians;
-		float m_flEndRadians;
+        float m_flStartRadians;
+        float m_flEndRadians;
 
-		float m_flLastAngle;
+        float m_flLastAngle;
 
-		float m_flTickDelay;
-		float m_flApproachSpeed;
+        float m_flTickDelay;
+        float m_flApproachSpeed;
 
-		float m_flRotOriginX;
-		float m_flRotOriginY;
+        float m_flRotOriginX;
+        float m_flRotOriginY;
 
-		float m_flRotatingX;
-		float m_flRotatingY;
-		float m_flRotatingWide;
-		float m_flRotatingTall;
+        float m_flRotatingX;
+        float m_flRotatingY;
+        float m_flRotatingWide;
+        float m_flRotatingTall;
 
-	};		  
+    };
 
 } // namespace vgui
 

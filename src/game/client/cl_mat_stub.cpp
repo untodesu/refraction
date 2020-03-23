@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //===========================================================================//
 
@@ -19,7 +19,7 @@ extern ConVar gl_clear;
 
 IMaterialSystemStub* GetStubMaterialSystem()
 {
-	return materials_stub;
+    return materials_stub;
 }
 
 // ---------------------------------------------------------------------------------------- //
@@ -28,47 +28,47 @@ IMaterialSystemStub* GetStubMaterialSystem()
 
 CMatStubHandler::CMatStubHandler()
 {
-	if ( mat_stub.GetInt() )
-	{
-		m_pOldMaterialSystem = materials;
+    if ( mat_stub.GetInt() )
+    {
+        m_pOldMaterialSystem = materials;
 
-		// Replace all material system pointers with the stub.
-		GetStubMaterialSystem()->SetRealMaterialSystem( materials );
-		materials->SetInStubMode( true );
-		materials = GetStubMaterialSystem();
-		engine->Mat_Stub( materials );
-	}
-	else
-	{
-		m_pOldMaterialSystem = 0;
-	}
+        // Replace all material system pointers with the stub.
+        GetStubMaterialSystem()->SetRealMaterialSystem( materials );
+        materials->SetInStubMode( true );
+        materials = GetStubMaterialSystem();
+        engine->Mat_Stub( materials );
+    }
+    else
+    {
+        m_pOldMaterialSystem = 0;
+    }
 }
 
 
 CMatStubHandler::~CMatStubHandler()
 {
-	End();
+    End();
 }
 
 
 void CMatStubHandler::End()
 {
-	// Put back the original material system pointer.
-	if ( m_pOldMaterialSystem )
-	{
-		materials = m_pOldMaterialSystem;
-		materials->SetInStubMode( false );
-		engine->Mat_Stub( materials );
-		m_pOldMaterialSystem = 0;
-//		if( gl_clear.GetBool() )
-		{
-			materials->ClearBuffers( true, true );
-		}
-	}
+    // Put back the original material system pointer.
+    if ( m_pOldMaterialSystem )
+    {
+        materials = m_pOldMaterialSystem;
+        materials->SetInStubMode( false );
+        engine->Mat_Stub( materials );
+        m_pOldMaterialSystem = 0;
+//      if( gl_clear.GetBool() )
+        {
+            materials->ClearBuffers( true, true );
+        }
+    }
 }
 
 
 bool IsMatStubEnabled()
 {
-	return mat_stub.GetBool();
+    return mat_stub.GetBool();
 }

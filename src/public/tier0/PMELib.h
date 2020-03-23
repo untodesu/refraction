@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -18,7 +18,7 @@
 #define VERSION "1.0.2"
 
 // uncomment this list to add some runtime checks
-//#define PME_DEBUG   
+//#define PME_DEBUG
 
 #include "tier0/valve_off.h"
 #include <string>
@@ -52,7 +52,7 @@ _asm mov DWORD PTR var+4,edx
 #define EVENT_TYPE(mode) EventType##mode
 #define EVENT_MASK(mode) EventMask##mode
 
-#include "ia32detect.h"    
+#include "ia32detect.h"
 
 enum ProcessPriority
 {
@@ -69,20 +69,20 @@ enum PrivilegeCapture
 
 enum CompareMethod
 {
-    CompareGreater,  // 
-    CompareLessEqual, // 
+    CompareGreater,  //
+    CompareLessEqual, //
 };
 
 enum EdgeState
 {
-    RisingEdgeDisabled, // 
-    RisingEdgeEnabled,  // 
+    RisingEdgeDisabled, //
+    RisingEdgeEnabled,  //
 };
 
 enum CompareState
 {
-    CompareDisable, // 
-    CompareEnable,  // 
+    CompareDisable, //
+    CompareEnable,  //
 };
 
 // Singletion Class
@@ -91,11 +91,11 @@ class PME : public ia32detect
 public:
 //private:
 
-    static PME*		_singleton;
+    static PME*     _singleton;
 
-    HANDLE			hFile;
-    bool			bDriverOpen;
-    double			m_CPUClockSpeed;
+    HANDLE          hFile;
+    bool            bDriverOpen;
+    double          m_CPUClockSpeed;
 
     //ia32detect detect;
     HRESULT Init();
@@ -108,7 +108,7 @@ protected:
         hFile = NULL;
         bDriverOpen = FALSE;
         m_CPUClockSpeed = 0;
-        Init(); 
+        Init();
     }
 
 public:
@@ -136,17 +136,17 @@ public:
         switch( priority )
         {
         case ProcessPriorityNormal:
-			{
-				SetPriorityClass (GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
-				SetThreadPriority (GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-				break;
-			}
+            {
+                SetPriorityClass (GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+                SetThreadPriority (GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+                break;
+            }
         case ProcessPriorityHigh:
-			{
-				SetPriorityClass (GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-				SetThreadPriority (GetCurrentThread(),THREAD_PRIORITY_HIGHEST);
-				break;
-			}
+            {
+                SetPriorityClass (GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+                SetThreadPriority (GetCurrentThread(),THREAD_PRIORITY_HIGHEST);
+                break;
+            }
         }
     }
 
@@ -164,27 +164,27 @@ public:
     }
 
 #ifdef DBGFLAG_VALIDATE
-	void Validate( CValidator &validator, tchar *pchName );		// Validate our internal structures
+    void Validate( CValidator &validator, tchar *pchName );     // Validate our internal structures
 #endif // DBGFLAG_VALIDATE
 
 };
 
-#include "P5P6PerformanceCounters.h"    
-#include "P4PerformanceCounters.h"    
-#include "K8PerformanceCounters.h"    
+#include "P5P6PerformanceCounters.h"
+#include "P4PerformanceCounters.h"
+#include "K8PerformanceCounters.h"
 
 enum PerfErrors
 {
-    E_UNKNOWN_CPU_VENDOR	= -1,
-    E_BAD_COUNTER			= -2,
-    E_UNKNOWN_CPU			= -3,
-    E_CANT_OPEN_DRIVER		= -4,
-    E_DRIVER_ALREADY_OPEN	= -5,
-    E_DRIVER_NOT_OPEN		= -6,
-    E_DISABLED				= -7,
-    E_BAD_DATA				= -8,
-    E_CANT_CLOSE			= -9,
-    E_ILLEGAL_OPERATION		= -10,
+    E_UNKNOWN_CPU_VENDOR    = -1,
+    E_BAD_COUNTER           = -2,
+    E_UNKNOWN_CPU           = -3,
+    E_CANT_OPEN_DRIVER      = -4,
+    E_DRIVER_ALREADY_OPEN   = -5,
+    E_DRIVER_NOT_OPEN       = -6,
+    E_DISABLED              = -7,
+    E_BAD_DATA              = -8,
+    E_CANT_CLOSE            = -9,
+    E_ILLEGAL_OPERATION     = -10,
 };
 
 #pragma warning( pop )

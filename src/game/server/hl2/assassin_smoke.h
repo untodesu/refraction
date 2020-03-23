@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -16,10 +16,10 @@
 class CAssassinSmoke : public CBaseParticleEntity
 {
 public:
-	DECLARE_CLASS( CAssassinSmoke, CBaseParticleEntity );
-	DECLARE_SERVERCLASS();
+    DECLARE_CLASS( CAssassinSmoke, CBaseParticleEntity );
+    DECLARE_SERVERCLASS();
 
-	static CAssassinSmoke* CreateAssassinSmoke (const Vector &pos);
+    static CAssassinSmoke* CreateAssassinSmoke (const Vector &pos);
 };
 
 

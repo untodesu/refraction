@@ -1,8 +1,8 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: This file loads a KeyValues file containing material name mappings.
-//			When the bsp is compiled, all materials listed in the file will
-//			be replaced by the second material in the pair.
+//          When the bsp is compiled, all materials listed in the file will
+//          be replaced by the second material in the pair.
 //
 //=============================================================================
 

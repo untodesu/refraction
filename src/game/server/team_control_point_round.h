@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -20,64 +20,64 @@
 
 class CTeamControlPointRound : public CBaseEntity
 {
-	DECLARE_CLASS( CTeamControlPointRound, CBaseEntity );
+    DECLARE_CLASS( CTeamControlPointRound, CBaseEntity );
 
 public:
-	virtual void Spawn( void );	
-	virtual void Activate( void );	
+    virtual void Spawn( void );
+    virtual void Activate( void );
 
-	bool IsDisabled( void ){ return m_bDisabled; }
+    bool IsDisabled( void ){ return m_bDisabled; }
 
-	int GetPointOwner( int point ); 
-//	int CountAdvantageFlags( int team );
-	bool WouldNewCPOwnerWinGame( CTeamControlPoint *pPoint, int iNewOwner );
+    int GetPointOwner( int point );
+//  int CountAdvantageFlags( int team );
+    bool WouldNewCPOwnerWinGame( CTeamControlPoint *pPoint, int iNewOwner );
 
-	void FireTeamWinOutput( int iWinningTeam );
-	
-	void SelectedToPlay( void );
+    void FireTeamWinOutput( int iWinningTeam );
 
-	int CheckWinConditions( void ); // returns the team number of the team that's won, or returns -1 if no winner
+    void SelectedToPlay( void );
 
-	int GetPriorityValue( void ) const { return m_nPriority; }
+    int CheckWinConditions( void ); // returns the team number of the team that's won, or returns -1 if no winner
 
-	bool IsPlayable( void );
-	bool MakePlayable( void );
-	bool IsControlPointInRound( CTeamControlPoint *pPoint );
+    int GetPriorityValue( void ) const { return m_nPriority; }
 
-	void FireOnStartOutput( void );
-	void FireOnEndOutput( void );
+    bool IsPlayable( void );
+    bool MakePlayable( void );
+    bool IsControlPointInRound( CTeamControlPoint *pPoint );
 
-	inline const char *GetName( void ) { return STRING(m_iszPrintName); }
+    void FireOnStartOutput( void );
+    void FireOnEndOutput( void );
 
-	CHandle<CTeamControlPoint> GetPointOwnedBy( int iTeam );
+    inline const char *GetName( void ) { return STRING(m_iszPrintName); }
 
-	bool RoundOwnedByTeam( int iTeam ){ return ( TeamOwnsAllPoints() == iTeam ); }
-	int GetInvalidCapWinner() { return m_iInvalidCapWinner; }
+    CHandle<CTeamControlPoint> GetPointOwnedBy( int iTeam );
 
-	CUtlVector< CHandle<CTeamControlPoint> > m_ControlPoints;
+    bool RoundOwnedByTeam( int iTeam ){ return ( TeamOwnsAllPoints() == iTeam ); }
+    int GetInvalidCapWinner() { return m_iInvalidCapWinner; }
+
+    CUtlVector< CHandle<CTeamControlPoint> > m_ControlPoints;
 
 private:
-	void FindControlPoints( void );	//look in the map to find the control points for this round
-	void SetupSpawnPoints( void );
-	int TeamOwnsAllPoints( CTeamControlPoint *pOverridePoint = NULL, int iOverrideNewTeam = TEAM_UNASSIGNED );
+    void FindControlPoints( void ); //look in the map to find the control points for this round
+    void SetupSpawnPoints( void );
+    int TeamOwnsAllPoints( CTeamControlPoint *pOverridePoint = NULL, int iOverrideNewTeam = TEAM_UNASSIGNED );
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
-	bool m_bDisabled;
-	void InputEnable( inputdata_t &inputdata );
-	void InputDisable( inputdata_t &inputdata );
+    bool m_bDisabled;
+    void InputEnable( inputdata_t &inputdata );
+    void InputDisable( inputdata_t &inputdata );
 
-	void InputRoundSpawn( inputdata_t &inputdata );
+    void InputRoundSpawn( inputdata_t &inputdata );
 
-	string_t	m_iszCPNames;
-	int			m_nPriority;
-	int			m_iInvalidCapWinner;
-	string_t	m_iszPrintName;
+    string_t    m_iszCPNames;
+    int         m_nPriority;
+    int         m_iInvalidCapWinner;
+    string_t    m_iszPrintName;
 
-	COutputEvent m_OnStart;
-	COutputEvent m_OnEnd;
-	COutputEvent m_OnWonByTeam1;
-	COutputEvent m_OnWonByTeam2;
+    COutputEvent m_OnStart;
+    COutputEvent m_OnEnd;
+    COutputEvent m_OnWonByTeam1;
+    COutputEvent m_OnWonByTeam2;
 };
 
 #endif // TEAM_CONTROL_POINT_ROUND_H

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,13 +15,13 @@
 class IPhysics;
 class IPhysicsCollision;
 
-extern CreateInterfaceFn	GetPhysicsFactory( void );
+extern CreateInterfaceFn    GetPhysicsFactory( void );
 
 extern "C" {
 #endif
 
 // tools need to force the path
-void					PhysicsDLLPath( const char *pPathname );
+void                    PhysicsDLLPath( const char *pPathname );
 
 #ifdef __cplusplus
 }

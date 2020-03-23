@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================
@@ -28,27 +28,27 @@
 class CVRDistortTexture_DX9_Context : public CBasePerMaterialContextData
 {
 public:
-	uint8 *m_pStaticCmds;
-	CCommandBufferBuilder< CFixedCommandStorageBuffer< 1000 > > m_SemiStaticCmdsOut;
+    uint8 *m_pStaticCmds;
+    CCommandBufferBuilder< CFixedCommandStorageBuffer< 1000 > > m_SemiStaticCmdsOut;
 
-	void ResetStaticCmds( void )
-	{
-		if ( m_pStaticCmds )
-		{
-			delete[] m_pStaticCmds;
-			m_pStaticCmds = NULL;
-		}
-	}
+    void ResetStaticCmds( void )
+    {
+        if ( m_pStaticCmds )
+        {
+            delete[] m_pStaticCmds;
+            m_pStaticCmds = NULL;
+        }
+    }
 
-	CVRDistortTexture_DX9_Context( void )
-	{
-		m_pStaticCmds = NULL;
-	}
+    CVRDistortTexture_DX9_Context( void )
+    {
+        m_pStaticCmds = NULL;
+    }
 
-	~CVRDistortTexture_DX9_Context( void )
-	{
-		ResetStaticCmds();
-	}
+    ~CVRDistortTexture_DX9_Context( void )
+    {
+        ResetStaticCmds();
+    }
 
 };
 
@@ -57,157 +57,157 @@ static const float kAllZeros[ 4 ] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 
 BEGIN_VS_SHADER( vr_distort_texture, "Help for warp" )
-	BEGIN_SHADER_PARAMS
-	
-		SHADER_PARAM( BASETEXTURE, SHADER_PARAM_TYPE_TEXTURE, "", "" )
-		SHADER_PARAM( DISTORTMAP, SHADER_PARAM_TYPE_TEXTURE, "vr_distort_map", "" )
-		SHADER_PARAM( USERENDERTARGET, SHADER_PARAM_TYPE_INTEGER, "0", "" )
+    BEGIN_SHADER_PARAMS
 
-	END_SHADER_PARAMS
+        SHADER_PARAM( BASETEXTURE, SHADER_PARAM_TYPE_TEXTURE, "", "" )
+        SHADER_PARAM( DISTORTMAP, SHADER_PARAM_TYPE_TEXTURE, "vr_distort_map", "" )
+        SHADER_PARAM( USERENDERTARGET, SHADER_PARAM_TYPE_INTEGER, "0", "" )
 
-	SHADER_INIT_PARAMS()
-	{
-	}
+    END_SHADER_PARAMS
 
-	SHADER_FALLBACK
-	{
-		return 0;
-	}
+    SHADER_INIT_PARAMS()
+    {
+    }
 
-	SHADER_INIT
-	{
-		LoadTexture( BASETEXTURE, TEXTUREFLAGS_SRGB );
-		LoadTexture( DISTORTMAP, TEXTUREFLAGS_NOMIP | TEXTUREFLAGS_NOLOD | TEXTUREFLAGS_NODEBUGOVERRIDE |
-			TEXTUREFLAGS_SINGLECOPY | TEXTUREFLAGS_CLAMPS | TEXTUREFLAGS_CLAMPT );
-	}
+    SHADER_FALLBACK
+    {
+        return 0;
+    }
 
-	SHADER_DRAW
-	{
-		CVRDistortTexture_DX9_Context	*pContextData = reinterpret_cast< CVRDistortTexture_DX9_Context *> ( *pContextDataPtr );
-		bool				bNeedRegenStaticCmds = ( !pContextData ) || pShaderShadow;
+    SHADER_INIT
+    {
+        LoadTexture( BASETEXTURE, TEXTUREFLAGS_SRGB );
+        LoadTexture( DISTORTMAP, TEXTUREFLAGS_NOMIP | TEXTUREFLAGS_NOLOD | TEXTUREFLAGS_NODEBUGOVERRIDE |
+            TEXTUREFLAGS_SINGLECOPY | TEXTUREFLAGS_CLAMPS | TEXTUREFLAGS_CLAMPT );
+    }
 
-		if ( !pContextData )								// make sure allocated
-		{
-			pContextData = new CVRDistortTexture_DX9_Context;
-			*pContextDataPtr = pContextData;
-		}
+    SHADER_DRAW
+    {
+        CVRDistortTexture_DX9_Context   *pContextData = reinterpret_cast< CVRDistortTexture_DX9_Context *> ( *pContextDataPtr );
+        bool                bNeedRegenStaticCmds = ( !pContextData ) || pShaderShadow;
 
-		if ( pShaderShadow || bNeedRegenStaticCmds )
-		{
-			pContextData->ResetStaticCmds();
-			CCommandBufferBuilder< CFixedCommandStorageBuffer< 5000 > > staticCmdsBuf;
+        if ( !pContextData )                                // make sure allocated
+        {
+            pContextData = new CVRDistortTexture_DX9_Context;
+            *pContextDataPtr = pContextData;
+        }
 
-			staticCmdsBuf.BindTexture( this, SHADER_SAMPLER0, BASETEXTURE, -1 );
-			staticCmdsBuf.BindTexture( this, SHADER_SAMPLER1, DISTORTMAP, -1 );
+        if ( pShaderShadow || bNeedRegenStaticCmds )
+        {
+            pContextData->ResetStaticCmds();
+            CCommandBufferBuilder< CFixedCommandStorageBuffer< 5000 > > staticCmdsBuf;
 
-			staticCmdsBuf.End();
+            staticCmdsBuf.BindTexture( this, SHADER_SAMPLER0, BASETEXTURE, -1 );
+            staticCmdsBuf.BindTexture( this, SHADER_SAMPLER1, DISTORTMAP, -1 );
 
-			// now, copy buf
-			pContextData->m_pStaticCmds = new uint8[ staticCmdsBuf.Size() ];
-			memcpy( pContextData->m_pStaticCmds, staticCmdsBuf.Base(), staticCmdsBuf.Size() );
-		}
+            staticCmdsBuf.End();
 
-		if ( pShaderAPI && pContextData->m_bMaterialVarsChanged )
-		{
-			// need to regenerate the semistatic cmds
-			pContextData->m_SemiStaticCmdsOut.Reset();
-			pContextData->m_bMaterialVarsChanged = false;
+            // now, copy buf
+            pContextData->m_pStaticCmds = new uint8[ staticCmdsBuf.Size() ];
+            memcpy( pContextData->m_pStaticCmds, staticCmdsBuf.Base(), staticCmdsBuf.Size() );
+        }
 
-			pContextData->m_SemiStaticCmdsOut.SetAmbientCubeDynamicStateVertexShader();
-			pContextData->m_SemiStaticCmdsOut.End();
-		}
+        if ( pShaderAPI && pContextData->m_bMaterialVarsChanged )
+        {
+            // need to regenerate the semistatic cmds
+            pContextData->m_SemiStaticCmdsOut.Reset();
+            pContextData->m_bMaterialVarsChanged = false;
 
-		SHADOW_STATE
-		{
-			SetInitialShadowState( );
+            pContextData->m_SemiStaticCmdsOut.SetAmbientCubeDynamicStateVertexShader();
+            pContextData->m_SemiStaticCmdsOut.End();
+        }
 
-			pShaderShadow->EnableDepthWrites( false );
-			pShaderShadow->EnableDepthTest( false );
+        SHADOW_STATE
+        {
+            SetInitialShadowState( );
 
-			pShaderShadow->EnableBlending( false );
+            pShaderShadow->EnableDepthWrites( false );
+            pShaderShadow->EnableDepthTest( false );
 
-			pShaderShadow->EnableTexture( SHADER_SAMPLER0, true );
-			pShaderShadow->EnableSRGBRead( SHADER_SAMPLER0, true );
+            pShaderShadow->EnableBlending( false );
 
-			pShaderShadow->EnableTexture( SHADER_SAMPLER1, true );
+            pShaderShadow->EnableTexture( SHADER_SAMPLER0, true );
+            pShaderShadow->EnableSRGBRead( SHADER_SAMPLER0, true );
 
-			pShaderShadow->EnableSRGBWrite( true );
-			pShaderShadow->EnableAlphaWrites( false );
-			pShaderShadow->EnableAlphaTest( false );
+            pShaderShadow->EnableTexture( SHADER_SAMPLER1, true );
 
-			DefaultFog();
+            pShaderShadow->EnableSRGBWrite( true );
+            pShaderShadow->EnableAlphaWrites( false );
+            pShaderShadow->EnableAlphaTest( false );
 
-			int nFormat = 0;
-			nFormat |= VERTEX_POSITION;
-			pShaderShadow->VertexShaderVertexFormat( nFormat, 2, 0, 0 );
+            DefaultFog();
 
-			if ( !g_pHardwareConfig->SupportsShaderModel_3_0() )
-			{
-				DECLARE_STATIC_VERTEX_SHADER( vr_distort_texture_vs20 );
-				SET_STATIC_VERTEX_SHADER( vr_distort_texture_vs20 );
+            int nFormat = 0;
+            nFormat |= VERTEX_POSITION;
+            pShaderShadow->VertexShaderVertexFormat( nFormat, 2, 0, 0 );
 
-				if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
-				{
-					DECLARE_STATIC_PIXEL_SHADER( vr_distort_texture_ps20b );
-					SET_STATIC_PIXEL_SHADER( vr_distort_texture_ps20b );
-				}
-				else
-				{
-					DECLARE_STATIC_PIXEL_SHADER( vr_distort_texture_ps20 );
-					SET_STATIC_PIXEL_SHADER( vr_distort_texture_ps20 );
-				}
-			}
-			else
-			{
-				DECLARE_STATIC_VERTEX_SHADER( vr_distort_texture_vs30 );
-				SET_STATIC_VERTEX_SHADER( vr_distort_texture_vs30 );
+            if ( !g_pHardwareConfig->SupportsShaderModel_3_0() )
+            {
+                DECLARE_STATIC_VERTEX_SHADER( vr_distort_texture_vs20 );
+                SET_STATIC_VERTEX_SHADER( vr_distort_texture_vs20 );
 
-				DECLARE_STATIC_PIXEL_SHADER( vr_distort_texture_ps30 );
-				SET_STATIC_PIXEL_SHADER( vr_distort_texture_ps30 );
-			}
-		}
+                if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+                {
+                    DECLARE_STATIC_PIXEL_SHADER( vr_distort_texture_ps20b );
+                    SET_STATIC_PIXEL_SHADER( vr_distort_texture_ps20b );
+                }
+                else
+                {
+                    DECLARE_STATIC_PIXEL_SHADER( vr_distort_texture_ps20 );
+                    SET_STATIC_PIXEL_SHADER( vr_distort_texture_ps20 );
+                }
+            }
+            else
+            {
+                DECLARE_STATIC_VERTEX_SHADER( vr_distort_texture_vs30 );
+                SET_STATIC_VERTEX_SHADER( vr_distort_texture_vs30 );
 
-		DYNAMIC_STATE
-		{
-			CCommandBufferBuilder< CFixedCommandStorageBuffer< 1000 > > DynamicCmdsOut;
-			DynamicCmdsOut.Call( pContextData->m_pStaticCmds );
-			DynamicCmdsOut.Call( pContextData->m_SemiStaticCmdsOut.Base() );
+                DECLARE_STATIC_PIXEL_SHADER( vr_distort_texture_ps30 );
+                SET_STATIC_PIXEL_SHADER( vr_distort_texture_ps30 );
+            }
+        }
 
-			pShaderAPI->SetDefaultState();
+        DYNAMIC_STATE
+        {
+            CCommandBufferBuilder< CFixedCommandStorageBuffer< 1000 > > DynamicCmdsOut;
+            DynamicCmdsOut.Call( pContextData->m_pStaticCmds );
+            DynamicCmdsOut.Call( pContextData->m_SemiStaticCmdsOut.Base() );
 
-			int useRenderTarget = ( params[ USERENDERTARGET ]->GetIntValue() == 0 ) ? 0 : 1;
+            pShaderAPI->SetDefaultState();
 
-			if ( !g_pHardwareConfig->SupportsShaderModel_3_0() )
-			{
-				DECLARE_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs20 );
-				SET_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs20 );
+            int useRenderTarget = ( params[ USERENDERTARGET ]->GetIntValue() == 0 ) ? 0 : 1;
 
-				if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
-				{
-					DECLARE_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20b );
-					SET_DYNAMIC_PIXEL_SHADER_COMBO( CMBO_USERENDERTARGET, useRenderTarget );
-					SET_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20b );
-				}
-				else
-				{
-					DECLARE_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20 );
-					SET_DYNAMIC_PIXEL_SHADER_COMBO( CMBO_USERENDERTARGET, useRenderTarget );
-					SET_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20 );
-				}
-			}
-			else
-			{
-				DECLARE_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs30 );
-				SET_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs30 );
+            if ( !g_pHardwareConfig->SupportsShaderModel_3_0() )
+            {
+                DECLARE_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs20 );
+                SET_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs20 );
 
-				DECLARE_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps30 );
-				SET_DYNAMIC_PIXEL_SHADER_COMBO( CMBO_USERENDERTARGET, useRenderTarget );
-				SET_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps30 );
-			}
+                if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+                {
+                    DECLARE_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20b );
+                    SET_DYNAMIC_PIXEL_SHADER_COMBO( CMBO_USERENDERTARGET, useRenderTarget );
+                    SET_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20b );
+                }
+                else
+                {
+                    DECLARE_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20 );
+                    SET_DYNAMIC_PIXEL_SHADER_COMBO( CMBO_USERENDERTARGET, useRenderTarget );
+                    SET_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps20 );
+                }
+            }
+            else
+            {
+                DECLARE_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs30 );
+                SET_DYNAMIC_VERTEX_SHADER( vr_distort_texture_vs30 );
 
-			DynamicCmdsOut.End();
-			pShaderAPI->ExecuteCommandBuffer( DynamicCmdsOut.Base() );
-		}
-		Draw();
-	}
+                DECLARE_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps30 );
+                SET_DYNAMIC_PIXEL_SHADER_COMBO( CMBO_USERENDERTARGET, useRenderTarget );
+                SET_DYNAMIC_PIXEL_SHADER( vr_distort_texture_ps30 );
+            }
+
+            DynamicCmdsOut.End();
+            pShaderAPI->ExecuteCommandBuffer( DynamicCmdsOut.Base() );
+        }
+        Draw();
+    }
 END_SHADER

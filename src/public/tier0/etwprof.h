@@ -24,13 +24,13 @@
 
 #include "tier0/platform.h"
 
-#ifdef	IS_WINDOWS_PC
+#ifdef  IS_WINDOWS_PC
 // ETW support should be compiled in for all Windows PC platforms. It isn't
 // supported on Windows XP but that is determined at run-time.
-#define	ETW_MARKS_ENABLED
+#define ETW_MARKS_ENABLED
 #endif
 
-#ifdef	ETW_MARKS_ENABLED
+#ifdef  ETW_MARKS_ENABLED
 
 // Insert a single event to mark a point in an ETW trace. The return value is a 64-bit
 // time stamp.
@@ -87,22 +87,22 @@ PLATFORM_INTERFACE void ETWReadPacket( const char *pFrom, int nWireSize, int nIn
 class CETWScope
 {
 public:
-	CETWScope( const char *pMessage )
-		: m_pMessage( pMessage )
-	{
-		m_nStartTime = ETWBegin( pMessage );
-	}
-	~CETWScope()
-	{
-		ETWEnd( m_pMessage, m_nStartTime );
-	}
+    CETWScope( const char *pMessage )
+        : m_pMessage( pMessage )
+    {
+        m_nStartTime = ETWBegin( pMessage );
+    }
+    ~CETWScope()
+    {
+        ETWEnd( m_pMessage, m_nStartTime );
+    }
 private:
-	// Private and unimplemented to disable copying.
-	CETWScope( const CETWScope& rhs );
-	CETWScope& operator=( const CETWScope& rhs );
+    // Private and unimplemented to disable copying.
+    CETWScope( const CETWScope& rhs );
+    CETWScope& operator=( const CETWScope& rhs );
 
-	const char* m_pMessage;
-	int64 m_nStartTime;
+    const char* m_pMessage;
+    int64 m_nStartTime;
 };
 
 #else
@@ -143,13 +143,13 @@ inline void ETWReadPacket( const char *pFrom, int nWireSize, int nInSequenceNR, 
 class CETWScope
 {
 public:
-	CETWScope( const char* )
-	{
-	}
+    CETWScope( const char* )
+    {
+    }
 private:
-	// Private and unimplemented to disable copying.
-	CETWScope( const CETWScope& rhs );
-	CETWScope& operator=( const CETWScope& rhs );
+    // Private and unimplemented to disable copying.
+    CETWScope( const CETWScope& rhs );
+    CETWScope& operator=( const CETWScope& rhs );
 };
 
 #endif

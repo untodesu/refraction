@@ -21,20 +21,20 @@ CBuildFactoryHelper *CBuildFactoryHelper::m_sHelpers = NULL;
 //-----------------------------------------------------------------------------
 CBuildFactoryHelper::CBuildFactoryHelper( char const *className, PANELCREATEFUNC func )
 {
-	// Make this fatal
-	if ( HasFactory( className ) )
-	{
-		Error( "CBuildFactoryHelper:  Factory for '%s' already exists!!!!\n", className );
-	}
+    // Make this fatal
+    if ( HasFactory( className ) )
+    {
+        Error( "CBuildFactoryHelper:  Factory for '%s' already exists!!!!\n", className );
+    }
 
-	//List is empty, or element belongs at front, insert here
-	m_pNext			= m_sHelpers;
-	m_sHelpers		= this;
+    //List is empty, or element belongs at front, insert here
+    m_pNext         = m_sHelpers;
+    m_sHelpers      = this;
 
-	Assert( func );
-	m_CreateFunc = func;
-	Assert( className );
-	m_pClassName = className;
+    Assert( func );
+    m_CreateFunc = func;
+    Assert( className );
+    m_pClassName = className;
 }
 
 //-----------------------------------------------------------------------------
@@ -42,62 +42,62 @@ CBuildFactoryHelper::CBuildFactoryHelper( char const *className, PANELCREATEFUNC
 // Output : CBuildFactoryHelper
 //-----------------------------------------------------------------------------
 CBuildFactoryHelper *CBuildFactoryHelper::GetNext( void )
-{ 
-	return m_pNext;
+{
+    return m_pNext;
 }
 
 char const *CBuildFactoryHelper::GetClassName() const
 {
-	return m_pClassName;
+    return m_pClassName;
 }
 
 vgui::Panel *CBuildFactoryHelper::CreatePanel()
 {
-	if ( !m_CreateFunc )
-		return NULL;
+    if ( !m_CreateFunc )
+        return NULL;
 
-	return ( *m_CreateFunc )();
+    return ( *m_CreateFunc )();
 }
 
 // private static meethod
 bool CBuildFactoryHelper::HasFactory( char const *className )
 {
-	CBuildFactoryHelper *p = m_sHelpers;
-	while ( p )
-	{
-		if ( !Q_stricmp( className, p->GetClassName() ) )
-			return true;
+    CBuildFactoryHelper *p = m_sHelpers;
+    while ( p )
+    {
+        if ( !Q_stricmp( className, p->GetClassName() ) )
+            return true;
 
-		p = p->GetNext();
-	}
-	return false;
+        p = p->GetNext();
+    }
+    return false;
 }
 
 // static method
 vgui::Panel *CBuildFactoryHelper::InstancePanel( char const *className )
 {
-	CBuildFactoryHelper *p = m_sHelpers;
-	while ( p )
-	{
-		if ( !Q_stricmp( className, p->GetClassName() ) )
-			return p->CreatePanel();
+    CBuildFactoryHelper *p = m_sHelpers;
+    while ( p )
+    {
+        if ( !Q_stricmp( className, p->GetClassName() ) )
+            return p->CreatePanel();
 
-		p = p->GetNext();
-	}
-	return NULL;
+        p = p->GetNext();
+    }
+    return NULL;
 }
 
 // static method
 void CBuildFactoryHelper::GetFactoryNames( CUtlVector< char const * >& list )
 {
-	list.RemoveAll();
+    list.RemoveAll();
 
-	CBuildFactoryHelper *p = m_sHelpers;
-	while ( p )
-	{
-		list.AddToTail( p->GetClassName() );
-		p = p->GetNext();
-	}
+    CBuildFactoryHelper *p = m_sHelpers;
+    while ( p )
+    {
+        list.AddToTail( p->GetClassName() );
+        p = p->GetNext();
+    }
 }
 
 

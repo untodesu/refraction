@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -24,7 +24,7 @@ typedef unsigned short ClientRenderHandle_t;
 
 enum
 {
-	INVALID_CLIENT_RENDER_HANDLE = (ClientRenderHandle_t)0xffff,
+    INVALID_CLIENT_RENDER_HANDLE = (ClientRenderHandle_t)0xffff,
 };
 
 

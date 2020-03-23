@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -14,18 +14,18 @@
 
 class CEP1GameStats : public CBaseGameStats
 {
-	typedef CBaseGameStats BaseClass;
+    typedef CBaseGameStats BaseClass;
 
 public:
-	CEP1GameStats( void );
+    CEP1GameStats( void );
 
-	virtual CBaseGameStats *OnInit( CBaseGameStats *pCurrentGameStats, char const *gamedir );
+    virtual CBaseGameStats *OnInit( CBaseGameStats *pCurrentGameStats, char const *gamedir );
 
-	virtual bool StatTrackingEnabledForMod( void ) { return true; }
-	virtual bool UserPlayedAllTheMaps( void );
+    virtual bool StatTrackingEnabledForMod( void ) { return true; }
+    virtual bool UserPlayedAllTheMaps( void );
 
-	virtual const char *GetStatSaveFileName( void );
-	virtual const char *GetStatUploadRegistryKeyName( void );
+    virtual const char *GetStatSaveFileName( void );
+    virtual const char *GetStatUploadRegistryKeyName( void );
 };
 
 #endif // EP1_GAMESTATS_H

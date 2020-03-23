@@ -11,7 +11,7 @@
 #endif
 
 
-// This class is used to virtualize a ConVar's value, so the client can restrict its 
+// This class is used to virtualize a ConVar's value, so the client can restrict its
 // value while connected to a server. When using this across modules, it's important
 // to dynamic_cast it to a ConVar_ServerBounded or you won't get the restricted value.
 //
@@ -22,31 +22,31 @@
 class ConVar_ServerBounded : public ConVar
 {
 public:
-	ConVar_ServerBounded( char const *pName, char const *pDefaultValue, int flags, char const *pHelpString )
-		: ConVar( pName, pDefaultValue, flags, pHelpString ) 
-	{
-	}
+    ConVar_ServerBounded( char const *pName, char const *pDefaultValue, int flags, char const *pHelpString )
+        : ConVar( pName, pDefaultValue, flags, pHelpString )
+    {
+    }
 
-	ConVar_ServerBounded( char const *pName, char const *pDefaultValue, int flags, char const *pHelpString, FnChangeCallback_t callback )
-		: ConVar( pName, pDefaultValue, flags, pHelpString, callback ) 
-	{
-	}
-	
-	ConVar_ServerBounded( char const *pName, char const *pDefaultValue, int flags, char const *pHelpString, bool bMin, float fMin, bool bMax, float fMax )
-		: ConVar( pName, pDefaultValue, flags, pHelpString, bMin, fMin, bMax, fMax ) {}
+    ConVar_ServerBounded( char const *pName, char const *pDefaultValue, int flags, char const *pHelpString, FnChangeCallback_t callback )
+        : ConVar( pName, pDefaultValue, flags, pHelpString, callback )
+    {
+    }
 
-	// You must implement GetFloat.
-	virtual float GetFloat() const = 0;
-	
-	// You can optionally implement these.
-	virtual int  GetInt() const		{ return (int)GetFloat(); }
-	virtual bool GetBool() const	{  return ( GetInt() != 0 ); }
+    ConVar_ServerBounded( char const *pName, char const *pDefaultValue, int flags, char const *pHelpString, bool bMin, float fMin, bool bMax, float fMax )
+        : ConVar( pName, pDefaultValue, flags, pHelpString, bMin, fMin, bMax, fMax ) {}
 
-	// Use this to get the underlying cvar's value.
-	float GetBaseFloatValue() const
-	{
-		return ConVar::GetFloat();
-	}
+    // You must implement GetFloat.
+    virtual float GetFloat() const = 0;
+
+    // You can optionally implement these.
+    virtual int  GetInt() const     { return (int)GetFloat(); }
+    virtual bool GetBool() const    {  return ( GetInt() != 0 ); }
+
+    // Use this to get the underlying cvar's value.
+    float GetBaseFloatValue() const
+    {
+        return ConVar::GetFloat();
+    }
 };
 
 

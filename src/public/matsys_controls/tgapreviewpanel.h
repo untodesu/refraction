@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -23,16 +23,16 @@
 //-----------------------------------------------------------------------------
 class CTGAPreviewPanel : public CProceduralTexturePanel
 {
-	DECLARE_CLASS_SIMPLE( CTGAPreviewPanel, CProceduralTexturePanel );
+    DECLARE_CLASS_SIMPLE( CTGAPreviewPanel, CProceduralTexturePanel );
 
 public:
-	// constructor
-	CTGAPreviewPanel( vgui::Panel *pParent, const char *pName );
-	void SetTGA( const char *pFullPath );
-	const char *GetTGA() const;
+    // constructor
+    CTGAPreviewPanel( vgui::Panel *pParent, const char *pName );
+    void SetTGA( const char *pFullPath );
+    const char *GetTGA() const;
 
 private:
-	CUtlString m_TGAName;
+    CUtlString m_TGAName;
 };
 
 

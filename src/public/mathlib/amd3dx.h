@@ -63,8 +63,8 @@
      _ebx, _esi, or _edi that contains effective address.
       ex) _asm PREFETCH (_edi)
 
- For WATCOM C/C++ users, when using #pragma aux instead if 
- _asm, all macro names should be prefixed by a p_ or P_. 
+ For WATCOM C/C++ users, when using #pragma aux instead if
+ _asm, all macro names should be prefixed by a p_ or P_.
  Macros should not be enclosed in quotes.
               ex) p_pfrcp (MM7,MM6)
 
@@ -138,7 +138,7 @@
 
 // The WATCOM C/C++ version of the 3DNow! macros.
 //
-// The older, compbined register style for WATCOM C/C++ macros is not 
+// The older, compbined register style for WATCOM C/C++ macros is not
 // supported.
 
 /* Operand defines for instructions two operands */
@@ -655,9 +655,9 @@
 #define _K3D__esi 0x06
 #define _K3D__edi 0x07
 
-// General 3DNow! instruction format that is supported by 
-// these macros. Note that only the most basic form of memory 
-// operands are supported by these macros. 
+// General 3DNow! instruction format that is supported by
+// these macros. Note that only the most basic form of memory
+// operands are supported by these macros.
 
 #define InjK3DOps(dst,src,inst)                         \
 {                                                       \
@@ -767,25 +767,25 @@
    Carefull!  Doesn't check for your offset being
    in range. */
 
-#define PREFETCHM(src,off)					    \
+#define PREFETCHM(src,off)                      \
 {                                               \
    _asm _emit 0x0f                              \
-   _asm _emit 0x0d								\
-   _asm _emit (0x40 | (_K3D_##src & 0x07))		\
-   _asm _emit off								\
+   _asm _emit 0x0d                              \
+   _asm _emit (0x40 | (_K3D_##src & 0x07))      \
+   _asm _emit off                               \
 }
 
 /* Prefetch with a long offset */
 
-#define PREFETCHMLONG(src,off)					\
+#define PREFETCHMLONG(src,off)                  \
 {                                               \
    _asm _emit 0x0f                              \
-   _asm _emit 0x0d								\
-   _asm _emit (0x80 | (_K3D_##src & 0x07))		\
-   _asm _emit (off & 0x000000ff)				\
-   _asm _emit (off & 0x0000ff00) >>	8			\
-   _asm _emit (off & 0x00ff0000) >>	16			\
-   _asm _emit (off & 0xff000000) >>	24			\
+   _asm _emit 0x0d                              \
+   _asm _emit (0x80 | (_K3D_##src & 0x07))      \
+   _asm _emit (off & 0x000000ff)                \
+   _asm _emit (off & 0x0000ff00) >> 8           \
+   _asm _emit (off & 0x00ff0000) >> 16          \
+   _asm _emit (off & 0xff000000) >> 24          \
 }
 
 #define PREFETCHW(src)                          \
@@ -800,7 +800,7 @@
    _asm _emit 0x0f                              \
    _asm _emit 0x0d                              \
    _asm _emit 0x48 | (_K3D_##src & 0x07)        \
-   _asm	_emit off								\
+   _asm _emit off                               \
 }
 
 #define PREFETCHWMLONG(src,off)                 \
@@ -808,10 +808,10 @@
    _asm _emit 0x0f                              \
    _asm _emit 0x0d                              \
    _asm _emit 0x88 | (_K3D_##src & 0x07)        \
-   _asm _emit (off & 0x000000ff)				\
-   _asm _emit (off & 0x0000ff00) >>	8			\
-   _asm _emit (off & 0x00ff0000) >>	16			\
-   _asm _emit (off & 0xff000000) >>	24			\
+   _asm _emit (off & 0x000000ff)                \
+   _asm _emit (off & 0x0000ff00) >> 8           \
+   _asm _emit (off & 0x00ff0000) >> 16          \
+   _asm _emit (off & 0xff000000) >> 24          \
 }
 
 #define CPUID                                   \
@@ -1114,9 +1114,9 @@
 #define prefetchw(src)          PREFETCHW(src)
 
 #define prefetchm(src,off)      PREFETCHM(src,off)
-#define prefetchmlong(src,off)	PREFETCHMLONG(src,off)
+#define prefetchmlong(src,off)  PREFETCHMLONG(src,off)
 #define prefetchwm(src,off)     PREFETCHWM(src,off)
-#define prefetchwmlong(src,off)	 PREFETCHWMLONG(src,off)
+#define prefetchwmlong(src,off)  PREFETCHWMLONG(src,off)
 
 #define pfnacc(dst,src)         PFNACC(dst,src)
 #define pfpnacc(dst,src)        PFPNACC(dst,src)
@@ -1136,9 +1136,9 @@
 #define pshufw(dst,src,msk)     PSHUFW(dst,src,msk)
 #define movntq(dst,src)         MOVNTQ(dst,src)
 #define prefetchnta(mem)        PREFETCHNTA(mem)
-#define prefetcht0(mem)         PREFETCHT0(mem)  
-#define prefetcht1(mem)         PREFETCHT1(mem)  
-#define prefetcht2(mem)         PREFETCHT2(mem)  
+#define prefetcht0(mem)         PREFETCHT0(mem)
+#define prefetcht1(mem)         PREFETCHT1(mem)
+#define prefetcht2(mem)         PREFETCHT2(mem)
 
 
 #define pavgusbm(dst,src,off)   PAVGUSBM(dst,src,off)
@@ -1181,8 +1181,8 @@
 #define pshufwm(dst,src,off,msk)    PSHUFWM(dst,src,off,msk)
 #define movntqm(dst,src,off)    MOVNTQM(dst,src,off)
 #define prefetchntam(mem,off)   PREFETCHNTA(mem,off)
-#define prefetcht0m(mem,off)    PREFETCHT0(mem,off)  
-#define prefetcht1m(mem,off)    PREFETCHT1(mem,off)  
-#define prefetcht2m(mem,off)    PREFETCHT2(mem,off)  
+#define prefetcht0m(mem,off)    PREFETCHT0(mem,off)
+#define prefetcht1m(mem,off)    PREFETCHT1(mem,off)
+#define prefetcht2m(mem,off)    PREFETCHT2(mem,off)
 
 #endif

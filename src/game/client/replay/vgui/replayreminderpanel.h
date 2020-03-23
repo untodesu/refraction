@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -23,28 +23,28 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 class CReplayReminderPanel : public EditablePanel, public CHudElement
 {
-	DECLARE_CLASS_SIMPLE( CReplayReminderPanel, vgui::EditablePanel );
+    DECLARE_CLASS_SIMPLE( CReplayReminderPanel, vgui::EditablePanel );
 public:
-	CReplayReminderPanel( const char *pElementName );
+    CReplayReminderPanel( const char *pElementName );
 
-	void Hide();	// To be used by HUD only
-	void Show();	// To be used by HUD only
+    void Hide();    // To be used by HUD only
+    void Show();    // To be used by HUD only
 
-	// CHudElement overrides
-	virtual bool ShouldDraw();
-	virtual void OnThink();
-	virtual int  HudElementKeyInput( int down, ButtonCode_t keynum, const char *pszCurrentBinding );
+    // CHudElement overrides
+    virtual bool ShouldDraw();
+    virtual void OnThink();
+    virtual int  HudElementKeyInput( int down, ButtonCode_t keynum, const char *pszCurrentBinding );
 
-	// EditablePanel overrides
-	virtual void ApplySchemeSettings( IScheme *pScheme );
-	virtual void SetVisible( bool bState );
+    // EditablePanel overrides
+    virtual void ApplySchemeSettings( IScheme *pScheme );
+    virtual void SetVisible( bool bState );
 
 private:
-	void SetupText();
+    void SetupText();
 
-	float m_flShowTime;	// Used by the HUD only, to display the panel only for a certain period of time
-	bool m_bShouldDraw;	// Store this state for ShouldDraw(), which allows us to use a single panel for
-						// both the post-win reminder and the freezepanel reminder.
+    float m_flShowTime; // Used by the HUD only, to display the panel only for a certain period of time
+    bool m_bShouldDraw; // Store this state for ShouldDraw(), which allows us to use a single panel for
+                        // both the post-win reminder and the freezepanel reminder.
 };
 
 #endif // REPLAYREMINDERPANEL_H

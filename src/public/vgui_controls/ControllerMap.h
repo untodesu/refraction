@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -17,32 +17,32 @@
 
 class CControllerMap : public vgui::Panel
 {
-	DECLARE_CLASS_SIMPLE( CControllerMap, vgui::Panel )
+    DECLARE_CLASS_SIMPLE( CControllerMap, vgui::Panel )
 
-	virtual void OnKeyCodeTyped( vgui::KeyCode code );
+    virtual void OnKeyCodeTyped( vgui::KeyCode code );
 
 public:
-	CControllerMap( vgui::Panel *parent, const char *name );
+    CControllerMap( vgui::Panel *parent, const char *name );
 
-	virtual void ApplySettings( KeyValues *inResourceData );
+    virtual void ApplySettings( KeyValues *inResourceData );
 
-	int NumButtons( void )
-	{
-		return m_buttonMap.Count();
-	}
+    int NumButtons( void )
+    {
+        return m_buttonMap.Count();
+    }
 
-	const char *GetBindingText( int idx );
-	const char *GetBindingIcon( int idx );
+    const char *GetBindingText( int idx );
+    const char *GetBindingIcon( int idx );
 
 private:
 
-	struct button_t
-	{
-		CUtlSymbol	cmd;
-		CUtlSymbol	text;
-		CUtlSymbol	icon;
-	};
-	CUtlMap< int, button_t > m_buttonMap;
+    struct button_t
+    {
+        CUtlSymbol  cmd;
+        CUtlSymbol  text;
+        CUtlSymbol  icon;
+    };
+    CUtlMap< int, button_t > m_buttonMap;
 };
 
 #endif // CONTROLLERMAP_H

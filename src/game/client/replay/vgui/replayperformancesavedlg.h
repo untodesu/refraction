@@ -19,7 +19,7 @@ typedef void (*OnConfirmSaveCallback)( bool bConfirmed, wchar_t *pTitle, void *p
 //-----------------------------------------------------------------------------
 
 void ReplayUI_ShowPerformanceSaveDlg( OnConfirmSaveCallback pfnCallback, void *pContext, CReplay *pReplay,
-									 bool bExitEditorWhenDone );
+                                     bool bExitEditorWhenDone );
 bool ReplayUI_IsPerformanceSaveDlgOpen();
 
 //-----------------------------------------------------------------------------

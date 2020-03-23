@@ -230,7 +230,7 @@ GL_EXT(GL_ANGLE_texture_compression_dxt5,-1,-1)
 
 // This one is an OS extension. We'll add a little helper function to look for it.
 #ifdef _WIN32
-	GL_EXT(WGL_EXT_swap_control_tear,-1,-1)
+    GL_EXT(WGL_EXT_swap_control_tear,-1,-1)
 #else
-	GL_EXT(GLX_EXT_swap_control_tear,-1,-1)
+    GL_EXT(GLX_EXT_swap_control_tear,-1,-1)
 #endif

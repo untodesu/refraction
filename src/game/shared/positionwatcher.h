@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -16,13 +16,13 @@
 abstract_class IWatcherCallback
 {
 public:
-	virtual ~IWatcherCallback() {}
+    virtual ~IWatcherCallback() {}
 };
 
 abstract_class IPositionWatcher : public IWatcherCallback
 {
 public:
-	virtual void NotifyPositionChanged( CBaseEntity *pEntity ) = 0;
+    virtual void NotifyPositionChanged( CBaseEntity *pEntity ) = 0;
 };
 
 // NOTE: The table of watchers is NOT saved/loaded!  Recreate these links on restore
@@ -35,7 +35,7 @@ void RemovePositionWatcher( CBaseEntity *pWatcher, CBaseEntity *pMovingEntity );
 abstract_class IVPhysicsWatcher : public IWatcherCallback
 {
 public:
-	virtual void NotifyVPhysicsStateChanged( IPhysicsObject *pPhysics, CBaseEntity *pEntity, bool bAwake ) = 0;
+    virtual void NotifyVPhysicsStateChanged( IPhysicsObject *pPhysics, CBaseEntity *pEntity, bool bAwake ) = 0;
 };
 
 // NOTE: The table of watchers is NOT saved/loaded!  Recreate these links on restore

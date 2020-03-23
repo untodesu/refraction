@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -18,7 +18,7 @@
 //-----------------------------------------------------------------------------
 namespace vgui
 {
-	class Panel;
+    class Panel;
 }
 
 
@@ -27,11 +27,11 @@ namespace vgui
 //-----------------------------------------------------------------------------
 class CAssetPicker : public CBaseAssetPicker
 {
-	DECLARE_CLASS_SIMPLE( CAssetPicker, CBaseAssetPicker );
+    DECLARE_CLASS_SIMPLE( CAssetPicker, CBaseAssetPicker );
 
 public:
-	CAssetPicker( vgui::Panel *pParent, const char *pAssetType, 
-		const char *pExt, const char *pSubDir, const char *pTextType );
+    CAssetPicker( vgui::Panel *pParent, const char *pAssetType,
+        const char *pExt, const char *pSubDir, const char *pTextType );
 };
 
 
@@ -40,11 +40,11 @@ public:
 //-----------------------------------------------------------------------------
 class CAssetPickerFrame : public CBaseAssetPickerFrame
 {
-	DECLARE_CLASS_SIMPLE( CAssetPickerFrame, CBaseAssetPickerFrame );
+    DECLARE_CLASS_SIMPLE( CAssetPickerFrame, CBaseAssetPickerFrame );
 
 public:
-	CAssetPickerFrame( vgui::Panel *pParent, const char *pTitle, 
-		const char *pAssetType, const char *pExt, const char *pSubDir, const char *pTextType );
+    CAssetPickerFrame( vgui::Panel *pParent, const char *pTitle,
+        const char *pAssetType, const char *pExt, const char *pSubDir, const char *pTextType );
 };
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -23,23 +23,23 @@ class CBaseEntity;
 class CDamageModifier
 {
 public:
-				CDamageModifier();
+                CDamageModifier();
 
-	void		AddModifierToEntity( CBaseEntity *pChar );
-	void		RemoveModifier();
+    void        AddModifierToEntity( CBaseEntity *pChar );
+    void        RemoveModifier();
 
-	void		SetModifier( float flDamageScale );
-	float		GetModifier() const;
+    void        SetModifier( float flDamageScale );
+    float       GetModifier() const;
 
-	void		SetDoneToMe( bool bDoneToMe );
-	bool		IsDamageDoneToMe() const;
+    void        SetDoneToMe( bool bDoneToMe );
+    bool        IsDamageDoneToMe() const;
 
-	CBaseEntity	*GetCharacter() const;
+    CBaseEntity *GetCharacter() const;
 
 private:
-	float							m_flModifier;
-	CHandle<CBaseEntity>			m_hEnt;
-	bool							m_bDoneToMe;	// True = modifies damage done to the entity, false = damage done by the entity
+    float                           m_flModifier;
+    CHandle<CBaseEntity>            m_hEnt;
+    bool                            m_bDoneToMe;    // True = modifies damage done to the entity, false = damage done by the entity
 };
 
 

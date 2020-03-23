@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose:	Squad classes
+// Purpose: Squad classes
 //
 //=============================================================================//
 
@@ -22,7 +22,7 @@ typedef CHandle<CAI_BaseNPC> AIHANDLE;
 DECLARE_POINTER_HANDLE(AISquadsIter_t);
 DECLARE_POINTER_HANDLE(AISquadIter_t);
 
-#define	MAX_SQUAD_MEMBERS	16
+#define MAX_SQUAD_MEMBERS   16
 #define MAX_SQUAD_DATA_SLOTS 4
 
 //-----------------------------------------------------------------------------
@@ -35,26 +35,26 @@ DECLARE_POINTER_HANDLE(AISquadIter_t);
 class CAI_SquadManager
 {
 public:
-	CAI_SquadManager()
-	{
-		m_pSquads = NULL;
-	}
+    CAI_SquadManager()
+    {
+        m_pSquads = NULL;
+    }
 
-	CAI_Squad *		GetFirstSquad( AISquadsIter_t *pIter );
-	CAI_Squad *		GetNextSquad( AISquadsIter_t *pIter );
-	int				NumSquads();
+    CAI_Squad *     GetFirstSquad( AISquadsIter_t *pIter );
+    CAI_Squad *     GetNextSquad( AISquadsIter_t *pIter );
+    int             NumSquads();
 
-	CAI_Squad *		FindSquad( string_t squadName );	// Returns squad of the given name
-	CAI_Squad *		CreateSquad( string_t squadName );	// Returns squad of the given name
-	CAI_Squad *		FindCreateSquad( string_t squadName );	// Returns squad of the given name
-	CAI_Squad *		FindCreateSquad( CAI_BaseNPC *pNPC, string_t squadName );	// Returns squad of the given name
+    CAI_Squad *     FindSquad( string_t squadName );    // Returns squad of the given name
+    CAI_Squad *     CreateSquad( string_t squadName );  // Returns squad of the given name
+    CAI_Squad *     FindCreateSquad( string_t squadName );  // Returns squad of the given name
+    CAI_Squad *     FindCreateSquad( CAI_BaseNPC *pNPC, string_t squadName );   // Returns squad of the given name
 
-	void			DeleteSquad( CAI_Squad *pSquad );
-	void			DeleteAllSquads(void);
+    void            DeleteSquad( CAI_Squad *pSquad );
+    void            DeleteAllSquads(void);
 
 private:
 
-	CAI_Squad *		m_pSquads;										// A linked list of all squads
+    CAI_Squad *     m_pSquads;                                      // A linked list of all squads
 
 };
 
@@ -68,10 +68,10 @@ extern CAI_SquadManager g_AI_SquadManager;
 
 struct AISquadEnemyInfo_t
 {
-	EHANDLE 						hEnemy;
-	CBitVec<MAX_SQUADSLOTS>	slots;									// What squad slots are filled?
+    EHANDLE                         hEnemy;
+    CBitVec<MAX_SQUADSLOTS> slots;                                  // What squad slots are filled?
 
-	DECLARE_SIMPLE_DATADESC();
+    DECLARE_SIMPLE_DATADESC();
 };
 
 #endif
@@ -87,114 +87,114 @@ class CAI_Squad
 {
 public:
 
-	const char *			GetName() const	{ return STRING(m_Name); }
+    const char *            GetName() const { return STRING(m_Name); }
 
-	void					RemoveFromSquad( CAI_BaseNPC *pNPC, bool bDeath = false );
+    void                    RemoveFromSquad( CAI_BaseNPC *pNPC, bool bDeath = false );
 
-	CAI_BaseNPC *			GetFirstMember( AISquadIter_t *pIter = NULL, bool bIgnoreSilentMembers = true );
-	CAI_BaseNPC *			GetNextMember( AISquadIter_t *pIter, bool bIgnoreSilentMembers = true );
-	CAI_BaseNPC *			GetAnyMember();
-	int						NumMembers( bool bIgnoreSilentMembers = true );
-	int						GetSquadIndex( CAI_BaseNPC * );
+    CAI_BaseNPC *           GetFirstMember( AISquadIter_t *pIter = NULL, bool bIgnoreSilentMembers = true );
+    CAI_BaseNPC *           GetNextMember( AISquadIter_t *pIter, bool bIgnoreSilentMembers = true );
+    CAI_BaseNPC *           GetAnyMember();
+    int                     NumMembers( bool bIgnoreSilentMembers = true );
+    int                     GetSquadIndex( CAI_BaseNPC * );
 
-	void					SquadNewEnemy ( CBaseEntity *pEnemy );
-	void					UpdateEnemyMemory( CAI_BaseNPC *pUpdater, CBaseEntity *pEnemy, const Vector &position );
+    void                    SquadNewEnemy ( CBaseEntity *pEnemy );
+    void                    UpdateEnemyMemory( CAI_BaseNPC *pUpdater, CBaseEntity *pEnemy, const Vector &position );
 
-	bool 					OccupyStrategySlotRange( CBaseEntity *pEnemy, int slotIDStart, int slotIDEnd, int *pSlot );
-	void 					VacateStrategySlot( CBaseEntity *pEnemy, int slot);
-	bool					IsStrategySlotRangeOccupied( CBaseEntity *pEnemy, int slotIDStart, int slotIDEnd );
-	
-	CAI_BaseNPC	*			SquadMemberInRange( const Vector &vecLocation, float flDist );
-	CAI_BaseNPC *			NearestSquadMember( CAI_BaseNPC *pMember );
-	int						GetVisibleSquadMembers( CAI_BaseNPC *pMember );
-	CAI_BaseNPC *			GetSquadMemberNearestTo( const Vector &vecLocation );
-	bool					SquadIsMember( CBaseEntity *pMember );
-	bool					IsLeader( CAI_BaseNPC *pLeader );
-	CAI_BaseNPC				*GetLeader( void );
+    bool                    OccupyStrategySlotRange( CBaseEntity *pEnemy, int slotIDStart, int slotIDEnd, int *pSlot );
+    void                    VacateStrategySlot( CBaseEntity *pEnemy, int slot);
+    bool                    IsStrategySlotRangeOccupied( CBaseEntity *pEnemy, int slotIDStart, int slotIDEnd );
 
-	int						BroadcastInteraction( int interactionType, void *data, CBaseCombatCharacter *sender = NULL );
+    CAI_BaseNPC *           SquadMemberInRange( const Vector &vecLocation, float flDist );
+    CAI_BaseNPC *           NearestSquadMember( CAI_BaseNPC *pMember );
+    int                     GetVisibleSquadMembers( CAI_BaseNPC *pMember );
+    CAI_BaseNPC *           GetSquadMemberNearestTo( const Vector &vecLocation );
+    bool                    SquadIsMember( CBaseEntity *pMember );
+    bool                    IsLeader( CAI_BaseNPC *pLeader );
+    CAI_BaseNPC             *GetLeader( void );
 
-	void					AddToSquad(CAI_BaseNPC *pNPC);
-	bool					FOkToMakeSound( int soundPriority );
-	void					JustMadeSound( int soundPriority, float time );
-	float					GetSquadSoundWaitTime() const		{ return m_flSquadSoundWaitTime; }
-	void					SetSquadSoundWaitTime( float time ) { m_flSquadSoundWaitTime = time; }
-	void					SquadRemember( int iMemory );
+    int                     BroadcastInteraction( int interactionType, void *data, CBaseCombatCharacter *sender = NULL );
 
-	void					SetSquadInflictor( CBaseEntity *pInflictor );
-	bool					IsSquadInflictor( CBaseEntity *pInflictor );
+    void                    AddToSquad(CAI_BaseNPC *pNPC);
+    bool                    FOkToMakeSound( int soundPriority );
+    void                    JustMadeSound( int soundPriority, float time );
+    float                   GetSquadSoundWaitTime() const       { return m_flSquadSoundWaitTime; }
+    void                    SetSquadSoundWaitTime( float time ) { m_flSquadSoundWaitTime = time; }
+    void                    SquadRemember( int iMemory );
 
-	static bool				IsSilentMember( const CAI_BaseNPC *pNPC );
+    void                    SetSquadInflictor( CBaseEntity *pInflictor );
+    bool                    IsSquadInflictor( CBaseEntity *pInflictor );
 
-	template <typename T>
-	void					SetSquadData( unsigned slot, const T &data )
-	{
-		Assert( slot < MAX_SQUAD_DATA_SLOTS );
-		if ( slot < MAX_SQUAD_DATA_SLOTS )
-		{
-			m_SquadData[slot] = *((int *)&data);
-		}
-	}
+    static bool             IsSilentMember( const CAI_BaseNPC *pNPC );
 
-	template <typename T>
-	void					GetSquadData( unsigned slot, T *pData )
-	{
-		Assert( slot < MAX_SQUAD_DATA_SLOTS );
-		if ( slot < MAX_SQUAD_DATA_SLOTS )
-		{
-			*pData = *((T *)&m_SquadData[slot]);
-		}
-	}
+    template <typename T>
+    void                    SetSquadData( unsigned slot, const T &data )
+    {
+        Assert( slot < MAX_SQUAD_DATA_SLOTS );
+        if ( slot < MAX_SQUAD_DATA_SLOTS )
+        {
+            m_SquadData[slot] = *((int *)&data);
+        }
+    }
 
+    template <typename T>
+    void                    GetSquadData( unsigned slot, T *pData )
+    {
+        Assert( slot < MAX_SQUAD_DATA_SLOTS );
+        if ( slot < MAX_SQUAD_DATA_SLOTS )
+        {
+            *pData = *((T *)&m_SquadData[slot]);
+        }
+    }
 
-private:
-	void OccupySlot( CBaseEntity *pEnemy, int i );
-	void VacateSlot( CBaseEntity *pEnemy, int i );
-	bool IsSlotOccupied( CBaseEntity *pEnemy, int i ) const;
 
 private:
-	friend class CAI_SaveRestoreBlockHandler;
-	friend class CAI_SquadManager;
+    void OccupySlot( CBaseEntity *pEnemy, int i );
+    void VacateSlot( CBaseEntity *pEnemy, int i );
+    bool IsSlotOccupied( CBaseEntity *pEnemy, int i ) const;
 
-	CAI_Squad();
-	CAI_Squad(string_t squadName);
-	~CAI_Squad(void);
+private:
+    friend class CAI_SaveRestoreBlockHandler;
+    friend class CAI_SquadManager;
 
-	CAI_Squad*				GetNext() { return m_pNextSquad; }
+    CAI_Squad();
+    CAI_Squad(string_t squadName);
+    ~CAI_Squad(void);
 
-	void Init( string_t squadName );
+    CAI_Squad*              GetNext() { return m_pNextSquad; }
 
-	CAI_Squad *										m_pNextSquad;								// The next squad is list of all squads
+    void Init( string_t squadName );
 
-	string_t										m_Name;
-	CUtlVectorFixed<AIHANDLE, MAX_SQUAD_MEMBERS>	m_SquadMembers;
+    CAI_Squad *                                     m_pNextSquad;                               // The next squad is list of all squads
 
-	float											m_flSquadSoundWaitTime;			// Time when I'm allowed to make another sound
-	int												m_nSquadSoundPriority;			// if we're still waiting, this is the priority of the current sound
+    string_t                                        m_Name;
+    CUtlVectorFixed<AIHANDLE, MAX_SQUAD_MEMBERS>    m_SquadMembers;
 
-	EHANDLE											m_hSquadInflictor;
+    float                                           m_flSquadSoundWaitTime;         // Time when I'm allowed to make another sound
+    int                                             m_nSquadSoundPriority;          // if we're still waiting, this is the priority of the current sound
 
-	int												m_SquadData[MAX_SQUAD_DATA_SLOTS];
+    EHANDLE                                         m_hSquadInflictor;
+
+    int                                             m_SquadData[MAX_SQUAD_DATA_SLOTS];
 
 #ifdef PER_ENEMY_SQUADSLOTS
 
-	AISquadEnemyInfo_t *FindEnemyInfo( CBaseEntity *pEnemy );
-	const AISquadEnemyInfo_t *FindEnemyInfo( CBaseEntity *pEnemy ) const	{ return const_cast<CAI_Squad *>(this)->FindEnemyInfo( pEnemy ); }
+    AISquadEnemyInfo_t *FindEnemyInfo( CBaseEntity *pEnemy );
+    const AISquadEnemyInfo_t *FindEnemyInfo( CBaseEntity *pEnemy ) const    { return const_cast<CAI_Squad *>(this)->FindEnemyInfo( pEnemy ); }
 
-	AISquadEnemyInfo_t *			m_pLastFoundEnemyInfo; // Occupy/Vacate need to be reworked to not want this
-	
-	CUtlVector<AISquadEnemyInfo_t>	m_EnemyInfos;
-	float							m_flEnemyInfoCleanupTime;
+    AISquadEnemyInfo_t *            m_pLastFoundEnemyInfo; // Occupy/Vacate need to be reworked to not want this
+
+    CUtlVector<AISquadEnemyInfo_t>  m_EnemyInfos;
+    float                           m_flEnemyInfoCleanupTime;
 
 #else
-	
-	CVarBitVec	m_squadSlotsUsed;							// What squad slots are filled?
+
+    CVarBitVec  m_squadSlotsUsed;                           // What squad slots are filled?
 
 #endif
 
-	//---------------------------------
+    //---------------------------------
 public:
-	DECLARE_SIMPLE_DATADESC();
+    DECLARE_SIMPLE_DATADESC();
 };
 
 //-----------------------------------------------------------------------------
@@ -205,69 +205,69 @@ public:
 
 inline CAI_Squad *CAI_SquadManager::GetFirstSquad( AISquadsIter_t *pIter )
 {
-	*pIter = (AISquadsIter_t)m_pSquads;
-	return m_pSquads;
+    *pIter = (AISquadsIter_t)m_pSquads;
+    return m_pSquads;
 }
 
 //-------------------------------------
 
 inline CAI_Squad *CAI_SquadManager::GetNextSquad( AISquadsIter_t *pIter )
 {
-	CAI_Squad *pSquad = (CAI_Squad *)*pIter;
-	if ( pSquad )
-		pSquad = pSquad->m_pNextSquad;
-	*pIter = (AISquadsIter_t)pSquad;
-	return pSquad;
+    CAI_Squad *pSquad = (CAI_Squad *)*pIter;
+    if ( pSquad )
+        pSquad = pSquad->m_pNextSquad;
+    *pIter = (AISquadsIter_t)pSquad;
+    return pSquad;
 }
 
 //-------------------------------------
 // Purpose: Returns squad of the given name or creates a new squad with the
-//			given name if none exists and add pNPC to the list of members
+//          given name if none exists and add pNPC to the list of members
 //-------------------------------------
 
 inline CAI_Squad *CAI_SquadManager::FindCreateSquad(CAI_BaseNPC *pNPC, string_t squadName)
 {
-	CAI_Squad* pSquad = FindSquad( squadName );
-	
-	if ( !pSquad )
-		pSquad = CreateSquad( squadName );
-	
-	pSquad->AddToSquad( pNPC );
+    CAI_Squad* pSquad = FindSquad( squadName );
 
-	return pSquad;
+    if ( !pSquad )
+        pSquad = CreateSquad( squadName );
+
+    pSquad->AddToSquad( pNPC );
+
+    return pSquad;
 }
 
 //-----------------------------------------------------------------------------
 
 inline CAI_Squad *CAI_SquadManager::FindCreateSquad(string_t squadName)
 {
-	CAI_Squad* pSquad = FindSquad( squadName );
-	
-	if ( !pSquad )
-		pSquad = CreateSquad( squadName );
-	
-	return pSquad;
+    CAI_Squad* pSquad = FindSquad( squadName );
+
+    if ( !pSquad )
+        pSquad = CreateSquad( squadName );
+
+    return pSquad;
 }
 
 //-------------------------------------
 
 inline CAI_BaseNPC *CAI_Squad::GetAnyMember()
 {
-	if ( m_SquadMembers.Count() )
-		return m_SquadMembers[random->RandomInt( 0, m_SquadMembers.Count()-1 )];
-	return NULL;
+    if ( m_SquadMembers.Count() )
+        return m_SquadMembers[random->RandomInt( 0, m_SquadMembers.Count()-1 )];
+    return NULL;
 }
 
 //-------------------------------------
 
 inline int CAI_Squad::GetSquadIndex( CAI_BaseNPC *pAI )
 {
-	for ( int i = 0; i < m_SquadMembers.Count(); i++ )
-	{
-		if ( m_SquadMembers[i] == pAI )
-			return i;
-	}
-	return -1;
+    for ( int i = 0; i < m_SquadMembers.Count(); i++ )
+    {
+        if ( m_SquadMembers[i] == pAI )
+            return i;
+    }
+    return -1;
 }
 
 

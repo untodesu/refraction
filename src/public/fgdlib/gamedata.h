@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -34,25 +34,25 @@ typedef void (*GameDataMessageFunc_t)(int level, PRINTF_FORMAT_STRING const char
 
 struct FGDMatExlcusions_s
 {
-	char szDirectory[MAX_PATH];		// Where we store the material exclusion directories
-	bool bUserGenerated;			// If the user specified this ( default:  false -- FGD defined )
+    char szDirectory[MAX_PATH];     // Where we store the material exclusion directories
+    bool bUserGenerated;            // If the user specified this ( default:  false -- FGD defined )
 };
 
 // FGD-based AutoVisGroup data
 
 struct FGDVisGroupsBaseClass_s
 {
-	char szClass[MAX_PATH];				// i.e. Scene Logic, Sounds, etc   "Custom\Point Entities\Lights"
-	CUtlStringList szEntities;			// i.e. func_viscluster
+    char szClass[MAX_PATH];             // i.e. Scene Logic, Sounds, etc   "Custom\Point Entities\Lights"
+    CUtlStringList szEntities;          // i.e. func_viscluster
 };
 
 struct FGDAutoVisGroups_s
 {
-	char szParent[MAX_PATH];								// i.e. Custom, SFM, etc
-	CUtlVector< FGDVisGroupsBaseClass_s >	m_Classes;		// i.e. Scene Logic, Sounds, etc
+    char szParent[MAX_PATH];                                // i.e. Custom, SFM, etc
+    CUtlVector< FGDVisGroupsBaseClass_s >   m_Classes;      // i.e. Scene Logic, Sounds, etc
 };
 
-#define MAX_DIRECTORY_SIZE	32
+#define MAX_DIRECTORY_SIZE  32
 
 
 //-----------------------------------------------------------------------------
@@ -60,55 +60,55 @@ struct FGDAutoVisGroups_s
 //-----------------------------------------------------------------------------
 class GameData
 {
-	public:
-		typedef enum
-		{
-			NAME_FIXUP_PREFIX = 0,
-			NAME_FIXUP_POSTFIX,
-			NAME_FIXUP_NONE
-		} TNameFixup;
+    public:
+        typedef enum
+        {
+            NAME_FIXUP_PREFIX = 0,
+            NAME_FIXUP_POSTFIX,
+            NAME_FIXUP_NONE
+        } TNameFixup;
 
-		GameData();
-		~GameData();
+        GameData();
+        ~GameData();
 
-		BOOL Load(const char *pszFilename);
+        BOOL Load(const char *pszFilename);
 
-		GDclass *ClassForName(const char *pszName, int *piIndex = NULL);
+        GDclass *ClassForName(const char *pszName, int *piIndex = NULL);
 
-		void ClearData();
+        void ClearData();
 
-		inline int GetMaxMapCoord(void);
-		inline int GetMinMapCoord(void);
+        inline int GetMaxMapCoord(void);
+        inline int GetMinMapCoord(void);
 
-		inline int GetClassCount();
-		inline GDclass *GetClass(int nIndex);
+        inline int GetClassCount();
+        inline GDclass *GetClass(int nIndex);
 
-		GDclass *BeginInstanceRemap( const char *pszClassName, const char *pszInstancePrefix, Vector &Origin, QAngle &Angle );
-		bool	RemapKeyValue( const char *pszKey, const char *pszInValue, char *pszOutValue, TNameFixup NameFixup );
-		bool	RemapNameField( const char *pszInValue, char *pszOutValue, TNameFixup NameFixup );
-		bool	LoadFGDMaterialExclusions( TokenReader &tr );
-		bool	LoadFGDAutoVisGroups( TokenReader &tr );
-		
+        GDclass *BeginInstanceRemap( const char *pszClassName, const char *pszInstancePrefix, Vector &Origin, QAngle &Angle );
+        bool    RemapKeyValue( const char *pszKey, const char *pszInValue, char *pszOutValue, TNameFixup NameFixup );
+        bool    RemapNameField( const char *pszInValue, char *pszOutValue, TNameFixup NameFixup );
+        bool    LoadFGDMaterialExclusions( TokenReader &tr );
+        bool    LoadFGDAutoVisGroups( TokenReader &tr );
 
-		CUtlVector< FGDMatExlcusions_s >	m_FGDMaterialExclusions;
 
-		CUtlVector< FGDAutoVisGroups_s >	m_FGDAutoVisGroups;
+        CUtlVector< FGDMatExlcusions_s >    m_FGDMaterialExclusions;
 
-	private:
+        CUtlVector< FGDAutoVisGroups_s >    m_FGDAutoVisGroups;
 
-		bool ParseMapSize(TokenReader &tr);
+    private:
 
-		CUtlVector<GDclass *> m_Classes;
+        bool ParseMapSize(TokenReader &tr);
 
-		int m_nMinMapCoord;		// Min & max map bounds as defined by the FGD.
-		int m_nMaxMapCoord;
+        CUtlVector<GDclass *> m_Classes;
 
-		// Instance Remapping
-		Vector		m_InstanceOrigin;			// the origin offset of the instance
-		QAngle		m_InstanceAngle;			// the rotation of the the instance
-		matrix3x4_t	m_InstanceMat;				// matrix of the origin and rotation of rendering
-		char		m_InstancePrefix[ 128 ];	// the prefix used for the instance name remapping
-		GDclass		*m_InstanceClass;			// the entity class that is being remapped
+        int m_nMinMapCoord;     // Min & max map bounds as defined by the FGD.
+        int m_nMaxMapCoord;
+
+        // Instance Remapping
+        Vector      m_InstanceOrigin;           // the origin offset of the instance
+        QAngle      m_InstanceAngle;            // the rotation of the the instance
+        matrix3x4_t m_InstanceMat;              // matrix of the origin and rotation of rendering
+        char        m_InstancePrefix[ 128 ];    // the prefix used for the instance name remapping
+        GDclass     *m_InstanceClass;           // the entity class that is being remapped
 };
 
 
@@ -116,7 +116,7 @@ class GameData
 //-----------------------------------------------------------------------------
 inline int GameData::GetClassCount()
 {
-	return m_Classes.Count();
+    return m_Classes.Count();
 }
 
 
@@ -124,28 +124,28 @@ inline int GameData::GetClassCount()
 //-----------------------------------------------------------------------------
 inline GDclass *GameData::GetClass(int nIndex)
 {
-	if (nIndex >= m_Classes.Count())
-		return NULL;
-		
-	return m_Classes.Element(nIndex);
+    if (nIndex >= m_Classes.Count())
+        return NULL;
+
+    return m_Classes.Element(nIndex);
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 int GameData::GetMinMapCoord(void)
 {
-	return m_nMinMapCoord;
+    return m_nMinMapCoord;
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 int GameData::GetMaxMapCoord(void)
 {
-	return m_nMaxMapCoord;
+    return m_nMaxMapCoord;
 }
 
 

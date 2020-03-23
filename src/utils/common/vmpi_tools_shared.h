@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -12,10 +12,10 @@
 
 
 // Packet IDs.
-	#define VMPI_SUBPACKETID_DIRECTORIES	0	// qdir directories.
-	#define VMPI_SUBPACKETID_DBINFO			1	// MySQL database info.
-	#define VMPI_SUBPACKETID_CRASH			3	// A worker saying it crashed.
-	#define VMPI_SUBPACKETID_MULTICAST_ADDR	4	// Filesystem multicast address.
+    #define VMPI_SUBPACKETID_DIRECTORIES    0   // qdir directories.
+    #define VMPI_SUBPACKETID_DBINFO         1   // MySQL database info.
+    #define VMPI_SUBPACKETID_CRASH          3   // A worker saying it crashed.
+    #define VMPI_SUBPACKETID_MULTICAST_ADDR 4   // Filesystem multicast address.
 
 
 class CDBInfo;
@@ -35,8 +35,8 @@ void RecvMulticastIP( CIPAddr *pAddr );
 void VMPI_HandleCrash( const char *pMessage, void *pvExceptionInfo, bool bAssert );
 
 // Call this from an exception handler (set by SetUnhandledExceptionHandler).
-// uCode			= ExceptionInfo->ExceptionRecord->ExceptionCode.
-// pvExceptionInfo	= ExceptionInfo
+// uCode            = ExceptionInfo->ExceptionRecord->ExceptionCode.
+// pvExceptionInfo  = ExceptionInfo
 void VMPI_ExceptionFilter( unsigned long uCode, void *pvExceptionInfo );
 
 void HandleMPIDisconnect( int procID, const char *pReason );

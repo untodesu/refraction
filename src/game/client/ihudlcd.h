@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -13,8 +13,8 @@
 class IHudLCD
 {
 public:
-	virtual void	SetGlobalStat( char const *name, char const *value ) = 0;
-	virtual void	AddChatLine( char const *txt ) = 0;
+    virtual void    SetGlobalStat( char const *name, char const *value ) = 0;
+    virtual void    AddChatLine( char const *txt ) = 0;
 };
 
 extern IHudLCD *hudlcd;

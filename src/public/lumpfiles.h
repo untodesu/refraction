@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -10,7 +10,7 @@
 #pragma once
 #endif
 
-#define MAX_LUMPFILES	128
+#define MAX_LUMPFILES   128
 
 //-----------------------------------------------------------------------------
 // Lump files

@@ -26,27 +26,27 @@ class BitmapImage;
 
 class CEntityImagePanel : public CEntityPanel
 {
-	DECLARE_CLASS( CEntityImagePanel, CEntityPanel );
+    DECLARE_CLASS( CEntityImagePanel, CEntityPanel );
 
 public:
-	// constructor
-	CEntityImagePanel( vgui::Panel* pParent, const char *panelName );
-	~CEntityImagePanel();
+    // constructor
+    CEntityImagePanel( vgui::Panel* pParent, const char *panelName );
+    ~CEntityImagePanel();
 
-	// initialization
-	virtual bool Init( KeyValues* pInitData, C_BaseEntity* pEntity );
+    // initialization
+    virtual bool Init( KeyValues* pInitData, C_BaseEntity* pEntity );
 
-	bool ShouldDraw();
+    bool ShouldDraw();
 
-	virtual void Paint( void );
-	virtual void PaintBackground( void ) {}
+    virtual void Paint( void );
+    virtual void PaintBackground( void ) {}
 
 private:
-	// The bitmap to render
-	BitmapImage *m_pImage;
+    // The bitmap to render
+    BitmapImage *m_pImage;
 
 protected:
-	int m_r, m_g, m_b, m_a;
+    int m_r, m_g, m_b, m_a;
 };
 
 
@@ -56,24 +56,24 @@ protected:
 //-----------------------------------------------------------------------------
 class CEntityTeamImagePanel : public CEntityImagePanel
 {
-	DECLARE_CLASS( CEntityTeamImagePanel, CEntityImagePanel );
+    DECLARE_CLASS( CEntityTeamImagePanel, CEntityImagePanel );
 
 public:
-	CEntityTeamImagePanel( vgui::Panel* pParent, const char *panelName );
-	~CEntityTeamImagePanel( void );
-	// initialization
-	virtual bool Init( KeyValues* pInitData, C_BaseEntity* pEntity );
+    CEntityTeamImagePanel( vgui::Panel* pParent, const char *panelName );
+    ~CEntityTeamImagePanel( void );
+    // initialization
+    virtual bool Init( KeyValues* pInitData, C_BaseEntity* pEntity );
 
-	virtual void Paint( void );
+    virtual void Paint( void );
 
 private:
-	struct TEAMIMAGE
-	{
-		BitmapImage *m_pImage;
-		int m_r, m_g, m_b, m_a;
-	};
+    struct TEAMIMAGE
+    {
+        BitmapImage *m_pImage;
+        int m_r, m_g, m_b, m_a;
+    };
 
-	TEAMIMAGE m_Images[ MAX_TEAMS ];
+    TEAMIMAGE m_Images[ MAX_TEAMS ];
 };
 
 #endif //  VGUI_ENTITYIMAGEPANEL_H

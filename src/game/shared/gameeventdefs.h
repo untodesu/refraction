@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -15,7 +15,7 @@
 // Event names may be 32 characters long and are case sensitive
 // 256 is the maximum number of game events
 
-#define GAME_EVENT_PLAYER_DEATH		"player_death"
-#define GAME_EVENT_SAY_TEXT			"say_text"
+#define GAME_EVENT_PLAYER_DEATH     "player_death"
+#define GAME_EVENT_SAY_TEXT         "say_text"
 
 #endif // GAMEEVENTDEFS_H

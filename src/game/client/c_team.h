@@ -20,56 +20,56 @@ class C_BasePlayer;
 
 class C_Team : public C_BaseEntity
 {
-	DECLARE_CLASS( C_Team, C_BaseEntity );
+    DECLARE_CLASS( C_Team, C_BaseEntity );
 public:
-	DECLARE_CLIENTCLASS();
-	DECLARE_PREDICTABLE();
+    DECLARE_CLIENTCLASS();
+    DECLARE_PREDICTABLE();
 
-					C_Team();
-	virtual			~C_Team();
+                    C_Team();
+    virtual         ~C_Team();
 
-	virtual void	PreDataUpdate( DataUpdateType_t updateType );
+    virtual void    PreDataUpdate( DataUpdateType_t updateType );
 
-	// Data Handling
-	virtual char	*Get_Name( void );
-	virtual int		Get_Score( void );
-	virtual int		Get_Deaths( void );
-	virtual int		Get_Ping( void );
+    // Data Handling
+    virtual char    *Get_Name( void );
+    virtual int     Get_Score( void );
+    virtual int     Get_Deaths( void );
+    virtual int     Get_Ping( void );
 
-	// Player Handling
-	virtual int		Get_Number_Players( void );
-	virtual bool	ContainsPlayer( int iPlayerIndex );
-	C_BasePlayer*	GetPlayer( int idx );
+    // Player Handling
+    virtual int     Get_Number_Players( void );
+    virtual bool    ContainsPlayer( int iPlayerIndex );
+    C_BasePlayer*   GetPlayer( int idx );
 
-	// for shared code, use the same function name
-	virtual int		GetNumPlayers( void ) { return Get_Number_Players(); }
+    // for shared code, use the same function name
+    virtual int     GetNumPlayers( void ) { return Get_Number_Players(); }
 
-	int		GetTeamNumber() const;
+    int     GetTeamNumber() const;
 
-	int		GetRoundsWon(void) { return m_iRoundsWon; }
+    int     GetRoundsWon(void) { return m_iRoundsWon; }
 
-	void	RemoveAllPlayers();
+    void    RemoveAllPlayers();
 
 
 // IClientThinkable overrides.
 public:
 
-	virtual	void				ClientThink();
+    virtual void                ClientThink();
 
 
 public:
 
-	// Data received from the server
-	CUtlVector< int > m_aPlayers;
-	char	m_szTeamname[ MAX_TEAM_NAME_LENGTH ];
-	int		m_iScore;
-	int		m_iRoundsWon;
+    // Data received from the server
+    CUtlVector< int > m_aPlayers;
+    char    m_szTeamname[ MAX_TEAM_NAME_LENGTH ];
+    int     m_iScore;
+    int     m_iRoundsWon;
 
-	// Data for the scoreboard
-	int		m_iDeaths;
-	int		m_iPing;
-	int		m_iPacketloss;
-	int		m_iTeamNum;
+    // Data for the scoreboard
+    int     m_iDeaths;
+    int     m_iPing;
+    int     m_iPacketloss;
+    int     m_iTeamNum;
 };
 
 

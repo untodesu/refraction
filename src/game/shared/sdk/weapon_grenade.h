@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -14,8 +14,8 @@
 
 
 #ifdef CLIENT_DLL
-	
-	#define CSDKGrenade C_SDKGrenade
+
+    #define CSDKGrenade C_SDKGrenade
 
 #endif
 
@@ -25,24 +25,24 @@
 class CSDKGrenade : public CBaseSDKGrenade
 {
 public:
-	DECLARE_CLASS( CSDKGrenade, CBaseSDKGrenade );
-	DECLARE_NETWORKCLASS();
-	DECLARE_PREDICTABLE();
+    DECLARE_CLASS( CSDKGrenade, CBaseSDKGrenade );
+    DECLARE_NETWORKCLASS();
+    DECLARE_PREDICTABLE();
 
-	CSDKGrenade() {}
+    CSDKGrenade() {}
 
-	virtual SDKWeaponID GetWeaponID( void ) const		{ return WEAPON_GRENADE; }
+    virtual SDKWeaponID GetWeaponID( void ) const       { return WEAPON_GRENADE; }
 
 #ifdef CLIENT_DLL
 
 #else
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
-	virtual void EmitGrenade( Vector vecSrc, QAngle vecAngles, Vector vecVel, AngularImpulse angImpulse, CBasePlayer *pPlayer );
-	
+    virtual void EmitGrenade( Vector vecSrc, QAngle vecAngles, Vector vecVel, AngularImpulse angImpulse, CBasePlayer *pPlayer );
+
 #endif
 
-	CSDKGrenade( const CSDKGrenade & ) {}
+    CSDKGrenade( const CSDKGrenade & ) {}
 };
 
 

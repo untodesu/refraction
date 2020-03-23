@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -13,12 +13,12 @@
 class CTimeMaterialProxy : public CResultProxy
 {
 public:
-	virtual void OnBind( void *pC_BaseEntity );
-};					    
+    virtual void OnBind( void *pC_BaseEntity );
+};
 
 void CTimeMaterialProxy::OnBind( void *pC_BaseEntity )
 {
-	SetFloatResult( gpGlobals->curtime );
+    SetFloatResult( gpGlobals->curtime );
 }
 
 EXPOSE_INTERFACE( CTimeMaterialProxy, IMaterialProxy, "CurrentTime" IMATERIAL_PROXY_INTERFACE_VERSION );

@@ -53,39 +53,39 @@ template <typename K, typename V>
 class CUtlKeyValuePair
 {
 public:
-	typedef V ValueReturn_t;
-	K m_key;
-	V m_value;
+    typedef V ValueReturn_t;
+    K m_key;
+    V m_value;
 
-	CUtlKeyValuePair() {}
+    CUtlKeyValuePair() {}
 
-	template < typename KInit >
-	explicit CUtlKeyValuePair( const KInit &k ) : m_key( k ) {}
+    template < typename KInit >
+    explicit CUtlKeyValuePair( const KInit &k ) : m_key( k ) {}
 
-	template < typename KInit, typename VInit >
-	CUtlKeyValuePair( const KInit &k, const VInit &v ) : m_key( k ), m_value( v ) {}
+    template < typename KInit, typename VInit >
+    CUtlKeyValuePair( const KInit &k, const VInit &v ) : m_key( k ), m_value( v ) {}
 
-	V &GetValue() { return m_value; }
-	const V &GetValue() const { return m_value; }
+    V &GetValue() { return m_value; }
+    const V &GetValue() const { return m_value; }
 };
 
 template <typename K>
 class CUtlKeyValuePair<K, empty_t>
 {
 public:
-	typedef const K ValueReturn_t;
-	K m_key;
+    typedef const K ValueReturn_t;
+    K m_key;
 
-	CUtlKeyValuePair() {}
+    CUtlKeyValuePair() {}
 
-	template < typename KInit >
-	explicit CUtlKeyValuePair( const KInit &k ) : m_key( k ) {}
+    template < typename KInit >
+    explicit CUtlKeyValuePair( const KInit &k ) : m_key( k ) {}
 
-	template < typename KInit >
-	CUtlKeyValuePair( const KInit &k, empty_t ) : m_key( k ) {}
+    template < typename KInit >
+    CUtlKeyValuePair( const KInit &k, empty_t ) : m_key( k ) {}
 
-	CUtlKeyValuePair( const K &k, const empty_t& ) : m_key( k ) {}
-	const K &GetValue() const { return m_key; }
+    CUtlKeyValuePair( const K &k, const empty_t& ) : m_key( k ) {}
+    const K &GetValue() const { return m_key; }
 };
 
 
@@ -102,7 +102,7 @@ template <typename T> struct DefaultEqualFunctor;
 // are reasonably well-distributed across the entire 32-bit range.
 //  http://en.wikipedia.org/wiki/Avalanche_effect
 //  http://home.comcast.net/~bretm/hash/5.html
-// 
+//
 template <typename T> struct DefaultHashFunctor;
 
 // Argument type information. Struct currently contains one or two typedefs:
@@ -134,17 +134,17 @@ struct PointerHashFunctor { unsigned int operator()( const void* s ) const { ret
 template < typename T >
 struct DefaultLessFunctor
 {
-	bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a < b; }
-	bool operator()( typename ArgumentTypeInfo< T >::Alt_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a < b; }
-	bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Alt_t b ) const { return a < b; }
+    bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a < b; }
+    bool operator()( typename ArgumentTypeInfo< T >::Alt_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a < b; }
+    bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Alt_t b ) const { return a < b; }
 };
 
 template < typename T >
 struct DefaultEqualFunctor
 {
-	bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a == b; }
-	bool operator()( typename ArgumentTypeInfo< T >::Alt_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a == b; }
-	bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Alt_t b ) const { return a == b; }
+    bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a == b; }
+    bool operator()( typename ArgumentTypeInfo< T >::Alt_t a, typename ArgumentTypeInfo< T >::Arg_t b ) const { return a == b; }
+    bool operator()( typename ArgumentTypeInfo< T >::Arg_t a, typename ArgumentTypeInfo< T >::Alt_t b ) const { return a == b; }
 };
 
 // Hashes for basic types
@@ -188,9 +188,9 @@ template < typename T > struct DefaultHashFunctor< CUtlConstStringBase<T> > : St
 template < typename T >
 struct HasClassAltArgumentType
 {
-	template < typename X > static long Test( typename X::AltArgumentType_t* );
-	template < typename X > static char Test( ... );
-	enum { value = ( sizeof( Test< T >( NULL ) ) != sizeof( char ) ) };
+    template < typename X > static long Test( typename X::AltArgumentType_t* );
+    template < typename X > static char Test( ... );
+    enum { value = ( sizeof( Test< T >( NULL ) ) != sizeof( char ) ) };
 };
 
 template < typename T, bool = HasClassAltArgumentType< T >::value >
@@ -207,27 +207,27 @@ struct GetClassAltArgumentType< T&, false > : GetClassAltArgumentType< T > { };
 template < typename ArgT, typename AltT = typename GetClassAltArgumentType<ArgT>::Result_t >
 struct ArgumentTypeInfoImpl
 {
-	enum { has_alt = 1 };
-	typedef ArgT Arg_t;
-	typedef AltT Alt_t;
+    enum { has_alt = 1 };
+    typedef ArgT Arg_t;
+    typedef AltT Alt_t;
 };
 
 // Handle cases where AltArgumentType_t is typedef'd to undefined_t
 template < typename ArgT >
 struct ArgumentTypeInfoImpl< ArgT, undefined_t >
 {
-	enum { has_alt = 0 };
-	typedef ArgT Arg_t;
-	typedef undefined_t Alt_t;
+    enum { has_alt = 0 };
+    typedef ArgT Arg_t;
+    typedef undefined_t Alt_t;
 };
 
 // Handle cases where AltArgumentType_t is typedef'd to the primary type
 template < typename ArgT >
 struct ArgumentTypeInfoImpl< ArgT, ArgT >
 {
-	enum { has_alt = 0 };
-	typedef ArgT Arg_t;
-	typedef undefined_t Alt_t;
+    enum { has_alt = 0 };
+    typedef ArgT Arg_t;
+    typedef undefined_t Alt_t;
 };
 
 
@@ -289,27 +289,27 @@ template <typename T> struct DefaultHashFunctor< T * > : PointerHashFunctor { };
 // Bob Jenkins's 32-bit mix function.
 inline unsigned int Mix32HashFunctor::operator()( uint32 n ) const
 {
-	// Perform a mixture of the bits in n, where each bit
-	// of the input value has an equal chance to affect each
-	// bit of the output. This turns tightly clustered input
-	// values into a smooth distribution.
-	//
-	// This takes 16-20 cycles on modern x86 architectures;
-	// that's roughly the same cost as a mispredicted branch.
-	// It's also reasonably efficient on PPC-based consoles.
-	//
-	// If you're still thinking, "too many instructions!",
-	// do keep in mind that reading one byte of uncached RAM
-	// is about 30x slower than executing this code. It pays
-	// to have a good hash function which minimizes collisions
-	// (and therefore long lookup chains).
-	n = ( n + 0x7ed55d16 ) + ( n << 12 );
-	n = ( n ^ 0xc761c23c ) ^ ( n >> 19 );
-	n = ( n + 0x165667b1 ) + ( n << 5 );
-	n = ( n + 0xd3a2646c ) ^ ( n << 9 );
-	n = ( n + 0xfd7046c5 ) + ( n << 3 );
-	n = ( n ^ 0xb55a4f09 ) ^ ( n >> 16 );
-	return n;
+    // Perform a mixture of the bits in n, where each bit
+    // of the input value has an equal chance to affect each
+    // bit of the output. This turns tightly clustered input
+    // values into a smooth distribution.
+    //
+    // This takes 16-20 cycles on modern x86 architectures;
+    // that's roughly the same cost as a mispredicted branch.
+    // It's also reasonably efficient on PPC-based consoles.
+    //
+    // If you're still thinking, "too many instructions!",
+    // do keep in mind that reading one byte of uncached RAM
+    // is about 30x slower than executing this code. It pays
+    // to have a good hash function which minimizes collisions
+    // (and therefore long lookup chains).
+    n = ( n + 0x7ed55d16 ) + ( n << 12 );
+    n = ( n ^ 0xc761c23c ) ^ ( n >> 19 );
+    n = ( n + 0x165667b1 ) + ( n << 5 );
+    n = ( n + 0xd3a2646c ) ^ ( n << 9 );
+    n = ( n + 0xfd7046c5 ) + ( n << 3 );
+    n = ( n ^ 0xb55a4f09 ) ^ ( n >> 16 );
+    return n;
 }
 
 // Based on the widely-used FNV-1A string hash with a final
@@ -317,28 +317,28 @@ inline unsigned int Mix32HashFunctor::operator()( uint32 n ) const
 // large hash table sizes.
 inline unsigned int StringHashFunctor::operator()( const char* s ) const
 {
-	uint32 h = 2166136261u;
-	for ( ; *s; ++s )
-	{
-		uint32 c = (unsigned char) *s;
-		h = (h ^ c) * 16777619;
-	}
-	return (h ^ (h << 17)) + (h >> 21);
+    uint32 h = 2166136261u;
+    for ( ; *s; ++s )
+    {
+        uint32 c = (unsigned char) *s;
+        h = (h ^ c) * 16777619;
+    }
+    return (h ^ (h << 17)) + (h >> 21);
 }
 
 // Equivalent to StringHashFunctor on lower-case strings.
 inline unsigned int CaselessStringHashFunctor::operator()( const char* s ) const
 {
-	uint32 h = 2166136261u;
-	for ( ; *s; ++s )
-	{
-		uint32 c = (unsigned char) *s;
-		// Brutally fast branchless ASCII tolower():
-		// if ((c >= 'A') && (c <= 'Z')) c += ('a' - 'A');
-		c += (((('A'-1) - c) & (c - ('Z'+1))) >> 26) & 32;
-		h = (h ^ c) * 16777619;
-	}
-	return (h ^ (h << 17)) + (h >> 21);
+    uint32 h = 2166136261u;
+    for ( ; *s; ++s )
+    {
+        uint32 c = (unsigned char) *s;
+        // Brutally fast branchless ASCII tolower():
+        // if ((c >= 'A') && (c <= 'Z')) c += ('a' - 'A');
+        c += (((('A'-1) - c) & (c - ('Z'+1))) >> 26) & 32;
+        h = (h ^ c) * 16777619;
+    }
+    return (h ^ (h << 17)) + (h >> 21);
 }
 
 

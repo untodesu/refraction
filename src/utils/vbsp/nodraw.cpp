@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -16,7 +16,7 @@ void Draw_ClearWindow (void)
 
 //============================================================
 
-#define	GLSERV_PORT	25001
+#define GLSERV_PORT 25001
 
 
 void GLS_BeginScene (void)

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -23,22 +23,22 @@
 class CP4File
 {
 public:
-	explicit CP4File( char const *szFilename );
-	virtual ~CP4File();
+    explicit CP4File( char const *szFilename );
+    virtual ~CP4File();
 
 public:
-	// Opens the file for edit
-	virtual bool Edit( void );
-	
-	// Opens the file for add
-	virtual bool Add( void );
+    // Opens the file for edit
+    virtual bool Edit( void );
 
-	// Is the file in perforce?
-	virtual bool IsFileInPerforce();
+    // Opens the file for add
+    virtual bool Add( void );
+
+    // Is the file in perforce?
+    virtual bool IsFileInPerforce();
 
 protected:
-	// The filename that this class instance represents
-	CUtlString m_sFilename;
+    // The filename that this class instance represents
+    CUtlString m_sFilename;
 };
 
 //
@@ -47,12 +47,12 @@ protected:
 class CP4File_Dummy : public CP4File
 {
 public:
-	explicit CP4File_Dummy( char const *szFilename ) : CP4File( szFilename ) {}
+    explicit CP4File_Dummy( char const *szFilename ) : CP4File( szFilename ) {}
 
 public:
-	virtual bool Edit( void ) { return true; }
-	virtual bool Add( void ) { return true; }
-	virtual bool IsFileInPerforce() { return false; }
+    virtual bool Edit( void ) { return true; }
+    virtual bool Add( void ) { return true; }
+    virtual bool IsFileInPerforce() { return false; }
 };
 
 
@@ -62,26 +62,26 @@ public:
 class CP4Factory
 {
 public:
-	CP4Factory();
-	~CP4Factory();
+    CP4Factory();
+    ~CP4Factory();
 
 public:
-	// Sets whether dummy objects are created by the factory.
-	// Returns the old state of the dummy mode.
-	bool SetDummyMode( bool bDummyMode );
+    // Sets whether dummy objects are created by the factory.
+    // Returns the old state of the dummy mode.
+    bool SetDummyMode( bool bDummyMode );
 
 public:
-	// Sets the name of the changelist to open files under,
-	// NULL for "Default" changelist.
-	void SetOpenFileChangeList( const char *szChangeListName );
+    // Sets the name of the changelist to open files under,
+    // NULL for "Default" changelist.
+    void SetOpenFileChangeList( const char *szChangeListName );
 
 public:
-	// Creates a file access object for the given filename.
-	CP4File *AccessFile( char const *szFilename ) const;
+    // Creates a file access object for the given filename.
+    CP4File *AccessFile( char const *szFilename ) const;
 
 protected:
-	// Whether the factory is in the "dummy mode" and is creating dummy objects
-	bool m_bDummyMode;
+    // Whether the factory is in the "dummy mode" and is creating dummy objects
+    bool m_bDummyMode;
 };
 
 // Default p4 factory
@@ -94,12 +94,12 @@ extern CP4Factory *g_p4factory;
 class CP4AutoEditFile
 {
 public:
-	explicit CP4AutoEditFile( char const *szFilename ) : m_spImpl( g_p4factory->AccessFile( szFilename ) ) { m_spImpl->Edit(); }
+    explicit CP4AutoEditFile( char const *szFilename ) : m_spImpl( g_p4factory->AccessFile( szFilename ) ) { m_spImpl->Edit(); }
 
-	CP4File * File() const { return m_spImpl.Get(); }
+    CP4File * File() const { return m_spImpl.Get(); }
 
 protected:
-	CPlainAutoPtr< CP4File > m_spImpl;
+    CPlainAutoPtr< CP4File > m_spImpl;
 };
 
 //
@@ -108,12 +108,12 @@ protected:
 class CP4AutoAddFile
 {
 public:
-	explicit CP4AutoAddFile( char const *szFilename ) : m_spImpl( g_p4factory->AccessFile( szFilename ) ) { m_spImpl->Add(); }
+    explicit CP4AutoAddFile( char const *szFilename ) : m_spImpl( g_p4factory->AccessFile( szFilename ) ) { m_spImpl->Add(); }
 
-	CP4File * File() const { return m_spImpl.Get(); }
+    CP4File * File() const { return m_spImpl.Get(); }
 
 protected:
-	CPlainAutoPtr< CP4File > m_spImpl;
+    CPlainAutoPtr< CP4File > m_spImpl;
 };
 
 //
@@ -122,16 +122,16 @@ protected:
 class CP4AutoEditAddFile
 {
 public:
-	explicit CP4AutoEditAddFile( char const *szFilename ) : m_spImpl( g_p4factory->AccessFile( szFilename ) )
-	{ 
-		m_spImpl->Edit(); 
-	}
-	~CP4AutoEditAddFile( void ) { m_spImpl->Add(); }
+    explicit CP4AutoEditAddFile( char const *szFilename ) : m_spImpl( g_p4factory->AccessFile( szFilename ) )
+    {
+        m_spImpl->Edit();
+    }
+    ~CP4AutoEditAddFile( void ) { m_spImpl->Add(); }
 
-	CP4File * File() const { return m_spImpl.Get(); }
+    CP4File * File() const { return m_spImpl.Get(); }
 
 protected:
-	CPlainAutoPtr< CP4File > m_spImpl;
+    CPlainAutoPtr< CP4File > m_spImpl;
 };
 
 

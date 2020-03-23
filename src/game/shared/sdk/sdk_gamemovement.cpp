@@ -1,13 +1,13 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
 
-//========= Copyright © 1996-2001, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2001, Valve LLC, All rights reserved. ============
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================
@@ -20,18 +20,18 @@
 
 
 #ifdef CLIENT_DLL
-	#include "c_sdk_player.h"
+    #include "c_sdk_player.h"
 #else
-	#include "sdk_player.h"
+    #include "sdk_player.h"
 #endif
 
 
 class CSDKGameMovement : public CGameMovement
 {
 public:
-	DECLARE_CLASS( CSDKGameMovement, CGameMovement );
+    DECLARE_CLASS( CSDKGameMovement, CGameMovement );
 
-	CSDKGameMovement();
+    CSDKGameMovement();
 };
 
 
@@ -48,6 +48,6 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CGameMovement, IGameMovement,INTERFACENAME_GAM
 
 CSDKGameMovement::CSDKGameMovement()
 {
-	//m_vecViewOffsetNormal = SDK_PLAYER_VIEW_OFFSET;
+    //m_vecViewOffsetNormal = SDK_PLAYER_VIEW_OFFSET;
 }
 

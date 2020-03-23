@@ -12,7 +12,7 @@
 #include "../IStream.h"
 #include "../../Common/MyCom.h"
 
-class CInFileStream: 
+class CInFileStream:
   public IInStream,
   public IStreamGetSize,
   public CMyUnknownImp
@@ -42,7 +42,7 @@ public:
 };
 
 #ifndef _WIN32_WCE
-class CStdInFileStream: 
+class CStdInFileStream:
   public ISequentialInStream,
   public CMyUnknownImp
 {
@@ -57,7 +57,7 @@ public:
 };
 #endif
 
-class COutFileStream: 
+class COutFileStream:
   public IOutStream,
   public CMyUnknownImp
 {
@@ -74,7 +74,7 @@ public:
   bool Create(LPCWSTR fileName, bool createAlways);
   #endif
   #endif
-  
+
   MY_UNKNOWN_IMP1(IOutStream)
 
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
@@ -83,7 +83,7 @@ public:
 };
 
 #ifndef _WIN32_WCE
-class CStdOutFileStream: 
+class CStdOutFileStream:
   public ISequentialOutStream,
   public CMyUnknownImp
 {

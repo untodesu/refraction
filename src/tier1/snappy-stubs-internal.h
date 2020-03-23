@@ -111,18 +111,18 @@ class LogMessage {
  public:
   LogMessage() { }
   ~LogMessage() {
-	  fprintf( stderr, "\n" );
+      fprintf( stderr, "\n" );
     //cerr << endl;
   }
 
   LogMessage& operator<<(const std::string& msg) {
     //cerr << msg;
-	  fprintf( stderr, "%s", msg.c_str() );
+      fprintf( stderr, "%s", msg.c_str() );
 
-	  return *this;
+      return *this;
   }
   LogMessage& operator<<(int x) {
-	  fprintf( stderr, "%d", x );
+      fprintf( stderr, "%d", x );
     //cerr << x;
     return *this;
   }
@@ -145,7 +145,7 @@ class LogMessageCrash : public LogMessage {
 #pragma warning(disable : 4722)
 #endif
   ~LogMessageCrash() {
-	  fprintf( stderr, "\n" );
+      fprintf( stderr, "\n" );
 //    cerr << endl;
     abort();
   }

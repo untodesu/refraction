@@ -16,8 +16,8 @@ class CStringRegistry;
 // ----------------------------------------------------------------------
 // Failure messages
 //
-// UNDONE: do this diffently so when not in developer mode we can 
-//		   not use any memory for these text strings
+// UNDONE: do this diffently so when not in developer mode we can
+//         not use any memory for these text strings
 // ----------------------------------------------------------------------
 
 // Codes are either one of the enumerated types below, or a string (similar to Windows resource IDs)
@@ -25,62 +25,62 @@ typedef int AI_TaskFailureCode_t;
 
 enum AI_BaseTaskFailureCodes_t
 {
-	NO_TASK_FAILURE,
-	FAIL_NO_TARGET,
-	FAIL_WEAPON_OWNED,
-	FAIL_ITEM_NO_FIND,
-	FAIL_NO_HINT_NODE,
-	FAIL_SCHEDULE_NOT_FOUND,
-	FAIL_NO_ENEMY,
-	FAIL_NO_BACKAWAY_NODE,
-	FAIL_NO_COVER,
-	FAIL_NO_FLANK,
-	FAIL_NO_SHOOT,
-	FAIL_NO_ROUTE,
-	FAIL_NO_ROUTE_GOAL,
-	FAIL_NO_ROUTE_BLOCKED,
-	FAIL_NO_ROUTE_ILLEGAL,
-	FAIL_NO_WALK,
-	FAIL_ALREADY_LOCKED,
-	FAIL_NO_SOUND,
-	FAIL_NO_SCENT,
-	FAIL_BAD_ACTIVITY,
-	FAIL_NO_GOAL,
-	FAIL_NO_PLAYER,
-	FAIL_NO_REACHABLE_NODE,
-	FAIL_NO_AI_NETWORK,
-	FAIL_BAD_POSITION,
-	FAIL_BAD_PATH_GOAL,
-	FAIL_STUCK_ONTOP,
-	FAIL_ITEM_TAKEN,
+    NO_TASK_FAILURE,
+    FAIL_NO_TARGET,
+    FAIL_WEAPON_OWNED,
+    FAIL_ITEM_NO_FIND,
+    FAIL_NO_HINT_NODE,
+    FAIL_SCHEDULE_NOT_FOUND,
+    FAIL_NO_ENEMY,
+    FAIL_NO_BACKAWAY_NODE,
+    FAIL_NO_COVER,
+    FAIL_NO_FLANK,
+    FAIL_NO_SHOOT,
+    FAIL_NO_ROUTE,
+    FAIL_NO_ROUTE_GOAL,
+    FAIL_NO_ROUTE_BLOCKED,
+    FAIL_NO_ROUTE_ILLEGAL,
+    FAIL_NO_WALK,
+    FAIL_ALREADY_LOCKED,
+    FAIL_NO_SOUND,
+    FAIL_NO_SCENT,
+    FAIL_BAD_ACTIVITY,
+    FAIL_NO_GOAL,
+    FAIL_NO_PLAYER,
+    FAIL_NO_REACHABLE_NODE,
+    FAIL_NO_AI_NETWORK,
+    FAIL_BAD_POSITION,
+    FAIL_BAD_PATH_GOAL,
+    FAIL_STUCK_ONTOP,
+    FAIL_ITEM_TAKEN,
 
-	NUM_FAIL_CODES,
+    NUM_FAIL_CODES,
 };
 
 inline bool IsPathTaskFailure( AI_TaskFailureCode_t code )
 {
-	return ( code >= FAIL_NO_ROUTE && code <= FAIL_NO_ROUTE_ILLEGAL );
+    return ( code >= FAIL_NO_ROUTE && code <= FAIL_NO_ROUTE_ILLEGAL );
 }
 
 const char *TaskFailureToString( AI_TaskFailureCode_t code );
 inline int MakeFailCode( const char *pszGeneralError ) { return (int)pszGeneralError; }
 
 
-enum TaskStatus_e 
+enum TaskStatus_e
 {
-	TASKSTATUS_NEW =			 	0,			// Just started
-	TASKSTATUS_RUN_MOVE_AND_TASK =	1,			// Running task & movement
-	TASKSTATUS_RUN_MOVE	=			2,			// Just running movement
-	TASKSTATUS_RUN_TASK	=			3,			// Just running task
-	TASKSTATUS_COMPLETE	=			4,			// Completed, get next task
+    TASKSTATUS_NEW =                0,          // Just started
+    TASKSTATUS_RUN_MOVE_AND_TASK =  1,          // Running task & movement
+    TASKSTATUS_RUN_MOVE =           2,          // Just running movement
+    TASKSTATUS_RUN_TASK =           3,          // Just running task
+    TASKSTATUS_COMPLETE =           4,          // Completed, get next task
 };
 
 // an array of tasks is a task list
 // an array of schedules is a schedule list
 struct Task_t
 {
-	int		iTask;
-	float	flTaskData;
+    int     iTask;
+    float   flTaskData;
 };
 
 //=========================================================
@@ -88,416 +88,416 @@ struct Task_t
 //=========================================================
 enum sharedtasks_e
 {
-		TASK_INVALID = 0,
-		
-		// Forces the activity to reset.
-		TASK_RESET_ACTIVITY,
+        TASK_INVALID = 0,
 
-		// Waits for the specified number of seconds.
-		TASK_WAIT,					
+        // Forces the activity to reset.
+        TASK_RESET_ACTIVITY,
 
-		// Make announce attack sound
-		TASK_ANNOUNCE_ATTACK,
+        // Waits for the specified number of seconds.
+        TASK_WAIT,
 
-		// Waits for the specified number of seconds. Will constantly turn to 
-		// face the enemy while waiting. 
-		TASK_WAIT_FACE_ENEMY,
+        // Make announce attack sound
+        TASK_ANNOUNCE_ATTACK,
 
-		// Waits up to the specified number of seconds. Will constantly turn to 
-		// face the enemy while waiting. 
-		TASK_WAIT_FACE_ENEMY_RANDOM,
+        // Waits for the specified number of seconds. Will constantly turn to
+        // face the enemy while waiting.
+        TASK_WAIT_FACE_ENEMY,
 
-		// Wait until the player enters the same PVS as this character.
-		TASK_WAIT_PVS,
+        // Waits up to the specified number of seconds. Will constantly turn to
+        // face the enemy while waiting.
+        TASK_WAIT_FACE_ENEMY_RANDOM,
 
-		// DON'T use this, it needs to go away. 
-		TASK_SUGGEST_STATE,
+        // Wait until the player enters the same PVS as this character.
+        TASK_WAIT_PVS,
 
-		// Set m_hTargetEnt to nearest player
-		TASK_TARGET_PLAYER,
+        // DON'T use this, it needs to go away.
+        TASK_SUGGEST_STATE,
 
-		// Walk to m_hTargetEnt's location
-		TASK_SCRIPT_WALK_TO_TARGET,
+        // Set m_hTargetEnt to nearest player
+        TASK_TARGET_PLAYER,
 
-		// Run to m_hTargetEnt's location
-		TASK_SCRIPT_RUN_TO_TARGET,
+        // Walk to m_hTargetEnt's location
+        TASK_SCRIPT_WALK_TO_TARGET,
 
-		// Move to m_hTargetEnt's location using the activity specified by m_hCine->m_iszCustomMove.
-		TASK_SCRIPT_CUSTOM_MOVE_TO_TARGET,
+        // Run to m_hTargetEnt's location
+        TASK_SCRIPT_RUN_TO_TARGET,
 
-		// Move to within specified range of m_hTargetEnt
-		TASK_MOVE_TO_TARGET_RANGE,
+        // Move to m_hTargetEnt's location using the activity specified by m_hCine->m_iszCustomMove.
+        TASK_SCRIPT_CUSTOM_MOVE_TO_TARGET,
 
-		// Move to within specified range of our nav goal
-		TASK_MOVE_TO_GOAL_RANGE,
+        // Move to within specified range of m_hTargetEnt
+        TASK_MOVE_TO_TARGET_RANGE,
 
-		// Path that moves the character a few steps forward of where it is.
-		TASK_MOVE_AWAY_PATH,
+        // Move to within specified range of our nav goal
+        TASK_MOVE_TO_GOAL_RANGE,
 
-		TASK_GET_PATH_AWAY_FROM_BEST_SOUND,
+        // Path that moves the character a few steps forward of where it is.
+        TASK_MOVE_AWAY_PATH,
 
-		// Set the implied goal for TASK_GET_PATH_TO_GOAL
-		TASK_SET_GOAL,
+        TASK_GET_PATH_AWAY_FROM_BEST_SOUND,
 
-		// Get the path to the goal specified by TASK_SET_GOAL
-		TASK_GET_PATH_TO_GOAL,
+        // Set the implied goal for TASK_GET_PATH_TO_GOAL
+        TASK_SET_GOAL,
 
-		// Path to the enemy's location. Even if the enemy is unseen!
-		TASK_GET_PATH_TO_ENEMY,
-		
-		// Path to the last place this character saw the enemy
-		TASK_GET_PATH_TO_ENEMY_LKP,
+        // Get the path to the goal specified by TASK_SET_GOAL
+        TASK_GET_PATH_TO_GOAL,
 
-		// Path to the enemy's location or path to a LOS with the enemy's last known position, depending on range
-		TASK_GET_CHASE_PATH_TO_ENEMY,
+        // Path to the enemy's location. Even if the enemy is unseen!
+        TASK_GET_PATH_TO_ENEMY,
 
-		// Path to a LOS with the enemy's last known position
-		TASK_GET_PATH_TO_ENEMY_LKP_LOS,
+        // Path to the last place this character saw the enemy
+        TASK_GET_PATH_TO_ENEMY_LKP,
 
-		// Path to the dead enemy's carcass.
-		TASK_GET_PATH_TO_ENEMY_CORPSE,
+        // Path to the enemy's location or path to a LOS with the enemy's last known position, depending on range
+        TASK_GET_CHASE_PATH_TO_ENEMY,
 
-		// Path to the player's origin
-		TASK_GET_PATH_TO_PLAYER,
+        // Path to a LOS with the enemy's last known position
+        TASK_GET_PATH_TO_ENEMY_LKP_LOS,
 
-		// Path to node with line of sight to enemy
-		TASK_GET_PATH_TO_ENEMY_LOS,
+        // Path to the dead enemy's carcass.
+        TASK_GET_PATH_TO_ENEMY_CORPSE,
 
-		// Path to node with line of sight to enemy, at least flTaskData units away from m_vSavePosition
-		TASK_GET_FLANK_RADIUS_PATH_TO_ENEMY_LOS,
+        // Path to the player's origin
+        TASK_GET_PATH_TO_PLAYER,
 
-		// Path to node with line of sight to enemy, at least flTaskData degrees away from m_vSavePosition from the enemy's POV
-		TASK_GET_FLANK_ARC_PATH_TO_ENEMY_LOS,
+        // Path to node with line of sight to enemy
+        TASK_GET_PATH_TO_ENEMY_LOS,
 
-		// Path to the within shot range of last place this character saw the enemy
-		TASK_GET_PATH_TO_RANGE_ENEMY_LKP_LOS,
+        // Path to node with line of sight to enemy, at least flTaskData units away from m_vSavePosition
+        TASK_GET_FLANK_RADIUS_PATH_TO_ENEMY_LOS,
 
-		// Build a path to m_hTargetEnt
-		TASK_GET_PATH_TO_TARGET,
+        // Path to node with line of sight to enemy, at least flTaskData degrees away from m_vSavePosition from the enemy's POV
+        TASK_GET_FLANK_ARC_PATH_TO_ENEMY_LOS,
 
-		// Allow a little slop, and allow for some Z offset (like the target is a gun on a table).
-		TASK_GET_PATH_TO_TARGET_WEAPON,
+        // Path to the within shot range of last place this character saw the enemy
+        TASK_GET_PATH_TO_RANGE_ENEMY_LKP_LOS,
 
-		TASK_CREATE_PENDING_WEAPON,
+        // Build a path to m_hTargetEnt
+        TASK_GET_PATH_TO_TARGET,
 
-		// Path to nodes[ m_pHintNode ]
-		TASK_GET_PATH_TO_HINTNODE,
+        // Allow a little slop, and allow for some Z offset (like the target is a gun on a table).
+        TASK_GET_PATH_TO_TARGET_WEAPON,
 
-		// Store current position for later reference
-		TASK_STORE_LASTPOSITION,
+        TASK_CREATE_PENDING_WEAPON,
 
-		// Clear stored position
-		TASK_CLEAR_LASTPOSITION,
+        // Path to nodes[ m_pHintNode ]
+        TASK_GET_PATH_TO_HINTNODE,
 
-		// Store current position for later reference
-		TASK_STORE_POSITION_IN_SAVEPOSITION,
+        // Store current position for later reference
+        TASK_STORE_LASTPOSITION,
 
-		// Store best sound position for later reference
-		TASK_STORE_BESTSOUND_IN_SAVEPOSITION,
-		TASK_STORE_BESTSOUND_REACTORIGIN_IN_SAVEPOSITION,
+        // Clear stored position
+        TASK_CLEAR_LASTPOSITION,
 
-		TASK_REACT_TO_COMBAT_SOUND,
+        // Store current position for later reference
+        TASK_STORE_POSITION_IN_SAVEPOSITION,
 
-		// Store current enemy position in saveposition
-		TASK_STORE_ENEMY_POSITION_IN_SAVEPOSITION,
+        // Store best sound position for later reference
+        TASK_STORE_BESTSOUND_IN_SAVEPOSITION,
+        TASK_STORE_BESTSOUND_REACTORIGIN_IN_SAVEPOSITION,
 
-		// Move to the goal specified by the player in command mode.
-		TASK_GET_PATH_TO_COMMAND_GOAL,
+        TASK_REACT_TO_COMBAT_SOUND,
 
-		TASK_MARK_COMMAND_GOAL_POS,
+        // Store current enemy position in saveposition
+        TASK_STORE_ENEMY_POSITION_IN_SAVEPOSITION,
 
-		TASK_CLEAR_COMMAND_GOAL,
+        // Move to the goal specified by the player in command mode.
+        TASK_GET_PATH_TO_COMMAND_GOAL,
 
-		// Path to last position (Last position must be stored with TASK_STORE_LAST_POSITION)
-		TASK_GET_PATH_TO_LASTPOSITION,
+        TASK_MARK_COMMAND_GOAL_POS,
 
-		// Path to saved position (Save position must by set in code or by a task)
-		TASK_GET_PATH_TO_SAVEPOSITION,
+        TASK_CLEAR_COMMAND_GOAL,
 
-		// Path to location that has line of sight to saved position (Save position must by set in code or by a task)
-		TASK_GET_PATH_TO_SAVEPOSITION_LOS,
+        // Path to last position (Last position must be stored with TASK_STORE_LAST_POSITION)
+        TASK_GET_PATH_TO_LASTPOSITION,
 
-		// Path to random node
-		TASK_GET_PATH_TO_RANDOM_NODE,
+        // Path to saved position (Save position must by set in code or by a task)
+        TASK_GET_PATH_TO_SAVEPOSITION,
 
-		// Path to source of loudest heard sound that I care about
-		TASK_GET_PATH_TO_BESTSOUND,
+        // Path to location that has line of sight to saved position (Save position must by set in code or by a task)
+        TASK_GET_PATH_TO_SAVEPOSITION_LOS,
 
-		// Path to source of the strongest scend that I care about
-		TASK_GET_PATH_TO_BESTSCENT,
+        // Path to random node
+        TASK_GET_PATH_TO_RANDOM_NODE,
 
-		// Run the current path
-		TASK_RUN_PATH,	
+        // Path to source of loudest heard sound that I care about
+        TASK_GET_PATH_TO_BESTSOUND,
 
-		// Walk the current path
-		TASK_WALK_PATH,	
+        // Path to source of the strongest scend that I care about
+        TASK_GET_PATH_TO_BESTSCENT,
 
-		// Walk the current path for a specified number of seconds
-		TASK_WALK_PATH_TIMED,
+        // Run the current path
+        TASK_RUN_PATH,
 
-		// Walk the current path until you are x units from the goal.
-		TASK_WALK_PATH_WITHIN_DIST,
+        // Walk the current path
+        TASK_WALK_PATH,
 
-		// Walk the current path until for x units
-		TASK_WALK_PATH_FOR_UNITS,
+        // Walk the current path for a specified number of seconds
+        TASK_WALK_PATH_TIMED,
 
-		// Rung the current path until you are x units from the goal.
-		TASK_RUN_PATH_FLEE,
+        // Walk the current path until you are x units from the goal.
+        TASK_WALK_PATH_WITHIN_DIST,
 
-		// Run the current path for a specified number of seconds
-		TASK_RUN_PATH_TIMED,
+        // Walk the current path until for x units
+        TASK_WALK_PATH_FOR_UNITS,
 
-		// Run the current path until for x units
-		TASK_RUN_PATH_FOR_UNITS,
+        // Rung the current path until you are x units from the goal.
+        TASK_RUN_PATH_FLEE,
 
-		// Run the current path until you are x units from the goal.
-		TASK_RUN_PATH_WITHIN_DIST,
+        // Run the current path for a specified number of seconds
+        TASK_RUN_PATH_TIMED,
 
-		// Walk the current path sideways (must be supported by animation)
-		TASK_STRAFE_PATH,
+        // Run the current path until for x units
+        TASK_RUN_PATH_FOR_UNITS,
 
-		// Clear m_flMoveWaitFinished (timer that inhibits movement)
-		TASK_CLEAR_MOVE_WAIT,
+        // Run the current path until you are x units from the goal.
+        TASK_RUN_PATH_WITHIN_DIST,
 
-		// Decide on the appropriate small flinch animation, and play it. 
-		TASK_SMALL_FLINCH,
+        // Walk the current path sideways (must be supported by animation)
+        TASK_STRAFE_PATH,
 
-		// Decide on the appropriate big flinch animation, and play it. 
-		TASK_BIG_FLINCH,
+        // Clear m_flMoveWaitFinished (timer that inhibits movement)
+        TASK_CLEAR_MOVE_WAIT,
 
-		// Prevent dodging for a certain amount of time.
-		TASK_DEFER_DODGE,
+        // Decide on the appropriate small flinch animation, and play it.
+        TASK_SMALL_FLINCH,
 
-		// Turn to face ideal yaw
-		TASK_FACE_IDEAL,
+        // Decide on the appropriate big flinch animation, and play it.
+        TASK_BIG_FLINCH,
 
-		// Find an interesting direction to face. Don't face into walls, corners if you can help it.
-		TASK_FACE_REASONABLE,
+        // Prevent dodging for a certain amount of time.
+        TASK_DEFER_DODGE,
 
-		// Turn to face the way I should walk or run
-		TASK_FACE_PATH,
+        // Turn to face ideal yaw
+        TASK_FACE_IDEAL,
 
-		// Turn to face a player
-		TASK_FACE_PLAYER,
+        // Find an interesting direction to face. Don't face into walls, corners if you can help it.
+        TASK_FACE_REASONABLE,
 
-		// Turn to face the enemy
-		TASK_FACE_ENEMY,
+        // Turn to face the way I should walk or run
+        TASK_FACE_PATH,
 
-		// Turn to face nodes[ m_pHintNode ]
-		TASK_FACE_HINTNODE,
+        // Turn to face a player
+        TASK_FACE_PLAYER,
 
-		// Play activity associate with the current hint
-		TASK_PLAY_HINT_ACTIVITY,
+        // Turn to face the enemy
+        TASK_FACE_ENEMY,
 
-		// Turn to face m_hTargetEnt
-		TASK_FACE_TARGET,
+        // Turn to face nodes[ m_pHintNode ]
+        TASK_FACE_HINTNODE,
 
-		// Turn to face stored last position (last position must be stored first!)
-		TASK_FACE_LASTPOSITION,
+        // Play activity associate with the current hint
+        TASK_PLAY_HINT_ACTIVITY,
 
-		// Turn to face stored save position (save position must be stored first!)
-		TASK_FACE_SAVEPOSITION,
+        // Turn to face m_hTargetEnt
+        TASK_FACE_TARGET,
 
-		// Turn to face directly away from stored save position (save position must be stored first!)
-		TASK_FACE_AWAY_FROM_SAVEPOSITION,
+        // Turn to face stored last position (last position must be stored first!)
+        TASK_FACE_LASTPOSITION,
 
-		// Set the current facing to be the ideal
-		TASK_SET_IDEAL_YAW_TO_CURRENT,
+        // Turn to face stored save position (save position must be stored first!)
+        TASK_FACE_SAVEPOSITION,
 
-		// Attack the enemy (should be facing the enemy)
-		TASK_RANGE_ATTACK1,
-		TASK_RANGE_ATTACK2,		
-		TASK_MELEE_ATTACK1,		
-		TASK_MELEE_ATTACK2,		
+        // Turn to face directly away from stored save position (save position must be stored first!)
+        TASK_FACE_AWAY_FROM_SAVEPOSITION,
 
-		// Reload weapon
-		TASK_RELOAD,
+        // Set the current facing to be the ideal
+        TASK_SET_IDEAL_YAW_TO_CURRENT,
 
-		// Execute special attack (user-defined)
-		TASK_SPECIAL_ATTACK1,
-		TASK_SPECIAL_ATTACK2,
+        // Attack the enemy (should be facing the enemy)
+        TASK_RANGE_ATTACK1,
+        TASK_RANGE_ATTACK2,
+        TASK_MELEE_ATTACK1,
+        TASK_MELEE_ATTACK2,
 
-		TASK_FIND_HINTNODE,
-		TASK_FIND_LOCK_HINTNODE,
+        // Reload weapon
+        TASK_RELOAD,
 
-		TASK_CLEAR_HINTNODE,
+        // Execute special attack (user-defined)
+        TASK_SPECIAL_ATTACK1,
+        TASK_SPECIAL_ATTACK2,
 
-		// Claim m_pHintNode exclusively for this NPC.
-		TASK_LOCK_HINTNODE,
+        TASK_FIND_HINTNODE,
+        TASK_FIND_LOCK_HINTNODE,
 
-		// Emit an angry sound
-		TASK_SOUND_ANGRY,
+        TASK_CLEAR_HINTNODE,
 
-		// Emit a dying sound
-		TASK_SOUND_DEATH,
+        // Claim m_pHintNode exclusively for this NPC.
+        TASK_LOCK_HINTNODE,
 
-		// Emit an idle sound
-		TASK_SOUND_IDLE,
+        // Emit an angry sound
+        TASK_SOUND_ANGRY,
 
-		// Emit a sound because you are pissed off because you just saw someone you don't like
-		TASK_SOUND_WAKE,
+        // Emit a dying sound
+        TASK_SOUND_DEATH,
 
-		// Emit a pain sound
-		TASK_SOUND_PAIN,
+        // Emit an idle sound
+        TASK_SOUND_IDLE,
 
-		// Emit a death sound
-		TASK_SOUND_DIE,
+        // Emit a sound because you are pissed off because you just saw someone you don't like
+        TASK_SOUND_WAKE,
 
-		// Speak a sentence
-		TASK_SPEAK_SENTENCE,
+        // Emit a pain sound
+        TASK_SOUND_PAIN,
 
-		// Wait for the current sentence I'm speaking to finish
-		TASK_WAIT_FOR_SPEAK_FINISH,
+        // Emit a death sound
+        TASK_SOUND_DIE,
 
-		// Set current animation activity to the specified activity
-		TASK_SET_ACTIVITY,
+        // Speak a sentence
+        TASK_SPEAK_SENTENCE,
 
-		// Adjust the framerate to plus/minus N%
-		TASK_RANDOMIZE_FRAMERATE,
+        // Wait for the current sentence I'm speaking to finish
+        TASK_WAIT_FOR_SPEAK_FINISH,
 
-		// Immediately change to a schedule of the specified type
-		TASK_SET_SCHEDULE,
+        // Set current animation activity to the specified activity
+        TASK_SET_ACTIVITY,
 
-		// Set the specified schedule to execute if the current schedule fails.
-		TASK_SET_FAIL_SCHEDULE,
+        // Adjust the framerate to plus/minus N%
+        TASK_RANDOMIZE_FRAMERATE,
 
-		// How close to route goal do I need to get
-		TASK_SET_TOLERANCE_DISTANCE,
+        // Immediately change to a schedule of the specified type
+        TASK_SET_SCHEDULE,
 
-		// How many seconds should I spend search for a route
-		TASK_SET_ROUTE_SEARCH_TIME,
+        // Set the specified schedule to execute if the current schedule fails.
+        TASK_SET_FAIL_SCHEDULE,
 
-		// Return to use of default fail schedule
-		TASK_CLEAR_FAIL_SCHEDULE,
+        // How close to route goal do I need to get
+        TASK_SET_TOLERANCE_DISTANCE,
 
-		// Play the specified animation sequence before continuing
-		TASK_PLAY_SEQUENCE,
+        // How many seconds should I spend search for a route
+        TASK_SET_ROUTE_SEARCH_TIME,
 
-		// Play the specified private animation sequence before continuing
-		TASK_PLAY_PRIVATE_SEQUENCE,
+        // Return to use of default fail schedule
+        TASK_CLEAR_FAIL_SCHEDULE,
 
-		// Turn to face the enemy while playing specified animation sequence
-		TASK_PLAY_PRIVATE_SEQUENCE_FACE_ENEMY,
-		TASK_PLAY_SEQUENCE_FACE_ENEMY,
-		TASK_PLAY_SEQUENCE_FACE_TARGET,
+        // Play the specified animation sequence before continuing
+        TASK_PLAY_SEQUENCE,
 
-		// tries lateral cover first, then node cover
-		TASK_FIND_COVER_FROM_BEST_SOUND,
+        // Play the specified private animation sequence before continuing
+        TASK_PLAY_PRIVATE_SEQUENCE,
 
-		// tries lateral cover first, then node cover
-		TASK_FIND_COVER_FROM_ENEMY,
+        // Turn to face the enemy while playing specified animation sequence
+        TASK_PLAY_PRIVATE_SEQUENCE_FACE_ENEMY,
+        TASK_PLAY_SEQUENCE_FACE_ENEMY,
+        TASK_PLAY_SEQUENCE_FACE_TARGET,
 
-		// Find a place to hide from the enemy, somewhere on either side of me
-		TASK_FIND_LATERAL_COVER_FROM_ENEMY,
+        // tries lateral cover first, then node cover
+        TASK_FIND_COVER_FROM_BEST_SOUND,
 
-		// Find a place further from the saved position
-		TASK_FIND_BACKAWAY_FROM_SAVEPOSITION,
+        // tries lateral cover first, then node cover
+        TASK_FIND_COVER_FROM_ENEMY,
 
-		// Fine a place to hide from the enemy, anywhere. Use the node system.
-		TASK_FIND_NODE_COVER_FROM_ENEMY,
+        // Find a place to hide from the enemy, somewhere on either side of me
+        TASK_FIND_LATERAL_COVER_FROM_ENEMY,
 
-		// Find a place to hide from the enemy that's within the specified distance
-		TASK_FIND_NEAR_NODE_COVER_FROM_ENEMY,
+        // Find a place further from the saved position
+        TASK_FIND_BACKAWAY_FROM_SAVEPOSITION,
 
-		// data for this one is there MINIMUM aceptable distance to the cover.
-		TASK_FIND_FAR_NODE_COVER_FROM_ENEMY,
+        // Fine a place to hide from the enemy, anywhere. Use the node system.
+        TASK_FIND_NODE_COVER_FROM_ENEMY,
 
-		// Find a place to go that can't see to where I am now.
-		TASK_FIND_COVER_FROM_ORIGIN,
+        // Find a place to hide from the enemy that's within the specified distance
+        TASK_FIND_NEAR_NODE_COVER_FROM_ENEMY,
 
-		// Unhook from the AI system.
-		TASK_DIE,
+        // data for this one is there MINIMUM aceptable distance to the cover.
+        TASK_FIND_FAR_NODE_COVER_FROM_ENEMY,
 
-		// Wait until scripted sequence plays
-		TASK_WAIT_FOR_SCRIPT,
+        // Find a place to go that can't see to where I am now.
+        TASK_FIND_COVER_FROM_ORIGIN,
 
-		// Play scripted sequence animation
-		TASK_PUSH_SCRIPT_ARRIVAL_ACTIVITY,
-		TASK_PLAY_SCRIPT,
-		TASK_PLAY_SCRIPT_POST_IDLE,
-		TASK_ENABLE_SCRIPT,
-		TASK_PLANT_ON_SCRIPT,
-		TASK_FACE_SCRIPT,
+        // Unhook from the AI system.
+        TASK_DIE,
 
-		// Wait for scene to complete
-		TASK_PLAY_SCENE,
+        // Wait until scripted sequence plays
+        TASK_WAIT_FOR_SCRIPT,
 
-		// Wait for 0 to specified number of seconds
-		TASK_WAIT_RANDOM,
+        // Play scripted sequence animation
+        TASK_PUSH_SCRIPT_ARRIVAL_ACTIVITY,
+        TASK_PLAY_SCRIPT,
+        TASK_PLAY_SCRIPT_POST_IDLE,
+        TASK_ENABLE_SCRIPT,
+        TASK_PLANT_ON_SCRIPT,
+        TASK_FACE_SCRIPT,
 
-		// Wait forever (until this schedule is interrupted)
-		TASK_WAIT_INDEFINITE,
+        // Wait for scene to complete
+        TASK_PLAY_SCENE,
 
-		TASK_STOP_MOVING,
-		
-		// Turn left the specified number of degrees
-		TASK_TURN_LEFT,
+        // Wait for 0 to specified number of seconds
+        TASK_WAIT_RANDOM,
 
-		// Turn right the specified number of degrees
-		TASK_TURN_RIGHT,
+        // Wait forever (until this schedule is interrupted)
+        TASK_WAIT_INDEFINITE,
 
-		// Remember the specified piece of data
-		TASK_REMEMBER,
+        TASK_STOP_MOVING,
 
-		// Forget the specified piece of data
-		TASK_FORGET,
-		
-		// Wait until current movement is complete. 
-		TASK_WAIT_FOR_MOVEMENT,
+        // Turn left the specified number of degrees
+        TASK_TURN_LEFT,
 
-		// Wait until a single-step movement is complete.
-		TASK_WAIT_FOR_MOVEMENT_STEP,
+        // Turn right the specified number of degrees
+        TASK_TURN_RIGHT,
 
-		// Wait until I can't hear any danger sound.
-		TASK_WAIT_UNTIL_NO_DANGER_SOUND,
+        // Remember the specified piece of data
+        TASK_REMEMBER,
 
-		// Pick up new weapons:
-		TASK_WEAPON_FIND,
-		TASK_WEAPON_PICKUP,
-		TASK_WEAPON_RUN_PATH,	// run to weapon but break if someone else picks it up
-		TASK_WEAPON_CREATE,
+        // Forget the specified piece of data
+        TASK_FORGET,
 
-		TASK_ITEM_PICKUP,
-		TASK_ITEM_RUN_PATH,
+        // Wait until current movement is complete.
+        TASK_WAIT_FOR_MOVEMENT,
 
-		// Use small hull for tight navigation
-		TASK_USE_SMALL_HULL,
+        // Wait until a single-step movement is complete.
+        TASK_WAIT_FOR_MOVEMENT_STEP,
 
-		// wait until you are on ground
-		TASK_FALL_TO_GROUND,
+        // Wait until I can't hear any danger sound.
+        TASK_WAIT_UNTIL_NO_DANGER_SOUND,
 
-		// Wander for a specfied amound of time
-		TASK_WANDER,
+        // Pick up new weapons:
+        TASK_WEAPON_FIND,
+        TASK_WEAPON_PICKUP,
+        TASK_WEAPON_RUN_PATH,   // run to weapon but break if someone else picks it up
+        TASK_WEAPON_CREATE,
 
-		TASK_FREEZE,
+        TASK_ITEM_PICKUP,
+        TASK_ITEM_RUN_PATH,
 
-		// regather conditions at the start of a schedule (all conditions are cleared between schedules)
-		TASK_GATHER_CONDITIONS,
+        // Use small hull for tight navigation
+        TASK_USE_SMALL_HULL,
 
-		// Require an enemy be seen after the task is run to be considered a candidate enemy
-		TASK_IGNORE_OLD_ENEMIES,
-		
-		TASK_DEBUG_BREAK,
+        // wait until you are on ground
+        TASK_FALL_TO_GROUND,
 
-		// Add a specified amount of health to this NPC
-		TASK_ADD_HEALTH,
+        // Wander for a specfied amound of time
+        TASK_WANDER,
 
-		// Add a gesture layer and wait until it's finished
-		TASK_ADD_GESTURE_WAIT,
+        TASK_FREEZE,
 
-		// Add a gesture layer
-		TASK_ADD_GESTURE,
+        // regather conditions at the start of a schedule (all conditions are cleared between schedules)
+        TASK_GATHER_CONDITIONS,
 
-		// Get a path to my forced interaction partner
-		TASK_GET_PATH_TO_INTERACTION_PARTNER,
-		
-		// First task of all schedules for playing back scripted sequences
-		TASK_PRE_SCRIPT,
+        // Require an enemy be seen after the task is run to be considered a candidate enemy
+        TASK_IGNORE_OLD_ENEMIES,
 
-		// ======================================
-		// IMPORTANT: This must be the last enum
-		// ======================================
-		LAST_SHARED_TASK
+        TASK_DEBUG_BREAK,
+
+        // Add a specified amount of health to this NPC
+        TASK_ADD_HEALTH,
+
+        // Add a gesture layer and wait until it's finished
+        TASK_ADD_GESTURE_WAIT,
+
+        // Add a gesture layer
+        TASK_ADD_GESTURE,
+
+        // Get a path to my forced interaction partner
+        TASK_GET_PATH_TO_INTERACTION_PARTNER,
+
+        // First task of all schedules for playing back scripted sequences
+        TASK_PRE_SCRIPT,
+
+        // ======================================
+        // IMPORTANT: This must be the last enum
+        // ======================================
+        LAST_SHARED_TASK
 
 };
 

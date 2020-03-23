@@ -12,7 +12,7 @@
 #include "../LZMA/LZMADecoder.h"
 #include "../LZMA/LZMAEncoder.h"
 
-static const UInt32 kAdditionalSize = 
+static const UInt32 kAdditionalSize =
 #ifdef _WIN32_WCE
 (1 << 20);
 #else
@@ -29,9 +29,9 @@ class CRandomGenerator
 public:
   CRandomGenerator() { Init(); }
   void Init() { A1 = 362436069; A2 = 521288629;}
-  UInt32 GetRnd() 
+  UInt32 GetRnd()
   {
-    return 
+    return
       ((A1 = 36969 * (A1 & 0xffff) + (A1 >> 16)) << 16) ^
       ((A2 = 18000 * (A2 & 0xffff) + (A2 >> 16)) );
   }
@@ -48,7 +48,7 @@ public:
     Value = 0;
     NumBits = 0;
   }
-  UInt32 GetRnd(int numBits) 
+  UInt32 GetRnd(int numBits)
   {
     if (NumBits > numBits)
     {
@@ -75,14 +75,14 @@ class CBenchRandomGenerator
 public:
   UInt32 BufferSize;
   Byte *Buffer;
-  CBenchRandomGenerator(): Buffer(0) {} 
+  CBenchRandomGenerator(): Buffer(0) {}
   ~CBenchRandomGenerator() { Free(); }
-  void Free() 
-  { 
+  void Free()
+  {
     ::MidFree(Buffer);
     Buffer = 0;
   }
-  bool Alloc(UInt32 bufferSize) 
+  bool Alloc(UInt32 bufferSize)
   {
     if (Buffer != 0 && BufferSize == bufferSize)
       return true;
@@ -115,7 +115,7 @@ public:
   UInt32 GetLen2() { return RG.GetRnd(2 + (int)RG.GetRnd(2)); }
   void Generate()
   {
-    RG.Init(); 
+    RG.Init();
     Rep0 = 1;
     while(Pos < BufferSize)
     {
@@ -141,7 +141,7 @@ public:
   }
 };
 
-class CBenchmarkInStream: 
+class CBenchmarkInStream:
   public ISequentialInStream,
   public CMyUnknownImp
 {
@@ -171,8 +171,8 @@ STDMETHODIMP CBenchmarkInStream::Read(void *data, UInt32 size, UInt32 *processed
     *processedSize = size;
   return S_OK;
 }
-  
-class CBenchmarkOutStream: 
+
+class CBenchmarkOutStream:
   public ISequentialOutStream,
   public CMyUnknownImp
 {
@@ -181,9 +181,9 @@ class CBenchmarkOutStream:
 public:
   UInt32 Pos;
   Byte *Buffer;
-  CBenchmarkOutStream(): _f(0), Buffer(0) {} 
+  CBenchmarkOutStream(): _f(0), Buffer(0) {}
   virtual ~CBenchmarkOutStream() { delete []Buffer; }
-  void Init(FILE *f, UInt32 bufferSize) 
+  void Init(FILE *f, UInt32 bufferSize)
   {
     delete []Buffer;
     Buffer = 0;
@@ -210,8 +210,8 @@ STDMETHODIMP CBenchmarkOutStream::Write(const void *data, UInt32 size, UInt32 *p
   }
   return S_OK;
 }
-  
-class CCrcOutStream: 
+
+class CCrcOutStream:
   public ISequentialOutStream,
   public CMyUnknownImp
 {
@@ -229,7 +229,7 @@ STDMETHODIMP CCrcOutStream::Write(const void *data, UInt32 size, UInt32 *process
     *processedSize = size;
   return S_OK;
 }
-  
+
 static UInt64 GetTimeCount()
 {
   #ifdef _WIN32
@@ -239,7 +239,7 @@ static UInt64 GetTimeCount()
   return GetTickCount();
   #else
   return clock();
-  #endif 
+  #endif
 }
 
 static UInt64 GetFreq()
@@ -251,7 +251,7 @@ static UInt64 GetFreq()
   return 1000;
   #else
   return CLOCKS_PER_SEC;
-  #endif 
+  #endif
 }
 
 struct CProgressInfo:
@@ -313,7 +313,7 @@ static UInt64 GetCompressRating(UInt32 dictionarySize, UInt64 elapsedTime, UInt6
   return MyMultDiv64(numCommands, elapsedTime);
 }
 
-static UInt64 GetDecompressRating(UInt64 elapsedTime, 
+static UInt64 GetDecompressRating(UInt64 elapsedTime,
     UInt64 outSize, UInt64 inSize)
 {
   UInt64 numCommands = inSize * 220 + outSize * 20;
@@ -322,13 +322,13 @@ static UInt64 GetDecompressRating(UInt64 elapsedTime,
 
 /*
 static UInt64 GetTotalRating(
-    UInt32 dictionarySize, 
+    UInt32 dictionarySize,
     bool isBT4,
     UInt64 elapsedTimeEn, UInt64 sizeEn,
-    UInt64 elapsedTimeDe, 
+    UInt64 elapsedTimeDe,
     UInt64 inSizeDe, UInt64 outSizeDe)
 {
-  return (GetCompressRating(dictionarySize, isBT4, elapsedTimeEn, sizeEn) + 
+  return (GetCompressRating(dictionarySize, isBT4, elapsedTimeEn, sizeEn) +
     GetDecompressRating(elapsedTimeDe, inSizeDe, outSizeDe)) / 2;
 }
 */
@@ -339,10 +339,10 @@ static void PrintRating(FILE *f, UInt64 rating)
 }
 
 static void PrintResults(
-    FILE *f, 
+    FILE *f,
     UInt32 dictionarySize,
-    UInt64 elapsedTime, 
-    UInt64 size, 
+    UInt64 elapsedTime,
+    UInt64 size,
     bool decompressMode, UInt64 secondSize)
 {
   UInt64 speed = MyMultDiv64(size, elapsedTime);
@@ -389,9 +389,9 @@ int LzmaBenchmark(FILE *f, UInt32 numIterations, UInt32 dictionarySize)
   CBenchmarkOutStream *propStreamSpec = new CBenchmarkOutStream;
   CMyComPtr<ISequentialOutStream> propStream = propStreamSpec;
   propStreamSpec->Init(f, kMaxLzmaPropSize);
-  
-  PROPID propIDs[] = 
-  { 
+
+  PROPID propIDs[] =
+  {
     NCoderPropID::kDictionarySize
   };
   const int kNumProps = sizeof(propIDs) / sizeof(propIDs[0]);
@@ -452,19 +452,19 @@ int LzmaBenchmark(FILE *f, UInt32 numIterations, UInt32 dictionarySize)
       fprintf(f, "\nError: Internal ERROR 1282\n");
       return 1;
     }
-  
+
     ///////////////////////
     // Decompressing
-  
+
     CCrcOutStream *crcOutStreamSpec = new CCrcOutStream;
     CMyComPtr<ISequentialOutStream> crcOutStream = crcOutStreamSpec;
-    
+
     UInt64 decodeTime;
     for (int j = 0; j < 2; j++)
     {
       inStreamSpec->Init(outStreamSpec->Buffer, compressedSize);
       crcOutStreamSpec->Init();
-      
+
       if (decoderSpec->SetDecoderProperties2(propStreamSpec->Buffer, propStreamSpec->Pos) != S_OK)
       {
         fprintf(f, "\nError: Set Decoder Properties Error\n");
@@ -499,7 +499,7 @@ int LzmaBenchmark(FILE *f, UInt32 numIterations, UInt32 dictionarySize)
   fprintf(f, "---------------------------------------------------\n");
   PrintResults(f, dictionarySize, totalEncodeTime, totalBenchSize, false, 0);
   fprintf(f, "     ");
-  PrintResults(f, dictionarySize, totalDecodeTime, 
+  PrintResults(f, dictionarySize, totalDecodeTime,
       kBufferSize * numIterations, true, totalCompressedSize);
   fprintf(f, "    Average\n");
   return 0;

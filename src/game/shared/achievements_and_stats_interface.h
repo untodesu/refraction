@@ -26,7 +26,7 @@ public:
     virtual void CreatePanel( vgui::Panel* pParent ) {}
     virtual void DisplayPanel() {}
     virtual void ReleasePanel() {}
-	virtual int GetAchievementsPanelMinWidth( void ) const { return 0; }
+    virtual int GetAchievementsPanelMinWidth( void ) const { return 0; }
 
 protected:
     //-----------------------------------------------------------------------------

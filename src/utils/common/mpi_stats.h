@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -35,19 +35,19 @@ void VMPI_Stats_AddEventText( const char *pText );
 class CDBInfo
 {
 public:
-	char			m_HostName[128];
-	char			m_DBName[128];
-	char			m_UserName[128];
+    char            m_HostName[128];
+    char            m_DBName[128];
+    char            m_UserName[128];
 };
 
-// If you're the master, this loads pDBInfoFilename, sends that info to the workers, and 
+// If you're the master, this loads pDBInfoFilename, sends that info to the workers, and
 // connects to the database.
 //
 // If you're a worker, this waits for the DB info, then connects to the database.
-void StatsDB_InitStatsDatabase( 
-	int argc, 
-	char **argv, 
-	const char *pDBInfoFilename );
+void StatsDB_InitStatsDatabase(
+    int argc,
+    char **argv,
+    const char *pDBInfoFilename );
 
 // The database gives back a unique ID for the job.
 unsigned long StatsDB_GetUniqueJobID();

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -15,28 +15,28 @@
 ////////////////////////////////////////////////////////////////////////
 const studiohdr_t *studiohdr_t::FindModel( void **cache, char const *modelname ) const
 {
-	return modelinfo->FindModel( this, cache, modelname );
+    return modelinfo->FindModel( this, cache, modelname );
 }
 
 virtualmodel_t *studiohdr_t::GetVirtualModel( void ) const
 {
-	if ( numincludemodels == 0 )
-		return NULL;
-	return modelinfo->GetVirtualModel( this );
+    if ( numincludemodels == 0 )
+        return NULL;
+    return modelinfo->GetVirtualModel( this );
 }
 
 const studiohdr_t *virtualgroup_t::GetStudioHdr( ) const
 {
-	return modelinfo->FindModel( this->cache );
+    return modelinfo->FindModel( this->cache );
 }
 
 
 byte *studiohdr_t::GetAnimBlock( int iBlock ) const
 {
-	return modelinfo->GetAnimBlock( this, iBlock );
+    return modelinfo->GetAnimBlock( this, iBlock );
 }
 
-int	studiohdr_t::GetAutoplayList( unsigned short **pOut ) const
+int studiohdr_t::GetAutoplayList( unsigned short **pOut ) const
 {
-	return modelinfo->GetAutoplayList( this, pOut );
+    return modelinfo->GetAutoplayList( this, pOut );
 }

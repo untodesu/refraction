@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -13,9 +13,9 @@
 class CAnimatedTextureProxy : public CBaseAnimatedTextureProxy
 {
 public:
-	CAnimatedTextureProxy() {}
-	virtual ~CAnimatedTextureProxy() {}
-	virtual float GetAnimationStartTime( void* pBaseEntity );
+    CAnimatedTextureProxy() {}
+    virtual ~CAnimatedTextureProxy() {}
+    virtual float GetAnimationStartTime( void* pBaseEntity );
 };
 
 EXPOSE_INTERFACE( CAnimatedTextureProxy, IMaterialProxy, "AnimatedTexture" IMATERIAL_PROXY_INTERFACE_VERSION );
@@ -24,6 +24,6 @@ EXPOSE_INTERFACE( CAnimatedTextureProxy, IMaterialProxy, "AnimatedTexture" IMATE
 
 float CAnimatedTextureProxy::GetAnimationStartTime( void* pBaseEntity )
 {
-	return 0;
+    return 0;
 }
 

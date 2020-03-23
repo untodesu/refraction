@@ -39,9 +39,9 @@ typedef unsigned char PBKDF2Hash_t[32];
 //
 typedef union
 {
-	SHADigest_t sha;
-	BigPasswordHash_t bigpassword;
-	PBKDF2Hash_t pbkdf2;
+    SHADigest_t sha;
+    BigPasswordHash_t bigpassword;
+    PBKDF2Hash_t pbkdf2;
 } PasswordHash_t;
 
 
@@ -52,34 +52,34 @@ typedef union
 // k_EHashSHA1: A salted SHA-1 hash, width 20 bytes.
 // k_EHashBigPassword: For testing purposes, a salted SHA-1 hash extended to 32 bytes, with 6 bytes of 0x1 on either side.
 // k_EHashPBKDF2_1000: A PKCS#5 v2.0 Password-Based Key Derivation Function hash (PBKDF2-HMAC-SHA256) with 1,000 iterations.
-//						The digest width is 32 bytes.
+//                      The digest width is 32 bytes.
 // k_EHashPBKDF2_5000: A PKCS#5 v2.0 Password-Based Key Derivation Function hash (PBKDF2-HMAC-SHA256) with 5,000 iterations.
 // k_EHashPBKDF2_10000: A PKCS#5 v2.0 Password-Based Key Derivation Function hash (PBKDF2-HMAC-SHA256) with 10,000 iterations.
 // k_EHashSHA1WrappedWithPBKDF2_10000: A SHA-1 hash which is then further hashed with PBKDF2 at 10,000 rounds.  Used for
-//										strengthening old hashes in the database that haven't been logged in in a long time.
+//                                      strengthening old hashes in the database that haven't been logged in in a long time.
 //
 // Make sure to update k_EHashMax when adding new hash types.  Also add the length into the k_HashLengths array below.
 enum EPasswordHashAlg
 {
-	k_EHashSHA1 = 0,
-	k_EHashBigPassword = 1,
-	k_EHashPBKDF2_1000 = 2,
-	k_EHashPBKDF2_5000 = 3,
-	k_EHashPBKDF2_10000 = 4,
-	k_EHashSHA1WrappedWithPBKDF2_10000 = 5,
-	k_EHashMax = 5,
+    k_EHashSHA1 = 0,
+    k_EHashBigPassword = 1,
+    k_EHashPBKDF2_1000 = 2,
+    k_EHashPBKDF2_5000 = 3,
+    k_EHashPBKDF2_10000 = 4,
+    k_EHashSHA1WrappedWithPBKDF2_10000 = 5,
+    k_EHashMax = 5,
 };
 
 //
 // Hash sizes for the various available hash algorithms,
 // indexed by EPasswordHashAlg.
 const size_t k_HashLengths[] = {
-	sizeof(SHADigest_t),
-	sizeof(BigPasswordHash_t),
-	sizeof(PBKDF2Hash_t),
-	sizeof(PBKDF2Hash_t),
-	sizeof(PBKDF2Hash_t),
-	sizeof(PBKDF2Hash_t),
+    sizeof(SHADigest_t),
+    sizeof(BigPasswordHash_t),
+    sizeof(PBKDF2Hash_t),
+    sizeof(PBKDF2Hash_t),
+    sizeof(PBKDF2Hash_t),
+    sizeof(PBKDF2Hash_t),
 };
 
 #if defined(C_ASSERT)

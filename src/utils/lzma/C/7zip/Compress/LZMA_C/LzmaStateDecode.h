@@ -1,4 +1,4 @@
-/* 
+/*
   LzmaStateDecode.h
   LZMA Decoder interface (State version)
 
@@ -8,14 +8,14 @@
   LZMA SDK is licensed under two licenses:
   1) GNU Lesser General Public License (GNU LGPL)
   2) Common Public License (CPL)
-  It means that you can select one of these two licenses and 
+  It means that you can select one of these two licenses and
   follow rules of that license.
 
   SPECIAL EXCEPTION:
-  Igor Pavlov, as the author of this code, expressly permits you to 
-  statically or dynamically link your code (or bind by name) to the 
-  interfaces of this file without subjecting your linked code to the 
-  terms of the CPL or GNU LGPL. Any modifications or additions 
+  Igor Pavlov, as the author of this code, expressly permits you to
+  statically or dynamically link your code (or bind by name) to the
+  interfaces of this file without subjecting your linked code to the
+  terms of the CPL or GNU LGPL. Any modifications or additions
   to this file, however, are subject to the LGPL or CPL terms.
 */
 
@@ -25,7 +25,7 @@
 #include "LzmaTypes.h"
 
 /* #define _LZMA_PROB32 */
-/* It can increase speed on some 32-bit CPUs, 
+/* It can increase speed on some 32-bit CPUs,
    but memory usage will be doubled in that case */
 
 #ifdef _LZMA_PROB32
@@ -75,7 +75,7 @@ typedef struct _CLzmaDecoderState
   UInt32 Reps[4];
   int State;
   int RemainLen;  /* -2: decoder needs internal initialization
-                     -1: stream was finished, 
+                     -1: stream was finished,
                       0: ok
                     > 0: need to write RemainLen bytes as match Reps[0],
                   */

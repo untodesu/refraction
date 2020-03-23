@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,15 +15,15 @@
 #include "ai_condition.h"
 
 
-enum BaseNPCFlyerConditions_t 
+enum BaseNPCFlyerConditions_t
 {
-	COND_FLYER_MOVE_BLOCKED = LAST_SHARED_CONDITION,
-	COND_FLYER_MOVE_IMPOSSIBLE,
+    COND_FLYER_MOVE_BLOCKED = LAST_SHARED_CONDITION,
+    COND_FLYER_MOVE_IMPOSSIBLE,
 
-	// ======================================
-	// IMPORTANT: This must be the last enum
-	// ======================================
-	LAST_FLYER_SHARED_CONDITION
+    // ======================================
+    // IMPORTANT: This must be the last enum
+    // ======================================
+    LAST_FLYER_SHARED_CONDITION
 };
 
 
@@ -32,27 +32,27 @@ enum BaseNPCFlyerConditions_t
 //-----------------------------------------------------------------------------
 class CAI_BaseNPCFlyerNew : public CAI_BaseNPC
 {
-	DECLARE_CLASS( CAI_BaseNPCFlyerNew, CAI_BaseNPC );
+    DECLARE_CLASS( CAI_BaseNPCFlyerNew, CAI_BaseNPC );
 public:
-//	DEFINE_CUSTOM_AI;
+//  DEFINE_CUSTOM_AI;
 
-	virtual void	StartTask( const Task_t *pTask );
-	virtual void	RunTask( const Task_t *pTask );
+    virtual void    StartTask( const Task_t *pTask );
+    virtual void    RunTask( const Task_t *pTask );
 
-	virtual float	GetIdealSpeed( ) const;
-	virtual float	MinGroundDist(void);
+    virtual float   GetIdealSpeed( ) const;
+    virtual float   MinGroundDist(void);
 
-	CAI_BaseNPCFlyerNew();
+    CAI_BaseNPCFlyerNew();
 
 protected:
-	// Call this to set up a flyer
-	void SpawnFlyer();
+    // Call this to set up a flyer
+    void SpawnFlyer();
 
-	// Yarg! Must be chained down from leaf classes...
-	void ClearFlyerConditions(void);
+    // Yarg! Must be chained down from leaf classes...
+    void ClearFlyerConditions(void);
 
-	// Override this when we had to abort movement
-	virtual void AbortedMovement( void ) {}
+    // Override this when we had to abort movement
+    virtual void AbortedMovement( void ) {}
 };
 
 #endif // AI_BASENPC_FLYER_NEW_H

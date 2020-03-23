@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -16,7 +16,7 @@
 
 namespace vgui
 {
-	class Panel;
+    class Panel;
 }
 
 bool VGui_Startup( CreateInterfaceFn appSystemFactory );

@@ -24,11 +24,11 @@ class IQueryableReplayItem;
 abstract_class IReplayItemManager : public IBaseInterface
 {
 public:
-	virtual int						GetItemCount() = 0;
-	virtual void					GetItems( CUtlLinkedList< IQueryableReplayItem *, int > &items ) = 0;
-	virtual IQueryableReplayItem	*GetItem( ReplayItemHandle_t hItem ) = 0;
-	virtual bool					AreItemsMovies() = 0;
-	virtual void					DeleteItem( vgui::Panel *pPage, ReplayItemHandle_t hItem, bool bNotifyUI ) = 0;
+    virtual int                     GetItemCount() = 0;
+    virtual void                    GetItems( CUtlLinkedList< IQueryableReplayItem *, int > &items ) = 0;
+    virtual IQueryableReplayItem    *GetItem( ReplayItemHandle_t hItem ) = 0;
+    virtual bool                    AreItemsMovies() = 0;
+    virtual void                    DeleteItem( vgui::Panel *pPage, ReplayItemHandle_t hItem, bool bNotifyUI ) = 0;
 };
 
 IReplayItemManager *GetReplayItemManager();

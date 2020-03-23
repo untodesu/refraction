@@ -19,12 +19,12 @@ class IMaterialVar;
 abstract_class CEntityMaterialProxy : public IMaterialProxy
 {
 public:
-	virtual void Release( void );
-	virtual void OnBind( void *pC_BaseEntity );
+    virtual void Release( void );
+    virtual void OnBind( void *pC_BaseEntity );
 
 protected:
-	// base classes should implement these
-	virtual void OnBind( C_BaseEntity *pBaseEntity ) = 0;
+    // base classes should implement these
+    virtual void OnBind( C_BaseEntity *pBaseEntity ) = 0;
 };
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -13,7 +13,7 @@
 #endif
 
 #if defined( CLIENT_DLL )
-	#define CHL2MPMachineGun C_HL2MPMachineGun
+    #define CHL2MPMachineGun C_HL2MPMachineGun
 #endif
 
 //=========================================================
@@ -22,37 +22,37 @@
 class CHL2MPMachineGun : public CWeaponHL2MPBase
 {
 public:
-	DECLARE_CLASS( CHL2MPMachineGun, CWeaponHL2MPBase );
-	DECLARE_DATADESC();
+    DECLARE_CLASS( CHL2MPMachineGun, CWeaponHL2MPBase );
+    DECLARE_DATADESC();
 
-	CHL2MPMachineGun();
-	
-	DECLARE_NETWORKCLASS(); 
-	DECLARE_PREDICTABLE();
+    CHL2MPMachineGun();
 
-	void	PrimaryAttack( void );
+    DECLARE_NETWORKCLASS();
+    DECLARE_PREDICTABLE();
 
-	// Default calls through to m_hOwner, but plasma weapons can override and shoot projectiles here.
-	virtual void	ItemPostFrame( void );
-	virtual void	FireBullets( const FireBulletsInfo_t &info );
-	virtual bool	Deploy( void );
+    void    PrimaryAttack( void );
 
-	virtual const Vector &GetBulletSpread( void );
+    // Default calls through to m_hOwner, but plasma weapons can override and shoot projectiles here.
+    virtual void    ItemPostFrame( void );
+    virtual void    FireBullets( const FireBulletsInfo_t &info );
+    virtual bool    Deploy( void );
 
-	int				WeaponSoundRealtime( WeaponSound_t shoot_type );
+    virtual const Vector &GetBulletSpread( void );
 
-	// utility function
-	static void DoMachineGunKick( CBasePlayer *pPlayer, float dampEasy, float maxVerticleKickAngle, float fireDurationTime, float slideLimitTime );
+    int             WeaponSoundRealtime( WeaponSound_t shoot_type );
+
+    // utility function
+    static void DoMachineGunKick( CBasePlayer *pPlayer, float dampEasy, float maxVerticleKickAngle, float fireDurationTime, float slideLimitTime );
 
 private:
-	
-	CHL2MPMachineGun( const CHL2MPMachineGun & );
+
+    CHL2MPMachineGun( const CHL2MPMachineGun & );
 
 protected:
 
-	int	m_nShotsFired;	// Number of consecutive shots fired
+    int m_nShotsFired;  // Number of consecutive shots fired
 
-	float	m_flNextSoundTime;	// real-time clock of when to make next sound
+    float   m_flNextSoundTime;  // real-time clock of when to make next sound
 };
 
 #endif // BASEHLCOMBATWEAPON_H

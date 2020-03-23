@@ -18,26 +18,26 @@
 class CItemBattery : public CItem
 {
 public:
-	DECLARE_CLASS( CItemBattery, CItem );
+    DECLARE_CLASS( CItemBattery, CItem );
 
-	void Spawn( void )
-	{ 
-		Precache( );
-		SetModel( "models/items/battery.mdl" );
-		BaseClass::Spawn( );
-	}
-	void Precache( void )
-	{
-		PrecacheModel ("models/items/battery.mdl");
+    void Spawn( void )
+    {
+        Precache( );
+        SetModel( "models/items/battery.mdl" );
+        BaseClass::Spawn( );
+    }
+    void Precache( void )
+    {
+        PrecacheModel ("models/items/battery.mdl");
 
-		PrecacheScriptSound( "ItemBattery.Touch" );
+        PrecacheScriptSound( "ItemBattery.Touch" );
 
-	}
-	bool MyTouch( CBasePlayer *pPlayer )
-	{
-		CHL2_Player *pHL2Player = dynamic_cast<CHL2_Player *>( pPlayer );
-		return ( pHL2Player && pHL2Player->ApplyBattery() );
-	}
+    }
+    bool MyTouch( CBasePlayer *pPlayer )
+    {
+        CHL2_Player *pHL2Player = dynamic_cast<CHL2_Player *>( pPlayer );
+        return ( pHL2Player && pHL2Player->ApplyBattery() );
+    }
 };
 
 LINK_ENTITY_TO_CLASS(item_battery, CItemBattery);

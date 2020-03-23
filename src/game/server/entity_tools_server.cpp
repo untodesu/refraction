@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 #include "cbase.h"
@@ -21,39 +21,39 @@
 class CServerTools : public IServerTools
 {
 public:
-	// Inherited from IServerTools
-	virtual IServerEntity *GetIServerEntity( IClientEntity *pClientEntity );
-	virtual bool GetPlayerPosition( Vector &org, QAngle &ang, IClientEntity *pClientPlayer = NULL );
-	virtual bool SnapPlayerToPosition( const Vector &org, const QAngle &ang, IClientEntity *pClientPlayer = NULL );
-	virtual int GetPlayerFOV( IClientEntity *pClientPlayer = NULL );
-	virtual bool SetPlayerFOV( int fov, IClientEntity *pClientPlayer = NULL );
-	virtual bool IsInNoClipMode( IClientEntity *pClientPlayer = NULL );
-	virtual CBaseEntity *FirstEntity( void );
-	virtual CBaseEntity *NextEntity( CBaseEntity *pEntity );
-	virtual CBaseEntity *FindEntityByHammerID( int iHammerID );
-	virtual bool GetKeyValue( CBaseEntity *pEntity, const char *szField, char *szValue, int iMaxLen );
-	virtual bool SetKeyValue( CBaseEntity *pEntity, const char *szField, const char *szValue );
-	virtual bool SetKeyValue( CBaseEntity *pEntity, const char *szField, float flValue );
-	virtual bool SetKeyValue( CBaseEntity *pEntity, const char *szField, const Vector &vecValue );
-	virtual CBaseEntity *CreateEntityByName( const char *szClassName );
-	virtual void DispatchSpawn( CBaseEntity *pEntity );
-	virtual void ReloadParticleDefintions( const char *pFileName, const void *pBufData, int nLen );
-	virtual void AddOriginToPVS( const Vector &org );
-	virtual void MoveEngineViewTo( const Vector &vPos, const QAngle &vAngles );
-	virtual bool DestroyEntityByHammerId( int iHammerID );
-	virtual CBaseEntity *GetBaseEntityByEntIndex( int iEntIndex );
-	virtual void RemoveEntity( CBaseEntity *pEntity );
-	virtual void RemoveEntityImmediate( CBaseEntity *pEntity );
-	virtual IEntityFactoryDictionary *GetEntityFactoryDictionary( void );
-	virtual void SetMoveType( CBaseEntity *pEntity, int val );
-	virtual void SetMoveType( CBaseEntity *pEntity, int val, int moveCollide );
-	virtual void ResetSequence( CBaseAnimating *pEntity, int nSequence );
-	virtual void ResetSequenceInfo( CBaseAnimating *pEntity );
-	virtual void ClearMultiDamage( void );
-	virtual void ApplyMultiDamage( void );
-	virtual void AddMultiDamage( const CTakeDamageInfo &pTakeDamageInfo, CBaseEntity *pEntity );
-	virtual void RadiusDamage( const CTakeDamageInfo &info, const Vector &vecSrc, float flRadius, int iClassIgnore, CBaseEntity *pEntityIgnore );
-	virtual ITempEntsSystem *GetTempEntsSystem( void );
+    // Inherited from IServerTools
+    virtual IServerEntity *GetIServerEntity( IClientEntity *pClientEntity );
+    virtual bool GetPlayerPosition( Vector &org, QAngle &ang, IClientEntity *pClientPlayer = NULL );
+    virtual bool SnapPlayerToPosition( const Vector &org, const QAngle &ang, IClientEntity *pClientPlayer = NULL );
+    virtual int GetPlayerFOV( IClientEntity *pClientPlayer = NULL );
+    virtual bool SetPlayerFOV( int fov, IClientEntity *pClientPlayer = NULL );
+    virtual bool IsInNoClipMode( IClientEntity *pClientPlayer = NULL );
+    virtual CBaseEntity *FirstEntity( void );
+    virtual CBaseEntity *NextEntity( CBaseEntity *pEntity );
+    virtual CBaseEntity *FindEntityByHammerID( int iHammerID );
+    virtual bool GetKeyValue( CBaseEntity *pEntity, const char *szField, char *szValue, int iMaxLen );
+    virtual bool SetKeyValue( CBaseEntity *pEntity, const char *szField, const char *szValue );
+    virtual bool SetKeyValue( CBaseEntity *pEntity, const char *szField, float flValue );
+    virtual bool SetKeyValue( CBaseEntity *pEntity, const char *szField, const Vector &vecValue );
+    virtual CBaseEntity *CreateEntityByName( const char *szClassName );
+    virtual void DispatchSpawn( CBaseEntity *pEntity );
+    virtual void ReloadParticleDefintions( const char *pFileName, const void *pBufData, int nLen );
+    virtual void AddOriginToPVS( const Vector &org );
+    virtual void MoveEngineViewTo( const Vector &vPos, const QAngle &vAngles );
+    virtual bool DestroyEntityByHammerId( int iHammerID );
+    virtual CBaseEntity *GetBaseEntityByEntIndex( int iEntIndex );
+    virtual void RemoveEntity( CBaseEntity *pEntity );
+    virtual void RemoveEntityImmediate( CBaseEntity *pEntity );
+    virtual IEntityFactoryDictionary *GetEntityFactoryDictionary( void );
+    virtual void SetMoveType( CBaseEntity *pEntity, int val );
+    virtual void SetMoveType( CBaseEntity *pEntity, int val, int moveCollide );
+    virtual void ResetSequence( CBaseAnimating *pEntity, int nSequence );
+    virtual void ResetSequenceInfo( CBaseAnimating *pEntity );
+    virtual void ClearMultiDamage( void );
+    virtual void ApplyMultiDamage( void );
+    virtual void AddMultiDamage( const CTakeDamageInfo &pTakeDamageInfo, CBaseEntity *pEntity );
+    virtual void RadiusDamage( const CTakeDamageInfo &info, const Vector &vecSrc, float flRadius, int iClassIgnore, CBaseEntity *pEntityIgnore );
+    virtual ITempEntsSystem *GetTempEntsSystem( void );
 };
 
 
@@ -72,152 +72,152 @@ COMPILE_TIME_ASSERT( VSERVERTOOLS_INTERFACE_VERSION_INT == 2 );
 
 IServerEntity *CServerTools::GetIServerEntity( IClientEntity *pClientEntity )
 {
-	if ( pClientEntity == NULL )
-		return NULL;
+    if ( pClientEntity == NULL )
+        return NULL;
 
-	CBaseHandle ehandle = pClientEntity->GetRefEHandle();
-	if ( ehandle.GetEntryIndex() >= MAX_EDICTS )
-		return NULL; // the first MAX_EDICTS entities are networked, the rest are client or server only
+    CBaseHandle ehandle = pClientEntity->GetRefEHandle();
+    if ( ehandle.GetEntryIndex() >= MAX_EDICTS )
+        return NULL; // the first MAX_EDICTS entities are networked, the rest are client or server only
 
 #if 0
-	// this fails, since the server entities have extra bits in their serial numbers,
-	// since 20 bits are reserved for serial numbers, except for networked entities, which are restricted to 10
+    // this fails, since the server entities have extra bits in their serial numbers,
+    // since 20 bits are reserved for serial numbers, except for networked entities, which are restricted to 10
 
-	// Brian believes that everything should just restrict itself to 10 to make things simpler,
-	// so if/when he changes NUM_SERIAL_NUM_BITS to 10, we can switch back to this simpler code
+    // Brian believes that everything should just restrict itself to 10 to make things simpler,
+    // so if/when he changes NUM_SERIAL_NUM_BITS to 10, we can switch back to this simpler code
 
-	IServerNetworkable *pNet = gEntList.GetServerNetworkable( ehandle );
-	if ( pNet == NULL )
-		return NULL;
+    IServerNetworkable *pNet = gEntList.GetServerNetworkable( ehandle );
+    if ( pNet == NULL )
+        return NULL;
 
-	CBaseEntity *pServerEnt = pNet->GetBaseEntity();
-	return pServerEnt;
+    CBaseEntity *pServerEnt = pNet->GetBaseEntity();
+    return pServerEnt;
 #else
-	IHandleEntity *pEnt = gEntList.LookupEntityByNetworkIndex( ehandle.GetEntryIndex() );
-	if ( pEnt == NULL )
-		return NULL;
+    IHandleEntity *pEnt = gEntList.LookupEntityByNetworkIndex( ehandle.GetEntryIndex() );
+    if ( pEnt == NULL )
+        return NULL;
 
-	CBaseHandle h = gEntList.GetNetworkableHandle( ehandle.GetEntryIndex() );
-	const int mask = ( 1 << NUM_NETWORKED_EHANDLE_SERIAL_NUMBER_BITS ) - 1;
-	if ( !h.IsValid() || ( ( h.GetSerialNumber() & mask ) != ( ehandle.GetSerialNumber() & mask ) ) )
-		return NULL;
+    CBaseHandle h = gEntList.GetNetworkableHandle( ehandle.GetEntryIndex() );
+    const int mask = ( 1 << NUM_NETWORKED_EHANDLE_SERIAL_NUMBER_BITS ) - 1;
+    if ( !h.IsValid() || ( ( h.GetSerialNumber() & mask ) != ( ehandle.GetSerialNumber() & mask ) ) )
+        return NULL;
 
-	IServerUnknown *pUnk = static_cast< IServerUnknown* >( pEnt );
-	return pUnk->GetBaseEntity();
+    IServerUnknown *pUnk = static_cast< IServerUnknown* >( pEnt );
+    return pUnk->GetBaseEntity();
 #endif
 }
 
 bool CServerTools::GetPlayerPosition( Vector &org, QAngle &ang, IClientEntity *pClientPlayer )
 {
-	IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
-	CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
-	if ( pPlayer == NULL )
-		return false;
+    IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
+    CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
+    if ( pPlayer == NULL )
+        return false;
 
-	org = pPlayer->EyePosition();
-	ang = pPlayer->EyeAngles();
-	return true;
+    org = pPlayer->EyePosition();
+    ang = pPlayer->EyeAngles();
+    return true;
 }
 
 bool CServerTools::SnapPlayerToPosition( const Vector &org, const QAngle &ang, IClientEntity *pClientPlayer )
 {
-	IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
-	CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
-	if ( pPlayer == NULL )
-		return false;
+    IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
+    CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
+    if ( pPlayer == NULL )
+        return false;
 
-	pPlayer->SetAbsOrigin( org - pPlayer->GetViewOffset() );
-	pPlayer->SnapEyeAngles( ang );
+    pPlayer->SetAbsOrigin( org - pPlayer->GetViewOffset() );
+    pPlayer->SnapEyeAngles( ang );
 
-	// Disengage from hierarchy
-	pPlayer->SetParent( NULL );
+    // Disengage from hierarchy
+    pPlayer->SetParent( NULL );
 
-	return true;
+    return true;
 }
 
 int CServerTools::GetPlayerFOV( IClientEntity *pClientPlayer )
 {
-	IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
-	CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
-	if ( pPlayer == NULL )
-		return 0;
+    IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
+    CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
+    if ( pPlayer == NULL )
+        return 0;
 
-	return pPlayer->GetFOV();
+    return pPlayer->GetFOV();
 }
 
 bool CServerTools::SetPlayerFOV( int fov, IClientEntity *pClientPlayer )
 {
-	IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
-	CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
-	if ( pPlayer == NULL )
-		return false;
+    IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
+    CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
+    if ( pPlayer == NULL )
+        return false;
 
-	pPlayer->SetDefaultFOV( fov );
-	CBaseEntity *pFOVOwner = pPlayer->GetFOVOwner();
-	return pPlayer->SetFOV( pFOVOwner ? pFOVOwner : pPlayer, fov );
+    pPlayer->SetDefaultFOV( fov );
+    CBaseEntity *pFOVOwner = pPlayer->GetFOVOwner();
+    return pPlayer->SetFOV( pFOVOwner ? pFOVOwner : pPlayer, fov );
 }
 
 bool CServerTools::IsInNoClipMode( IClientEntity *pClientPlayer )
 {
-	IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
-	CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
-	if ( pPlayer == NULL )
-		return true;
+    IServerEntity *pServerPlayer = GetIServerEntity( pClientPlayer );
+    CBasePlayer *pPlayer = pServerPlayer ? ( CBasePlayer* )pServerPlayer : UTIL_GetLocalPlayer();
+    if ( pPlayer == NULL )
+        return true;
 
-	return pPlayer->GetMoveType() == MOVETYPE_NOCLIP;
+    return pPlayer->GetMoveType() == MOVETYPE_NOCLIP;
 }
 
 CBaseEntity *CServerTools::FirstEntity( void )
 {
-	return gEntList.FirstEnt();
+    return gEntList.FirstEnt();
 }
 
 CBaseEntity *CServerTools::NextEntity( CBaseEntity *pEntity )
 {
-	CBaseEntity *pEnt;
+    CBaseEntity *pEnt;
 
-	if ( pEntity == NULL )
-	{
-		pEnt = gEntList.FirstEnt();
-	}
-	else
-	{
-		pEnt = gEntList.NextEnt( (CBaseEntity *)pEntity );
-	}
-	return pEnt;
+    if ( pEntity == NULL )
+    {
+        pEnt = gEntList.FirstEnt();
+    }
+    else
+    {
+        pEnt = gEntList.NextEnt( (CBaseEntity *)pEntity );
+    }
+    return pEnt;
 }
 
 CBaseEntity *CServerTools::FindEntityByHammerID( int iHammerID )
 {
-	CBaseEntity *pEntity = gEntList.FirstEnt();
+    CBaseEntity *pEntity = gEntList.FirstEnt();
 
-	while (pEntity)
-	{
-		if (pEntity->m_iHammerID == iHammerID)
-			return pEntity;
-		pEntity = gEntList.NextEnt( pEntity );
-	}
-	return NULL;
+    while (pEntity)
+    {
+        if (pEntity->m_iHammerID == iHammerID)
+            return pEntity;
+        pEntity = gEntList.NextEnt( pEntity );
+    }
+    return NULL;
 }
 
 bool CServerTools::GetKeyValue( CBaseEntity *pEntity, const char *szField, char *szValue, int iMaxLen )
 {
-	return pEntity->GetKeyValue( szField, szValue, iMaxLen );
+    return pEntity->GetKeyValue( szField, szValue, iMaxLen );
 }
 
 bool CServerTools::SetKeyValue( CBaseEntity *pEntity, const char *szField, const char *szValue )
 {
-	return pEntity->KeyValue( szField, szValue );
+    return pEntity->KeyValue( szField, szValue );
 }
 
 bool CServerTools::SetKeyValue( CBaseEntity *pEntity, const char *szField, float flValue )
 {
-	return pEntity->KeyValue( szField, flValue );
+    return pEntity->KeyValue( szField, flValue );
 }
 
 bool CServerTools::SetKeyValue( CBaseEntity *pEntity, const char *szField, const Vector &vecValue )
 {
-	return pEntity->KeyValue( szField, vecValue );
+    return pEntity->KeyValue( szField, vecValue );
 }
 
 
@@ -226,12 +226,12 @@ bool CServerTools::SetKeyValue( CBaseEntity *pEntity, const char *szField, const
 //-----------------------------------------------------------------------------
 CBaseEntity *CServerTools::CreateEntityByName( const char *szClassName )
 {
-	return ::CreateEntityByName( szClassName );
+    return ::CreateEntityByName( szClassName );
 }
 
 void CServerTools::DispatchSpawn( CBaseEntity *pEntity )
 {
-	::DispatchSpawn( pEntity );
+    ::DispatchSpawn( pEntity );
 }
 
 
@@ -240,111 +240,111 @@ void CServerTools::DispatchSpawn( CBaseEntity *pEntity )
 //-----------------------------------------------------------------------------
 void CServerTools::ReloadParticleDefintions( const char *pFileName, const void *pBufData, int nLen )
 {
-	// FIXME: Use file name to determine if we care about this data
-	CUtlBuffer buf( pBufData, nLen, CUtlBuffer::READ_ONLY );
-	g_pParticleSystemMgr->ReadParticleConfigFile( buf, true );
+    // FIXME: Use file name to determine if we care about this data
+    CUtlBuffer buf( pBufData, nLen, CUtlBuffer::READ_ONLY );
+    g_pParticleSystemMgr->ReadParticleConfigFile( buf, true );
 }
 
 void CServerTools::AddOriginToPVS( const Vector &org )
 {
-	engine->AddOriginToPVS( org );
+    engine->AddOriginToPVS( org );
 }
 
 void CServerTools::MoveEngineViewTo( const Vector &vPos, const QAngle &vAngles )
 {
-	CBasePlayer *pPlayer = UTIL_GetListenServerHost();
-	if ( !pPlayer )
-		return;
+    CBasePlayer *pPlayer = UTIL_GetListenServerHost();
+    if ( !pPlayer )
+        return;
 
-	extern void EnableNoClip( CBasePlayer *pPlayer );
-	EnableNoClip( pPlayer );
+    extern void EnableNoClip( CBasePlayer *pPlayer );
+    EnableNoClip( pPlayer );
 
-	Vector zOffset = pPlayer->EyePosition() - pPlayer->GetAbsOrigin();
+    Vector zOffset = pPlayer->EyePosition() - pPlayer->GetAbsOrigin();
 
-	pPlayer->SetAbsOrigin( vPos - zOffset );
-	pPlayer->SnapEyeAngles( vAngles );
+    pPlayer->SetAbsOrigin( vPos - zOffset );
+    pPlayer->SnapEyeAngles( vAngles );
 }
 
 bool CServerTools::DestroyEntityByHammerId( int iHammerID )
 {
-	CBaseEntity *pEntity = (CBaseEntity*)FindEntityByHammerID( iHammerID );
-	if ( !pEntity )
-		return false;
+    CBaseEntity *pEntity = (CBaseEntity*)FindEntityByHammerID( iHammerID );
+    if ( !pEntity )
+        return false;
 
-	UTIL_Remove( pEntity );
-	return true;
+    UTIL_Remove( pEntity );
+    return true;
 }
 
 void CServerTools::RemoveEntity( CBaseEntity *pEntity )
 {
-	UTIL_Remove( pEntity );
+    UTIL_Remove( pEntity );
 }
 
 void CServerTools::RemoveEntityImmediate( CBaseEntity *pEntity )
 {
-	UTIL_RemoveImmediate( pEntity );
+    UTIL_RemoveImmediate( pEntity );
 }
 
 CBaseEntity *CServerTools::GetBaseEntityByEntIndex( int iEntIndex )
 {
-	edict_t *pEdict = INDEXENT( iEntIndex );
-	if ( pEdict )
-		return CBaseEntity::Instance( pEdict );
-	else
-		return NULL;
+    edict_t *pEdict = INDEXENT( iEntIndex );
+    if ( pEdict )
+        return CBaseEntity::Instance( pEdict );
+    else
+        return NULL;
 }
 
 IEntityFactoryDictionary *CServerTools::GetEntityFactoryDictionary( void )
 {
-	return ::EntityFactoryDictionary();
+    return ::EntityFactoryDictionary();
 }
 
 
 void CServerTools::SetMoveType( CBaseEntity *pEntity, int val )
 {
-	pEntity->SetMoveType( (MoveType_t)val );
+    pEntity->SetMoveType( (MoveType_t)val );
 }
 
 void CServerTools::SetMoveType( CBaseEntity *pEntity, int val, int moveCollide )
 {
-	pEntity->SetMoveType( (MoveType_t)val, (MoveCollide_t)moveCollide );
+    pEntity->SetMoveType( (MoveType_t)val, (MoveCollide_t)moveCollide );
 }
 
 void CServerTools::ResetSequence( CBaseAnimating *pEntity, int nSequence )
 {
-	pEntity->ResetSequence( nSequence );
+    pEntity->ResetSequence( nSequence );
 }
 
 void CServerTools::ResetSequenceInfo( CBaseAnimating *pEntity )
 {
-	pEntity->ResetSequenceInfo();
+    pEntity->ResetSequenceInfo();
 }
 
 
 void CServerTools::ClearMultiDamage( void )
 {
-	::ClearMultiDamage();
+    ::ClearMultiDamage();
 }
 
 void CServerTools::ApplyMultiDamage( void )
 {
-	::ApplyMultiDamage();
+    ::ApplyMultiDamage();
 }
 
 void CServerTools::AddMultiDamage( const CTakeDamageInfo &pTakeDamageInfo, CBaseEntity *pEntity )
 {
-	::AddMultiDamage( pTakeDamageInfo, pEntity );
+    ::AddMultiDamage( pTakeDamageInfo, pEntity );
 }
 
 void CServerTools::RadiusDamage( const CTakeDamageInfo &info, const Vector &vecSrc, float flRadius, int iClassIgnore, CBaseEntity *pEntityIgnore )
 {
-	::RadiusDamage( info, vecSrc, flRadius, iClassIgnore, pEntityIgnore );
+    ::RadiusDamage( info, vecSrc, flRadius, iClassIgnore, pEntityIgnore );
 }
 
 
 ITempEntsSystem *CServerTools::GetTempEntsSystem( void )
 {
-	return (ITempEntsSystem *)te;
+    return (ITempEntsSystem *)te;
 }
 
 
@@ -352,44 +352,44 @@ ITempEntsSystem *CServerTools::GetTempEntsSystem( void )
 class CServerChoreoTools : public IServerChoreoTools
 {
 public:
-	// Iterates through ALL entities (separate list for client vs. server)
-	virtual EntitySearchResult	NextChoreoEntity( EntitySearchResult currentEnt )
-	{
-		CBaseEntity *ent = reinterpret_cast< CBaseEntity* >( currentEnt );
-		ent = gEntList.FindEntityByClassname( ent, "logic_choreographed_scene" );
-		return reinterpret_cast< EntitySearchResult >( ent );
-	}
+    // Iterates through ALL entities (separate list for client vs. server)
+    virtual EntitySearchResult  NextChoreoEntity( EntitySearchResult currentEnt )
+    {
+        CBaseEntity *ent = reinterpret_cast< CBaseEntity* >( currentEnt );
+        ent = gEntList.FindEntityByClassname( ent, "logic_choreographed_scene" );
+        return reinterpret_cast< EntitySearchResult >( ent );
+    }
 
-	virtual const char			*GetSceneFile( EntitySearchResult sr )
-	{
-		CBaseEntity *ent = reinterpret_cast< CBaseEntity* >( sr );
-		if ( !sr )
-			return "";
+    virtual const char          *GetSceneFile( EntitySearchResult sr )
+    {
+        CBaseEntity *ent = reinterpret_cast< CBaseEntity* >( sr );
+        if ( !sr )
+            return "";
 
-		if ( Q_stricmp( ent->GetClassname(), "logic_choreographed_scene" ) )
-			return "";
+        if ( Q_stricmp( ent->GetClassname(), "logic_choreographed_scene" ) )
+            return "";
 
-		return GetSceneFilename( ent );
-	}
+        return GetSceneFilename( ent );
+    }
 
-	// For interactive editing
-	virtual int	GetEntIndex( EntitySearchResult sr )
-	{
-		CBaseEntity *ent = reinterpret_cast< CBaseEntity* >( sr );
-		if ( !ent )
-			return -1;
+    // For interactive editing
+    virtual int GetEntIndex( EntitySearchResult sr )
+    {
+        CBaseEntity *ent = reinterpret_cast< CBaseEntity* >( sr );
+        if ( !ent )
+            return -1;
 
-		return ent->entindex();
-	}
+        return ent->entindex();
+    }
 
-	virtual void ReloadSceneFromDisk( int entindex )
-	{
-		CBaseEntity *ent = CBaseEntity::Instance( entindex );
-		if ( !ent )
-			return;
+    virtual void ReloadSceneFromDisk( int entindex )
+    {
+        CBaseEntity *ent = CBaseEntity::Instance( entindex );
+        if ( !ent )
+            return;
 
-		::ReloadSceneFromDisk( ent );
-	}
+        ::ReloadSceneFromDisk( ent );
+    }
 };
 
 
@@ -402,57 +402,57 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CServerChoreoTools, IServerChoreoTools, VSERV
 //------------------------------------------------------------------------------
 void CC_Ent_Keyvalue( const CCommand &args )
 {
-	// Must have an odd number of arguments.
-	if ( ( args.ArgC() < 4 ) || ( args.ArgC() & 1 ) )
-	{
-		Msg( "Format: ent_keyvalue <entity id> \"key1\" \"value1\" \"key2\" \"value2\" ... \"keyN\" \"valueN\"\n" );
-		return;
-	}
+    // Must have an odd number of arguments.
+    if ( ( args.ArgC() < 4 ) || ( args.ArgC() & 1 ) )
+    {
+        Msg( "Format: ent_keyvalue <entity id> \"key1\" \"value1\" \"key2\" \"value2\" ... \"keyN\" \"valueN\"\n" );
+        return;
+    }
 
-	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() );
-	CBaseEntity *pEnt;
-	if ( FStrEq( args[1], "" ) || FStrEq( args[1], "!picker" ) )
-	{
-		if (!pPlayer)
-			return;
+    CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() );
+    CBaseEntity *pEnt;
+    if ( FStrEq( args[1], "" ) || FStrEq( args[1], "!picker" ) )
+    {
+        if (!pPlayer)
+            return;
 
-		extern CBaseEntity *FindPickerEntity( CBasePlayer *pPlayer );
-		pEnt = FindPickerEntity( pPlayer );
+        extern CBaseEntity *FindPickerEntity( CBasePlayer *pPlayer );
+        pEnt = FindPickerEntity( pPlayer );
 
-		if ( !pEnt )
-		{
-			ClientPrint( pPlayer, HUD_PRINTCONSOLE, "No entity in front of player.\n" );
-			return;
-		}
-	}
-	else if ( FStrEq( args[1], "!self" ) || FStrEq( args[1], "!caller" ) || FStrEq( args[1], "!activator" ) )
-	{
-		if (!pPlayer)
-			return;
+        if ( !pEnt )
+        {
+            ClientPrint( pPlayer, HUD_PRINTCONSOLE, "No entity in front of player.\n" );
+            return;
+        }
+    }
+    else if ( FStrEq( args[1], "!self" ) || FStrEq( args[1], "!caller" ) || FStrEq( args[1], "!activator" ) )
+    {
+        if (!pPlayer)
+            return;
 
-		pEnt = pPlayer;
-	}
-	else
-	{
-		int nID = atoi( args[1] );
+        pEnt = pPlayer;
+    }
+    else
+    {
+        int nID = atoi( args[1] );
 
-		pEnt = g_ServerTools.FindEntityByHammerID( nID );
-		if ( !pEnt )
-		{
-			Msg( "Entity ID %d not found.\n", nID );
-			return;
-		}
-	}
+        pEnt = g_ServerTools.FindEntityByHammerID( nID );
+        if ( !pEnt )
+        {
+            Msg( "Entity ID %d not found.\n", nID );
+            return;
+        }
+    }
 
-	int nArg = 2;
-	while ( nArg < args.ArgC() )
-	{
-		const char *pszKey = args[ nArg ];
-		const char *pszValue = args[ nArg + 1 ];
-		nArg += 2;
+    int nArg = 2;
+    while ( nArg < args.ArgC() )
+    {
+        const char *pszKey = args[ nArg ];
+        const char *pszValue = args[ nArg + 1 ];
+        nArg += 2;
 
-		g_ServerTools.SetKeyValue( pEnt, pszKey, pszValue );
-	}
-} 
+        g_ServerTools.SetKeyValue( pEnt, pszKey, pszValue );
+    }
+}
 
 static ConCommand ent_keyvalue("ent_keyvalue", CC_Ent_Keyvalue, "Applies the comma delimited key=value pairs to the entity with the given Hammer ID.\n\tFormat: ent_keyvalue <entity id> <key1> <value1> <key2> <value2> ... <keyN> <valueN>\n", FCVAR_CHEAT);

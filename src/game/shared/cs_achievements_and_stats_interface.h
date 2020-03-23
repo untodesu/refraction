@@ -36,7 +36,7 @@ public:
     virtual void CreatePanel( vgui::Panel* pParent );
     virtual void DisplayPanel();
     virtual void ReleasePanel();
-	virtual int GetAchievementsPanelMinWidth( void ) const { return cAchievementsDialogMinWidth; }
+    virtual int GetAchievementsPanelMinWidth( void ) const { return cAchievementsDialogMinWidth; }
 
 protected:
     vgui::DHANDLE<vgui::Frame>  m_pAchievementAndStatsSummary;

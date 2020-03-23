@@ -11,7 +11,7 @@ extern "C"
 #include "../Branch/BranchX86.h"
 }
 
-class CInStreamRam: 
+class CInStreamRam:
   public ISequentialInStream,
   public CMyUnknownImp
 {
@@ -41,8 +41,8 @@ STDMETHODIMP CInStreamRam::Read(void *data, UInt32 size, UInt32 *processedSize)
     *processedSize = size;
   return S_OK;
 }
-  
-class COutStreamRam: 
+
+class COutStreamRam:
   public ISequentialOutStream,
   public CMyUnknownImp
 {
@@ -91,18 +91,18 @@ STDMETHODIMP COutStreamRam::Write(const void *data, UInt32 size, UInt32 *process
   }
   return S_OK;
 }
-  
+
 #define SZE_FAIL (1)
 #define SZE_OUTOFMEMORY (2)
 #define SZE_OUT_OVERFLOW (3)
 
 int LzmaRamEncode(
-    const Byte *inBuffer, size_t inSize, 
-    Byte *outBuffer, size_t outSize, size_t *outSizeProcessed, 
+    const Byte *inBuffer, size_t inSize,
+    Byte *outBuffer, size_t outSize, size_t *outSizeProcessed,
     UInt32 dictionarySize, ESzFilterMode filterMode)
 {
   #ifndef _NO_EXCEPTIONS
-  try { 
+  try {
   #endif
 
   *outSizeProcessed = 0;
@@ -114,10 +114,10 @@ int LzmaRamEncode(
   NCompress::NLZMA::CEncoder *encoderSpec = new NCompress::NLZMA::CEncoder;
   CMyComPtr<ICompressCoder> encoder = encoderSpec;
 
-  PROPID propIDs[] = 
-  { 
+  PROPID propIDs[] =
+  {
     NCoderPropID::kAlgorithm,
-    NCoderPropID::kDictionarySize,  
+    NCoderPropID::kDictionarySize,
     NCoderPropID::kNumFastBytes,
   };
   const int kNumProps = sizeof(propIDs) / sizeof(propIDs[0]);
@@ -131,7 +131,7 @@ int LzmaRamEncode(
 
   if (encoderSpec->SetCoderProperties(propIDs, properties, kNumProps) != S_OK)
     return 1;
-  
+
   COutStreamRam *outStreamSpec = new COutStreamRam;
   if (outStreamSpec == 0)
     return SZE_OUTOFMEMORY;
@@ -149,7 +149,7 @@ int LzmaRamEncode(
     return SZE_OUT_OVERFLOW;
   if (outStreamSpec->Pos != kIdSize + kLzmaPropsSize)
     return 1;
-  
+
   int i;
   for (i = 0; i < 8; i++)
   {
@@ -175,7 +175,7 @@ int LzmaRamEncode(
     x86_Convert_Init(_prevMask, _prevPos);
     x86_Convert(filteredStream, (UInt32)inSize, 0, &_prevMask, &_prevPos, 1);
   }
-  
+
   UInt32 minSize = 0;
   int numPasses = (filterMode == SZ_FILTER_AUTO) ? 3 : 1;
   bool bestIsFiltered = false;
@@ -193,15 +193,15 @@ int LzmaRamEncode(
       curModeIsFiltered = true;
 
     inStreamSpec->Init(curModeIsFiltered ? filteredStream : inBuffer, inSize);
-    
+
     HRESULT lzmaResult = encoder->Code(inStream, outStream, 0, 0, 0);
-    
+
     mainResult = 0;
     if (lzmaResult == E_OUTOFMEMORY)
     {
       mainResult = SZE_OUTOFMEMORY;
       break;
-    } 
+    }
     if (i == 0 || outStreamSpec->Pos <= minSize)
     {
       minSize = outStreamSpec->Pos;
@@ -213,7 +213,7 @@ int LzmaRamEncode(
     {
       mainResult = SZE_FAIL;
       break;
-    } 
+    }
   }
   *outSizeProcessed = outStreamSpec->Pos;
   if (bestIsFiltered)
@@ -221,7 +221,7 @@ int LzmaRamEncode(
   if (useFilter)
     MyFree(filteredStream);
   return mainResult;
-  
+
   #ifndef _NO_EXCEPTIONS
   } catch(...) { return SZE_OUTOFMEMORY; }
   #endif

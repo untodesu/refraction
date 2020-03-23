@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -13,37 +13,37 @@
 
 CParticleSphereRenderer::CParticleSphereRenderer()
 {
-	m_vBaseColor.Init();
-	memset( &m_AmbientLight, 0, sizeof( m_AmbientLight ) );
-	memset( &m_DirectionalLight, 0, sizeof( m_DirectionalLight ) );
+    m_vBaseColor.Init();
+    memset( &m_AmbientLight, 0, sizeof( m_AmbientLight ) );
+    memset( &m_DirectionalLight, 0, sizeof( m_DirectionalLight ) );
 
-	m_bUsingPixelShaders = false;
-	m_iLastTickStartRenderCalled = -1;
-	m_pParticleMgr = NULL;
+    m_bUsingPixelShaders = false;
+    m_iLastTickStartRenderCalled = -1;
+    m_pParticleMgr = NULL;
 }
 
 
 void CParticleSphereRenderer::Init( CParticleMgr *pParticleMgr, IMaterial *pMaterial )
 {
-	m_pParticleMgr = pParticleMgr;
+    m_pParticleMgr = pParticleMgr;
 
-	// Figure out how we need to draw.
-	bool bFound = false;
-	IMaterialVar *pVar = pMaterial->FindVar( "$USINGPIXELSHADER", &bFound, false );
-	if( bFound && pVar && pVar->GetIntValue() )
-		m_bUsingPixelShaders = true;
-	else
-		m_bUsingPixelShaders = false;
+    // Figure out how we need to draw.
+    bool bFound = false;
+    IMaterialVar *pVar = pMaterial->FindVar( "$USINGPIXELSHADER", &bFound, false );
+    if( bFound && pVar && pVar->GetIntValue() )
+        m_bUsingPixelShaders = true;
+    else
+        m_bUsingPixelShaders = false;
 }
 
 
 void CParticleSphereRenderer::StartRender( VMatrix &effectMatrix )
 {
-	// We're about to be rendered.. set our directional lighting parameters for this particle system.
-	if ( m_pParticleMgr )
-	{
-		m_pParticleMgr->SetDirectionalLightInfo( m_DirectionalLight );
-	}
+    // We're about to be rendered.. set our directional lighting parameters for this particle system.
+    if ( m_pParticleMgr )
+    {
+        m_pParticleMgr->SetDirectionalLightInfo( m_DirectionalLight );
+    }
 
-	m_iLastTickStartRenderCalled = gpGlobals->tickcount;
+    m_iLastTickStartRenderCalled = gpGlobals->tickcount;
 }

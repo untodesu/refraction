@@ -24,30 +24,30 @@
 //-----------------------------------------------------------------------------
 class CTeamPlayHud : public vgui::Panel, public CHudElement
 {
-	DECLARE_CLASS_SIMPLE( CTeamPlayHud, vgui::Panel );
+    DECLARE_CLASS_SIMPLE( CTeamPlayHud, vgui::Panel );
 
 public:
-	CTeamPlayHud( const char *pElementName );
-	void Reset();
+    CTeamPlayHud( const char *pElementName );
+    void Reset();
 
-	virtual void PerformLayout();
+    virtual void PerformLayout();
 
 protected:
-	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
-	virtual void OnThink();
+    virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
+    virtual void OnThink();
 
 private:
-	vgui::HFont m_hFont;
-	Color		m_bgColor;
+    vgui::HFont m_hFont;
+    Color       m_bgColor;
 
-	vgui::Label *m_pWarmupLabel;	// "Warmup Mode"
+    vgui::Label *m_pWarmupLabel;    // "Warmup Mode"
 
-	vgui::Label *m_pBackground;		// black box
+    vgui::Label *m_pBackground;     // black box
 
-	bool m_bSuitAuxPowerUsed;
+    bool m_bSuitAuxPowerUsed;
 
-	CPanelAnimationVarAliasType( int, m_iTextX, "text_xpos", "8", "proportional_int" );
-	CPanelAnimationVarAliasType( int, m_iTextY, "text_ypos", "8", "proportional_int" );
+    CPanelAnimationVarAliasType( int, m_iTextX, "text_xpos", "8", "proportional_int" );
+    CPanelAnimationVarAliasType( int, m_iTextY, "text_ypos", "8", "proportional_int" );
 };
 
 DECLARE_HUDELEMENT( CTeamPlayHud );
@@ -57,46 +57,46 @@ DECLARE_HUDELEMENT( CTeamPlayHud );
 //-----------------------------------------------------------------------------
 CTeamPlayHud::CTeamPlayHud( const char *pElementName ) : BaseClass(NULL, "TeamDisplay"), CHudElement( pElementName )
 {
-	vgui::Panel *pParent = g_pClientMode->GetViewport();
-	SetParent( pParent );
-	SetVisible( false );
-	SetAlpha( 255 );
+    vgui::Panel *pParent = g_pClientMode->GetViewport();
+    SetParent( pParent );
+    SetVisible( false );
+    SetAlpha( 255 );
 
-	m_pBackground = new vgui::Label( this, "Background", "" );
+    m_pBackground = new vgui::Label( this, "Background", "" );
 
-	m_pWarmupLabel = new vgui::Label( this, "RoundState_warmup", "test label" /*g_pVGuiLocalize->Find( "#Clan_warmup_mode" )*/ );
-	m_pWarmupLabel->SetPaintBackgroundEnabled( false );
-	m_pWarmupLabel->SetPaintBorderEnabled( false );
-	m_pWarmupLabel->SizeToContents();
-	m_pWarmupLabel->SetContentAlignment( vgui::Label::a_west );
-	m_pWarmupLabel->SetFgColor( GetFgColor() );
+    m_pWarmupLabel = new vgui::Label( this, "RoundState_warmup", "test label" /*g_pVGuiLocalize->Find( "#Clan_warmup_mode" )*/ );
+    m_pWarmupLabel->SetPaintBackgroundEnabled( false );
+    m_pWarmupLabel->SetPaintBorderEnabled( false );
+    m_pWarmupLabel->SizeToContents();
+    m_pWarmupLabel->SetContentAlignment( vgui::Label::a_west );
+    m_pWarmupLabel->SetFgColor( GetFgColor() );
 
-	m_bSuitAuxPowerUsed = false;
+    m_bSuitAuxPowerUsed = false;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CTeamPlayHud::Reset()
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CTeamPlayHud::ApplySchemeSettings( vgui::IScheme *pScheme )
 {
-	BaseClass::ApplySchemeSettings( pScheme );
+    BaseClass::ApplySchemeSettings( pScheme );
 
-	SetFgColor( Color(0,0,0,0) );	//GetSchemeColor("RoundStateFg", pScheme) );
-	m_hFont = pScheme->GetFont( "Default", true );
+    SetFgColor( Color(0,0,0,0) );   //GetSchemeColor("RoundStateFg", pScheme) );
+    m_hFont = pScheme->GetFont( "Default", true );
 
-	m_pBackground->SetBgColor( GetSchemeColor("BgColor", pScheme) );
-	m_pBackground->SetPaintBackgroundType( 2 );
+    m_pBackground->SetBgColor( GetSchemeColor("BgColor", pScheme) );
+    m_pBackground->SetPaintBackgroundType( 2 );
 
-	SetAlpha( 255 );
-	SetBgColor( Color( 0, 0, 0, 0 ) );
-	SetPaintBackgroundType( 0 );
+    SetAlpha( 255 );
+    SetBgColor( Color( 0, 0, 0, 0 ) );
+    SetPaintBackgroundType( 0 );
 }
 
 //-----------------------------------------------------------------------------
@@ -105,25 +105,25 @@ void CTeamPlayHud::ApplySchemeSettings( vgui::IScheme *pScheme )
 void CTeamPlayHud::PerformLayout()
 {
 
-	BaseClass::PerformLayout();
+    BaseClass::PerformLayout();
 
-	int wide, tall;
-	GetSize( wide, tall );
+    int wide, tall;
+    GetSize( wide, tall );
 
-	// find the widest line
-	int labelWide = m_pWarmupLabel->GetWide();
+    // find the widest line
+    int labelWide = m_pWarmupLabel->GetWide();
 
-	// find the total height
-	int fontTall = vgui::surface()->GetFontTall( m_hFont );
-	int labelTall = fontTall;
+    // find the total height
+    int fontTall = vgui::surface()->GetFontTall( m_hFont );
+    int labelTall = fontTall;
 
-	labelWide += m_iTextX*2;
-	labelTall += m_iTextY*2;
+    labelWide += m_iTextX*2;
+    labelTall += m_iTextY*2;
 
-	m_pBackground->SetBounds( 0, 0, labelWide, labelTall );
+    m_pBackground->SetBounds( 0, 0, labelWide, labelTall );
 
-	int xOffset = (labelWide - m_pWarmupLabel->GetWide())/2;
-	m_pWarmupLabel->SetPos( 0 + xOffset, 0 + m_iTextY );
+    int xOffset = (labelWide - m_pWarmupLabel->GetWide())/2;
+    m_pWarmupLabel->SetPos( 0 + xOffset, 0 + m_iTextY );
 }
 
 //-----------------------------------------------------------------------------
@@ -131,59 +131,59 @@ void CTeamPlayHud::PerformLayout()
 //-----------------------------------------------------------------------------
 void CTeamPlayHud::OnThink()
 {
-	SetVisible( false );
+    SetVisible( false );
 
-	C_BaseHLPlayer *pLocalPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+    C_BaseHLPlayer *pLocalPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
 
-	if ( pLocalPlayer == NULL )
-		 return;
+    if ( pLocalPlayer == NULL )
+         return;
 
-	if ( HL2MPRules()->IsTeamplay() == false )
-		 return;
+    if ( HL2MPRules()->IsTeamplay() == false )
+         return;
 
-	if ( pLocalPlayer->IsAlive() == false )
-		 return;
+    if ( pLocalPlayer->IsAlive() == false )
+         return;
 
-	if ( pLocalPlayer->m_HL2Local.m_flSuitPower < 100 )
-	{
-		if ( m_bSuitAuxPowerUsed == false )
-		{
-			g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("FadeOutTeamLine");
-			m_bSuitAuxPowerUsed = true;
-		}
-	}
-	else
-	{
-		if ( m_bSuitAuxPowerUsed == true )
-		{
-			g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("FadeInTeamLine");
-			m_bSuitAuxPowerUsed = false;
-		}
-	}
-	
-	int iTeamNumber = pLocalPlayer->GetTeamNumber();
-	Color c = GameResources()->GetTeamColor( iTeamNumber );
+    if ( pLocalPlayer->m_HL2Local.m_flSuitPower < 100 )
+    {
+        if ( m_bSuitAuxPowerUsed == false )
+        {
+            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("FadeOutTeamLine");
+            m_bSuitAuxPowerUsed = true;
+        }
+    }
+    else
+    {
+        if ( m_bSuitAuxPowerUsed == true )
+        {
+            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("FadeInTeamLine");
+            m_bSuitAuxPowerUsed = false;
+        }
+    }
 
-	wchar_t string1[1024];
-	C_Team *pTeam = GetGlobalTeam( iTeamNumber );
+    int iTeamNumber = pLocalPlayer->GetTeamNumber();
+    Color c = GameResources()->GetTeamColor( iTeamNumber );
 
-	if ( pTeam )
-	{
-		wchar_t TeamName[64];
-		g_pVGuiLocalize->ConvertANSIToUnicode( pTeam->Get_Name(), TeamName, sizeof(TeamName) );
-		
-		g_pVGuiLocalize->ConstructString( string1, sizeof(string1), g_pVGuiLocalize->Find("#Team"), 1, TeamName );
-		
-		m_pBackground->SetFgColor( GetFgColor() );
-		m_pWarmupLabel->SetFgColor(c);
+    wchar_t string1[1024];
+    C_Team *pTeam = GetGlobalTeam( iTeamNumber );
 
-		m_pWarmupLabel->SetText( string1 );
-		m_pWarmupLabel->SetVisible( true );
+    if ( pTeam )
+    {
+        wchar_t TeamName[64];
+        g_pVGuiLocalize->ConvertANSIToUnicode( pTeam->Get_Name(), TeamName, sizeof(TeamName) );
 
-		m_pWarmupLabel->SizeToContents();
+        g_pVGuiLocalize->ConstructString( string1, sizeof(string1), g_pVGuiLocalize->Find("#Team"), 1, TeamName );
 
-		SetVisible( true );
-	}
+        m_pBackground->SetFgColor( GetFgColor() );
+        m_pWarmupLabel->SetFgColor(c);
 
-	InvalidateLayout();
+        m_pWarmupLabel->SetText( string1 );
+        m_pWarmupLabel->SetVisible( true );
+
+        m_pWarmupLabel->SizeToContents();
+
+        SetVisible( true );
+    }
+
+    InvalidateLayout();
 }

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -19,27 +19,27 @@ class CSDKPrediction : public CPrediction
 DECLARE_CLASS( CSDKPrediction, CPrediction );
 
 public:
-	virtual void	SetupMove( C_BasePlayer *player, CUserCmd *ucmd, IMoveHelper *pHelper, CMoveData *move );
-	virtual void	FinishMove( C_BasePlayer *player, CUserCmd *ucmd, CMoveData *move );
+    virtual void    SetupMove( C_BasePlayer *player, CUserCmd *ucmd, IMoveHelper *pHelper, CMoveData *move );
+    virtual void    FinishMove( C_BasePlayer *player, CUserCmd *ucmd, CMoveData *move );
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
-void CSDKPrediction::SetupMove( C_BasePlayer *player, CUserCmd *ucmd, IMoveHelper *pHelper, 
-	CMoveData *move )
+void CSDKPrediction::SetupMove( C_BasePlayer *player, CUserCmd *ucmd, IMoveHelper *pHelper,
+    CMoveData *move )
 {
-	// Call the default SetupMove code.
-	BaseClass::SetupMove( player, ucmd, pHelper, move );
+    // Call the default SetupMove code.
+    BaseClass::SetupMove( player, ucmd, pHelper, move );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CSDKPrediction::FinishMove( C_BasePlayer *player, CUserCmd *ucmd, CMoveData *move )
 {
-	// Call the default FinishMove code.
-	BaseClass::FinishMove( player, ucmd, move );
+    // Call the default FinishMove code.
+    BaseClass::FinishMove( player, ucmd, move );
 }
 
 

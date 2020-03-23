@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
-//	DEFAULT.VGC
+//  DEFAULT.VGC
 //
-//	Configurations for all Source(TM) Projects
+//  Configurations for all Source(TM) Projects
 //-----------------------------------------------------------------------------
 
 ////////////////
@@ -10,7 +10,7 @@
 
 $Games
 {
-	"REFRACTION"
+    "REFRACTION"
 }
 
 // Makes the VPC scripts work in the SDK's context

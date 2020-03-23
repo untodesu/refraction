@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -16,8 +16,8 @@
 
 struct CompressedLightCube
 {
-	DECLARE_BYTESWAP_DATADESC();
-	ColorRGBExp32 m_Color[6];
+    DECLARE_BYTESWAP_DATADESC();
+    ColorRGBExp32 m_Color[6];
 };
 
 

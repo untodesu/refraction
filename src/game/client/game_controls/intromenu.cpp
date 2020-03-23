@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -28,21 +28,21 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 CIntroMenu::CIntroMenu( IViewPort *pViewPort ) : Frame( NULL, PANEL_INTRO )
 {
-	// initialize dialog
-	m_pViewPort = pViewPort;
+    // initialize dialog
+    m_pViewPort = pViewPort;
 
-	m_pTitleLabel = NULL;
+    m_pTitleLabel = NULL;
 
-	// load the new scheme early!!
-	SetScheme( "ClientScheme" );
-	SetMoveable( false );
-	SetSizeable( false );
-	SetProportional( true );
+    // load the new scheme early!!
+    SetScheme( "ClientScheme" );
+    SetMoveable( false );
+    SetSizeable( false );
+    SetProportional( true );
 
-	// hide the system buttons
-	SetTitleBarVisible( false );
+    // hide the system buttons
+    SetTitleBarVisible( false );
 
-	Reset();
+    Reset();
 }
 
 //-----------------------------------------------------------------------------
@@ -57,66 +57,66 @@ CIntroMenu::~CIntroMenu()
 //-----------------------------------------------------------------------------
 void CIntroMenu::ApplySchemeSettings( IScheme *pScheme )
 {
-	BaseClass::ApplySchemeSettings( pScheme );
+    BaseClass::ApplySchemeSettings( pScheme );
 
-	LoadControlSettings("Resource/UI/IntroMenu.res");
+    LoadControlSettings("Resource/UI/IntroMenu.res");
 
-	m_pTitleLabel = dynamic_cast<Label *>( FindChildByName( "titlelabel" ) );
+    m_pTitleLabel = dynamic_cast<Label *>( FindChildByName( "titlelabel" ) );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CIntroMenu::Reset( void )
 {
-	Update();
+    Update();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CIntroMenu::Update( void )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CIntroMenu::OnCommand( const char *command )
 {
-	if ( !Q_strcmp( command, "skip" ) )
-	{
-		engine->ClientCmd( "intro_skip" );
-		m_pViewPort->ShowPanel( this, false );
-	}
+    if ( !Q_strcmp( command, "skip" ) )
+    {
+        engine->ClientCmd( "intro_skip" );
+        m_pViewPort->ShowPanel( this, false );
+    }
 
-	BaseClass::OnCommand( command );
+    BaseClass::OnCommand( command );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CIntroMenu::ShowPanel( bool bShow )
 {
-	if ( BaseClass::IsVisible() == bShow )
-		return;
+    if ( BaseClass::IsVisible() == bShow )
+        return;
 
-	m_pViewPort->ShowBackGround( bShow );
+    m_pViewPort->ShowBackGround( bShow );
 
-	if ( bShow )
-	{
-		Activate();
+    if ( bShow )
+    {
+        Activate();
 
-		if ( GameRules() )
-		{
-			SetDialogVariable( "gamemode", g_pVGuiLocalize->Find( GameRules()->GetGameTypeName() ) );
-		}
+        if ( GameRules() )
+        {
+            SetDialogVariable( "gamemode", g_pVGuiLocalize->Find( GameRules()->GetGameTypeName() ) );
+        }
 
-		SetMouseInputEnabled( true );
-	}
-	else
-	{
-		SetVisible( false );
-		SetMouseInputEnabled( false );
-	}
+        SetMouseInputEnabled( true );
+    }
+    else
+    {
+        SetVisible( false );
+        SetMouseInputEnabled( false );
+    }
 }

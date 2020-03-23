@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //=============================================================================//
 
 #ifndef HTML_PROTOBUF
@@ -15,55 +15,55 @@
 
 namespace google
 {
-	namespace protobuf
-	{
-		class MessageLite;
-	}
+    namespace protobuf
+    {
+        class MessageLite;
+    }
 }
 
 class CHTMLBaseProtoBufMsg
 {
 public:
-	void SerializeCrossProc( CUtlBuffer *pBuffer ) const;
-	bool BDeserializeCrossProc( CUtlBuffer *pBuffer );
+    void SerializeCrossProc( CUtlBuffer *pBuffer ) const;
+    bool BDeserializeCrossProc( CUtlBuffer *pBuffer );
 
 protected:
-	void *m_pMsg;
-	bool m_bIsValid;
+    void *m_pMsg;
+    bool m_bIsValid;
 };
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Base class for protobuf objects
 //-----------------------------------------------------------------------------
-template< typename PB_OBJECT_TYPE > 
+template< typename PB_OBJECT_TYPE >
 class CHTMLProtoBufMsg : public CHTMLBaseProtoBufMsg
 {
 public:
-	CHTMLProtoBufMsg( EHTMLCommands eMsg )
-	{
-		m_pMsg = new PB_OBJECT_TYPE;
-		m_bIsValid = true;
-	}
+    CHTMLProtoBufMsg( EHTMLCommands eMsg )
+    {
+        m_pMsg = new PB_OBJECT_TYPE;
+        m_bIsValid = true;
+    }
 
-	// Construct and deserialize in one
-	CHTMLProtoBufMsg( CUtlBuffer *pBuffer )
-	{
-		m_pMsg = NULL;
-		m_bIsValid = BDeserializeCrossProc( pBuffer );
-	}
+    // Construct and deserialize in one
+    CHTMLProtoBufMsg( CUtlBuffer *pBuffer )
+    {
+        m_pMsg = NULL;
+        m_bIsValid = BDeserializeCrossProc( pBuffer );
+    }
 
-	// Destructor
-	virtual ~CHTMLProtoBufMsg()
-	{
-		delete (PB_OBJECT_TYPE *)m_pMsg;
-	}
+    // Destructor
+    virtual ~CHTMLProtoBufMsg()
+    {
+        delete (PB_OBJECT_TYPE *)m_pMsg;
+    }
 
-	bool BIsValid() { return m_bIsValid; }
+    bool BIsValid() { return m_bIsValid; }
 
-	// Accessors
-	PB_OBJECT_TYPE &Body() { return *((PB_OBJECT_TYPE*)( (google::protobuf::MessageLite *)m_pMsg )); }
-	const PB_OBJECT_TYPE &BodyConst() const { return *((const PB_OBJECT_TYPE*)( (google::protobuf::MessageLite *)m_pMsg )); }
+    // Accessors
+    PB_OBJECT_TYPE &Body() { return *((PB_OBJECT_TYPE*)( (google::protobuf::MessageLite *)m_pMsg )); }
+    const PB_OBJECT_TYPE &BodyConst() const { return *((const PB_OBJECT_TYPE*)( (google::protobuf::MessageLite *)m_pMsg )); }
 
 };
 

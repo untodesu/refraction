@@ -30,11 +30,11 @@ class VMatrix;
 //-----------------------------------------------------------------------------
 struct Camera_t
 {
-	Vector m_origin;
-	QAngle m_angles;
-	float m_flFOV;
-	float m_flZNear;
-	float m_flZFar;
+    Vector m_origin;
+    QAngle m_angles;
+    float m_flFOV;
+    float m_flZNear;
+    float m_flZFar;
 };
 
 
@@ -49,8 +49,8 @@ void ComputeProjectionMatrix( VMatrix *pCameraToProjection, const Camera_t& came
 //-----------------------------------------------------------------------------
 // Computes the screen space position given a screen size
 //-----------------------------------------------------------------------------
-void ComputeScreenSpacePosition( Vector2D *pScreenPosition, const Vector &vecWorldPosition, 
-	const Camera_t &camera, int width, int height );
+void ComputeScreenSpacePosition( Vector2D *pScreenPosition, const Vector &vecWorldPosition,
+    const Camera_t &camera, int width, int height );
 
 
 #endif // CAMERAUTILS_H

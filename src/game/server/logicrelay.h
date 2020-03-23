@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -16,33 +16,33 @@
 class CLogicRelay : public CLogicalEntity
 {
 public:
-	DECLARE_CLASS( CLogicRelay, CLogicalEntity );
+    DECLARE_CLASS( CLogicRelay, CLogicalEntity );
 
-	CLogicRelay();
+    CLogicRelay();
 
-	void Activate();
-	void Think();
+    void Activate();
+    void Think();
 
-	// Input handlers
-	void InputEnable( inputdata_t &inputdata );
-	void InputEnableRefire( inputdata_t &inputdata );  // Private input handler, not in FGD
-	void InputDisable( inputdata_t &inputdata );
-	void InputToggle( inputdata_t &inputdata );
-	void InputTrigger( inputdata_t &inputdata );
-	void InputCancelPending( inputdata_t &inputdata );
+    // Input handlers
+    void InputEnable( inputdata_t &inputdata );
+    void InputEnableRefire( inputdata_t &inputdata );  // Private input handler, not in FGD
+    void InputDisable( inputdata_t &inputdata );
+    void InputToggle( inputdata_t &inputdata );
+    void InputTrigger( inputdata_t &inputdata );
+    void InputCancelPending( inputdata_t &inputdata );
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
-	// Outputs
-	COutputEvent m_OnTrigger;
-	COutputEvent m_OnSpawn;
+    // Outputs
+    COutputEvent m_OnTrigger;
+    COutputEvent m_OnSpawn;
 
-	bool IsDisabled( void ){ return m_bDisabled; }
-	
+    bool IsDisabled( void ){ return m_bDisabled; }
+
 private:
 
-	bool m_bDisabled;
-	bool m_bWaitForRefire;			// Set to disallow a refire while we are waiting for our outputs to finish firing.
+    bool m_bDisabled;
+    bool m_bWaitForRefire;          // Set to disallow a refire while we are waiting for our outputs to finish firing.
 };
 
 #endif //LOGICRELAY_H

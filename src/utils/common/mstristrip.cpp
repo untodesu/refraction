@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -192,7 +192,7 @@ int CStripper::CreateStrip(int tri, int vert, int maxlen, int *pswaps,
     int nextvert = m_ptriinfo[tri].neighboredge[edge];
 
     // start building the strip until we run out of room or indices
-	int stripcount;
+    int stripcount;
     for( stripcount = 3; stripcount < maxlen; stripcount++)
     {
         // dead end?
@@ -299,7 +299,7 @@ STRIPLIST::iterator FindBestCachedStrip(STRIPLIST *pstriplist,
     const CVertCache &vertcachestate)
 {
     if(pstriplist->empty())
-		return pstriplist->end();
+        return pstriplist->end();
 
     bool fFlipStrip = false;
     int maxcachehits = -1;
@@ -358,7 +358,7 @@ STRIPLIST::iterator FindBestCachedStrip(STRIPLIST *pstriplist,
     {
         STRIPVERTS &stripverts = **istriplistbest;
         STRIPVERTS::iterator vend = stripverts.end();
-        
+
         reverse(stripverts.begin(), --vend);
     }
 
@@ -381,7 +381,7 @@ int CStripper::CreateManyStrips(STRIPLIST *pstriplist, WORD **ppstripindices)
     int indexcount = (int)pstriplist->size() + 1;
 
     // we're storing the strips in [size1 i1 i2 i3][size2 i4 i5 i6][0] format
-	STRIPLIST::iterator istriplist;
+    STRIPLIST::iterator istriplist;
     for( istriplist = pstriplist->begin(); istriplist != pstriplist->end(); ++istriplist)
     {
         // add striplength plus potential degenerate to swap ccw --> cw
@@ -442,7 +442,7 @@ int CStripper::CreateLongStrip(STRIPLIST *pstriplist, WORD **ppstripindices)
     int indexcount = ((int)pstriplist->size() * 3) + 2;
 
     // we're storing the strips in [size1 i1 i2 i3][size2 i4 i5 i6][0] format
-	STRIPLIST::iterator istriplist;
+    STRIPLIST::iterator istriplist;
     for( istriplist = pstriplist->begin(); istriplist != pstriplist->end(); ++istriplist)
     {
         indexcount += StripLen(**istriplist);
@@ -537,7 +537,7 @@ void CStripper::BuildStrips(STRIPLIST *pstriplist, int maxlen, bool flookahead)
         float bestratio = 2.0f;
         int bestneighborcount = INT_MAX;
 
-		int tri;
+        int tri;
         for( tri = 0; tri < m_numtris; tri++)
         {
             // if used the continue
@@ -686,7 +686,7 @@ CStripper::CStripper(int numtris, TRIANGLELIST ptriangles)
     assert(m_ptriinfo);
 
     // init triinfo
-	int itri;
+    int itri;
     for( itri = 0; itri < numtris; itri++)
     {
         m_ptriinfo[itri].neighbortri[0] = -1;
@@ -883,7 +883,7 @@ void ComputeVertexPermutation(int numstripindices, WORD* pstripindices,
     SortEntry* pSortTable = new SortEntry[*pnumverts];
 
     // Fill in original index.
-	int i;
+    int i;
     for( i = 0; i < *pnumverts; i++)
     {
         pSortTable[i].iOrigIndex = i;

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -8,7 +8,7 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#define ACTIVITY_NOT_AVAILABLE		-1
+#define ACTIVITY_NOT_AVAILABLE      -1
 
 struct animevent_t;
 struct studiohdr_t;
@@ -62,4 +62,4 @@ int FindHitboxSetByName( CStudioHdr *pstudiohdr, const char *name );
 const char *GetHitboxSetName( CStudioHdr *pstudiohdr, int setnumber );
 int GetHitboxSetCount( CStudioHdr *pstudiohdr );
 
-#endif	//ANIMATION_H
+#endif  //ANIMATION_H

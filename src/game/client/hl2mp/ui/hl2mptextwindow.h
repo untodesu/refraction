@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -21,45 +21,45 @@
 class CHL2MPTextWindow : public CTextWindow
 {
 private:
-	DECLARE_CLASS_SIMPLE( CHL2MPTextWindow, CTextWindow );
+    DECLARE_CLASS_SIMPLE( CHL2MPTextWindow, CTextWindow );
 
 public:
-	CHL2MPTextWindow(IViewPort *pViewPort);
-	virtual ~CHL2MPTextWindow();
+    CHL2MPTextWindow(IViewPort *pViewPort);
+    virtual ~CHL2MPTextWindow();
 
-	virtual void Update();
-	virtual void SetVisible(bool state);
-	virtual void ShowPanel( bool bShow );
-	virtual void OnKeyCodePressed(vgui::KeyCode code);
+    virtual void Update();
+    virtual void SetVisible(bool state);
+    virtual void ShowPanel( bool bShow );
+    virtual void OnKeyCodePressed(vgui::KeyCode code);
 
 protected:
-	ButtonCode_t m_iScoreBoardKey;
+    ButtonCode_t m_iScoreBoardKey;
 
-	// Background panel -------------------------------------------------------
+    // Background panel -------------------------------------------------------
 
 public:
-	virtual void PaintBackground();
-	virtual void PerformLayout();
-	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
-	bool m_backgroundLayoutFinished;
+    virtual void PaintBackground();
+    virtual void PerformLayout();
+    virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
+    bool m_backgroundLayoutFinished;
 
-	// End background panel ---------------------------------------------------
+    // End background panel ---------------------------------------------------
 };
 
 class CHL2MPSpectatorGUI : public CSpectatorGUI
 {
 private:
-	DECLARE_CLASS_SIMPLE( CHL2MPSpectatorGUI, CSpectatorGUI );
+    DECLARE_CLASS_SIMPLE( CHL2MPSpectatorGUI, CSpectatorGUI );
 
 public:
-	CHL2MPSpectatorGUI( IViewPort *pViewPort );
+    CHL2MPSpectatorGUI( IViewPort *pViewPort );
 
-	virtual void Update( void );
-	virtual bool NeedsUpdate( void );
+    virtual void Update( void );
+    virtual bool NeedsUpdate( void );
 
 protected:
-	int		m_nLastSpecMode;
-	CBaseEntity	*m_nLastSpecTarget;
+    int     m_nLastSpecMode;
+    CBaseEntity *m_nLastSpecTarget;
 };
 
 

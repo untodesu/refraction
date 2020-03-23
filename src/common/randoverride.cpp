@@ -12,7 +12,7 @@
 #include "tier0/memdbgon.h"
 
 #ifdef GNUC
-#define __cdecl 
+#define __cdecl
 #endif
 
 void __cdecl srand(unsigned int)
@@ -21,7 +21,7 @@ void __cdecl srand(unsigned int)
 
 int __cdecl rand()
 {
-	return RandomInt( 0, VALVE_RAND_MAX );
+    return RandomInt( 0, VALVE_RAND_MAX );
 }
 
 #endif // !_STATIC_LINKED || _SHARED_LIB

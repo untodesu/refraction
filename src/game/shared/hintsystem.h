@@ -11,9 +11,9 @@
 #endif
 
 #ifdef CLIENT_DLL
-	#include "c_baseplayer.h"
+    #include "c_baseplayer.h"
 #else
-	#include "player.h"
+    #include "player.h"
 #endif
 
 #include "bitvec.h"
@@ -28,79 +28,79 @@ typedef bool (*HintTimerCallback)( CBasePlayer *pOnPlayer );
 //-----------------------------------------------------------------------------
 class CHintSystem
 {
-	DECLARE_CLASS_NOBASE( CHintSystem );
+    DECLARE_CLASS_NOBASE( CHintSystem );
 
 public:
-	CHintSystem();
-	~CHintSystem();
+    CHintSystem();
+    ~CHintSystem();
 
-	//-----------------------------------------------------
-	// Call this from your player constructor
-	void Init( CBasePlayer *pPlayer, int iMaxHintTypes, const char **pszHintStrings );
+    //-----------------------------------------------------
+    // Call this from your player constructor
+    void Init( CBasePlayer *pPlayer, int iMaxHintTypes, const char **pszHintStrings );
 
-	//-----------------------------------------------------
-	// CBasePlayer calls these for you, if you fall back to its 
-	// versions of Spawn(), Event_Killed(), and PreThink().
-	// Call this when your player respawns
-	void				ResetHints( void );
+    //-----------------------------------------------------
+    // CBasePlayer calls these for you, if you fall back to its
+    // versions of Spawn(), Event_Killed(), and PreThink().
+    // Call this when your player respawns
+    void                ResetHints( void );
 
-	// Call this when your player dies
-	void				ResetHintTimers( void );
+    // Call this when your player dies
+    void                ResetHintTimers( void );
 
-	// Call this when in your player PreThink()
-	void				Update( void );
+    // Call this when in your player PreThink()
+    void                Update( void );
 
-	//-----------------------------------------------------
-	// Hint addition
-	// Call these to add a hint directly onscreen
-	bool 				HintMessage( int hint, bool bForce = false, bool bOnlyIfClear = false );
-	void 				HintMessage( const char *pMessage );
+    //-----------------------------------------------------
+    // Hint addition
+    // Call these to add a hint directly onscreen
+    bool                HintMessage( int hint, bool bForce = false, bool bOnlyIfClear = false );
+    void                HintMessage( const char *pMessage );
 
-	// Call this to add a hint timer. It'll be reset for you automatically 
-	// everytime ResetHintTimers() is called.
-	void				RegisterHintTimer( int iHintID, float flTimerDuration, bool bOnlyIfClear = false, HintTimerCallback pfnCallback = NULL );
+    // Call this to add a hint timer. It'll be reset for you automatically
+    // everytime ResetHintTimers() is called.
+    void                RegisterHintTimer( int iHintID, float flTimerDuration, bool bOnlyIfClear = false, HintTimerCallback pfnCallback = NULL );
 
-	// Call these to start & stop registered hint timers
-	void				StartHintTimer( int iHintID );
-	void				StopHintTimer( int iHintID );
-	void				RemoveHintTimer( int iHintID );
-	bool				TimerShouldFire( int iHintID );
+    // Call these to start & stop registered hint timers
+    void                StartHintTimer( int iHintID );
+    void                StopHintTimer( int iHintID );
+    void                RemoveHintTimer( int iHintID );
+    bool                TimerShouldFire( int iHintID );
 
-	// Set whether a player should see any hints at all
-	void				SetShowHints( bool bShowHints ) { m_bShowHints = bShowHints; }
-	void				SetHintPlayed( int iHintID );
-	bool				ShouldShowHints( void );
+    // Set whether a player should see any hints at all
+    void                SetShowHints( bool bShowHints ) { m_bShowHints = bShowHints; }
+    void                SetHintPlayed( int iHintID );
+    bool                ShouldShowHints( void );
 
-	// Returns true if the hint has been played already
-	bool				HasPlayedHint( int iHintID );
-	void				PlayedAHint( void );
-	void				ClearHintHistory( void ) { m_HintHistory.ClearAll(); }
+    // Returns true if the hint has been played already
+    bool                HasPlayedHint( int iHintID );
+    void                PlayedAHint( void );
+    void                ClearHintHistory( void ) { m_HintHistory.ClearAll(); }
 
-	// Not really an optimal solution, but saves us querying the hud element,
-	// which wouldn't be easy with derived versions in different mods.
-	bool				HintIsCurrentlyVisible( void ) { return (gpGlobals->curtime - m_flLastHintPlayedAt < 11 ); }
-
-private:
-	void				ReAddHintTimerIfNotDisplayed( int iHintID, float flTimerDuration );
+    // Not really an optimal solution, but saves us querying the hud element,
+    // which wouldn't be easy with derived versions in different mods.
+    bool                HintIsCurrentlyVisible( void ) { return (gpGlobals->curtime - m_flLastHintPlayedAt < 11 ); }
 
 private:
-	CBasePlayer			*m_pPlayer;
+    void                ReAddHintTimerIfNotDisplayed( int iHintID, float flTimerDuration );
 
-	float				m_flLastHintPlayedAt;
-	bool				m_bShowHints;
-	CVarBitVec			m_HintHistory;
-	const char			**m_pszHintMessages;
-	CHintMessageQueue	*m_pHintMessageQueue;
-	CHintMessageTimers	*m_pHintMessageTimers;
+private:
+    CBasePlayer         *m_pPlayer;
 
-	struct onresethints_t
-	{
-		int					iHintID;
-		float				flTimer;
-		bool				bOnlyIfClear;
-		HintTimerCallback	pfnCallback;
-	};
-	CUtlVector<onresethints_t>	m_RegisteredResetHints;
+    float               m_flLastHintPlayedAt;
+    bool                m_bShowHints;
+    CVarBitVec          m_HintHistory;
+    const char          **m_pszHintMessages;
+    CHintMessageQueue   *m_pHintMessageQueue;
+    CHintMessageTimers  *m_pHintMessageTimers;
+
+    struct onresethints_t
+    {
+        int                 iHintID;
+        float               flTimer;
+        bool                bOnlyIfClear;
+        HintTimerCallback   pfnCallback;
+    };
+    CUtlVector<onresethints_t>  m_RegisteredResetHints;
 };
 
 #ifdef CLIENT_DLL
@@ -109,7 +109,7 @@ private:
 abstract_class ITargetIDProvidesHint
 {
 public:
-	virtual void	DisplayHintTo( C_BasePlayer *pPlayer ) = 0;
+    virtual void    DisplayHintTo( C_BasePlayer *pPlayer ) = 0;
 };
 #endif
 

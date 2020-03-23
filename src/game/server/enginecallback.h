@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -12,9 +12,9 @@
 #include "eiface.h"
 #endif
 
-class IFileSystem;				// include filesystem.h
-class IEngineSound;				// include engine/IEngineSound.h
-class IVEngineServer;			
+class IFileSystem;              // include filesystem.h
+class IEngineSound;             // include engine/IEngineSound.h
+class IVEngineServer;
 class IVoiceServer;
 class IStaticPropMgrServer;
 class ISpatialPartition;
@@ -29,21 +29,21 @@ class IXboxSystem;
 class CSteamAPIContext;
 class CSteamGameServerAPIContext;
 
-extern IVEngineServer			*engine;
-extern IVoiceServer				*g_pVoiceServer;
-extern IFileSystem				*filesystem;
-extern IStaticPropMgrServer		*staticpropmgr;
-extern ISpatialPartition		*partition;
-extern IEngineSound				*enginesound;
-extern IVModelInfo				*modelinfo;
-extern IEngineTrace				*enginetrace;
-extern IGameEventManager2		*gameeventmanager;
-extern IVDebugOverlay			*debugoverlay;
-extern IDataCache				*datacache;
-extern IMDLCache				*mdlcache;
-extern IServerEngineTools		*serverenginetools;
-extern IXboxSystem				*xboxsystem; // 360 only
-extern CSteamAPIContext			*steamapicontext; // available on game clients
+extern IVEngineServer           *engine;
+extern IVoiceServer             *g_pVoiceServer;
+extern IFileSystem              *filesystem;
+extern IStaticPropMgrServer     *staticpropmgr;
+extern ISpatialPartition        *partition;
+extern IEngineSound             *enginesound;
+extern IVModelInfo              *modelinfo;
+extern IEngineTrace             *enginetrace;
+extern IGameEventManager2       *gameeventmanager;
+extern IVDebugOverlay           *debugoverlay;
+extern IDataCache               *datacache;
+extern IMDLCache                *mdlcache;
+extern IServerEngineTools       *serverenginetools;
+extern IXboxSystem              *xboxsystem; // 360 only
+extern CSteamAPIContext         *steamapicontext; // available on game clients
 extern CSteamGameServerAPIContext *steamgameserverapicontext; //available on game servers
 
 
@@ -110,25 +110,25 @@ extern CSteamID GetSteamIDForPlayerIndex( int iPlayerIndex );
 
 
 // Bytewise
-#define WRITE_BYTE		(MessageWriteByte)
-#define WRITE_CHAR		(MessageWriteChar)
-#define WRITE_SHORT		(MessageWriteShort)
-#define WRITE_WORD		(MessageWriteWord)
-#define WRITE_LONG		(MessageWriteLong)
-#define WRITE_FLOAT		(MessageWriteFloat)
-#define WRITE_ANGLE		(MessageWriteAngle)
-#define WRITE_COORD		(MessageWriteCoord)
-#define WRITE_VEC3COORD	(MessageWriteVec3Coord)
+#define WRITE_BYTE      (MessageWriteByte)
+#define WRITE_CHAR      (MessageWriteChar)
+#define WRITE_SHORT     (MessageWriteShort)
+#define WRITE_WORD      (MessageWriteWord)
+#define WRITE_LONG      (MessageWriteLong)
+#define WRITE_FLOAT     (MessageWriteFloat)
+#define WRITE_ANGLE     (MessageWriteAngle)
+#define WRITE_COORD     (MessageWriteCoord)
+#define WRITE_VEC3COORD (MessageWriteVec3Coord)
 #define WRITE_VEC3NORMAL (MessageWriteVec3Normal)
-#define WRITE_ANGLES	(MessageWriteAngles)
-#define WRITE_STRING	(MessageWriteString)
-#define WRITE_ENTITY	(MessageWriteEntity)
-#define WRITE_EHANDLE	(MessageWriteEHandle)
+#define WRITE_ANGLES    (MessageWriteAngles)
+#define WRITE_STRING    (MessageWriteString)
+#define WRITE_ENTITY    (MessageWriteEntity)
+#define WRITE_EHANDLE   (MessageWriteEHandle)
 
 // Bitwise
-#define WRITE_BOOL		(MessageWriteBool)
-#define WRITE_UBITLONG	(MessageWriteUBitLong)
-#define WRITE_SBITLONG	(MessageWriteSBitLong)
-#define WRITE_BITS		(MessageWriteBits)
+#define WRITE_BOOL      (MessageWriteBool)
+#define WRITE_UBITLONG  (MessageWriteUBitLong)
+#define WRITE_SBITLONG  (MessageWriteSBitLong)
+#define WRITE_BITS      (MessageWriteBits)
 
-#endif		//ENGINECALLBACK_H
+#endif      //ENGINECALLBACK_H

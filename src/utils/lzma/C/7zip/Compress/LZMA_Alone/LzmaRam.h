@@ -16,7 +16,7 @@ To provide best compression ratio dictionarySize mustbe >= inSize
 
 LzmaRamEncode allocates Data with MyAlloc/BigAlloc functions.
 RAM Requirements:
-  RamSize = dictionarySize * 9.5 + 6MB + FilterBlockSize 
+  RamSize = dictionarySize * 9.5 + 6MB + FilterBlockSize
     FilterBlockSize = 0, if useFilter == false
     FilterBlockSize = inSize, if useFilter == true
 
@@ -31,7 +31,7 @@ If you use SZ_FILTER_AUTO mode, then encoder will use 2 or 3 passes:
   3 passes when FILTER_YES provides better compression.
 */
 
-enum ESzFilterMode 
+enum ESzFilterMode
 {
   SZ_FILTER_NO,
   SZ_FILTER_YES,
@@ -39,8 +39,8 @@ enum ESzFilterMode
 };
 
 int LzmaRamEncode(
-    const Byte *inBuffer, size_t inSize, 
-    Byte *outBuffer, size_t outSize, size_t *outSizeProcessed, 
+    const Byte *inBuffer, size_t inSize,
+    Byte *outBuffer, size_t outSize, size_t *outSizeProcessed,
     UInt32 dictionarySize, ESzFilterMode filterMode);
 
 #endif

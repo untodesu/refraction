@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -15,19 +15,19 @@
 void BloodSplatCallback( const CEffectData & data )
 {
 /*
-	Msg("SPLAT!\n");
+    Msg("SPLAT!\n");
 
-	int		x,y;
+    int     x,y;
 
-	// Find our screen position to start from
-	x = XRES(320);
-	y = YRES(240);
+    // Find our screen position to start from
+    x = XRES(320);
+    y = YRES(240);
 
-	// Draw the ammo label
-	CHudTexture	*pSplat = gHUD.GetIcon( "hud_blood1" );
-	
+    // Draw the ammo label
+    CHudTexture *pSplat = gHUD.GetIcon( "hud_blood1" );
+
   // FIXME:  This can only occur during vgui::Paint() stuff
-	pSplat->DrawSelf( x, y, gHUD.m_clrNormal);
+    pSplat->DrawSelf( x, y, gHUD.m_clrNormal);
 */
 }
 

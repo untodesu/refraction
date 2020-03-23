@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -23,13 +23,13 @@ class CBoneAccessor;
 class IPoseDebugger;
 
 
-// This provides access to networked arrays, so if this code actually changes a value, 
+// This provides access to networked arrays, so if this code actually changes a value,
 // the entity is marked as changed.
 abstract_class IParameterAccess
 {
 public:
-	virtual float GetParameter( int iParam ) = 0;
-	virtual void SetParameter( int iParam, float flValue ) = 0;
+    virtual float GetParameter( int iParam ) = 0;
+    virtual void SetParameter( int iParam, float flValue ) = 0;
 };
 
 
@@ -37,29 +37,29 @@ public:
 class CBoneBitList : public CBitVec<MAXSTUDIOBONES>
 {
 public:
-	inline void MarkBone(int iBone)
-	{
-		Set(iBone);
-	}
-	inline bool IsBoneMarked(int iBone)
-	{
-		return Get(iBone) != 0 ? true : false;
-	}
+    inline void MarkBone(int iBone)
+    {
+        Set(iBone);
+    }
+    inline bool IsBoneMarked(int iBone)
+    {
+        return Get(iBone) != 0 ? true : false;
+    }
 };
 
 class CBoneSetup;
 class IBoneSetup
 {
 public:
-	IBoneSetup( const CStudioHdr *pStudioHdr, int boneMask, const float poseParameter[], IPoseDebugger *pPoseDebugger = NULL );
-	~IBoneSetup( void );
-	void InitPose( Vector pos[], Quaternion[] );
-	void AccumulatePose( Vector pos[], Quaternion q[], int sequence, float cycle, float flWeight, float flTime, CIKContext *pIKContext );
-	void CalcAutoplaySequences(	Vector pos[], Quaternion q[], float flRealTime, CIKContext *pIKContext );
-	void CalcBoneAdj( Vector pos[], Quaternion q[], const float controllers[] );
-	CStudioHdr *GetStudioHdr();
+    IBoneSetup( const CStudioHdr *pStudioHdr, int boneMask, const float poseParameter[], IPoseDebugger *pPoseDebugger = NULL );
+    ~IBoneSetup( void );
+    void InitPose( Vector pos[], Quaternion[] );
+    void AccumulatePose( Vector pos[], Quaternion q[], int sequence, float cycle, float flWeight, float flTime, CIKContext *pIKContext );
+    void CalcAutoplaySequences( Vector pos[], Quaternion q[], float flRealTime, CIKContext *pIKContext );
+    void CalcBoneAdj( Vector pos[], Quaternion q[], const float controllers[] );
+    CStudioHdr *GetStudioHdr();
 private:
-	CBoneSetup *m_pBoneSetup;
+    CBoneSetup *m_pBoneSetup;
 };
 
 //-----------------------------------------------------------------------------
@@ -68,19 +68,19 @@ private:
 // p1 = p1 * (1 - s) + p2 * s
 // q1 = q1 * (1 - s) + q2 * s
 //-----------------------------------------------------------------------------
-void SlerpBones( 
-	const CStudioHdr *pStudioHdr,
-	Quaternion q1[MAXSTUDIOBONES], 
-	Vector pos1[MAXSTUDIOBONES], 
-	mstudioseqdesc_t &seqdesc, // source of q2 and pos2
-	int sequence, 
-	const Quaternion q2[MAXSTUDIOBONES], 
-	const Vector pos2[MAXSTUDIOBONES], 
-	float s,
-	int boneMask
-	);
+void SlerpBones(
+    const CStudioHdr *pStudioHdr,
+    Quaternion q1[MAXSTUDIOBONES],
+    Vector pos1[MAXSTUDIOBONES],
+    mstudioseqdesc_t &seqdesc, // source of q2 and pos2
+    int sequence,
+    const Quaternion q2[MAXSTUDIOBONES],
+    const Vector pos2[MAXSTUDIOBONES],
+    float s,
+    int boneMask
+    );
 
-// Given two samples of a bone separated in time by dt, 
+// Given two samples of a bone separated in time by dt,
 // compute the velocity and angular velocity of that bone
 void CalcBoneDerivatives( Vector &velocity, AngularImpulse &angVel, const matrix3x4_t &prev, const matrix3x4_t &current, float dt );
 // Give a derivative of a bone, compute the velocity & angular velocity of that bone
@@ -88,172 +88,172 @@ void CalcBoneVelocityFromDerivative( const QAngle &vecAngles, Vector &velocity, 
 
 // This function sets up the local transform for a single frame of animation. It doesn't handle
 // pose parameters or interpolation between frames.
-void SetupSingleBoneMatrix( 
-	CStudioHdr *pOwnerHdr, 
-	int nSequence, 
-	int iFrame,
-	int iBone, 
-	matrix3x4_t &mBoneLocal );
+void SetupSingleBoneMatrix(
+    CStudioHdr *pOwnerHdr,
+    int nSequence,
+    int iFrame,
+    int iBone,
+    matrix3x4_t &mBoneLocal );
 
 
 // Purpose: build boneToWorld transforms for a specific bone
 void BuildBoneChain(
-	const CStudioHdr *pStudioHdr,
-	const matrix3x4_t &rootxform,
-	const Vector pos[], 
-	const Quaternion q[], 
-	int	iBone,
-	matrix3x4_t *pBoneToWorld );
+    const CStudioHdr *pStudioHdr,
+    const matrix3x4_t &rootxform,
+    const Vector pos[],
+    const Quaternion q[],
+    int iBone,
+    matrix3x4_t *pBoneToWorld );
 
 void BuildBoneChain(
-	const CStudioHdr *pStudioHdr,
-	const matrix3x4_t &rootxform,
-	const Vector pos[], 
-	const Quaternion q[], 
-	int	iBone,
-	matrix3x4_t *pBoneToWorld,
-	CBoneBitList &boneComputed );
+    const CStudioHdr *pStudioHdr,
+    const matrix3x4_t &rootxform,
+    const Vector pos[],
+    const Quaternion q[],
+    int iBone,
+    matrix3x4_t *pBoneToWorld,
+    CBoneBitList &boneComputed );
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 
 // ik info
 class CIKTarget
 {
 public:
-	void SetOwner( int entindex, const Vector &pos, const QAngle &angles );
-	void ClearOwner( void );
-	int GetOwner( void );
-	void UpdateOwner( int entindex, const Vector &pos, const QAngle &angles );
-	void SetPos( const Vector &pos );
-	void SetAngles( const QAngle &angles );
-	void SetQuaternion( const Quaternion &q );
-	void SetNormal( const Vector &normal );
-	void SetPosWithNormalOffset( const Vector &pos, const Vector &normal );
-	void SetOnWorld( bool bOnWorld = true );
+    void SetOwner( int entindex, const Vector &pos, const QAngle &angles );
+    void ClearOwner( void );
+    int GetOwner( void );
+    void UpdateOwner( int entindex, const Vector &pos, const QAngle &angles );
+    void SetPos( const Vector &pos );
+    void SetAngles( const QAngle &angles );
+    void SetQuaternion( const Quaternion &q );
+    void SetNormal( const Vector &normal );
+    void SetPosWithNormalOffset( const Vector &pos, const Vector &normal );
+    void SetOnWorld( bool bOnWorld = true );
 
-	bool IsActive( void );
-	void IKFailed( void );
-	int chain;
-	int type;
-	void MoveReferenceFrame( Vector &deltaPos, QAngle &deltaAngles );
-	// accumulated offset from ideal footplant location
+    bool IsActive( void );
+    void IKFailed( void );
+    int chain;
+    int type;
+    void MoveReferenceFrame( Vector &deltaPos, QAngle &deltaAngles );
+    // accumulated offset from ideal footplant location
 public:
-	struct x2 {
-		char		*pAttachmentName;
-		Vector		pos;
-		Quaternion	q;
-	} offset;
+    struct x2 {
+        char        *pAttachmentName;
+        Vector      pos;
+        Quaternion  q;
+    } offset;
 private:
-	struct x3 {
-		Vector		pos;
-		Quaternion	q;
-	} ideal;
+    struct x3 {
+        Vector      pos;
+        Quaternion  q;
+    } ideal;
 public:
-	struct x4 {
-		float		latched;
-		float		release;
-		float		height;
-		float		floor;
-		float		radius;
-		float		flTime;
-		float		flWeight;
-		Vector		pos;
-		Quaternion	q;
-		bool		onWorld;
-	} est; // estimate contact position
-	struct x5 {
-		float		hipToFoot;	// distance from hip
-		float		hipToKnee;	// distance from hip to knee
-		float		kneeToFoot;	// distance from knee to foot
-		Vector		hip;		// location of hip
-		Vector		closest;	// closest valid location from hip to foot that the foot can move to
-		Vector		knee;		// pre-ik location of knee
-		Vector		farthest;	// farthest valid location from hip to foot that the foot can move to
-		Vector		lowest;		// lowest position directly below hip that the foot can drop to
-	} trace;
+    struct x4 {
+        float       latched;
+        float       release;
+        float       height;
+        float       floor;
+        float       radius;
+        float       flTime;
+        float       flWeight;
+        Vector      pos;
+        Quaternion  q;
+        bool        onWorld;
+    } est; // estimate contact position
+    struct x5 {
+        float       hipToFoot;  // distance from hip
+        float       hipToKnee;  // distance from hip to knee
+        float       kneeToFoot; // distance from knee to foot
+        Vector      hip;        // location of hip
+        Vector      closest;    // closest valid location from hip to foot that the foot can move to
+        Vector      knee;       // pre-ik location of knee
+        Vector      farthest;   // farthest valid location from hip to foot that the foot can move to
+        Vector      lowest;     // lowest position directly below hip that the foot can drop to
+    } trace;
 private:
-	// internally latched footset, position
-	struct x1 {
-		// matrix3x4_t		worldTarget;
-		bool		bNeedsLatch;
-		bool		bHasLatch;
-		float		influence;
-		int			iFramecounter;
-		int			owner;
-		Vector		absOrigin;
-		QAngle		absAngles;
-		Vector		pos;
-		Quaternion	q;
-		Vector		deltaPos;	// acculated error
-		Quaternion	deltaQ;
-		Vector		debouncePos;
-		Quaternion	debounceQ;
-	} latched;
-	struct x6 {
-		float		flTime; // time last error was detected
-		float		flErrorTime;
-		float		ramp;
-		bool		bInError;
-	} error;
+    // internally latched footset, position
+    struct x1 {
+        // matrix3x4_t      worldTarget;
+        bool        bNeedsLatch;
+        bool        bHasLatch;
+        float       influence;
+        int         iFramecounter;
+        int         owner;
+        Vector      absOrigin;
+        QAngle      absAngles;
+        Vector      pos;
+        Quaternion  q;
+        Vector      deltaPos;   // acculated error
+        Quaternion  deltaQ;
+        Vector      debouncePos;
+        Quaternion  debounceQ;
+    } latched;
+    struct x6 {
+        float       flTime; // time last error was detected
+        float       flErrorTime;
+        float       ramp;
+        bool        bInError;
+    } error;
 
-	friend class CIKContext;
+    friend class CIKContext;
 };
 
 
 struct ikchainresult_t
 {
-	// accumulated offset from ideal footplant location
-	int			target;
-	Vector		pos;
-	Quaternion	q;
-	float		flWeight;
+    // accumulated offset from ideal footplant location
+    int         target;
+    Vector      pos;
+    Quaternion  q;
+    float       flWeight;
 };
 
 
 
 struct ikcontextikrule_t
 {
-	int			index;
+    int         index;
 
-	int			type;
-	int			chain;
+    int         type;
+    int         chain;
 
-	int			bone;
+    int         bone;
 
-	int			slot;	// iktarget slot.  Usually same as chain.
-	float		height;
-	float		radius;
-	float		floor;
-	Vector		pos;
-	Quaternion	q;
+    int         slot;   // iktarget slot.  Usually same as chain.
+    float       height;
+    float       radius;
+    float       floor;
+    Vector      pos;
+    Quaternion  q;
 
-	float		start;	// beginning of influence
-	float		peak;	// start of full influence
-	float		tail;	// end of full influence
-	float		end;	// end of all influence
+    float       start;  // beginning of influence
+    float       peak;   // start of full influence
+    float       tail;   // end of full influence
+    float       end;    // end of all influence
 
-	float		top;
-	float		drop;
+    float       top;
+    float       drop;
 
-	float		commit;		// frame footstep target should be committed
-	float		release;	// frame ankle should end rotation from latched orientation
+    float       commit;     // frame footstep target should be committed
+    float       release;    // frame ankle should end rotation from latched orientation
 
-	float		flWeight;		// processed version of start-end cycle
-	float		flRuleWeight;	// blending weight
-	float		latched;		// does the IK rule use a latched value?
-	char		*szLabel;
+    float       flWeight;       // processed version of start-end cycle
+    float       flRuleWeight;   // blending weight
+    float       latched;        // does the IK rule use a latched value?
+    char        *szLabel;
 
-	Vector		kneeDir;
-	Vector		kneePos;
+    Vector      kneeDir;
+    Vector      kneePos;
 
-	ikcontextikrule_t() {}
+    ikcontextikrule_t() {}
 
 private:
-	// No copy constructors allowed
-	ikcontextikrule_t(const ikcontextikrule_t& vOther);
+    // No copy constructors allowed
+    ikcontextikrule_t(const ikcontextikrule_t& vOther);
 };
 
 
@@ -265,71 +265,71 @@ bool Studio_SolveIK( int iThigh, int iKnee, int iFoot, Vector &targetFoot, Vecto
 
 
 
-class CIKContext 
+class CIKContext
 {
 public:
-	CIKContext( );
-	void Init( const CStudioHdr *pStudioHdr, const QAngle &angles, const Vector &pos, float flTime, int iFramecounter, int boneMask );
-	void AddDependencies(  mstudioseqdesc_t &seqdesc, int iSequence, float flCycle, const float poseParameters[], float flWeight = 1.0f );
+    CIKContext( );
+    void Init( const CStudioHdr *pStudioHdr, const QAngle &angles, const Vector &pos, float flTime, int iFramecounter, int boneMask );
+    void AddDependencies(  mstudioseqdesc_t &seqdesc, int iSequence, float flCycle, const float poseParameters[], float flWeight = 1.0f );
 
-	void ClearTargets( void );
-	void UpdateTargets( Vector pos[], Quaternion q[], matrix3x4_t boneToWorld[], CBoneBitList &boneComputed );
-	void AutoIKRelease( void );
-	void SolveDependencies( Vector pos[], Quaternion q[], matrix3x4_t boneToWorld[], CBoneBitList &boneComputed );
+    void ClearTargets( void );
+    void UpdateTargets( Vector pos[], Quaternion q[], matrix3x4_t boneToWorld[], CBoneBitList &boneComputed );
+    void AutoIKRelease( void );
+    void SolveDependencies( Vector pos[], Quaternion q[], matrix3x4_t boneToWorld[], CBoneBitList &boneComputed );
 
-	void AddAutoplayLocks( Vector pos[], Quaternion q[] );
-	void SolveAutoplayLocks( Vector pos[], Quaternion q[] );
+    void AddAutoplayLocks( Vector pos[], Quaternion q[] );
+    void SolveAutoplayLocks( Vector pos[], Quaternion q[] );
 
-	void AddSequenceLocks( mstudioseqdesc_t &SeqDesc, Vector pos[], Quaternion q[] );
-	void SolveSequenceLocks( mstudioseqdesc_t &SeqDesc, Vector pos[], 	Quaternion q[] );
-	
-	void AddAllLocks( Vector pos[], Quaternion q[] );
-	void SolveAllLocks( Vector pos[], Quaternion q[] );
+    void AddSequenceLocks( mstudioseqdesc_t &SeqDesc, Vector pos[], Quaternion q[] );
+    void SolveSequenceLocks( mstudioseqdesc_t &SeqDesc, Vector pos[],   Quaternion q[] );
 
-	void SolveLock( const mstudioiklock_t *plock, int i, Vector pos[], Quaternion q[], matrix3x4_t boneToWorld[], CBoneBitList &boneComputed );
+    void AddAllLocks( Vector pos[], Quaternion q[] );
+    void SolveAllLocks( Vector pos[], Quaternion q[] );
 
-	CUtlVectorFixed< CIKTarget, 12 >	m_target;
+    void SolveLock( const mstudioiklock_t *plock, int i, Vector pos[], Quaternion q[], matrix3x4_t boneToWorld[], CBoneBitList &boneComputed );
+
+    CUtlVectorFixed< CIKTarget, 12 >    m_target;
 
 private:
 
-	CStudioHdr const *m_pStudioHdr;
+    CStudioHdr const *m_pStudioHdr;
 
-	bool Estimate( int iSequence, float flCycle, int iTarget, const float poseParameter[], float flWeight = 1.0f ); 
-	void BuildBoneChain( const Vector pos[], const Quaternion q[], int iBone, matrix3x4_t *pBoneToWorld, CBoneBitList &boneComputed );
+    bool Estimate( int iSequence, float flCycle, int iTarget, const float poseParameter[], float flWeight = 1.0f );
+    void BuildBoneChain( const Vector pos[], const Quaternion q[], int iBone, matrix3x4_t *pBoneToWorld, CBoneBitList &boneComputed );
 
-	// virtual IK rules, filtered and combined from each sequence
-	CUtlVector< CUtlVector< ikcontextikrule_t > > m_ikChainRule;
-	CUtlVector< ikcontextikrule_t > m_ikLock;
-	matrix3x4_t m_rootxform;
+    // virtual IK rules, filtered and combined from each sequence
+    CUtlVector< CUtlVector< ikcontextikrule_t > > m_ikChainRule;
+    CUtlVector< ikcontextikrule_t > m_ikLock;
+    matrix3x4_t m_rootxform;
 
-	int m_iFramecounter;
-	float m_flTime;
-	int m_boneMask;
+    int m_iFramecounter;
+    float m_flTime;
+    int m_boneMask;
 };
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 
 // replaces the bonetoworld transforms for all bones that are procedural
 bool CalcProceduralBone(
-	const CStudioHdr *pStudioHdr,
-	int iBone,
-	CBoneAccessor &bonetoworld
-	);
+    const CStudioHdr *pStudioHdr,
+    int iBone,
+    CBoneAccessor &bonetoworld
+    );
 
 void Studio_BuildMatrices(
-	const CStudioHdr *pStudioHdr,
-	const QAngle& angles, 
-	const Vector& origin, 
-	const Vector pos[],
-	const Quaternion q[],
-	int iBone,
-	float flScale,
-	matrix3x4_t bonetoworld[MAXSTUDIOBONES],
-	int boneMask
-	);
+    const CStudioHdr *pStudioHdr,
+    const QAngle& angles,
+    const Vector& origin,
+    const Vector pos[],
+    const Quaternion q[],
+    int iBone,
+    float flScale,
+    matrix3x4_t bonetoworld[MAXSTUDIOBONES],
+    int boneMask
+    );
 
 
 // Get a bone->bone relative transform
@@ -382,53 +382,53 @@ const char *Studio_GetKeyValueText( const CStudioHdr *pStudioHdr, int iSequence 
 FORWARD_DECLARE_HANDLE( memhandle_t );
 struct bonecacheparams_t
 {
-	CStudioHdr		*pStudioHdr;
-	matrix3x4_t		*pBoneToWorld;
-	float			curtime;
-	int				boneMask;
+    CStudioHdr      *pStudioHdr;
+    matrix3x4_t     *pBoneToWorld;
+    float           curtime;
+    int             boneMask;
 };
 
 class CBoneCache
 {
 public:
 
-	// you must implement these static functions for the ResourceManager
-	// -----------------------------------------------------------
-	static CBoneCache *CreateResource( const bonecacheparams_t &params );
-	static unsigned int EstimatedSize( const bonecacheparams_t &params );
-	// -----------------------------------------------------------
-	// member functions that must be present for the ResourceManager
-	void			DestroyResource();
-	CBoneCache		*GetData() { return this; }
-	unsigned int	Size() { return m_size; }
-	// -----------------------------------------------------------
+    // you must implement these static functions for the ResourceManager
+    // -----------------------------------------------------------
+    static CBoneCache *CreateResource( const bonecacheparams_t &params );
+    static unsigned int EstimatedSize( const bonecacheparams_t &params );
+    // -----------------------------------------------------------
+    // member functions that must be present for the ResourceManager
+    void            DestroyResource();
+    CBoneCache      *GetData() { return this; }
+    unsigned int    Size() { return m_size; }
+    // -----------------------------------------------------------
 
-					CBoneCache();
+                    CBoneCache();
 
-	// was constructor, but placement new is messy wrt memdebug - so cast & init instead
-	void			Init( const bonecacheparams_t &params, unsigned int size, short *pStudioToCached, short *pCachedToStudio, int cachedBoneCount );
-	
-	void			UpdateBones( const matrix3x4_t *pBoneToWorld, int numbones, float curtime );
-	matrix3x4_t		*GetCachedBone( int studioIndex );
-	void			ReadCachedBones( matrix3x4_t *pBoneToWorld );
-	void			ReadCachedBonePointers( matrix3x4_t **bones, int numbones );
+    // was constructor, but placement new is messy wrt memdebug - so cast & init instead
+    void            Init( const bonecacheparams_t &params, unsigned int size, short *pStudioToCached, short *pCachedToStudio, int cachedBoneCount );
 
-	bool			IsValid( float curtime, float dt = 0.1f );
+    void            UpdateBones( const matrix3x4_t *pBoneToWorld, int numbones, float curtime );
+    matrix3x4_t     *GetCachedBone( int studioIndex );
+    void            ReadCachedBones( matrix3x4_t *pBoneToWorld );
+    void            ReadCachedBonePointers( matrix3x4_t **bones, int numbones );
+
+    bool            IsValid( float curtime, float dt = 0.1f );
 
 public:
-	float			m_timeValid;
-	int				m_boneMask;
+    float           m_timeValid;
+    int             m_boneMask;
 
 private:
-	matrix3x4_t		*BoneArray();
-	short			*StudioToCached();
-	short			*CachedToStudio();
+    matrix3x4_t     *BoneArray();
+    short           *StudioToCached();
+    short           *CachedToStudio();
 
-	unsigned int	m_size;
-	unsigned short	m_cachedBoneCount;
-	unsigned short	m_matrixOffset;
-	unsigned short	m_cachedToStudioOffset;
-	unsigned short	m_boneOutOffset;
+    unsigned int    m_size;
+    unsigned short  m_cachedBoneCount;
+    unsigned short  m_matrixOffset;
+    unsigned short  m_cachedToStudioOffset;
+    unsigned short  m_boneOutOffset;
 };
 
 CBoneCache *Studio_GetBoneCache( memhandle_t cacheHandle );

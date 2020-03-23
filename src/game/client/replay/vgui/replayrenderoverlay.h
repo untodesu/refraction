@@ -26,41 +26,41 @@ class CReplayRenderer;
 
 class CReplayRenderOverlay : public vgui::Frame
 {
-	DECLARE_CLASS_SIMPLE( CReplayRenderOverlay, vgui::Frame );
+    DECLARE_CLASS_SIMPLE( CReplayRenderOverlay, vgui::Frame );
 public:
-	CReplayRenderOverlay( Panel *pParent );
-	~CReplayRenderOverlay();
+    CReplayRenderOverlay( Panel *pParent );
+    ~CReplayRenderOverlay();
 
-	void Show();
-	void Hide();
+    void Show();
+    void Hide();
 
-	CReplayRenderer		*m_pRenderer;
-
-private:
-	virtual void	ApplySchemeSettings( vgui::IScheme *pScheme );
-	virtual void	PerformLayout();
-	virtual void	OnTick();
-	virtual void	OnMousePressed( vgui::MouseCode nCode );
-	virtual void	OnKeyCodeTyped( vgui::KeyCode nCode );
-	virtual void	OnCommand( const char *pCommand );
+    CReplayRenderer     *m_pRenderer;
 
 private:
-	MESSAGE_FUNC_PTR( OnCheckButtonChecked, "CheckButtonChecked", pPanel );
+    virtual void    ApplySchemeSettings( vgui::IScheme *pScheme );
+    virtual void    PerformLayout();
+    virtual void    OnTick();
+    virtual void    OnMousePressed( vgui::MouseCode nCode );
+    virtual void    OnKeyCodeTyped( vgui::KeyCode nCode );
+    virtual void    OnCommand( const char *pCommand );
+
+private:
+    MESSAGE_FUNC_PTR( OnCheckButtonChecked, "CheckButtonChecked", pPanel );
 
 #if _DEBUG
-	bool				m_bReloadScheme;
+    bool                m_bReloadScheme;
 #endif
 
-	int					m_unNumFrames;
-	float				m_flStartTime;
-	float				m_flPreviousTimeLeft;
-	EditablePanel		*m_pBottom;
-	vgui::ProgressBar	*m_pRenderProgress;
-	vgui::CheckButton	*m_pPreviewCheckButton;
-	CExButton			*m_pCancelButton;
-	CExLabel			*m_pTitleLabel;
-	CExLabel			*m_pFilenameLabel;
-	CExLabel			*m_pProgressLabel;
+    int                 m_unNumFrames;
+    float               m_flStartTime;
+    float               m_flPreviousTimeLeft;
+    EditablePanel       *m_pBottom;
+    vgui::ProgressBar   *m_pRenderProgress;
+    vgui::CheckButton   *m_pPreviewCheckButton;
+    CExButton           *m_pCancelButton;
+    CExLabel            *m_pTitleLabel;
+    CExLabel            *m_pFilenameLabel;
+    CExLabel            *m_pProgressLabel;
 };
 
 //-----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -12,10 +12,10 @@
 
 typedef struct vmode_s
 {
-	int			width;
-	int			height;
-	int			bpp;
-	int			refreshRate;
+    int         width;
+    int         height;
+    int         bpp;
+    int         refreshRate;
 } vmode_t;
 
 #endif // MODES_H

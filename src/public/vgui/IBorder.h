@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -23,41 +23,41 @@ class IScheme;
 
 //-----------------------------------------------------------------------------
 // Purpose: Interface to panel borders
-//			Borders have a close relationship with panels
-//			They are the edges of the panel.
+//          Borders have a close relationship with panels
+//          They are the edges of the panel.
 //-----------------------------------------------------------------------------
 class IBorder
 {
 public:
-	IBorder() {}
-	virtual ~IBorder() {}
+    IBorder() {}
+    virtual ~IBorder() {}
 
-	virtual void Paint(VPANEL panel) = 0;
-	virtual void Paint(int x0, int y0, int x1, int y1) = 0;
-	virtual void Paint(int x0, int y0, int x1, int y1, int breakSide, int breakStart, int breakStop) = 0;
-	virtual void SetInset(int left, int top, int right, int bottom) = 0;
-	virtual void GetInset(int &left, int &top, int &right, int &bottom) = 0;
-	virtual void ApplySchemeSettings(IScheme *pScheme, KeyValues *inResourceData) = 0;
-	virtual const char *GetName() = 0;
-	virtual void SetName(const char *name) = 0;
+    virtual void Paint(VPANEL panel) = 0;
+    virtual void Paint(int x0, int y0, int x1, int y1) = 0;
+    virtual void Paint(int x0, int y0, int x1, int y1, int breakSide, int breakStart, int breakStop) = 0;
+    virtual void SetInset(int left, int top, int right, int bottom) = 0;
+    virtual void GetInset(int &left, int &top, int &right, int &bottom) = 0;
+    virtual void ApplySchemeSettings(IScheme *pScheme, KeyValues *inResourceData) = 0;
+    virtual const char *GetName() = 0;
+    virtual void SetName(const char *name) = 0;
 
-	enum backgroundtype_e
-	{
-		BACKGROUND_FILLED,
-		BACKGROUND_TEXTURED,
-		BACKGROUND_ROUNDEDCORNERS,
-	};
-	virtual backgroundtype_e GetBackgroundType() = 0;
+    enum backgroundtype_e
+    {
+        BACKGROUND_FILLED,
+        BACKGROUND_TEXTURED,
+        BACKGROUND_ROUNDEDCORNERS,
+    };
+    virtual backgroundtype_e GetBackgroundType() = 0;
 
-	enum sides_e
-	{
-		SIDE_LEFT = 0,
-		SIDE_TOP = 1,
-		SIDE_RIGHT = 2,
-		SIDE_BOTTOM = 3
-	};
+    enum sides_e
+    {
+        SIDE_LEFT = 0,
+        SIDE_TOP = 1,
+        SIDE_RIGHT = 2,
+        SIDE_BOTTOM = 3
+    };
 
-	virtual bool PaintFirst( void ) = 0;
+    virtual bool PaintFirst( void ) = 0;
 };
 
 } // namespace vgui

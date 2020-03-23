@@ -1,8 +1,8 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Defines an interface to the map editor for the execution of
-//			editor shell commands from another application. Commands allow the
-//			creation and deletion of entities, AI nodes, and AI node connections.
+//          editor shell commands from another application. Commands allow the
+//          creation and deletion of entities, AI nodes, and AI node connections.
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -18,9 +18,9 @@ class QAngle;
 //
 enum EditorSendResult_t
 {
-	Editor_OK = 0,			// Success.
-	Editor_NotRunning,		// Unable to establish a communications channel with the editor.
-	Editor_BadCommand,		// The editor did not accept the command.
+    Editor_OK = 0,          // Success.
+    Editor_NotRunning,      // Unable to establish a communications channel with the editor.
+    Editor_BadCommand,      // The editor did not accept the command.
 };
 
 

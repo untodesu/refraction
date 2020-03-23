@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -153,7 +153,7 @@ public:
          float x = (float)xbits;
          float y = (float)ybits;
          float z = (float)( 126 - xbits - ybits );
-		
+
          // calculate the amount of normalization required
          mUVAdjustment[idx] = 1.0f / sqrtf( y*y + z*z + x*x );
          Assert( _finite( mUVAdjustment[idx]));

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -14,17 +14,17 @@
 /*
     http://developer.intel.com/design/Pentium4/documentation.htm
 
-    IA-32 Intel Architecture Software Developer's Manual Volume 1: Basic Architecture 
+    IA-32 Intel Architecture Software Developer's Manual Volume 1: Basic Architecture
 
-    IA-32 Intel Architecture Software Developer's Manual Volume 2A: Instruction Set Reference, A-M 
+    IA-32 Intel Architecture Software Developer's Manual Volume 2A: Instruction Set Reference, A-M
 
-    IA-32 Intel Architecture Software Developer's Manual Volume 2B: Instruction Set Reference, N-Z 
+    IA-32 Intel Architecture Software Developer's Manual Volume 2B: Instruction Set Reference, N-Z
 
-    IA-32 Intel Architecture Software Developer's Manual Volume 3: System Programming Guide 
+    IA-32 Intel Architecture Software Developer's Manual Volume 3: System Programming Guide
 
 
     From Mikael Pettersson's perfctr:
-    
+
         http://user.it.uu.se/~mikpe/linux/perfctr/
 
      * Known quirks:
@@ -81,16 +81,16 @@ typedef union ESCR
 {
     struct
     {
-        uint64	Reserved0_1     : 2; // 
-        uint64	USR			    : 1; // 
-        uint64	OS			    : 1; // 
-        uint64	TagEnable       : 1; //  
-        uint64	TagValue        : 4; //  
-        uint64	EventMask	    : 16; // from event select
-        uint64	ESCREventSelect	: 6; // 31:25 class of event
-        uint64	Reserved31	    : 1; // 
+        uint64  Reserved0_1     : 2; //
+        uint64  USR             : 1; //
+        uint64  OS              : 1; //
+        uint64  TagEnable       : 1; //
+        uint64  TagValue        : 4; //
+        uint64  EventMask       : 16; // from event select
+        uint64  ESCREventSelect : 6; // 31:25 class of event
+        uint64  Reserved31      : 1; //
 
-        uint64	Reserved32_63	: 32; // 
+        uint64  Reserved32_63   : 32; //
     };
     uint64 flat;
 
@@ -100,22 +100,22 @@ typedef union CCCR
 {
     struct
     {
-        uint64	Reserved0_11    : 12;// 0 -11 
-        uint64	Enable		    : 1; // 12
-        uint64	CCCRSelect	    : 3; // 13-15
-        uint64	Reserved16_17   : 2; // 16 17
+        uint64  Reserved0_11    : 12;// 0 -11
+        uint64  Enable          : 1; // 12
+        uint64  CCCRSelect      : 3; // 13-15
+        uint64  Reserved16_17   : 2; // 16 17
 
-        uint64	Compare         : 1; // 18
-        uint64	Complement	    : 1; // 19
-        uint64	Threshold	    : 4; // 20-23
-        uint64	Edge	        : 1; // 24
-        uint64	FORCE_OVF	    : 1; // 25
-        uint64	OVF_PMI	        : 1; // 26
-        uint64	Reserved27_29	: 3; // 27-29
-        uint64	Cascade	        : 1; // 30
-        uint64	OVF	            : 1; // 31
+        uint64  Compare         : 1; // 18
+        uint64  Complement      : 1; // 19
+        uint64  Threshold       : 4; // 20-23
+        uint64  Edge            : 1; // 24
+        uint64  FORCE_OVF       : 1; // 25
+        uint64  OVF_PMI         : 1; // 26
+        uint64  Reserved27_29   : 3; // 27-29
+        uint64  Cascade         : 1; // 30
+        uint64  OVF             : 1; // 31
 
-        uint64	Reserved32_63	: 32; // 
+        uint64  Reserved32_63   : 32; //
     };
     uint64 flat;
 
@@ -127,8 +127,8 @@ extern const unsigned short cccr_escr_map[NCOUNTERS][8];
 
 enum P4TagState
 {
-    TagDisable, // 
-    TagEnable,  // 
+    TagDisable, //
+    TagEnable,  //
 };
 
 enum P4ForceOverflow
@@ -161,14 +161,14 @@ protected:
 
 public:
 
-    unsigned short	m_eventMask;
-    const tchar		*description;
-    PME				*pme;
-    ESCR			escr;
-    CCCR			cccr;
-    int				counterPort;
-    int				cccrPort;
-    int				escrPort;
+    unsigned short  m_eventMask;
+    const tchar     *description;
+    PME             *pme;
+    ESCR            escr;
+    CCCR            cccr;
+    int             counterPort;
+    int             cccrPort;
+    int             escrPort;
 
     P4BaseEvent()
     {
@@ -218,16 +218,16 @@ public:
 #endif
 
         // ReadMSR should work here too, but RDPMC should be faster
-		int64 value = 0;
+        int64 value = 0;
         pme->ReadMSR( counterPort, &value );
-		return value;
+        return value;
 #if 0
         // we need to copy this into a temp for some reason
         int temp = m_counter;
-        _asm 
+        _asm
         {
             mov ecx, temp
-            RDPMC 
+            RDPMC
         }
 #endif
     }
@@ -237,23 +237,23 @@ public:
         switch ( priv )
         {
         case OS_Only:
-			{
-				escr.USR = 0;
-				escr.OS = 1;
-				break;
-			}
+            {
+                escr.USR = 0;
+                escr.OS = 1;
+                break;
+            }
         case USR_Only:
-			{
-	            escr.USR = 1;
-		        escr.OS = 0;
-			    break;
-			}
+            {
+                escr.USR = 1;
+                escr.OS = 0;
+                break;
+            }
         case OS_and_USR:
-			{
-	            escr.USR = 1;
-		        escr.OS = 1;
-			    break;
-			}
+            {
+                escr.USR = 1;
+                escr.OS = 1;
+                break;
+            }
         }
 
         escr.EventMask = m_eventMask;
@@ -262,7 +262,7 @@ public:
 
     void SetTagging( P4TagState tagEnable, uint8 tagValue )
     {
-        escr.TagEnable = tagEnable; 
+        escr.TagEnable = tagEnable;
         escr.TagValue = tagValue;
         pme->WriteMSR( escrPort, escr.flat );
     }
@@ -272,7 +272,7 @@ public:
         cccr.Compare = compareEnable;
         cccr.Complement = compareMethod;
         cccr.Threshold = threshold;
-        cccr.Edge = edgeEnable; 
+        cccr.Edge = edgeEnable;
         pme->WriteMSR( cccrPort, cccr.flat );
     }
 
@@ -316,7 +316,7 @@ public:
 };
 #pragma warning( default : 4035 )
 
-#include "EventMasks.h" 
-#include "EventModes.h" 
+#include "EventMasks.h"
+#include "EventModes.h"
 
 #endif // P4PERFORMANCECOUNTERS_H

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -23,16 +23,16 @@ typedef CGameTrace trace_t;
 
 enum
 {
-	FX_ENERGYSPLASH_EXPLOSIVE		= 0x1,
-	FX_ENERGYSPLASH_SMOKE			= 0x2,
-	FX_ENERGYSPLASH_LITTLESPARKS	= 0x4,
-	FX_ENERGYSPLASH_BIGSPARKS		= 0x8,
-	FX_ENERGYSPLASH_BIGSPARKSCOLLIDE = 0x10,
-	FX_ENERGYSPLASH_ENERGYBALLS		= 0x20,
-	FX_ENERGYSPLASH_DLIGHT			= 0x40,
-	
-	FX_ENERGYSPLASH_DEFAULT = ~FX_ENERGYSPLASH_EXPLOSIVE,
-	FX_ENERGYSPLASH_DEFAULT_EXPLOSIVE = ~0,
+    FX_ENERGYSPLASH_EXPLOSIVE       = 0x1,
+    FX_ENERGYSPLASH_SMOKE           = 0x2,
+    FX_ENERGYSPLASH_LITTLESPARKS    = 0x4,
+    FX_ENERGYSPLASH_BIGSPARKS       = 0x8,
+    FX_ENERGYSPLASH_BIGSPARKSCOLLIDE = 0x10,
+    FX_ENERGYSPLASH_ENERGYBALLS     = 0x20,
+    FX_ENERGYSPLASH_DLIGHT          = 0x40,
+
+    FX_ENERGYSPLASH_DEFAULT = ~FX_ENERGYSPLASH_EXPLOSIVE,
+    FX_ENERGYSPLASH_DEFAULT_EXPLOSIVE = ~0,
 };
 
 bool FX_GetAttachmentTransform( ClientEntityHandle_t hEntity, int attachmentIndex, matrix3x4_t &transform );
@@ -58,7 +58,7 @@ void FX_CreateImpactDust( Vector &origin, Vector &normal );
 void FX_EnergySplash( const Vector &pos, const Vector &normal, int nFlags = FX_ENERGYSPLASH_DEFAULT );
 void FX_MicroExplosion( Vector &position, Vector &normal );
 void FX_Explosion( Vector& origin, Vector& normal, char materialType );
-void FX_ConcussiveExplosion( Vector& origin, Vector& normal ); 
+void FX_ConcussiveExplosion( Vector& origin, Vector& normal );
 void FX_DustImpact( const Vector &origin, trace_t *tr, int iScale );
 void FX_DustImpact( const Vector &origin, trace_t *tr, float flScale );
 void FX_MuzzleEffect( const Vector &origin, const QAngle &angles, float scale, ClientEntityHandle_t hEntity, unsigned char *pFlashColor = NULL, bool bOneFrame = false );
@@ -81,15 +81,15 @@ bool EffectOccluded( const Vector &pos, pixelvis_handle_t *queryHandle = 0 );
 class CTeslaInfo
 {
 public:
-	Vector			m_vPos;
-	QAngle			m_vAngles;
-	int				m_nEntIndex;
-	const char		*m_pszSpriteName;
-	float			m_flBeamWidth;
-	int				m_nBeams;
-	Vector			m_vColor;
-	float			m_flTimeVisible;
-	float			m_flRadius;
+    Vector          m_vPos;
+    QAngle          m_vAngles;
+    int             m_nEntIndex;
+    const char      *m_pszSpriteName;
+    float           m_flBeamWidth;
+    int             m_nBeams;
+    Vector          m_vColor;
+    float           m_flTimeVisible;
+    float           m_flRadius;
 };
 
 void FX_Tesla( const CTeslaInfo &teslaInfo );

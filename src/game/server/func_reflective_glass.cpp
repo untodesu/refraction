@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //===========================================================================//
 
@@ -12,9 +12,9 @@
 
 class CFuncReflectiveGlass : public CFuncBrush
 {
-	DECLARE_DATADESC();
-	DECLARE_CLASS( CFuncReflectiveGlass, CFuncBrush );
-	DECLARE_SERVERCLASS();
+    DECLARE_DATADESC();
+    DECLARE_CLASS( CFuncReflectiveGlass, CFuncBrush );
+    DECLARE_SERVERCLASS();
 };
 
 // automatically hooks in the system's callbacks

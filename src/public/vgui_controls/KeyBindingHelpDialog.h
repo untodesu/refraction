@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -24,38 +24,38 @@ class CKeyBoardEditorDialog;
 //-----------------------------------------------------------------------------
 class CKeyBindingHelpDialog : public Frame
 {
-	DECLARE_CLASS_SIMPLE( CKeyBindingHelpDialog, Frame );
+    DECLARE_CLASS_SIMPLE( CKeyBindingHelpDialog, Frame );
 
 public:
-	CKeyBindingHelpDialog( Panel *parent, Panel *panelToView, KeyBindingContextHandle_t handle, KeyCode code, int modifiers );
-	~CKeyBindingHelpDialog();
+    CKeyBindingHelpDialog( Panel *parent, Panel *panelToView, KeyBindingContextHandle_t handle, KeyCode code, int modifiers );
+    ~CKeyBindingHelpDialog();
 
-	virtual void			OnCommand( char const *cmd );
-	virtual void			OnKeyCodeTyped(vgui::KeyCode code);
+    virtual void            OnCommand( char const *cmd );
+    virtual void            OnKeyCodeTyped(vgui::KeyCode code);
 
-	// The key originally bound to help was pressed
-	void					HelpKeyPressed();
+    // The key originally bound to help was pressed
+    void                    HelpKeyPressed();
 private:
 
-	virtual void			OnTick();
+    virtual void            OnTick();
 
-	bool					IsHelpKeyStillBeingHeld();
+    bool                    IsHelpKeyStillBeingHeld();
 
-	void					PopulateList();
-	void					GetMappingList( Panel *panel, CUtlVector< PanelKeyBindingMap * >& maps );
+    void                    PopulateList();
+    void                    GetMappingList( Panel *panel, CUtlVector< PanelKeyBindingMap * >& maps );
 
-	void					AnsiText( char const *token, char *out, size_t buflen );
+    void                    AnsiText( char const *token, char *out, size_t buflen );
 
-	vgui::PHandle			m_hPanel;
-	KeyBindingContextHandle_t m_Handle;
-	KeyCode					m_KeyCode;
-	int						m_Modifiers;
+    vgui::PHandle           m_hPanel;
+    KeyBindingContextHandle_t m_Handle;
+    KeyCode                 m_KeyCode;
+    int                     m_Modifiers;
 
-	ListPanel				*m_pList;
-	double					m_flShowTime;
-	bool					m_bPermanent;
+    ListPanel               *m_pList;
+    double                  m_flShowTime;
+    bool                    m_bPermanent;
 
-	DHANDLE< CKeyBoardEditorDialog >	m_hKeyBindingsEditor;
+    DHANDLE< CKeyBoardEditorDialog >    m_hKeyBindingsEditor;
 };
 
 }

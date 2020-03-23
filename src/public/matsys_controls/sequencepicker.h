@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -23,7 +23,7 @@
 //-----------------------------------------------------------------------------
 namespace vgui
 {
-	class Splitter;
+    class Splitter;
 }
 
 
@@ -32,54 +32,54 @@ namespace vgui
 //-----------------------------------------------------------------------------
 class CSequencePicker : public vgui::EditablePanel
 {
-	DECLARE_CLASS_SIMPLE( CSequencePicker, vgui::EditablePanel );
+    DECLARE_CLASS_SIMPLE( CSequencePicker, vgui::EditablePanel );
 
 public:
-	enum PickType_t
-	{
-		PICK_NONE		= 0,
-		PICK_SEQUENCES	= 0x1,
-		PICK_ACTIVITIES = 0x2,
-		PICK_ALL		= 0xFFFFFFFF,
-	};
+    enum PickType_t
+    {
+        PICK_NONE       = 0,
+        PICK_SEQUENCES  = 0x1,
+        PICK_ACTIVITIES = 0x2,
+        PICK_ALL        = 0xFFFFFFFF,
+    };
 
-	// Flags come from PickType_t
-	CSequencePicker( vgui::Panel *pParent, int nFlags = PICK_ALL );
-	~CSequencePicker();
+    // Flags come from PickType_t
+    CSequencePicker( vgui::Panel *pParent, int nFlags = PICK_ALL );
+    ~CSequencePicker();
 
-	// overridden frame functions
-	virtual void PerformLayout();
+    // overridden frame functions
+    virtual void PerformLayout();
 
-	// Sets the MDL to preview sequences for
-	void SetMDL( const char *pMDLName );
+    // Sets the MDL to preview sequences for
+    void SetMDL( const char *pMDLName );
 
-	// Gets the selected activity/sequence
-	PickType_t GetSelectedSequenceType();
-	const char *GetSelectedSequenceName( );
+    // Gets the selected activity/sequence
+    PickType_t GetSelectedSequenceType();
+    const char *GetSelectedSequenceName( );
 
 private:
-	void RefreshActivitiesAndSequencesList();
+    void RefreshActivitiesAndSequencesList();
 
-	// Plays the selected activity
-	void PlayActivity( const char *pActivityName );
+    // Plays the selected activity
+    void PlayActivity( const char *pActivityName );
 
-	// Plays the selected sequence
-	void PlaySequence( const char *pSequenceName );
+    // Plays the selected sequence
+    void PlaySequence( const char *pSequenceName );
 
-	MESSAGE_FUNC_PARAMS( OnItemSelected, "ItemSelected", kv );
-	MESSAGE_FUNC( OnPageChanged, "PageChanged" );
+    MESSAGE_FUNC_PARAMS( OnItemSelected, "ItemSelected", kv );
+    MESSAGE_FUNC( OnPageChanged, "PageChanged" );
 
-	CMDLPanel *m_pMDLPreview;
-	vgui::Splitter* m_pPreviewSplitter;
-	vgui::PropertySheet *m_pViewsSheet;
-	vgui::PropertyPage *m_pSequencesPage;
-	vgui::PropertyPage *m_pActivitiesPage;
-	vgui::ListPanel *m_pSequencesList;
-	vgui::ListPanel *m_pActivitiesList;
-	MDLHandle_t m_hSelectedMDL;
-	CUtlString m_Filter;
+    CMDLPanel *m_pMDLPreview;
+    vgui::Splitter* m_pPreviewSplitter;
+    vgui::PropertySheet *m_pViewsSheet;
+    vgui::PropertyPage *m_pSequencesPage;
+    vgui::PropertyPage *m_pActivitiesPage;
+    vgui::ListPanel *m_pSequencesList;
+    vgui::ListPanel *m_pActivitiesList;
+    MDLHandle_t m_hSelectedMDL;
+    CUtlString m_Filter;
 
-	friend class CSequencePickerFrame;
+    friend class CSequencePickerFrame;
 };
 
 
@@ -88,23 +88,23 @@ private:
 //-----------------------------------------------------------------------------
 class CSequencePickerFrame : public vgui::Frame
 {
-	DECLARE_CLASS_SIMPLE( CSequencePickerFrame, vgui::Frame );
+    DECLARE_CLASS_SIMPLE( CSequencePickerFrame, vgui::Frame );
 
 public:
-	CSequencePickerFrame( vgui::Panel *pParent, int nFlags );
+    CSequencePickerFrame( vgui::Panel *pParent, int nFlags );
 
-	// Inherited from Frame
-	virtual void OnCommand( const char *pCommand );
+    // Inherited from Frame
+    virtual void OnCommand( const char *pCommand );
 
-	// Purpose: Activate the dialog
-	void DoModal( const char *pMDLName );
+    // Purpose: Activate the dialog
+    void DoModal( const char *pMDLName );
 
 private:
-	MESSAGE_FUNC_PARAMS( OnSequencePreviewChanged, "SequencePreviewChanged", kv );
+    MESSAGE_FUNC_PARAMS( OnSequencePreviewChanged, "SequencePreviewChanged", kv );
 
-	CSequencePicker *m_pPicker;
-	vgui::Button *m_pOpenButton;
-	vgui::Button *m_pCancelButton;
+    CSequencePicker *m_pPicker;
+    vgui::Button *m_pOpenButton;
+    vgui::Button *m_pCancelButton;
 };
 
 

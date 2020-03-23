@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -61,42 +61,42 @@ void PropertyPage::OnPageHide()
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pageTab - 
+// Purpose:
+// Input  : *pageTab -
 //-----------------------------------------------------------------------------
 void PropertyPage::OnPageTabActivated(Panel *pageTab)
 {
-	_pageTab = pageTab;
+    _pageTab = pageTab;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PropertyPage::OnKeyCodeTyped(KeyCode code)
 {
-	switch (code)
-	{
+    switch (code)
+    {
         // left and right only get propogated to parents if our tab has focus
-	case KEY_RIGHT:
-		{
+    case KEY_RIGHT:
+        {
             if (_pageTab != 0 && _pageTab->HasFocus())
                 BaseClass::OnKeyCodeTyped(code);
-			break;
-		}
-	case KEY_LEFT:
-		{
+            break;
+        }
+    case KEY_LEFT:
+        {
             if (_pageTab != 0 && _pageTab->HasFocus())
                 BaseClass::OnKeyCodeTyped(code);
-			break;
-		}
-	default:
-		BaseClass::OnKeyCodeTyped(code);
-		break;
-	}
+            break;
+        }
+    default:
+        BaseClass::OnKeyCodeTyped(code);
+        break;
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PropertyPage::SetVisible(bool state)
 {

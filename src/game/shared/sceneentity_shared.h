@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -31,69 +31,69 @@ class CSceneEntity;
 class CSceneEventInfo
 {
 public:
-	CSceneEventInfo()
-		:
-	m_pEvent( 0 ),
-	m_pScene( 0 ),
-	m_pActor( 0 ),
-	m_bStarted( false ),
-	m_iLayer( -1 ),
-	m_iPriority( 0 ),
-	m_nSequence( 0 ),
-	m_bIsGesture( false ),
-	m_flWeight( 0.0f ),
-	m_hTarget(),
-	m_bIsMoving( false ),
-	m_bHasArrived( false ),
-	m_flInitialYaw( 0.0f ),
-	m_flTargetYaw( 0.0f ),
-	m_flFacingYaw( 0.0f ),
-	m_nType( 0 ),
-	m_flNext( 0.0f ),
-	m_bClientSide( false )
-	{
-	}
+    CSceneEventInfo()
+        :
+    m_pEvent( 0 ),
+    m_pScene( 0 ),
+    m_pActor( 0 ),
+    m_bStarted( false ),
+    m_iLayer( -1 ),
+    m_iPriority( 0 ),
+    m_nSequence( 0 ),
+    m_bIsGesture( false ),
+    m_flWeight( 0.0f ),
+    m_hTarget(),
+    m_bIsMoving( false ),
+    m_bHasArrived( false ),
+    m_flInitialYaw( 0.0f ),
+    m_flTargetYaw( 0.0f ),
+    m_flFacingYaw( 0.0f ),
+    m_nType( 0 ),
+    m_flNext( 0.0f ),
+    m_bClientSide( false )
+    {
+    }
 
-	// The event handle of the current scene event
-	CChoreoEvent	*m_pEvent;
+    // The event handle of the current scene event
+    CChoreoEvent    *m_pEvent;
 
-	// Current Scene
-	CChoreoScene	*m_pScene;
+    // Current Scene
+    CChoreoScene    *m_pScene;
 
-	// Current actor
-	CChoreoActor	*m_pActor;
+    // Current actor
+    CChoreoActor    *m_pActor;
 
-	// Set after the first time the event has been configured ( allows
-	//  bumping markov index only at start of event playback, not every frame )
-	bool			m_bStarted;
+    // Set after the first time the event has been configured ( allows
+    //  bumping markov index only at start of event playback, not every frame )
+    bool            m_bStarted;
 
 public:
-	//	EVENT local data...
-	// FIXME: Evil, make accessors or figure out better place
-	// FIXME: This won't work, scenes don't save and restore...
-	int						m_iLayer;
-	int						m_iPriority;
-	int						m_nSequence;
-	bool					m_bIsGesture;
-	float					m_flWeight; // used for suppressions of posture while moving
+    //  EVENT local data...
+    // FIXME: Evil, make accessors or figure out better place
+    // FIXME: This won't work, scenes don't save and restore...
+    int                     m_iLayer;
+    int                     m_iPriority;
+    int                     m_nSequence;
+    bool                    m_bIsGesture;
+    float                   m_flWeight; // used for suppressions of posture while moving
 
-	// movement, faceto targets?
-	EHANDLE					m_hTarget;
-	bool					m_bIsMoving;
-	bool					m_bHasArrived;
-	float					m_flInitialYaw;
-	float					m_flTargetYaw;
-	float					m_flFacingYaw;
+    // movement, faceto targets?
+    EHANDLE                 m_hTarget;
+    bool                    m_bIsMoving;
+    bool                    m_bHasArrived;
+    float                   m_flInitialYaw;
+    float                   m_flTargetYaw;
+    float                   m_flFacingYaw;
 
-	// generic AI events
-	int						m_nType;
-	float					m_flNext;
+    // generic AI events
+    int                     m_nType;
+    float                   m_flNext;
 
-	// is this event only client side?
-	bool					m_bClientSide; 
+    // is this event only client side?
+    bool                    m_bClientSide;
 
-	void					InitWeight( CBaseFlex *pActor );
-	float					UpdateWeight( CBaseFlex *pActor );
+    void                    InitWeight( CBaseFlex *pActor );
+    float                   UpdateWeight( CBaseFlex *pActor );
 };
 
 //-----------------------------------------------------------------------------
@@ -102,14 +102,14 @@ public:
 class CSceneTokenProcessor : public ISceneTokenProcessor
 {
 public:
-	const char	*CurrentToken( void );
-	bool		GetToken( bool crossline );
-	bool		TokenAvailable( void );
-	void		Error( PRINTF_FORMAT_STRING const char *fmt, ... );
-	void		SetBuffer( char *buffer );
+    const char  *CurrentToken( void );
+    bool        GetToken( bool crossline );
+    bool        TokenAvailable( void );
+    void        Error( PRINTF_FORMAT_STRING const char *fmt, ... );
+    void        SetBuffer( char *buffer );
 private:
-	const char	*m_pBuffer;
-	char		m_szToken[ 1024 ];
+    const char  *m_pBuffer;
+    char        m_szToken[ 1024 ];
 };
 
 extern CSceneTokenProcessor g_TokenProcessor;

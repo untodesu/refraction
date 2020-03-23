@@ -21,10 +21,10 @@ class CReplay;
 abstract_class IReplayFactory : public IBaseInterface
 {
 public:
-	virtual CReplay		*Create() = 0;
+    virtual CReplay     *Create() = 0;
 };
 
-#define INTERFACE_VERSION_REPLAY_FACTORY	"IReplayFactory001"
+#define INTERFACE_VERSION_REPLAY_FACTORY    "IReplayFactory001"
 
 //----------------------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose:		Deal with weapon being out
+// Purpose:     Deal with weapon being out
 //
 // $Workfile:     $
 // $Date:         $
@@ -24,68 +24,68 @@ class CBeam;
 
 class CAI_RappelBehavior : public CAI_SimpleBehavior
 {
-	DECLARE_CLASS( CAI_RappelBehavior, CAI_SimpleBehavior );
+    DECLARE_CLASS( CAI_RappelBehavior, CAI_SimpleBehavior );
 
 public:
-	CAI_RappelBehavior();
-	
-	void Precache( void );
-	virtual const char *GetName() {	return "Rappel"; }
+    CAI_RappelBehavior();
 
-	virtual bool KeyValue( const char *szKeyName, const char *szValue );
+    void Precache( void );
+    virtual const char *GetName() { return "Rappel"; }
 
-	virtual bool 	CanSelectSchedule();
-	void GatherConditions();
-	void CleanupOnDeath( CBaseEntity *pCulprit = NULL, bool bFireDeathOutput = true );
-	
-	//virtual void	BeginScheduleSelection();
-	//virtual void	EndScheduleSelection();
+    virtual bool KeyValue( const char *szKeyName, const char *szValue );
 
-	void StartTask( const Task_t *pTask );
-	void RunTask( const Task_t *pTask );
+    virtual bool    CanSelectSchedule();
+    void GatherConditions();
+    void CleanupOnDeath( CBaseEntity *pCulprit = NULL, bool bFireDeathOutput = true );
 
-	bool IsWaitingToRappel() { return m_bWaitingToRappel; }
-	void BeginRappel();
-	void SetDescentSpeed();
+    //virtual void  BeginScheduleSelection();
+    //virtual void  EndScheduleSelection();
 
-	void CreateZipline();
-	void CutZipline();
+    void StartTask( const Task_t *pTask );
+    void RunTask( const Task_t *pTask );
 
-	//void BuildScheduleTestBits();
-	//int TranslateSchedule( int scheduleType );
-	//void OnStartSchedule( int scheduleType );
+    bool IsWaitingToRappel() { return m_bWaitingToRappel; }
+    void BeginRappel();
+    void SetDescentSpeed();
 
-	//void InitializeBehavior();
-	
-	enum
-	{
-		SCHED_RAPPEL_WAIT = BaseClass::NEXT_SCHEDULE,		
-		SCHED_RAPPEL,
-		SCHED_CLEAR_RAPPEL_POINT, // Get out of the way for the next guy
-		NEXT_SCHEDULE,
+    void CreateZipline();
+    void CutZipline();
 
-		TASK_RAPPEL = BaseClass::NEXT_TASK,
-		TASK_HIT_GROUND,
-		NEXT_TASK,
+    //void BuildScheduleTestBits();
+    //int TranslateSchedule( int scheduleType );
+    //void OnStartSchedule( int scheduleType );
 
-		COND_BEGIN_RAPPEL = BaseClass::NEXT_CONDITION,
-		NEXT_CONDITION,
-	};
+    //void InitializeBehavior();
 
-	DEFINE_CUSTOM_SCHEDULE_PROVIDER;
+    enum
+    {
+        SCHED_RAPPEL_WAIT = BaseClass::NEXT_SCHEDULE,
+        SCHED_RAPPEL,
+        SCHED_CLEAR_RAPPEL_POINT, // Get out of the way for the next guy
+        NEXT_SCHEDULE,
+
+        TASK_RAPPEL = BaseClass::NEXT_TASK,
+        TASK_HIT_GROUND,
+        NEXT_TASK,
+
+        COND_BEGIN_RAPPEL = BaseClass::NEXT_CONDITION,
+        NEXT_CONDITION,
+    };
+
+    DEFINE_CUSTOM_SCHEDULE_PROVIDER;
 
 public:
 
 private:
-	virtual int		SelectSchedule();
+    virtual int     SelectSchedule();
 
-	//---------------------------------
-	bool	m_bWaitingToRappel;
-	bool	m_bOnGround;
-	CHandle<CBeam> m_hLine;
-	Vector	m_vecRopeAnchor;
-	
-	DECLARE_DATADESC();
+    //---------------------------------
+    bool    m_bWaitingToRappel;
+    bool    m_bOnGround;
+    CHandle<CBeam> m_hLine;
+    Vector  m_vecRopeAnchor;
+
+    DECLARE_DATADESC();
 };
 
 #endif // AI_BEHAVIOR_RAPPEL_H

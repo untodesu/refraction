@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -25,44 +25,44 @@ const HTexture SUBRECT_INVALID_TEXTURE = (HTexture)-1;
 //-----------------------------------------------------------------------------
 CSubRectImage::CSubRectImage( const char *filename, bool hardwareFiltered, int subx, int suby, int subw, int subh )
 {
-	SetSize( subw, subh );
-	sub[ 0 ] = subx;
-	sub[ 1 ] = suby;
-	sub[ 2 ] = subw;
-	sub[ 3 ] = subh;
+    SetSize( subw, subh );
+    sub[ 0 ] = subx;
+    sub[ 1 ] = suby;
+    sub[ 2 ] = subw;
+    sub[ 3 ] = subh;
 
-	_filtered = hardwareFiltered;
-	// HACKHACK - force VGUI materials to be in the vgui/ directory
-	//			 This needs to be revisited once GoldSRC is grandfathered off.
-	//!! need to make this work with goldsrc
-	int size = strlen(filename) + 1 + strlen("vgui/");
-	_filename = (char *)malloc( size );
-	Assert( _filename );
+    _filtered = hardwareFiltered;
+    // HACKHACK - force VGUI materials to be in the vgui/ directory
+    //           This needs to be revisited once GoldSRC is grandfathered off.
+    //!! need to make this work with goldsrc
+    int size = strlen(filename) + 1 + strlen("vgui/");
+    _filename = (char *)malloc( size );
+    Assert( _filename );
 
-	Q_snprintf( _filename, size, "vgui/%s", filename );
+    Q_snprintf( _filename, size, "vgui/%s", filename );
 
-	_id = SUBRECT_INVALID_TEXTURE;
-	_uploaded = false;
-	_color = Color(255, 255, 255, 255);
-	_pos[0] = _pos[1] = 0;
-	_valid = true;
-	_wide = subw;
-	_tall = subh;
-	ForceUpload();
+    _id = SUBRECT_INVALID_TEXTURE;
+    _uploaded = false;
+    _color = Color(255, 255, 255, 255);
+    _pos[0] = _pos[1] = 0;
+    _valid = true;
+    _wide = subw;
+    _tall = subh;
+    ForceUpload();
 }
 
 CSubRectImage::~CSubRectImage()
 {
-	if ( vgui::surface() && _id != SUBRECT_INVALID_TEXTURE )
-	{
-		vgui::surface()->DestroyTextureID( _id );
-		_id = SUBRECT_INVALID_TEXTURE;
-	}
+    if ( vgui::surface() && _id != SUBRECT_INVALID_TEXTURE )
+    {
+        vgui::surface()->DestroyTextureID( _id );
+        _id = SUBRECT_INVALID_TEXTURE;
+    }
 
-	if ( _filename )
-	{
-		free( _filename );
-	}
+    if ( _filename )
+    {
+        free( _filename );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -70,8 +70,8 @@ CSubRectImage::~CSubRectImage()
 //-----------------------------------------------------------------------------
 void CSubRectImage::GetSize(int &wide, int &tall)
 {
-	wide = _wide;
-	tall = _tall;
+    wide = _wide;
+    tall = _tall;
 }
 
 //-----------------------------------------------------------------------------
@@ -79,16 +79,16 @@ void CSubRectImage::GetSize(int &wide, int &tall)
 //-----------------------------------------------------------------------------
 void CSubRectImage::GetContentSize(int &wide, int &tall)
 {
-	wide = 0;
-	tall = 0;
+    wide = 0;
+    tall = 0;
 
-	if (!_valid)
-		return;
+    if (!_valid)
+        return;
 
-	if ( _id != SUBRECT_INVALID_TEXTURE )
-	{
-		surface()->DrawGetTextureSize(_id, wide, tall);
-	}
+    if ( _id != SUBRECT_INVALID_TEXTURE )
+    {
+        surface()->DrawGetTextureSize(_id, wide, tall);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -96,8 +96,8 @@ void CSubRectImage::GetContentSize(int &wide, int &tall)
 //-----------------------------------------------------------------------------
 void CSubRectImage::SetSize(int x, int y)
 {
-	_wide = x;
-	_tall = y;
+    _wide = x;
+    _tall = y;
 }
 
 //-----------------------------------------------------------------------------
@@ -105,8 +105,8 @@ void CSubRectImage::SetSize(int x, int y)
 //-----------------------------------------------------------------------------
 void CSubRectImage::SetPos(int x, int y)
 {
-	_pos[0] = x;
-	_pos[1] = y;
+    _pos[0] = x;
+    _pos[1] = y;
 }
 
 //-----------------------------------------------------------------------------
@@ -114,7 +114,7 @@ void CSubRectImage::SetPos(int x, int y)
 //-----------------------------------------------------------------------------
 void CSubRectImage::SetColor(Color col)
 {
-	_color = col;
+    _color = col;
 }
 
 //-----------------------------------------------------------------------------
@@ -122,58 +122,58 @@ void CSubRectImage::SetColor(Color col)
 //-----------------------------------------------------------------------------
 const char *CSubRectImage::GetName()
 {
-	return _filename;
+    return _filename;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Renders the loaded image, uploading it if necessary
-//			Assumes a valid image is always returned from uploading
+//          Assumes a valid image is always returned from uploading
 //-----------------------------------------------------------------------------
 void CSubRectImage::Paint()
 {
-	if ( !_valid )
-		return;
+    if ( !_valid )
+        return;
 
-	// if we don't have an _id then lets make one
-	if ( _id == SUBRECT_INVALID_TEXTURE )
-	{
-		_id = surface()->CreateNewTextureID();
-	}
+    // if we don't have an _id then lets make one
+    if ( _id == SUBRECT_INVALID_TEXTURE )
+    {
+        _id = surface()->CreateNewTextureID();
+    }
 
-	// if we have not uploaded yet, lets go ahead and do so
-	if ( !_uploaded )
-	{
-		ForceUpload();
-	}
+    // if we have not uploaded yet, lets go ahead and do so
+    if ( !_uploaded )
+    {
+        ForceUpload();
+    }
 
-	// set the texture current, set the color, and draw the biatch
-	surface()->DrawSetColor( _color[0], _color[1], _color[2], _color[3] );
-	surface()->DrawSetTexture( _id );
+    // set the texture current, set the color, and draw the biatch
+    surface()->DrawSetColor( _color[0], _color[1], _color[2], _color[3] );
+    surface()->DrawSetTexture( _id );
 
-	if ( _wide == 0 || _tall == 0 )
-		return;
+    if ( _wide == 0 || _tall == 0 )
+        return;
 
-	int cw, ch;
-	GetContentSize( cw, ch );
-	if ( cw == 0 || ch == 0 )
-		return;
+    int cw, ch;
+    GetContentSize( cw, ch );
+    if ( cw == 0 || ch == 0 )
+        return;
 
-	float s[ 2 ];
-	float t[ 2 ];
+    float s[ 2 ];
+    float t[ 2 ];
 
-	s[ 0 ] = (float)sub[ 0 ] / (float)cw;
-	s[ 1 ] = (float)(sub[ 0 ]+sub[ 2 ]) / (float)cw;
-	t[ 0 ] = (float)sub[ 1 ] / (float)ch;
-	t[ 1 ] = (float)(sub[ 1 ]+sub[ 3 ]) / (float)ch;
-	surface()->DrawTexturedSubRect(
-		_pos[0], 
-		_pos[1], 
-		_pos[0] + _wide, 
-		_pos[1] + _tall,
-		s[ 0 ], 
-		t[ 0 ], 
-		s[ 1 ], 
-		t[ 1 ] );
+    s[ 0 ] = (float)sub[ 0 ] / (float)cw;
+    s[ 1 ] = (float)(sub[ 0 ]+sub[ 2 ]) / (float)cw;
+    t[ 0 ] = (float)sub[ 1 ] / (float)ch;
+    t[ 1 ] = (float)(sub[ 1 ]+sub[ 3 ]) / (float)ch;
+    surface()->DrawTexturedSubRect(
+        _pos[0],
+        _pos[1],
+        _pos[0] + _wide,
+        _pos[1] + _tall,
+        s[ 0 ],
+        t[ 0 ],
+        s[ 1 ],
+        t[ 1 ] );
 }
 
 //-----------------------------------------------------------------------------
@@ -181,19 +181,19 @@ void CSubRectImage::Paint()
 //-----------------------------------------------------------------------------
 void CSubRectImage::ForceUpload()
 {
-	if ( !_valid || _uploaded )
-		return;
+    if ( !_valid || _uploaded )
+        return;
 
-	if ( _id == SUBRECT_INVALID_TEXTURE )
-	{
-		_id = surface()->CreateNewTextureID( false );
-	}
+    if ( _id == SUBRECT_INVALID_TEXTURE )
+    {
+        _id = surface()->CreateNewTextureID( false );
+    }
 
-	surface()->DrawSetTextureFile( _id, _filename, _filtered, false );
+    surface()->DrawSetTextureFile( _id, _filename, _filtered, false );
 
-	_uploaded = true;
+    _uploaded = true;
 
-	_valid = surface()->IsTextureIDValid( _id );
+    _valid = surface()->IsTextureIDValid( _id );
 }
 
 
@@ -202,11 +202,11 @@ void CSubRectImage::ForceUpload()
 //-----------------------------------------------------------------------------
 HTexture CSubRectImage::GetID()
 {
-	return _id;
+    return _id;
 }
 
 bool CSubRectImage::IsValid()
 {
-	return _valid;
+    return _valid;
 }
 

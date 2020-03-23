@@ -14,23 +14,23 @@
 
 class CPathCorner : public CPointEntity
 {
-	DECLARE_CLASS( CPathCorner, CPointEntity );
+    DECLARE_CLASS( CPathCorner, CPointEntity );
 public:
 
-	void	Spawn( );
-	float	GetDelay( void ) { return m_flWait; }
-	int		DrawDebugTextOverlays(void);
-	void	DrawDebugGeometryOverlays(void);
+    void    Spawn( );
+    float   GetDelay( void ) { return m_flWait; }
+    int     DrawDebugTextOverlays(void);
+    void    DrawDebugGeometryOverlays(void);
 
-	// Input handlers	
-	void InputSetNextPathCorner( inputdata_t &inputdata );
-	void InputInPass( inputdata_t &inputdata );
+    // Input handlers
+    void InputSetNextPathCorner( inputdata_t &inputdata );
+    void InputInPass( inputdata_t &inputdata );
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
 private:
-	float			m_flWait;
-	COutputEvent	m_OnPass;
+    float           m_flWait;
+    COutputEvent    m_OnPass;
 };
 
 LINK_ENTITY_TO_CLASS( path_corner, CPathCorner );
@@ -38,7 +38,7 @@ LINK_ENTITY_TO_CLASS( path_corner, CPathCorner );
 
 class CPathCornerCrash : public CPathCorner
 {
-	DECLARE_CLASS( CPathCornerCrash, CPathCorner );
+    DECLARE_CLASS( CPathCornerCrash, CPathCorner );
 };
 
 LINK_ENTITY_TO_CLASS( path_corner_crash, CPathCornerCrash );
@@ -46,26 +46,26 @@ LINK_ENTITY_TO_CLASS( path_corner_crash, CPathCornerCrash );
 
 BEGIN_DATADESC( CPathCorner )
 
-	DEFINE_KEYFIELD( m_flWait, FIELD_FLOAT, "wait" ),
+    DEFINE_KEYFIELD( m_flWait, FIELD_FLOAT, "wait" ),
 
-	// Inputs
-	DEFINE_INPUTFUNC( FIELD_STRING, "SetNextPathCorner", InputSetNextPathCorner),
+    // Inputs
+    DEFINE_INPUTFUNC( FIELD_STRING, "SetNextPathCorner", InputSetNextPathCorner),
 
-	// Internal inputs - not exposed in the FGD
-	DEFINE_INPUTFUNC( FIELD_VOID, "InPass", InputInPass ),
+    // Internal inputs - not exposed in the FGD
+    DEFINE_INPUTFUNC( FIELD_VOID, "InPass", InputInPass ),
 
-	// Outputs
-	DEFINE_OUTPUT( m_OnPass, "OnPass"),
+    // Outputs
+    DEFINE_OUTPUT( m_OnPass, "OnPass"),
 
 END_DATADESC()
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CPathCorner::Spawn( void )
 {
-	ASSERTSZ(GetEntityName() != NULL_STRING, "path_corner without a targetname");
+    ASSERTSZ(GetEntityName() != NULL_STRING, "path_corner without a targetname");
 }
 
 
@@ -75,7 +75,7 @@ void CPathCorner::Spawn( void )
 //-----------------------------------------------------------------------------
 void CPathCorner::InputSetNextPathCorner( inputdata_t &inputdata )
 {
-	m_target = inputdata.value.StringID();
+    m_target = inputdata.value.StringID();
 }
 
 
@@ -84,7 +84,7 @@ void CPathCorner::InputSetNextPathCorner( inputdata_t &inputdata )
 //-----------------------------------------------------------------------------
 void CPathCorner::InputInPass( inputdata_t &inputdata )
 {
-	m_OnPass.FireOutput( inputdata.pActivator, inputdata.pCaller, 0);
+    m_OnPass.FireOutput( inputdata.pActivator, inputdata.pCaller, 0);
 }
 
 
@@ -92,51 +92,51 @@ void CPathCorner::InputInPass( inputdata_t &inputdata )
 // Purpose: Draw any debug text overlays
 // Output : Current text offset from the top
 //-----------------------------------------------------------------------------
-int CPathCorner::DrawDebugTextOverlays(void) 
+int CPathCorner::DrawDebugTextOverlays(void)
 {
-	int text_offset = BaseClass::DrawDebugTextOverlays();
+    int text_offset = BaseClass::DrawDebugTextOverlays();
 
-	if (m_debugOverlays & OVERLAY_TEXT_BIT) 
-	{
-		// --------------
-		// Print Target
-		// --------------
-		char tempstr[255];
-		if (m_target!=NULL_STRING) 
-		{
-			Q_snprintf(tempstr,sizeof(tempstr),"Target: %s",STRING(m_target));
-		}
-		else
-		{
-			Q_strncpy(tempstr,"Target:   -  ",sizeof(tempstr));
-		}
-		EntityText(text_offset,tempstr,0);
-		text_offset++;
-	}
-	return text_offset;
+    if (m_debugOverlays & OVERLAY_TEXT_BIT)
+    {
+        // --------------
+        // Print Target
+        // --------------
+        char tempstr[255];
+        if (m_target!=NULL_STRING)
+        {
+            Q_snprintf(tempstr,sizeof(tempstr),"Target: %s",STRING(m_target));
+        }
+        else
+        {
+            Q_strncpy(tempstr,"Target:   -  ",sizeof(tempstr));
+        }
+        EntityText(text_offset,tempstr,0);
+        text_offset++;
+    }
+    return text_offset;
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Override base class to add display of paths
 //-----------------------------------------------------------------------------
-void CPathCorner::DrawDebugGeometryOverlays(void) 
+void CPathCorner::DrawDebugGeometryOverlays(void)
 {
-	// ----------------------------------------------
-	// Draw line to next target is bbox is selected
-	// ----------------------------------------------
-	if (m_debugOverlays & (OVERLAY_BBOX_BIT|OVERLAY_ABSBOX_BIT))
-	{
-		NDebugOverlay::Box(GetAbsOrigin(), Vector(-10,-10,-10), Vector(10,10,10), 255, 100, 100, 0 ,0);
+    // ----------------------------------------------
+    // Draw line to next target is bbox is selected
+    // ----------------------------------------------
+    if (m_debugOverlays & (OVERLAY_BBOX_BIT|OVERLAY_ABSBOX_BIT))
+    {
+        NDebugOverlay::Box(GetAbsOrigin(), Vector(-10,-10,-10), Vector(10,10,10), 255, 100, 100, 0 ,0);
 
-		if (m_target != NULL_STRING)
-		{
-			CBaseEntity *pTarget = gEntList.FindEntityByName( NULL, m_target );
-			if (pTarget)
-			{
-				NDebugOverlay::Line(GetAbsOrigin(),pTarget->GetAbsOrigin(),255,100,100,true,0.0);
-			}
-		}
-	}
-	BaseClass::DrawDebugGeometryOverlays();
+        if (m_target != NULL_STRING)
+        {
+            CBaseEntity *pTarget = gEntList.FindEntityByName( NULL, m_target );
+            if (pTarget)
+            {
+                NDebugOverlay::Line(GetAbsOrigin(),pTarget->GetAbsOrigin(),255,100,100,true,0.0);
+            }
+        }
+    }
+    BaseClass::DrawDebugGeometryOverlays();
 }

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,19 +15,19 @@
 
 class CHudChatLine : public CBaseHudChatLine
 {
-	DECLARE_CLASS_SIMPLE( CHudChatLine, CBaseHudChatLine );
+    DECLARE_CLASS_SIMPLE( CHudChatLine, CBaseHudChatLine );
 
 public:
-	CHudChatLine( vgui::Panel *parent, const char *panelName ) : CBaseHudChatLine( parent, panelName ) {}
+    CHudChatLine( vgui::Panel *parent, const char *panelName ) : CBaseHudChatLine( parent, panelName ) {}
 
-	virtual void	ApplySchemeSettings(vgui::IScheme *pScheme);
+    virtual void    ApplySchemeSettings(vgui::IScheme *pScheme);
 
-	void			PerformFadeout( void );
+    void            PerformFadeout( void );
 
-	void			MsgFunc_SayText(bf_read &msg);
+    void            MsgFunc_SayText(bf_read &msg);
 
 private:
-	CHudChatLine( const CHudChatLine & ); // not defined, not accessible
+    CHudChatLine( const CHudChatLine & ); // not defined, not accessible
 };
 
 //-----------------------------------------------------------------------------
@@ -35,34 +35,34 @@ private:
 //-----------------------------------------------------------------------------
 class CHudChatInputLine : public CBaseHudChatInputLine
 {
-	DECLARE_CLASS_SIMPLE( CHudChatInputLine, CBaseHudChatInputLine );
-	
-public:
-	CHudChatInputLine( CBaseHudChat *parent, char const *panelName ) : CBaseHudChatInputLine( parent, panelName ) {}
+    DECLARE_CLASS_SIMPLE( CHudChatInputLine, CBaseHudChatInputLine );
 
-	virtual void	ApplySchemeSettings(vgui::IScheme *pScheme);
+public:
+    CHudChatInputLine( CBaseHudChat *parent, char const *panelName ) : CBaseHudChatInputLine( parent, panelName ) {}
+
+    virtual void    ApplySchemeSettings(vgui::IScheme *pScheme);
 };
 
 class CHudChat : public CBaseHudChat
 {
-	DECLARE_CLASS_SIMPLE( CHudChat, CBaseHudChat );
+    DECLARE_CLASS_SIMPLE( CHudChat, CBaseHudChat );
 
 public:
-	CHudChat( const char *pElementName );
+    CHudChat( const char *pElementName );
 
-	virtual void	CreateChatInputLine( void );
-	virtual void	CreateChatLines( void );
+    virtual void    CreateChatInputLine( void );
+    virtual void    CreateChatLines( void );
 
-	virtual void	Init( void );
-	virtual void	Reset( void );
-	virtual void	ApplySchemeSettings(vgui::IScheme *pScheme);
+    virtual void    Init( void );
+    virtual void    Reset( void );
+    virtual void    ApplySchemeSettings(vgui::IScheme *pScheme);
 
-	void			MsgFunc_SayText( bf_read &msg );
-	void			MsgFunc_TextMsg( bf_read &msg );
-	
-	void			ChatPrintf( int iPlayerIndex, PRINTF_FORMAT_STRING const char *fmt, ... );
+    void            MsgFunc_SayText( bf_read &msg );
+    void            MsgFunc_TextMsg( bf_read &msg );
 
-	int				GetChatInputOffset( void );
+    void            ChatPrintf( int iPlayerIndex, PRINTF_FORMAT_STRING const char *fmt, ... );
+
+    int             GetChatInputOffset( void );
 };
 
-#endif	//SDK_HUD_CHAT_H
+#endif  //SDK_HUD_CHAT_H

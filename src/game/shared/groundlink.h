@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -15,9 +15,9 @@
 //-----------------------------------------------------------------------------
 struct groundlink_t
 {
-	EHANDLE					entity;
-	groundlink_t			*nextLink;
-	groundlink_t			*prevLink;
+    EHANDLE                 entity;
+    groundlink_t            *nextLink;
+    groundlink_t            *prevLink;
 };
 
 #endif // GROUNDLINK_H

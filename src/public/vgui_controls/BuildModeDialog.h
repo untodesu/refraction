@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -24,109 +24,109 @@ namespace vgui
 //-----------------------------------------------------------------------------
 class BuildModeDialog : public Frame
 {
-	DECLARE_CLASS_SIMPLE( BuildModeDialog, Frame );
+    DECLARE_CLASS_SIMPLE( BuildModeDialog, Frame );
 
 public:
-	BuildModeDialog( BuildGroup *buildGroup );
-	~BuildModeDialog();
+    BuildModeDialog( BuildGroup *buildGroup );
+    ~BuildModeDialog();
 
-	// Set the current control to edit
-	MESSAGE_FUNC_PTR( SetActiveControl, "SetActiveControl", panelPtr );
+    // Set the current control to edit
+    MESSAGE_FUNC_PTR( SetActiveControl, "SetActiveControl", panelPtr );
 
-	// Update the current control with the current resource settings.
-	MESSAGE_FUNC_PTR( UpdateControlData, "UpdateControlData", panel );
+    // Update the current control with the current resource settings.
+    MESSAGE_FUNC_PTR( UpdateControlData, "UpdateControlData", panel );
 
-	// Store the current settings of all panels in the build group.
-	virtual KeyValues *StoreSettings();
+    // Store the current settings of all panels in the build group.
+    virtual KeyValues *StoreSettings();
 
-	// Store the current settings of the current panel 
-	MESSAGE_FUNC( StoreUndoSettings, "StoreUndo" );
+    // Store the current settings of the current panel
+    MESSAGE_FUNC( StoreUndoSettings, "StoreUndo" );
 
-	/* CUSTOM MESSAGE HANDLING
-		"SetActiveControl"
-			input:	"PanelPtr"	- panel to set active control to edit to
-	*/	
+    /* CUSTOM MESSAGE HANDLING
+        "SetActiveControl"
+            input:  "PanelPtr"  - panel to set active control to edit to
+    */
 
-	MESSAGE_FUNC( OnShowNewControlMenu, "ShowNewControlMenu" );
+    MESSAGE_FUNC( OnShowNewControlMenu, "ShowNewControlMenu" );
 
 protected:
-	virtual void PerformLayout();
-	virtual void OnClose();
-	virtual void OnCommand( const char *command );
-	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
-	virtual bool IsBuildGroupEnabled();
+    virtual void PerformLayout();
+    virtual void OnClose();
+    virtual void OnCommand( const char *command );
+    virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
+    virtual bool IsBuildGroupEnabled();
 
 private:
-	void CreateControls();
-	
-	void OnKeyCodeTyped(KeyCode code);
-	MESSAGE_FUNC( ApplyDataToControls, "ApplyDataToControls" );
-	MESSAGE_FUNC_PTR( OnTextChanged, "TextChanged", panel );
-	MESSAGE_FUNC( OnDeletePanel, "DeletePanel" );
-	void ExitBuildMode();
-	Panel *OnNewControl(const char *name, int x = 0, int y = 0);
-	MESSAGE_FUNC( DoUndo, "Undo" );
-	MESSAGE_FUNC( DoCopy, "Copy" );
-	MESSAGE_FUNC( DoPaste, "Paste" );
-	MESSAGE_FUNC( EnableSaveButton, "EnableSaveButton" );
-	void RevertToSaved();
-	void ShowHelp();
-	MESSAGE_FUNC( ShutdownBuildMode, "Close" );
-	MESSAGE_FUNC( OnPanelMoved, "PanelMoved" );
-	MESSAGE_FUNC( OnTextKillFocus, "TextKillFocus" );
-	MESSAGE_FUNC( OnReloadLocalization, "ReloadLocalization" );
-	MESSAGE_FUNC_CHARPTR( OnCreateNewControl, "CreateNewControl", text );
+    void CreateControls();
 
-	MESSAGE_FUNC_CHARPTR( OnSetClipboardText, "SetClipboardText", text );
+    void OnKeyCodeTyped(KeyCode code);
+    MESSAGE_FUNC( ApplyDataToControls, "ApplyDataToControls" );
+    MESSAGE_FUNC_PTR( OnTextChanged, "TextChanged", panel );
+    MESSAGE_FUNC( OnDeletePanel, "DeletePanel" );
+    void ExitBuildMode();
+    Panel *OnNewControl(const char *name, int x = 0, int y = 0);
+    MESSAGE_FUNC( DoUndo, "Undo" );
+    MESSAGE_FUNC( DoCopy, "Copy" );
+    MESSAGE_FUNC( DoPaste, "Paste" );
+    MESSAGE_FUNC( EnableSaveButton, "EnableSaveButton" );
+    void RevertToSaved();
+    void ShowHelp();
+    MESSAGE_FUNC( ShutdownBuildMode, "Close" );
+    MESSAGE_FUNC( OnPanelMoved, "PanelMoved" );
+    MESSAGE_FUNC( OnTextKillFocus, "TextKillFocus" );
+    MESSAGE_FUNC( OnReloadLocalization, "ReloadLocalization" );
+    MESSAGE_FUNC_CHARPTR( OnCreateNewControl, "CreateNewControl", text );
 
-	MESSAGE_FUNC_INT( OnChangeChild, "OnChangeChild", direction );
+    MESSAGE_FUNC_CHARPTR( OnSetClipboardText, "SetClipboardText", text );
 
-	Panel *m_pCurrentPanel;
-	BuildGroup *m_pBuildGroup;
-	Label *m_pStatusLabel;
-	ComboBox *m_pFileSelectionCombo;
-	Divider *m_pDivider;
+    MESSAGE_FUNC_INT( OnChangeChild, "OnChangeChild", direction );
 
-	class PanelList;
-	PanelList *m_pPanelList;
+    Panel *m_pCurrentPanel;
+    BuildGroup *m_pBuildGroup;
+    Label *m_pStatusLabel;
+    ComboBox *m_pFileSelectionCombo;
+    Divider *m_pDivider;
 
-	Button *m_pSaveButton;
-	Button *m_pApplyButton;
-	Button *m_pExitButton;
-	Button *m_pDeleteButton;
-	Button *m_pReloadLocalization;
-	MenuButton *m_pVarsButton;
+    class PanelList;
+    PanelList *m_pPanelList;
 
-	bool _autoUpdate;
+    Button *m_pSaveButton;
+    Button *m_pApplyButton;
+    Button *m_pExitButton;
+    Button *m_pDeleteButton;
+    Button *m_pReloadLocalization;
+    MenuButton *m_pVarsButton;
 
-	ComboBox *m_pAddNewControlCombo; // combo box for adding new controls
-	KeyValues *_undoSettings; // settings for the Undo command
-	KeyValues *_copySettings; // settings for the Copy/Paste command
-	char _copyClassName[255];
-	int			m_nClick[ 2 ];
+    bool _autoUpdate;
 
-	void RemoveAllControls( void );
-	void UpdateEditControl(PanelItem_t &panelItem, const char *datstring);
+    ComboBox *m_pAddNewControlCombo; // combo box for adding new controls
+    KeyValues *_undoSettings; // settings for the Undo command
+    KeyValues *_copySettings; // settings for the Copy/Paste command
+    char _copyClassName[255];
+    int         m_nClick[ 2 ];
 
-	enum {
-		TYPE_STRING,
-		TYPE_INTEGER,
-		TYPE_COLOR,
-		TYPE_ALIGNMENT,
-		TYPE_AUTORESIZE,
-		TYPE_CORNER,
-		TYPE_LOCALIZEDSTRING,
-	};
+    void RemoveAllControls( void );
+    void UpdateEditControl(PanelItem_t &panelItem, const char *datstring);
 
-	vgui::DHANDLE< Menu >	m_hContextMenu;
+    enum {
+        TYPE_STRING,
+        TYPE_INTEGER,
+        TYPE_COLOR,
+        TYPE_ALIGNMENT,
+        TYPE_AUTORESIZE,
+        TYPE_CORNER,
+        TYPE_LOCALIZEDSTRING,
+    };
 
-	ComboBox	*m_pEditableParents;
-	ComboBox	*m_pEditableChildren;
+    vgui::DHANDLE< Menu >   m_hContextMenu;
 
-	Button		*m_pNextChild;
-	Button		*m_pPrevChild;
+    ComboBox    *m_pEditableParents;
+    ComboBox    *m_pEditableChildren;
 
-	friend class PanelList;
+    Button      *m_pNextChild;
+    Button      *m_pPrevChild;
+
+    friend class PanelList;
 };
 
 } // namespace vgui

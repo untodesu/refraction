@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -22,10 +22,10 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 WizardSubPanel::WizardSubPanel(Panel *parent, const char *panelName) : EditablePanel(parent, panelName), _wizardPanel(NULL)
 {
-	SetVisible(false);
-	m_iDesiredWide = 0;
-	m_iDesiredTall = 0;
-	SetBuildGroup(GetBuildGroup());
+    SetVisible(false);
+    m_iDesiredWide = 0;
+    m_iDesiredTall = 0;
+    SetBuildGroup(GetBuildGroup());
 }
 
 //-----------------------------------------------------------------------------
@@ -36,44 +36,44 @@ WizardSubPanel::~WizardSubPanel()
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void WizardSubPanel::ApplySchemeSettings(IScheme *pScheme)
 {
-	BaseClass::ApplySchemeSettings(pScheme);
-	SetBgColor(GetSchemeColor("WizardSubPanel.BgColor",pScheme));
+    BaseClass::ApplySchemeSettings(pScheme);
+    SetBgColor(GetSchemeColor("WizardSubPanel.BgColor",pScheme));
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void WizardSubPanel::GetSettings( KeyValues *outResourceData )
 {
-	BaseClass::GetSettings(outResourceData);
+    BaseClass::GetSettings(outResourceData);
 
-	outResourceData->SetInt("WizardWide", m_iDesiredWide);
-	outResourceData->SetInt("WizardTall", m_iDesiredTall);
+    outResourceData->SetInt("WizardWide", m_iDesiredWide);
+    outResourceData->SetInt("WizardTall", m_iDesiredTall);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void WizardSubPanel::ApplySettings(KeyValues *inResourceData)
 {
-	// don't adjust visiblity during settings application (since it's our parent who really controls it)
-	bool bVisible = IsVisible();
+    // don't adjust visiblity during settings application (since it's our parent who really controls it)
+    bool bVisible = IsVisible();
 
-	BaseClass::ApplySettings(inResourceData);
+    BaseClass::ApplySettings(inResourceData);
 
-	m_iDesiredWide = inResourceData->GetInt("WizardWide", 0);
-	m_iDesiredTall = inResourceData->GetInt("WizardTall", 0);
+    m_iDesiredWide = inResourceData->GetInt("WizardWide", 0);
+    m_iDesiredTall = inResourceData->GetInt("WizardTall", 0);
 
-	if (GetWizardPanel() && m_iDesiredWide && m_iDesiredTall)
-	{
-		GetWizardPanel()->SetSize(m_iDesiredWide, m_iDesiredTall);
-	}
+    if (GetWizardPanel() && m_iDesiredWide && m_iDesiredTall)
+    {
+        GetWizardPanel()->SetSize(m_iDesiredWide, m_iDesiredTall);
+    }
 
-	SetVisible(bVisible);
+    SetVisible(bVisible);
 }
 
 //-----------------------------------------------------------------------------
@@ -81,9 +81,9 @@ void WizardSubPanel::ApplySettings(KeyValues *inResourceData)
 //-----------------------------------------------------------------------------
 const char *WizardSubPanel::GetDescription()
 {
-	static char buf[1024];
-	_snprintf(buf, sizeof(buf), "%s, int WizardWide, int WizardTall", BaseClass::GetDescription());
-	return buf;
+    static char buf[1024];
+    _snprintf(buf, sizeof(buf), "%s, int WizardWide, int WizardTall", BaseClass::GetDescription());
+    return buf;
 }
 
 //-----------------------------------------------------------------------------
@@ -91,24 +91,24 @@ const char *WizardSubPanel::GetDescription()
 //-----------------------------------------------------------------------------
 bool WizardSubPanel::GetDesiredSize(int &wide, int &tall)
 {
-	wide = m_iDesiredWide;
-	tall = m_iDesiredTall;
+    wide = m_iDesiredWide;
+    tall = m_iDesiredTall;
 
-	return (m_iDesiredWide && m_iDesiredTall);
+    return (m_iDesiredWide && m_iDesiredTall);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 KeyValues *WizardSubPanel::GetWizardData()
 {
-	return GetWizardPanel()->GetWizardData();
+    return GetWizardPanel()->GetWizardData();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 WizardSubPanel *WizardSubPanel::GetSiblingSubPanelByName(const char *pageName)
 {
-	return GetWizardPanel()->GetSubPanelByName(pageName);
+    return GetWizardPanel()->GetSubPanelByName(pageName);
 }

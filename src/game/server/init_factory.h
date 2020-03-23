@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -16,9 +16,9 @@
 
 struct factorylist_t
 {
-	CreateInterfaceFn engineFactory;
-	CreateInterfaceFn physicsFactory;
-	CreateInterfaceFn fileSystemFactory;
+    CreateInterfaceFn engineFactory;
+    CreateInterfaceFn physicsFactory;
+    CreateInterfaceFn fileSystemFactory;
 };
 
 // Store off the factories

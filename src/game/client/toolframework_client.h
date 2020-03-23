@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //===========================================================================//
 
@@ -34,7 +34,7 @@ bool ToolFramework_IsThirdPersonCamera( );
 
 
 //-----------------------------------------------------------------------------
-// Are tools enabled? 
+// Are tools enabled?
 //-----------------------------------------------------------------------------
 #ifndef NO_TOOLFRAMEWORK
 bool ToolsEnabled();
@@ -60,28 +60,28 @@ void ToolFramework_RecordMaterialParams( IMaterial *pMaterial );
 //-----------------------------------------------------------------------------
 enum TERecordingType_t
 {
-	TE_DYNAMIC_LIGHT = 0,
-	TE_WORLD_DECAL,
-	TE_DISPATCH_EFFECT,
-	TE_MUZZLE_FLASH,
-	TE_ARMOR_RICOCHET,
-	TE_METAL_SPARKS,
-	TE_SMOKE,
-	TE_SPARKS,
-	TE_BLOOD_SPRITE,
-	TE_BREAK_MODEL,
-	TE_GLOW_SPRITE,
-	TE_PHYSICS_PROP,
-	TE_SPRITE_SINGLE,
-	TE_SPRITE_SPRAY,
-	TE_CONCUSSIVE_EXPLOSION,
-	TE_BLOOD_STREAM,
-	TE_SHATTER_SURFACE,
-	TE_DECAL,
-	TE_PROJECT_DECAL,
-	TE_EXPLOSION,
+    TE_DYNAMIC_LIGHT = 0,
+    TE_WORLD_DECAL,
+    TE_DISPATCH_EFFECT,
+    TE_MUZZLE_FLASH,
+    TE_ARMOR_RICOCHET,
+    TE_METAL_SPARKS,
+    TE_SMOKE,
+    TE_SPARKS,
+    TE_BLOOD_SPRITE,
+    TE_BREAK_MODEL,
+    TE_GLOW_SPRITE,
+    TE_PHYSICS_PROP,
+    TE_SPRITE_SINGLE,
+    TE_SPRITE_SPRAY,
+    TE_CONCUSSIVE_EXPLOSION,
+    TE_BLOOD_STREAM,
+    TE_SHATTER_SURFACE,
+    TE_DECAL,
+    TE_PROJECT_DECAL,
+    TE_EXPLOSION,
 
-	TE_RECORDING_TYPE_COUNT,
+    TE_RECORDING_TYPE_COUNT,
 };
 
 
@@ -91,11 +91,11 @@ enum TERecordingType_t
 class CRecordEffectOwner
 {
 public:
-	CRecordEffectOwner( C_BaseEntity *pEntity, bool bIsViewModel = false );
-	~CRecordEffectOwner();
+    CRecordEffectOwner( C_BaseEntity *pEntity, bool bIsViewModel = false );
+    ~CRecordEffectOwner();
 
 private:
-	bool m_bToolsEnabled;
+    bool m_bToolsEnabled;
 };
 
 #endif // TOOLFRAMEWORK_CLIENT_H

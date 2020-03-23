@@ -17,18 +17,18 @@ extern CRenamedRecvTableInfo *g_pRenamedRecvTableInfoHead;
 class CRenamedRecvTableInfo
 {
 public:
-	CRenamedRecvTableInfo( const char *pOldName, const char *pNewName )
-	:	m_pOldName( pOldName ),
-		m_pNewName( pNewName )
-	{
-		m_pNext						= g_pRenamedRecvTableInfoHead;
-		g_pRenamedRecvTableInfoHead = this;
-	}
+    CRenamedRecvTableInfo( const char *pOldName, const char *pNewName )
+    :   m_pOldName( pOldName ),
+        m_pNewName( pNewName )
+    {
+        m_pNext                     = g_pRenamedRecvTableInfoHead;
+        g_pRenamedRecvTableInfoHead = this;
+    }
 
 public:
-	const char				*m_pOldName;
-	const char				*m_pNewName;
-	CRenamedRecvTableInfo	*m_pNext;
+    const char              *m_pOldName;
+    const char              *m_pNewName;
+    CRenamedRecvTableInfo   *m_pNext;
 };
 
 //-----------------------------------------------------------------------------
@@ -36,10 +36,10 @@ public:
 // engine to find the new datatable from the old name.
 //-----------------------------------------------------------------------------
 #define NOTE_RENAMED_RECVTABLE( oldname_, newname_ ) \
-	static CRenamedRecvTableInfo g_##oldname_##Register( \
-		#oldname_, \
-		#newname_ \
-	);
+    static CRenamedRecvTableInfo g_##oldname_##Register( \
+        #oldname_, \
+        #newname_ \
+    );
 
 
 #endif // RENAMED_RECVTABLE_COMPAT_H

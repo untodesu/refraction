@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -14,18 +14,18 @@
 #include "tier0/memdbgon.h"
 
 BEGIN_DATADESC( CActAnimating )
-	DEFINE_CUSTOM_FIELD( m_Activity, ActivityDataOps() ),
+    DEFINE_CUSTOM_FIELD( m_Activity, ActivityDataOps() ),
 END_DATADESC()
 
 
-void CActAnimating::SetActivity( Activity act ) 
-{ 
-	int sequence = SelectWeightedSequence( act ); 
-	if ( sequence != ACTIVITY_NOT_AVAILABLE )
-	{
-		ResetSequence( sequence );
-		m_Activity = act; 
-		SetCycle( 0 );
-	}
+void CActAnimating::SetActivity( Activity act )
+{
+    int sequence = SelectWeightedSequence( act );
+    if ( sequence != ACTIVITY_NOT_AVAILABLE )
+    {
+        ResetSequence( sequence );
+        m_Activity = act;
+        SetCycle( 0 );
+    }
 }
 

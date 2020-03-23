@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -27,10 +27,10 @@ int Stripify(
 );
 
 //
-// Re-arrange vertices so that they occur in the order that they are first 
+// Re-arrange vertices so that they occur in the order that they are first
 // used. This function doesn't actually move vertex data around, it returns
 // an array that specifies where in the new vertex array each old vertex
-// should go. It also re-maps the strip indices to use the new vertex 
+// should go. It also re-maps the strip indices to use the new vertex
 // locations. Caller must delete [] pVertexPermutation.
 //
 void ComputeVertexPermutation

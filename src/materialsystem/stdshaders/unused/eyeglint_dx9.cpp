@@ -25,42 +25,42 @@ SHADER_INIT
 
 SHADER_FALLBACK
 {
-	if ( g_pHardwareConfig->GetDXSupportLevel() < 90 )
-	{
-		return "Wireframe";
-	}
-	return 0;
+    if ( g_pHardwareConfig->GetDXSupportLevel() < 90 )
+    {
+        return "Wireframe";
+    }
+    return 0;
 }
 
 SHADER_DRAW
 {
-	SHADOW_STATE
-	{
-		pShaderShadow->EnableDepthWrites( false );
+    SHADOW_STATE
+    {
+        pShaderShadow->EnableDepthWrites( false );
 
-		pShaderShadow->EnableBlending( true );
-		pShaderShadow->BlendFunc( SHADER_BLEND_ONE, SHADER_BLEND_ONE );		// Additive blending
+        pShaderShadow->EnableBlending( true );
+        pShaderShadow->BlendFunc( SHADER_BLEND_ONE, SHADER_BLEND_ONE );     // Additive blending
 
-		int pTexCoords[3] = { 2, 2, 3 };
-		pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION, 3, pTexCoords, 0 );
+        int pTexCoords[3] = { 2, 2, 3 };
+        pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION, 3, pTexCoords, 0 );
 
-		pShaderShadow->EnableCulling( false );
+        pShaderShadow->EnableCulling( false );
 
-		pShaderShadow->EnableSRGBWrite( false ); // linear texture
+        pShaderShadow->EnableSRGBWrite( false ); // linear texture
 
-		DECLARE_STATIC_VERTEX_SHADER( eyeglint_vs20 );
-		SET_STATIC_VERTEX_SHADER( eyeglint_vs20 );
+        DECLARE_STATIC_VERTEX_SHADER( eyeglint_vs20 );
+        SET_STATIC_VERTEX_SHADER( eyeglint_vs20 );
 
-		SET_STATIC_PS2X_PIXEL_SHADER_NO_COMBOS( eyeglint );
-	}
+        SET_STATIC_PS2X_PIXEL_SHADER_NO_COMBOS( eyeglint );
+    }
 
-	DYNAMIC_STATE
-	{
-		DECLARE_DYNAMIC_VERTEX_SHADER( eyeglint_vs20 );
-		SET_DYNAMIC_VERTEX_SHADER( eyeglint_vs20 );
+    DYNAMIC_STATE
+    {
+        DECLARE_DYNAMIC_VERTEX_SHADER( eyeglint_vs20 );
+        SET_DYNAMIC_VERTEX_SHADER( eyeglint_vs20 );
 
-		SET_DYNAMIC_PS2X_PIXEL_SHADER_NO_COMBOS( eyeglint );
-	}
-	Draw();
+        SET_DYNAMIC_PS2X_PIXEL_SHADER_NO_COMBOS( eyeglint );
+    }
+    Draw();
 }
 END_SHADER

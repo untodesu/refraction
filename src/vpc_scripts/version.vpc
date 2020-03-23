@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
-//	VERSION.VPC
+//  VERSION.VPC
 //
-//	Version tag for VPC scripts. All base scripts include this file first.
+//  Version tag for VPC scripts. All base scripts include this file first.
 //-----------------------------------------------------------------------------
 
 // This version tag serves as a critical safeguard to ensure all vcproj's can
@@ -9,4 +9,4 @@
 // file will cause the CRC checking to fail, and thus cause a rebuild.
 
 // DO NOT CHANGE THIS UNLESS YOU !!!REALLY!!! NEED TO FORCE EVERY SINGLE VCPROJ TO REGENERATE
-$Macro "InternalVersion"	"104"
+$Macro "InternalVersion"    "104"

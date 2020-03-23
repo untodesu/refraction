@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=====================================================================================//
 
@@ -22,18 +22,18 @@ extern float (*pfFastCos)(float x);
 
 // The following are not declared as macros because they are often used in limiting situations,
 // and sometimes the compiler simply refuses to inline them for some reason
-#define FastSqrt(x)			(*pfSqrt)(x)
-#define	FastRSqrt(x)		(*pfRSqrt)(x)
+#define FastSqrt(x)         (*pfSqrt)(x)
+#define FastRSqrt(x)        (*pfRSqrt)(x)
 #define FastRSqrtFast(x)    (*pfRSqrtFast)(x)
 #define FastSinCos(x,s,c)   (*pfFastSinCos)(x,s,c)
-#define FastCos(x)			(*pfFastCos)(x)
+#define FastCos(x)          (*pfFastCos)(x)
 
 #if defined(__i386__) || defined(_M_IX86)
 // On x86, the inline FPU or SSE sqrt instruction is faster than
 // the overhead of setting up a function call and saving/restoring
 // the FPU or SSE register state and can be scheduled better, too.
 #undef FastSqrt
-#define FastSqrt(x)			::sqrtf(x)
+#define FastSqrt(x)         ::sqrtf(x)
 #endif
 
 #endif // !_X360
@@ -42,38 +42,38 @@ extern float (*pfFastCos)(float x);
 
 FORCEINLINE float _VMX_Sqrt( float x )
 {
-	return __fsqrts( x );
+    return __fsqrts( x );
 }
 
 FORCEINLINE float _VMX_RSqrt( float x )
 {
-	float rroot = __frsqrte( x );
+    float rroot = __frsqrte( x );
 
-	// Single iteration NewtonRaphson on reciprocal square root estimate
-	return (0.5f * rroot) * (3.0f - (x * rroot) * rroot);
+    // Single iteration NewtonRaphson on reciprocal square root estimate
+    return (0.5f * rroot) * (3.0f - (x * rroot) * rroot);
 }
 
 FORCEINLINE float _VMX_RSqrtFast( float x )
 {
-	return __frsqrte( x );
+    return __frsqrte( x );
 }
 
 FORCEINLINE void _VMX_SinCos( float a, float *pS, float *pC )
 {
-	XMScalarSinCos( pS, pC, a );
+    XMScalarSinCos( pS, pC, a );
 }
 
 FORCEINLINE float _VMX_Cos( float a )
 {
-	return XMScalarCos( a );
+    return XMScalarCos( a );
 }
 
 // the 360 has fixed hw and calls directly
-#define FastSqrt(x)			_VMX_Sqrt(x)
-#define	FastRSqrt(x)		_VMX_RSqrt(x)
-#define FastRSqrtFast(x)	_VMX_RSqrtFast(x)
-#define FastSinCos(x,s,c)	_VMX_SinCos(x,s,c)
-#define FastCos(x)			_VMX_Cos(x)
+#define FastSqrt(x)         _VMX_Sqrt(x)
+#define FastRSqrt(x)        _VMX_RSqrt(x)
+#define FastRSqrtFast(x)    _VMX_RSqrtFast(x)
+#define FastSinCos(x,s,c)   _VMX_SinCos(x,s,c)
+#define FastCos(x)          _VMX_Cos(x)
 
 #endif // _X360
 

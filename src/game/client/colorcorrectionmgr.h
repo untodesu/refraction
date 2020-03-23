@@ -23,28 +23,28 @@ DECLARE_POINTER_HANDLE( ClientCCHandle_t );
 
 class CColorCorrectionMgr : public CBaseGameSystem
 {
-	// Inherited from IGameSystemPerFrame
+    // Inherited from IGameSystemPerFrame
 public:
-	virtual char const *Name() { return "Color Correction Mgr"; }
+    virtual char const *Name() { return "Color Correction Mgr"; }
 
-	// Other public methods
+    // Other public methods
 public:
-	CColorCorrectionMgr();
+    CColorCorrectionMgr();
 
-	// Create, destroy color correction
-	ClientCCHandle_t AddColorCorrection( const char *pName, const char *pFileName = NULL );
-	void RemoveColorCorrection( ClientCCHandle_t );
+    // Create, destroy color correction
+    ClientCCHandle_t AddColorCorrection( const char *pName, const char *pFileName = NULL );
+    void RemoveColorCorrection( ClientCCHandle_t );
 
-	// Modify color correction weights
-	void SetColorCorrectionWeight( ClientCCHandle_t h, float flWeight );
-	void ResetColorCorrectionWeights();
-	void SetResetable( ClientCCHandle_t h, bool bResetable );
+    // Modify color correction weights
+    void SetColorCorrectionWeight( ClientCCHandle_t h, float flWeight );
+    void ResetColorCorrectionWeights();
+    void SetResetable( ClientCCHandle_t h, bool bResetable );
 
-	// Is color correction active?
-	bool HasNonZeroColorCorrectionWeights() const;
+    // Is color correction active?
+    bool HasNonZeroColorCorrectionWeights() const;
 
 private:
-	int m_nActiveWeightCount;
+    int m_nActiveWeightCount;
 };
 
 

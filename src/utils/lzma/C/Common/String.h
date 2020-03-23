@@ -16,7 +16,7 @@ static const char *kTrimDefaultCharSet  = " \n\t";
 
 template <class T>
 inline int MyStringLen(const T *s)
-{ 
+{
   int i;
   for (i = 0; s[i] != '\0'; i++);
   return i;
@@ -24,7 +24,7 @@ inline int MyStringLen(const T *s)
 
 template <class T>
 inline T * MyStringCopy(T *dest, const T *src)
-{ 
+{
   T *destStart = dest;
   while((*dest++ = *src++) != 0);
   return destStart;
@@ -142,10 +142,10 @@ class CStringBase
   }
   void MoveItems(int destIndex, int srcIndex)
   {
-    memmove(_chars + destIndex, _chars + srcIndex, 
+    memmove(_chars + destIndex, _chars + srcIndex,
         sizeof(T) * (_length - srcIndex + 1));
   }
-  
+
   void InsertSpace(int &index, int size)
   {
     CorrectIndex(index);
@@ -164,8 +164,8 @@ class CStringBase
 protected:
   T *_chars;
   int _length;
-	int _capacity;
-  
+    int _capacity;
+
   void SetCapacity(int newCapacity)
   {
     int realCapacity = newCapacity + 1;
@@ -197,7 +197,7 @@ protected:
   void GrowLength(int n)
   {
     int freeSize = _capacity - _length - 1;
-    if (n <= freeSize) 
+    if (n <= freeSize)
       return;
     int delta;
     if (_capacity > 64)
@@ -242,9 +242,9 @@ public:
   }
   ~CStringBase() {  delete []_chars; }
 
-  operator const T*() const { return _chars;} 
+  operator const T*() const { return _chars;}
 
-  // The minimum size of the character buffer in characters. 
+  // The minimum size of the character buffer in characters.
   // This value does not include space for a null terminator.
   T* GetBuffer(int minBufLength)
   {
@@ -280,9 +280,9 @@ public:
     int length = MyStringLen(chars);
     SetCapacity(length);
     MyStringCopy(_chars, chars);
-    _length = length; 
+    _length = length;
     return *this;
-  }  
+  }
   CStringBase& operator=(const CStringBase& s)
   {
     if(&s == this)
@@ -293,7 +293,7 @@ public:
     _length = s._length;
     return *this;
   }
-  
+
   CStringBase& operator+=(T c)
   {
     GrowLength(1);
@@ -330,10 +330,10 @@ public:
   {
     if (startIndex + count > _length)
       count = _length - startIndex;
-    
+
     if (startIndex == 0 && startIndex + count == _length)
       return *this;
-    
+
     CStringBase<T> result;
     result.SetCapacity(count);
     // MyStringNCopy(result._chars, _chars + startIndex, count);
@@ -503,7 +503,7 @@ public:
     while (pos < Length())
     {
       pos = Find(oldChar, pos);
-      if (pos < 0) 
+      if (pos < 0)
         break;
       _chars[pos] = newChar;
       pos++;
@@ -524,7 +524,7 @@ public:
     while (pos < _length)
     {
       pos = Find(oldString, pos);
-      if (pos < 0) 
+      if (pos < 0)
         break;
       Delete(pos, oldStringLength);
       Insert(pos, newString);
@@ -551,7 +551,7 @@ CStringBase<T> operator+(const CStringBase<T>& s1, const CStringBase<T>& s2)
 {
   CStringBase<T> result(s1);
   result += s2;
-  return result; 
+  return result;
 }
 
 template <class T>
@@ -559,7 +559,7 @@ CStringBase<T> operator+(const CStringBase<T>& s, T c)
 {
   CStringBase<T> result(s);
   result += c;
-  return result; 
+  return result;
 }
 
 template <class T>
@@ -567,7 +567,7 @@ CStringBase<T> operator+(T c, const CStringBase<T>& s)
 {
   CStringBase<T> result(c);
   result += s;
-  return result; 
+  return result;
 }
 
 template <class T>
@@ -575,7 +575,7 @@ CStringBase<T> operator+(const CStringBase<T>& s, const T * chars)
 {
   CStringBase<T> result(s);
   result += chars;
-  return result; 
+  return result;
 }
 
 template <class T>
@@ -583,7 +583,7 @@ CStringBase<T> operator+(const T * chars, const CStringBase<T>& s)
 {
   CStringBase<T> result(chars);
   result += s;
-  return result; 
+  return result;
 }
 
 template <class T>

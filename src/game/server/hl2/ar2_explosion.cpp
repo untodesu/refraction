@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -10,11 +10,11 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#define AR2EXPLOSION_ENTITYNAME	"ar2explosion"
+#define AR2EXPLOSION_ENTITYNAME "ar2explosion"
 
 
 IMPLEMENT_SERVERCLASS_ST(AR2Explosion, DT_AR2Explosion)
-	SendPropString( SENDINFO( m_szMaterialName ) ),
+    SendPropString( SENDINFO( m_szMaterialName ) ),
 END_SEND_TABLE()
 
 LINK_ENTITY_TO_CLASS(ar2explosion, AR2Explosion);
@@ -25,30 +25,30 @@ LINK_ENTITY_TO_CLASS(ar2explosion, AR2Explosion);
 //---------------------------------------------------------
 BEGIN_DATADESC( AR2Explosion )
 
-	DEFINE_AUTO_ARRAY( m_szMaterialName, FIELD_CHARACTER ),
+    DEFINE_AUTO_ARRAY( m_szMaterialName, FIELD_CHARACTER ),
 
 END_DATADESC()
 
 
 AR2Explosion* AR2Explosion::CreateAR2Explosion(const Vector &pos)
 {
-	CBaseEntity *pEnt = CreateEntityByName(AR2EXPLOSION_ENTITYNAME);
-	if(pEnt)
-	{
-		AR2Explosion *pEffect = dynamic_cast<AR2Explosion*>(pEnt);
-		if(pEffect && pEffect->edict())
-		{
-			pEffect->SetLocalOrigin( pos );
-			pEffect->Activate();
-			return pEffect;
-		}
-		else
-		{
-			UTIL_Remove(pEnt);
-		}
-	}
+    CBaseEntity *pEnt = CreateEntityByName(AR2EXPLOSION_ENTITYNAME);
+    if(pEnt)
+    {
+        AR2Explosion *pEffect = dynamic_cast<AR2Explosion*>(pEnt);
+        if(pEffect && pEffect->edict())
+        {
+            pEffect->SetLocalOrigin( pos );
+            pEffect->Activate();
+            return pEffect;
+        }
+        else
+        {
+            UTIL_Remove(pEnt);
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 
@@ -58,24 +58,24 @@ AR2Explosion* AR2Explosion::CreateAR2Explosion(const Vector &pos)
 class CEnvAR2Explosion : public CPointEntity
 {
 public:
-	DECLARE_CLASS( CEnvAR2Explosion, CPointEntity );
+    DECLARE_CLASS( CEnvAR2Explosion, CPointEntity );
 
-	void Spawn( void );
+    void Spawn( void );
 
-	// Input handlers
-	void InputExplode( inputdata_t &inputdata );
+    // Input handlers
+    void InputExplode( inputdata_t &inputdata );
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
 private:
 
-	string_t m_iszMaterialName;
+    string_t m_iszMaterialName;
 };
 
 
 BEGIN_DATADESC( CEnvAR2Explosion )
-	DEFINE_INPUTFUNC(FIELD_VOID, "Explode", InputExplode),
-	DEFINE_KEYFIELD(m_iszMaterialName, FIELD_STRING, "material"),
+    DEFINE_INPUTFUNC(FIELD_VOID, "Explode", InputExplode),
+    DEFINE_KEYFIELD(m_iszMaterialName, FIELD_STRING, "material"),
 END_DATADESC()
 
 LINK_ENTITY_TO_CLASS( env_ar2explosion, CEnvAR2Explosion );
@@ -85,13 +85,13 @@ LINK_ENTITY_TO_CLASS( env_ar2explosion, CEnvAR2Explosion );
 // Purpose: So you can see where this function begins and the last one ends.
 //-----------------------------------------------------------------------------
 void CEnvAR2Explosion::Spawn( void )
-{ 
-	Precache();
+{
+    Precache();
 
-	SetSolid( SOLID_NONE );
-	AddEffects( EF_NODRAW );
+    SetSolid( SOLID_NONE );
+    AddEffects( EF_NODRAW );
 
-	SetMoveType( MOVETYPE_NONE );
+    SetMoveType( MOVETYPE_NONE );
 }
 
 
@@ -100,13 +100,13 @@ void CEnvAR2Explosion::Spawn( void )
 //-----------------------------------------------------------------------------
 void CEnvAR2Explosion::InputExplode( inputdata_t &inputdata )
 {
-	AR2Explosion *pExplosion = AR2Explosion::CreateAR2Explosion(GetAbsOrigin());
-	if (pExplosion)
-	{
-		pExplosion->SetLifetime( 10 );
-		if (m_iszMaterialName != NULL_STRING)
-		{
-			pExplosion->SetMaterialName(STRING(m_iszMaterialName));
-		}
-	}
+    AR2Explosion *pExplosion = AR2Explosion::CreateAR2Explosion(GetAbsOrigin());
+    if (pExplosion)
+    {
+        pExplosion->SetLifetime( 10 );
+        if (m_iszMaterialName != NULL_STRING)
+        {
+            pExplosion->SetMaterialName(STRING(m_iszMaterialName));
+        }
+    }
 }

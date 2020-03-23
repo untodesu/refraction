@@ -42,11 +42,11 @@ template<class T,class V> static inline void AddToHead(T * & head, V * node)
 {
    node->Next=head;
    head=node;
-}  
+}
 
 void Fail(char const *msg)
 {
-	Assert(0);
+    Assert(0);
 }
 
 void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
@@ -66,7 +66,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
       if (copy_ofs>32767)
         copy_ofs|=0xffff0000;
     //    printf("long cp from %x to %x len=%d\n", copy_src+copy_ofs-OldBlock,Output-obuf,copy_sz);
-      
+
       memcpy(Output,copy_src+copy_ofs,copy_sz);
       Output+=copy_sz;
       copy_src=copy_src+copy_ofs+copy_sz;
@@ -87,7 +87,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
             copy_sz=DiffList[1]+256*DiffList[2]+65536*DiffList[3];
             memcpy(Output,DiffList+4,copy_sz);
     //          printf("big rawcopy to %x len=%d\n", Output-obuf,copy_sz);
-            
+
             DiffList+=copy_sz+4;
             Output+=copy_sz;
           }
@@ -97,7 +97,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
             if (copy_ofs>32767)
               copy_ofs|=0xffff0000;
     //          printf("long ofs cp from %x to %x len=%d\n", copy_src+copy_ofs-OldBlock,Output-obuf,copy_sz);
-            
+
             memcpy(Output,copy_src+copy_ofs,copy_sz);
             Output+=copy_sz;
             copy_src=copy_src+copy_ofs+copy_sz;
@@ -110,7 +110,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
           if (copy_ofs>127)
             copy_ofs|=0xffffff80;
     //        printf("cp from %x to %x len=%d\n", copy_src+copy_ofs-OldBlock,Output-obuf,copy_sz);
-          
+
           memcpy(Output,copy_src+copy_ofs,copy_sz);
           Output+=copy_sz;
           copy_src=copy_src+copy_ofs+copy_sz;
@@ -127,7 +127,7 @@ void ApplyDiffs(uint8 const *OldBlock, uint8 const *DiffList,
     }
   }
   ResultListSize=Output-obuf;
-  
+
 }
 
 static void CopyPending(int len, uint8 const *rawbytes,uint8 * &outbuf, uint8 const *limit)
@@ -172,7 +172,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
                             uint32 OutSize,
                             int hashsize)
 {
-  
+
   int ret=0;
   if (OldSize!=NewSize)
     ret=1;
@@ -222,7 +222,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
           int max_mlength=min(65535,OldBlock+OldSize-b->dataptr);
           max_mlength=min(max_mlength,NewBlock+NewSize-walk);
           int i;
-		  for(i=0;i<max_mlength;i++)
+          for(i=0;i<max_mlength;i++)
             if (walk[i]!=b->dataptr[i])
               break;
           if ((i>MIN_MATCH_LEN) && (i>longest))
@@ -237,7 +237,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
     }
     // now, we have a match maybe
     if (longest_block)
-    {      
+    {
       if (pending_raw_len)                                  // must output
       {
         ret=1;
@@ -247,7 +247,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
       // now, output copy block
       int match_of=longest_block->dataptr-lastmatchend;
       int nremaining=OutSize-(outbuf-Output);
-      
+
       if (match_of)
         ret=1;
 //        printf("copy from %x to %x len=%d\n", match_of,outbuf-Output,longest);
@@ -261,7 +261,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
         *(outbuf++)=((longest>>8) & 255);
         *(outbuf++)=(match_of & 255);
         *(outbuf++)=((match_of>>8) & 255);
-        
+
       }
       else
       {
@@ -277,7 +277,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
           // use long encoding
           if (nremaining<4)
             Fail("diff buff needs increase");
-          *(outbuf++)=0x80;          
+          *(outbuf++)=0x80;
           *(outbuf++)=longest;
           *(outbuf++)=(match_of & 255);
           *(outbuf++)=((match_of>>8) & 255);
@@ -310,7 +310,7 @@ int FindDiffsForLargeFiles(uint8 const *NewBlock, uint8 const *OldBlock,
 int FindDiffs(uint8 const *NewBlock, uint8 const *OldBlock,
                int NewSize, int OldSize, int &DiffListSize,uint8 *Output,uint32 OutSize)
 {
-  
+
   int ret=0;
   if (OldSize!=NewSize)
     ret=1;
@@ -358,7 +358,7 @@ int FindDiffs(uint8 const *NewBlock, uint8 const *OldBlock,
           int max_mlength=min(65535,OldBlock+OldSize-b->dataptr);
           max_mlength=min(max_mlength,NewBlock+NewSize-walk);
           int i;
-		  for(i=0;i<max_mlength;i++)
+          for(i=0;i<max_mlength;i++)
             if (walk[i]!=b->dataptr[i])
               break;
           if ((i>MIN_MATCH_LEN) && (i>longest))
@@ -440,7 +440,7 @@ int FindDiffs(uint8 const *NewBlock, uint8 const *OldBlock,
 int FindDiffsLowMemory(uint8 const *NewBlock, uint8 const *OldBlock,
                         int NewSize, int OldSize, int &DiffListSize,uint8 *Output,uint32 OutSize)
 {
-  
+
   int ret=0;
   if (OldSize!=NewSize)
     ret=1;
@@ -469,7 +469,7 @@ int FindDiffsLowMemory(uint8 const *NewBlock, uint8 const *OldBlock,
       {
         int max_bytes_to_compare=min(NewBlock+NewSize-walk,OldBlock+OldSize-old_data_hash[hash1]);
         int nmatches;
-		for(nmatches=0;nmatches<max_bytes_to_compare;nmatches++)
+        for(nmatches=0;nmatches<max_bytes_to_compare;nmatches++)
           if (walk[nmatches]!=old_data_hash[hash1][nmatches])
             break;
         if (nmatches>MIN_MATCH_LEN)

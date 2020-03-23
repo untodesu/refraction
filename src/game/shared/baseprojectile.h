@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -31,22 +31,22 @@
 class CBaseProjectile : public CBaseAnimating
 {
 public:
-	DECLARE_CLASS( CBaseProjectile, CBaseAnimating );
-	DECLARE_NETWORKCLASS();
+    DECLARE_CLASS( CBaseProjectile, CBaseAnimating );
+    DECLARE_NETWORKCLASS();
 
-	CBaseProjectile();
+    CBaseProjectile();
 
 #ifdef GAME_DLL
-	virtual int GetDestroyableHitCount( void ) const { return m_iDestroyableHitCount; }
-	void IncrementDestroyableHitCount( void ) { ++m_iDestroyableHitCount; }
+    virtual int GetDestroyableHitCount( void ) const { return m_iDestroyableHitCount; }
+    void IncrementDestroyableHitCount( void ) { ++m_iDestroyableHitCount; }
 #endif // GAME_DLL
 
-	virtual bool IsDestroyable( void ) { return false; }
-	virtual void Destroy( bool bBlinkOut = true, bool bBreakRocket = false ) {}
+    virtual bool IsDestroyable( void ) { return false; }
+    virtual void Destroy( bool bBlinkOut = true, bool bBreakRocket = false ) {}
 
 protected:
 #ifdef GAME_DLL
-	int m_iDestroyableHitCount;
+    int m_iDestroyableHitCount;
 #endif // GAME_DLL
 };
 

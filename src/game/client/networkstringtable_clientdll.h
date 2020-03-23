@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //===========================================================================//
@@ -15,7 +15,7 @@
 
 extern INetworkStringTableContainer *networkstringtable;
 
-// String tables used by the client DLL	
+// String tables used by the client DLL
 // (see InstallStringTableCallback for where they're initialized)
 extern INetworkStringTable *g_StringTableVguiScreen;
 extern INetworkStringTable *g_StringTableEffectDispatch;
