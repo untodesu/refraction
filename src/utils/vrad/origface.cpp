@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -18,7 +18,7 @@ bool bOrigFacesTouched[MAX_MAP_FACES];
 
 //-----------------------------------------------------------------------------
 // Pupose: clear (reset) the bOrigFacesTouched list -- parellels the original
-//         face list allowing an original face to only be processed once in 
+//         face list allowing an original face to only be processed once in
 //         pairing edges!
 //-----------------------------------------------------------------------------
 void ResetOrigFacesTouched( void )

@@ -76,51 +76,51 @@ void InitCommandLineProgram( int argc, char **argv );
 //-----------------------------------------------------------------------------
 // Helper empty implementation of an IAppSystem for tier2 libraries
 //-----------------------------------------------------------------------------
-template< class IInterface, int ConVarFlag = 0 > 
+template< class IInterface, int ConVarFlag = 0 >
 class CTier2AppSystem : public CTier1AppSystem< IInterface, ConVarFlag >
 {
-	typedef CTier1AppSystem< IInterface, ConVarFlag > BaseClass;
+    typedef CTier1AppSystem< IInterface, ConVarFlag > BaseClass;
 
 public:
-	CTier2AppSystem( bool bIsPrimaryAppSystem = true ) : BaseClass( bIsPrimaryAppSystem )
-	{
-	}
+    CTier2AppSystem( bool bIsPrimaryAppSystem = true ) : BaseClass( bIsPrimaryAppSystem )
+    {
+    }
 
-	virtual bool Connect( CreateInterfaceFn factory ) 
-	{
-		if ( !BaseClass::Connect( factory ) )
-			return false;
+    virtual bool Connect( CreateInterfaceFn factory )
+    {
+        if ( !BaseClass::Connect( factory ) )
+            return false;
 
-		if ( BaseClass::IsPrimaryAppSystem() )
-		{
-			ConnectTier2Libraries( &factory, 1 );
-		}
+        if ( BaseClass::IsPrimaryAppSystem() )
+        {
+            ConnectTier2Libraries( &factory, 1 );
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	virtual InitReturnVal_t Init()
-	{
-		InitReturnVal_t nRetVal = BaseClass::Init();
-		if ( nRetVal != INIT_OK )
-			return nRetVal;
+    virtual InitReturnVal_t Init()
+    {
+        InitReturnVal_t nRetVal = BaseClass::Init();
+        if ( nRetVal != INIT_OK )
+            return nRetVal;
 
-		return INIT_OK;
-	}
+        return INIT_OK;
+    }
 
-	virtual void Shutdown()
-	{
-		BaseClass::Shutdown();
-	}
+    virtual void Shutdown()
+    {
+        BaseClass::Shutdown();
+    }
 
-	virtual void Disconnect() 
-	{
-		if ( BaseClass::IsPrimaryAppSystem() )
-		{
-			DisconnectTier2Libraries();
-		}
-		BaseClass::Disconnect();
-	}
+    virtual void Disconnect()
+    {
+        if ( BaseClass::IsPrimaryAppSystem() )
+        {
+            DisconnectTier2Libraries();
+        }
+        BaseClass::Disconnect();
+    }
 };
 
 

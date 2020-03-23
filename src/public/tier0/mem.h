@@ -15,7 +15,7 @@
 #include <stddef.h>
 #ifdef LINUX
 #undef offsetof
-#define offsetof(s,m)	(size_t)&(((s *)0)->m)
+#define offsetof(s,m)   (size_t)&(((s *)0)->m)
 #endif
 
 #include "tier0/platform.h"

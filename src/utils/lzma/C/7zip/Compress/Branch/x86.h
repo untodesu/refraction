@@ -13,7 +13,7 @@ struct CBranch86
   void x86Init() { x86_Convert_Init(_prevMask, _prevPos); }
 };
 
-MyClassB(BCJ_x86, 0x01, 3, CBranch86 , 
+MyClassB(BCJ_x86, 0x01, 3, CBranch86 ,
     virtual void SubInit() { x86Init(); })
 
 #endif

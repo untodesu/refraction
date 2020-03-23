@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -13,32 +13,32 @@
 
 class C_PropCombineBall : public C_BaseAnimating
 {
-	DECLARE_CLASS( C_PropCombineBall, C_BaseAnimating );
-	DECLARE_CLIENTCLASS();
+    DECLARE_CLASS( C_PropCombineBall, C_BaseAnimating );
+    DECLARE_CLIENTCLASS();
 public:
 
-	C_PropCombineBall( void );
+    C_PropCombineBall( void );
 
-	virtual RenderGroup_t GetRenderGroup( void );
+    virtual RenderGroup_t GetRenderGroup( void );
 
-	virtual void	OnDataChanged( DataUpdateType_t updateType );
-	virtual int		DrawModel( int flags );
+    virtual void    OnDataChanged( DataUpdateType_t updateType );
+    virtual int     DrawModel( int flags );
 
 protected:
 
-	void	DrawMotionBlur( void );
-	void	DrawFlicker( void );
-	virtual bool	InitMaterials( void );
+    void    DrawMotionBlur( void );
+    void    DrawFlicker( void );
+    virtual bool    InitMaterials( void );
 
-	Vector	m_vecLastOrigin;
-	bool	m_bEmit;
-	float	m_flRadius;
-	bool	m_bHeld;
-	bool	m_bLaunched;
+    Vector  m_vecLastOrigin;
+    bool    m_bEmit;
+    float   m_flRadius;
+    bool    m_bHeld;
+    bool    m_bLaunched;
 
-	IMaterial	*m_pFlickerMaterial;
-	IMaterial	*m_pBodyMaterial;
-	IMaterial	*m_pBlurMaterial;
+    IMaterial   *m_pFlickerMaterial;
+    IMaterial   *m_pBodyMaterial;
+    IMaterial   *m_pBlurMaterial;
 };
 
 

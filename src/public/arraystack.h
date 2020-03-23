@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -21,48 +21,48 @@
 template <class T> class ArrayStack
 {
 protected:
-	T *data;
-	int m_stackDepth;
-	int m_maxNumElements;
-	
-public:
-	ArrayStack( int maxNumElements )
-	{
-		data = new T[maxNumElements];
-		m_maxNumElements = maxNumElements;
-		m_stackDepth = 0;
-		assert( data );
-	}
-	
-	void Push( T elem )
-	{
-		data[m_stackDepth++] = elem;
-		if( m_stackDepth > m_maxNumElements )
-		{
-			printf( "ArrayStack overflow\n" );
-			assert( 0 );
-		}
-	}
-	
-	T Pop( void )
-	{
-		if( m_stackDepth == 0 )
-		{
-			printf( "ArrayStack underflow\n" );
-			assert( 0 );
-		}
-		return data[--m_stackDepth];
-	}
+    T *data;
+    int m_stackDepth;
+    int m_maxNumElements;
 
-	bool IsEmpty()
-	{
-		return ( m_stackDepth == 0 );
-	}
-	
-	int GetDepth()
-	{
-		return m_stackDepth;
-	}
+public:
+    ArrayStack( int maxNumElements )
+    {
+        data = new T[maxNumElements];
+        m_maxNumElements = maxNumElements;
+        m_stackDepth = 0;
+        assert( data );
+    }
+
+    void Push( T elem )
+    {
+        data[m_stackDepth++] = elem;
+        if( m_stackDepth > m_maxNumElements )
+        {
+            printf( "ArrayStack overflow\n" );
+            assert( 0 );
+        }
+    }
+
+    T Pop( void )
+    {
+        if( m_stackDepth == 0 )
+        {
+            printf( "ArrayStack underflow\n" );
+            assert( 0 );
+        }
+        return data[--m_stackDepth];
+    }
+
+    bool IsEmpty()
+    {
+        return ( m_stackDepth == 0 );
+    }
+
+    int GetDepth()
+    {
+        return m_stackDepth;
+    }
 };
 
 

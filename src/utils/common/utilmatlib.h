@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -15,7 +15,7 @@
 #endif
 
 #define MATERIAL_NOT_FOUND NULL
-	
+
 class IMaterialSystem;
 extern IMaterialSystem *g_pMaterialSystem;
 

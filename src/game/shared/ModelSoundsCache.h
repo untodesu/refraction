@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -13,7 +13,7 @@
 #include "UtlCachedFileData.h"
 #include "SoundEmitterSystem/isoundemittersystembase.h"
 
-#define MODELSOUNDSCACHE_VERSION		5
+#define MODELSOUNDSCACHE_VERSION        5
 
 class CStudioHdr;
 
@@ -21,21 +21,21 @@ class CStudioHdr;
 class CModelSoundsCache : public IBaseCacheInfo
 {
 public:
-	CUtlVector< unsigned short > sounds;
+    CUtlVector< unsigned short > sounds;
 
-	CModelSoundsCache();
-	CModelSoundsCache( const CModelSoundsCache& src );
+    CModelSoundsCache();
+    CModelSoundsCache( const CModelSoundsCache& src );
 
-	void PrecacheSoundList();
+    void PrecacheSoundList();
 
-	virtual void Save( CUtlBuffer& buf  );
-	virtual void Restore( CUtlBuffer& buf  );
-	virtual void Rebuild( char const *filename );
+    virtual void Save( CUtlBuffer& buf  );
+    virtual void Restore( CUtlBuffer& buf  );
+    virtual void Rebuild( char const *filename );
 
-	static void FindOrAddScriptSound( CUtlVector< unsigned short >& sounds, char const *soundname );
-	static void BuildAnimationEventSoundList( CStudioHdr *hdr, CUtlVector< unsigned short >& sounds );
+    static void FindOrAddScriptSound( CUtlVector< unsigned short >& sounds, char const *soundname );
+    static void BuildAnimationEventSoundList( CStudioHdr *hdr, CUtlVector< unsigned short >& sounds );
 private:
-	char const *GetSoundName( int index );
+    char const *GetSoundName( int index );
 };
 #pragma pack()
 

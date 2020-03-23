@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -16,10 +16,10 @@
 class MovieExplosion : public CBaseParticleEntity
 {
 public:
-	DECLARE_CLASS( MovieExplosion, CBaseParticleEntity );
-	DECLARE_SERVERCLASS();
+    DECLARE_CLASS( MovieExplosion, CBaseParticleEntity );
+    DECLARE_SERVERCLASS();
 
-	static MovieExplosion* CreateMovieExplosion(const Vector &pos);
+    static MovieExplosion* CreateMovieExplosion(const Vector &pos);
 };
 
 

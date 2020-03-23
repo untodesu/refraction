@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -10,23 +10,23 @@
 #define _MOVIE_H_
 
 /*
-	movie.h
+    movie.h
 
-	definitions and such for dumping screen shots to make a movie
+    definitions and such for dumping screen shots to make a movie
 */
 
 typedef struct
 {
-	unsigned long tag;
-	unsigned long size;
+    unsigned long tag;
+    unsigned long size;
 } movieblockheader_t;
 
 
-typedef struct	
+typedef struct
 {
-	short width;
-	short height;
-	short depth;
+    short width;
+    short height;
+    short depth;
 } movieframe_t;
 
 

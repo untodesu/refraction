@@ -16,7 +16,7 @@
 
 //-----------------------------------------------------------------------------
 // Purpose: handles running coroutines
-//			setjmp/longjmp based cooperative multitasking system
+//          setjmp/longjmp based cooperative multitasking system
 //-----------------------------------------------------------------------------
 
 // coroutine callback
@@ -58,7 +58,7 @@ VSTDLIB_INTERFACE void Coroutine_ReleaseThreadMemory();
 // runs a self-test of the coroutine system
 VSTDLIB_INTERFACE bool Coroutine_Test();
 
-// memory validation 
+// memory validation
 VSTDLIB_INTERFACE void Coroutine_ValidateGlobals( class CValidator &validator );
 
 // for debugging purposes - returns stack depth of current coroutine

@@ -28,16 +28,16 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 FileOpenStateMachine::FileOpenStateMachine( vgui::Panel *pParent, IFileOpenStateMachineClient *pClient ) : BaseClass( pParent, "FileOpenStateMachine" )
 {
-	m_pClient = pClient;
-	m_CompletionState = SUCCESSFUL;
-	m_CurrentState = STATE_NONE;
-	m_pContextKeyValues = NULL;
-	SetVisible( false );
+    m_pClient = pClient;
+    m_CompletionState = SUCCESSFUL;
+    m_CurrentState = STATE_NONE;
+    m_pContextKeyValues = NULL;
+    SetVisible( false );
 }
 
 FileOpenStateMachine::~FileOpenStateMachine()
 {
-	CleanUpContextKeyValues();
+    CleanUpContextKeyValues();
 }
 
 
@@ -46,11 +46,11 @@ FileOpenStateMachine::~FileOpenStateMachine()
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::CleanUpContextKeyValues()
 {
-	if ( m_pContextKeyValues )
-	{
-		m_pContextKeyValues->deleteThis();
-		m_pContextKeyValues = NULL;
-	}
+    if ( m_pContextKeyValues )
+    {
+        m_pContextKeyValues->deleteThis();
+        m_pContextKeyValues = NULL;
+    }
 }
 
 
@@ -59,7 +59,7 @@ void FileOpenStateMachine::CleanUpContextKeyValues()
 //-----------------------------------------------------------------------------
 FileOpenStateMachine::CompletionState_t FileOpenStateMachine::GetCompletionState()
 {
-	return m_CompletionState;
+    return m_CompletionState;
 }
 
 
@@ -68,23 +68,23 @@ FileOpenStateMachine::CompletionState_t FileOpenStateMachine::GetCompletionState
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::SetCompletionState( FileOpenStateMachine::CompletionState_t state )
 {
-	m_CompletionState = state;
-	if ( m_CompletionState == IN_PROGRESS )
-		return;
+    m_CompletionState = state;
+    if ( m_CompletionState == IN_PROGRESS )
+        return;
 
-	m_CurrentState = STATE_NONE;
+    m_CurrentState = STATE_NONE;
 
-	KeyValues *kv = new KeyValues( "FileStateMachineFinished" );
-	kv->SetInt( "completionState", m_CompletionState );
-	kv->SetInt( "wroteFile", m_bWroteFile );
-	kv->SetString( "fullPath", m_FileName.Get() );
-	kv->SetString( "fileType", m_bIsOpeningFile ? m_OpenFileType.Get() : m_SaveFileType.Get() );
-	if ( m_pContextKeyValues )
-	{
-		kv->AddSubKey( m_pContextKeyValues );
-		m_pContextKeyValues = NULL;
-	}
-	PostActionSignal( kv );
+    KeyValues *kv = new KeyValues( "FileStateMachineFinished" );
+    kv->SetInt( "completionState", m_CompletionState );
+    kv->SetInt( "wroteFile", m_bWroteFile );
+    kv->SetString( "fullPath", m_FileName.Get() );
+    kv->SetString( "fileType", m_bIsOpeningFile ? m_OpenFileType.Get() : m_SaveFileType.Get() );
+    if ( m_pContextKeyValues )
+    {
+        kv->AddSubKey( m_pContextKeyValues );
+        m_pContextKeyValues = NULL;
+    }
+    PostActionSignal( kv );
 }
 
 
@@ -93,12 +93,12 @@ void FileOpenStateMachine::SetCompletionState( FileOpenStateMachine::CompletionS
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OnOverwriteFile( )
 {
-	CheckOutDialog( );
+    CheckOutDialog( );
 }
 
 void FileOpenStateMachine::OnCancelOverwriteFile( )
 {
-	SetCompletionState( FILE_NOT_OVERWRITTEN );
+    SetCompletionState( FILE_NOT_OVERWRITTEN );
 }
 
 
@@ -107,26 +107,26 @@ void FileOpenStateMachine::OnCancelOverwriteFile( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OverwriteFileDialog( )
 {
-	if ( !g_pFullFileSystem->FileExists( m_FileName ) )
-	{
-		CheckOutDialog( );
-		return;
-	}
+    if ( !g_pFullFileSystem->FileExists( m_FileName ) )
+    {
+        CheckOutDialog( );
+        return;
+    }
 
-	m_CurrentState = STATE_SHOWING_OVERWRITE_DIALOG;
+    m_CurrentState = STATE_SHOWING_OVERWRITE_DIALOG;
 
-	char pBuf[1024];
-	Q_snprintf( pBuf, sizeof(pBuf), "File already exists. Overwrite it?\n\n\"%s\"\n", m_FileName.Get() ); 
-	vgui::MessageBox *pMessageBox = new vgui::MessageBox( "Overwrite Existing File?", pBuf, GetParent() );
-	pMessageBox->AddActionSignalTarget( this );
-	pMessageBox->SetOKButtonVisible( true );
-	pMessageBox->SetOKButtonText( "Yes" );
-	pMessageBox->SetCancelButtonVisible( true );
-	pMessageBox->SetCancelButtonText( "No" );
-	pMessageBox->SetCloseButtonVisible( false ); 
-	pMessageBox->SetCommand( new KeyValues( "OverwriteFile" ) );
-	pMessageBox->SetCancelCommand( new KeyValues( "CancelOverwriteFile" ) );
-	pMessageBox->DoModal();
+    char pBuf[1024];
+    Q_snprintf( pBuf, sizeof(pBuf), "File already exists. Overwrite it?\n\n\"%s\"\n", m_FileName.Get() );
+    vgui::MessageBox *pMessageBox = new vgui::MessageBox( "Overwrite Existing File?", pBuf, GetParent() );
+    pMessageBox->AddActionSignalTarget( this );
+    pMessageBox->SetOKButtonVisible( true );
+    pMessageBox->SetOKButtonText( "Yes" );
+    pMessageBox->SetCancelButtonVisible( true );
+    pMessageBox->SetCancelButtonText( "No" );
+    pMessageBox->SetCloseButtonVisible( false );
+    pMessageBox->SetCommand( new KeyValues( "OverwriteFile" ) );
+    pMessageBox->SetCancelCommand( new KeyValues( "CancelOverwriteFile" ) );
+    pMessageBox->DoModal();
 }
 
 
@@ -135,19 +135,19 @@ void FileOpenStateMachine::OverwriteFileDialog( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OnFileSelectionCancelled()
 {
-	if ( m_CurrentState == STATE_SHOWING_SAVE_DIALOG )
-	{
-		SetCompletionState( FILE_SAVE_NAME_NOT_SPECIFIED );
-		return;
-	}
+    if ( m_CurrentState == STATE_SHOWING_SAVE_DIALOG )
+    {
+        SetCompletionState( FILE_SAVE_NAME_NOT_SPECIFIED );
+        return;
+    }
 
-	if ( m_CurrentState == STATE_SHOWING_OPEN_DIALOG )
-	{
-		SetCompletionState( FILE_OPEN_NAME_NOT_SPECIFIED );
-		return;
-	}
+    if ( m_CurrentState == STATE_SHOWING_OPEN_DIALOG )
+    {
+        SetCompletionState( FILE_OPEN_NAME_NOT_SPECIFIED );
+        return;
+    }
 
-	Assert(0);
+    Assert(0);
 }
 
 
@@ -156,31 +156,31 @@ void FileOpenStateMachine::OnFileSelectionCancelled()
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OnFileSelected( KeyValues *pKeyValues )
 {
-	if ( m_CurrentState == STATE_SHOWING_SAVE_DIALOG )
-	{
-		m_FileName = pKeyValues->GetString( "fullpath" );
-		const char *pFilterInfo = pKeyValues->GetString( "filterinfo" );
-		if ( pFilterInfo )
-		{
-			m_SaveFileType = pFilterInfo;
-		}
-		OverwriteFileDialog();
-		return;
-	}
+    if ( m_CurrentState == STATE_SHOWING_SAVE_DIALOG )
+    {
+        m_FileName = pKeyValues->GetString( "fullpath" );
+        const char *pFilterInfo = pKeyValues->GetString( "filterinfo" );
+        if ( pFilterInfo )
+        {
+            m_SaveFileType = pFilterInfo;
+        }
+        OverwriteFileDialog();
+        return;
+    }
 
-	if ( m_CurrentState == STATE_SHOWING_OPEN_DIALOG )
-	{
-		m_FileName = pKeyValues->GetString( "fullpath" );
-		const char *pFilterInfo = pKeyValues->GetString( "filterinfo" );
-		if ( pFilterInfo )
-		{
-			m_OpenFileType = pFilterInfo;
-		}
-		ReadFile( );
-		return;
-	}
+    if ( m_CurrentState == STATE_SHOWING_OPEN_DIALOG )
+    {
+        m_FileName = pKeyValues->GetString( "fullpath" );
+        const char *pFilterInfo = pKeyValues->GetString( "filterinfo" );
+        if ( pFilterInfo )
+        {
+            m_OpenFileType = pFilterInfo;
+        }
+        ReadFile( );
+        return;
+    }
 
-	Assert(0);
+    Assert(0);
 }
 
 
@@ -189,28 +189,28 @@ void FileOpenStateMachine::OnFileSelected( KeyValues *pKeyValues )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::WriteFile()
 {
-	m_CurrentState = STATE_WRITING_FILE;
-	if ( !m_pClient->OnWriteFileToDisk( m_FileName, m_SaveFileType, m_pContextKeyValues ) )
-	{
-		SetCompletionState( ERROR_WRITING_FILE );
-		return;
-	}
+    m_CurrentState = STATE_WRITING_FILE;
+    if ( !m_pClient->OnWriteFileToDisk( m_FileName, m_SaveFileType, m_pContextKeyValues ) )
+    {
+        SetCompletionState( ERROR_WRITING_FILE );
+        return;
+    }
 
-	m_bWroteFile = true;
-	if ( m_bShowPerforceDialogs )
-	{
-		m_CurrentState = STATE_SHOWING_PERFORCE_ADD_DIALOG;
-		ShowPerforceQuery( GetParent(), m_FileName, this, NULL, PERFORCE_ACTION_FILE_ADD );
-		return;
-	}
+    m_bWroteFile = true;
+    if ( m_bShowPerforceDialogs )
+    {
+        m_CurrentState = STATE_SHOWING_PERFORCE_ADD_DIALOG;
+        ShowPerforceQuery( GetParent(), m_FileName, this, NULL, PERFORCE_ACTION_FILE_ADD );
+        return;
+    }
 
-	if ( !m_bIsOpeningFile )
-	{
-		SetCompletionState( SUCCESSFUL );
-		return;
-	}
+    if ( !m_bIsOpeningFile )
+    {
+        SetCompletionState( SUCCESSFUL );
+        return;
+    }
 
-	OpenFileDialog();
+    OpenFileDialog();
 }
 
 
@@ -219,18 +219,18 @@ void FileOpenStateMachine::WriteFile()
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OnMakeFileWriteable( )
 {
-	if ( !g_pFullFileSystem->SetFileWritable( m_FileName, true ) )
-	{
-		SetCompletionState( ERROR_MAKING_FILE_WRITEABLE );
-		return;
-	}
+    if ( !g_pFullFileSystem->SetFileWritable( m_FileName, true ) )
+    {
+        SetCompletionState( ERROR_MAKING_FILE_WRITEABLE );
+        return;
+    }
 
-	WriteFile();
+    WriteFile();
 }
 
 void FileOpenStateMachine::OnCancelMakeFileWriteable( )
 {
-	SetCompletionState( FILE_NOT_MADE_WRITEABLE );
+    SetCompletionState( FILE_NOT_MADE_WRITEABLE );
 }
 
 
@@ -239,36 +239,36 @@ void FileOpenStateMachine::OnCancelMakeFileWriteable( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::MakeFileWriteableDialog( )
 {
-	// If the file is writeable, write it!
-	if ( !g_pFullFileSystem->FileExists( m_FileName ) || g_pFullFileSystem->IsFileWritable( m_FileName ) )
-	{
-		WriteFile();
-		return;
-	}
+    // If the file is writeable, write it!
+    if ( !g_pFullFileSystem->FileExists( m_FileName ) || g_pFullFileSystem->IsFileWritable( m_FileName ) )
+    {
+        WriteFile();
+        return;
+    }
 
-	// If it's in perforce, and not checked out, then we must abort.
-	bool bIsInPerforce = p4->IsFileInPerforce( m_FileName );
-	bool bIsOpened = ( p4->GetFileState( m_FileName ) != P4FILE_UNOPENED );
-	if ( bIsInPerforce && !bIsOpened )
-	{
-		SetCompletionState( FILE_NOT_CHECKED_OUT );
-		return;
-	}
+    // If it's in perforce, and not checked out, then we must abort.
+    bool bIsInPerforce = p4->IsFileInPerforce( m_FileName );
+    bool bIsOpened = ( p4->GetFileState( m_FileName ) != P4FILE_UNOPENED );
+    if ( bIsInPerforce && !bIsOpened )
+    {
+        SetCompletionState( FILE_NOT_CHECKED_OUT );
+        return;
+    }
 
-	m_CurrentState = STATE_SHOWING_MAKE_FILE_WRITEABLE_DIALOG;
+    m_CurrentState = STATE_SHOWING_MAKE_FILE_WRITEABLE_DIALOG;
 
-	char pBuf[1024];
-	Q_snprintf( pBuf, sizeof(pBuf), "Encountered read-only file. Should it be made writeable?\n\n\"%s\"\n", m_FileName.Get() ); 
-	vgui::MessageBox *pMessageBox = new vgui::MessageBox( "Make File Writeable?", pBuf, GetParent() );
-	pMessageBox->AddActionSignalTarget( this );
-	pMessageBox->SetOKButtonVisible( true );
-	pMessageBox->SetOKButtonText( "Yes" );
-	pMessageBox->SetCancelButtonVisible( true );
-	pMessageBox->SetCancelButtonText( "No" );
-	pMessageBox->SetCloseButtonVisible( false ); 
-	pMessageBox->SetCommand( new KeyValues( "MakeFileWriteable" ) );
-	pMessageBox->SetCancelCommand( new KeyValues( "CancelMakeFileWriteable" ) );
-	pMessageBox->DoModal();
+    char pBuf[1024];
+    Q_snprintf( pBuf, sizeof(pBuf), "Encountered read-only file. Should it be made writeable?\n\n\"%s\"\n", m_FileName.Get() );
+    vgui::MessageBox *pMessageBox = new vgui::MessageBox( "Make File Writeable?", pBuf, GetParent() );
+    pMessageBox->AddActionSignalTarget( this );
+    pMessageBox->SetOKButtonVisible( true );
+    pMessageBox->SetOKButtonText( "Yes" );
+    pMessageBox->SetCancelButtonVisible( true );
+    pMessageBox->SetCancelButtonText( "No" );
+    pMessageBox->SetCloseButtonVisible( false );
+    pMessageBox->SetCommand( new KeyValues( "MakeFileWriteable" ) );
+    pMessageBox->SetCancelCommand( new KeyValues( "CancelMakeFileWriteable" ) );
+    pMessageBox->DoModal();
 }
 
 
@@ -277,31 +277,31 @@ void FileOpenStateMachine::MakeFileWriteableDialog( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OnPerforceQueryCompleted( KeyValues *pKeyValues )
 {
-	if ( m_CurrentState == STATE_SHOWING_CHECK_OUT_DIALOG )
-	{
-		if ( pKeyValues->GetInt( "operationPerformed" ) == 0 )
-		{
-			SetCompletionState( FILE_NOT_CHECKED_OUT );
-			return;
-		}
+    if ( m_CurrentState == STATE_SHOWING_CHECK_OUT_DIALOG )
+    {
+        if ( pKeyValues->GetInt( "operationPerformed" ) == 0 )
+        {
+            SetCompletionState( FILE_NOT_CHECKED_OUT );
+            return;
+        }
 
-		MakeFileWriteableDialog();
-		return;
-	}
+        MakeFileWriteableDialog();
+        return;
+    }
 
-	if ( m_CurrentState == STATE_SHOWING_PERFORCE_ADD_DIALOG )
-	{
-		if ( !m_bIsOpeningFile )
-		{
-			SetCompletionState( SUCCESSFUL );
-			return;
-		}
+    if ( m_CurrentState == STATE_SHOWING_PERFORCE_ADD_DIALOG )
+    {
+        if ( !m_bIsOpeningFile )
+        {
+            SetCompletionState( SUCCESSFUL );
+            return;
+        }
 
-		OpenFileDialog();
-		return;
-	}
+        OpenFileDialog();
+        return;
+    }
 
-	Assert(0);
+    Assert(0);
 }
 
 
@@ -310,14 +310,14 @@ void FileOpenStateMachine::OnPerforceQueryCompleted( KeyValues *pKeyValues )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::CheckOutDialog( )
 {
-	if ( m_bShowPerforceDialogs )
-	{
-		m_CurrentState = STATE_SHOWING_CHECK_OUT_DIALOG;
-		ShowPerforceQuery( GetParent(), m_FileName, this, NULL, PERFORCE_ACTION_FILE_EDIT );
-		return;
-	}
+    if ( m_bShowPerforceDialogs )
+    {
+        m_CurrentState = STATE_SHOWING_CHECK_OUT_DIALOG;
+        ShowPerforceQuery( GetParent(), m_FileName, this, NULL, PERFORCE_ACTION_FILE_EDIT );
+        return;
+    }
 
-	WriteFile();
+    WriteFile();
 }
 
 
@@ -326,36 +326,36 @@ void FileOpenStateMachine::CheckOutDialog( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OnSaveFile()
 {
-	if ( !m_FileName[0] || !Q_IsAbsolutePath( m_FileName ) )
-	{
-		m_CurrentState = STATE_SHOWING_SAVE_DIALOG;
+    if ( !m_FileName[0] || !Q_IsAbsolutePath( m_FileName ) )
+    {
+        m_CurrentState = STATE_SHOWING_SAVE_DIALOG;
 
-		FileOpenDialog *pDialog = new FileOpenDialog( GetParent(), "Save As", false );
-		m_pClient->SetupFileOpenDialog( pDialog, false, m_SaveFileType, m_pContextKeyValues );
-		pDialog->SetDeleteSelfOnClose( true );
-		pDialog->AddActionSignalTarget( this );
-		pDialog->DoModal( );
-		return;
-	}
+        FileOpenDialog *pDialog = new FileOpenDialog( GetParent(), "Save As", false );
+        m_pClient->SetupFileOpenDialog( pDialog, false, m_SaveFileType, m_pContextKeyValues );
+        pDialog->SetDeleteSelfOnClose( true );
+        pDialog->AddActionSignalTarget( this );
+        pDialog->DoModal( );
+        return;
+    }
 
-	CheckOutDialog( );
+    CheckOutDialog( );
 }
 
 void FileOpenStateMachine::OnMarkNotDirty()
 {
-	if ( !m_bIsOpeningFile )
-	{
-		SetCompletionState( SUCCESSFUL );
-		return;
-	}
+    if ( !m_bIsOpeningFile )
+    {
+        SetCompletionState( SUCCESSFUL );
+        return;
+    }
 
-	// Jump right to opening the file
-	OpenFileDialog( );
+    // Jump right to opening the file
+    OpenFileDialog( );
 }
 
 void FileOpenStateMachine::OnCancelSaveDocument()
 {
-	SetCompletionState( FILE_SAVE_CANCELLED );
+    SetCompletionState( FILE_SAVE_CANCELLED );
 }
 
 
@@ -364,8 +364,8 @@ void FileOpenStateMachine::OnCancelSaveDocument()
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::ShowSaveQuery( )
 {
-	m_CurrentState = STATE_SHOWING_SAVE_DIRTY_FILE_DIALOG;
-	ShowSaveDocumentQuery( GetParent(), m_FileName, m_SaveFileType, 0, this, NULL );
+    m_CurrentState = STATE_SHOWING_SAVE_DIRTY_FILE_DIALOG;
+    ShowSaveDocumentQuery( GetParent(), m_FileName, m_SaveFileType, 0, this, NULL );
 }
 
 
@@ -374,32 +374,32 @@ void FileOpenStateMachine::ShowSaveQuery( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::SaveFile( KeyValues *pContextKeyValues, const char *pFileName, const char *pFileType, int nFlags )
 {
-	CleanUpContextKeyValues();
-	SetCompletionState( IN_PROGRESS );
-	m_pContextKeyValues = pContextKeyValues;
-	m_FileName = pFileName;
-	m_SaveFileType = pFileType;
-	m_OpenFileType = NULL;
-	m_OpenFileName = NULL;
+    CleanUpContextKeyValues();
+    SetCompletionState( IN_PROGRESS );
+    m_pContextKeyValues = pContextKeyValues;
+    m_FileName = pFileName;
+    m_SaveFileType = pFileType;
+    m_OpenFileType = NULL;
+    m_OpenFileName = NULL;
 
-	// Clear the P4 dialog flag for SDK users and licensees without Perforce
-	if ( CommandLine()->FindParm( "-nop4" ) )
-	{
-		nFlags &= ~FOSM_SHOW_PERFORCE_DIALOGS;
-	}
+    // Clear the P4 dialog flag for SDK users and licensees without Perforce
+    if ( CommandLine()->FindParm( "-nop4" ) )
+    {
+        nFlags &= ~FOSM_SHOW_PERFORCE_DIALOGS;
+    }
 
-	m_bShowPerforceDialogs = ( nFlags & FOSM_SHOW_PERFORCE_DIALOGS ) != 0;
-	m_bShowSaveQuery = ( nFlags & FOSM_SHOW_SAVE_QUERY ) != 0;
-	m_bIsOpeningFile = false;
-	m_bWroteFile = false;
+    m_bShowPerforceDialogs = ( nFlags & FOSM_SHOW_PERFORCE_DIALOGS ) != 0;
+    m_bShowSaveQuery = ( nFlags & FOSM_SHOW_SAVE_QUERY ) != 0;
+    m_bIsOpeningFile = false;
+    m_bWroteFile = false;
 
-	if ( m_bShowSaveQuery )
-	{
-		ShowSaveQuery();
-		return;
-	}
+    if ( m_bShowSaveQuery )
+    {
+        ShowSaveQuery();
+        return;
+    }
 
-	OnSaveFile();
+    OnSaveFile();
 }
 
 
@@ -408,14 +408,14 @@ void FileOpenStateMachine::SaveFile( KeyValues *pContextKeyValues, const char *p
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::ReadFile()
 {
-	m_CurrentState = STATE_READING_FILE;
-	if ( !m_pClient->OnReadFileFromDisk( m_FileName, m_OpenFileType, m_pContextKeyValues ) )
-	{
-		SetCompletionState( ERROR_READING_FILE );
-		return;
-	}
+    m_CurrentState = STATE_READING_FILE;
+    if ( !m_pClient->OnReadFileFromDisk( m_FileName, m_OpenFileType, m_pContextKeyValues ) )
+    {
+        SetCompletionState( ERROR_READING_FILE );
+        return;
+    }
 
-	SetCompletionState( SUCCESSFUL );
+    SetCompletionState( SUCCESSFUL );
 }
 
 
@@ -424,21 +424,21 @@ void FileOpenStateMachine::ReadFile()
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OpenFileDialog( )
 {
-	m_CurrentState = STATE_SHOWING_OPEN_DIALOG;
+    m_CurrentState = STATE_SHOWING_OPEN_DIALOG;
 
-	if ( m_OpenFileName.IsEmpty() )
-	{
-		FileOpenDialog *pDialog = new FileOpenDialog( GetParent(), "Open", true );
-		m_pClient->SetupFileOpenDialog( pDialog, true, m_OpenFileType, m_pContextKeyValues );
-		pDialog->SetDeleteSelfOnClose( true );
-		pDialog->AddActionSignalTarget( this );
-		pDialog->DoModal( );
-	}
-	else
-	{
-		m_FileName = m_OpenFileName;
-		ReadFile();
-	}
+    if ( m_OpenFileName.IsEmpty() )
+    {
+        FileOpenDialog *pDialog = new FileOpenDialog( GetParent(), "Open", true );
+        m_pClient->SetupFileOpenDialog( pDialog, true, m_OpenFileType, m_pContextKeyValues );
+        pDialog->SetDeleteSelfOnClose( true );
+        pDialog->AddActionSignalTarget( this );
+        pDialog->DoModal( );
+    }
+    else
+    {
+        m_FileName = m_OpenFileName;
+        ReadFile();
+    }
 }
 
 
@@ -447,25 +447,25 @@ void FileOpenStateMachine::OpenFileDialog( )
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OpenFile( const char *pOpenFileType, KeyValues *pContextKeyValues, const char *pSaveFileName, const char *pSaveFileType, int nFlags )
 {
-	CleanUpContextKeyValues();
-	SetCompletionState( IN_PROGRESS );
-	m_pContextKeyValues = pContextKeyValues;
-	m_FileName = pSaveFileName;
-	m_SaveFileType = pSaveFileType;
-	m_OpenFileType = pOpenFileType;
-	m_OpenFileName = NULL;
-	m_bShowPerforceDialogs = ( nFlags & FOSM_SHOW_PERFORCE_DIALOGS ) != 0;
-	m_bShowSaveQuery = ( nFlags & FOSM_SHOW_SAVE_QUERY ) != 0;
-	m_bIsOpeningFile = true;
-	m_bWroteFile = false;
+    CleanUpContextKeyValues();
+    SetCompletionState( IN_PROGRESS );
+    m_pContextKeyValues = pContextKeyValues;
+    m_FileName = pSaveFileName;
+    m_SaveFileType = pSaveFileType;
+    m_OpenFileType = pOpenFileType;
+    m_OpenFileName = NULL;
+    m_bShowPerforceDialogs = ( nFlags & FOSM_SHOW_PERFORCE_DIALOGS ) != 0;
+    m_bShowSaveQuery = ( nFlags & FOSM_SHOW_SAVE_QUERY ) != 0;
+    m_bIsOpeningFile = true;
+    m_bWroteFile = false;
 
-	if ( m_bShowSaveQuery )
-	{
-		ShowSaveQuery();
-		return;
-	}
+    if ( m_bShowSaveQuery )
+    {
+        ShowSaveQuery();
+        return;
+    }
 
-	OpenFileDialog();
+    OpenFileDialog();
 }
 
 
@@ -474,24 +474,24 @@ void FileOpenStateMachine::OpenFile( const char *pOpenFileType, KeyValues *pCont
 //-----------------------------------------------------------------------------
 void FileOpenStateMachine::OpenFile( const char *pOpenFileName, const char *pOpenFileType, KeyValues *pContextKeyValues, const char *pSaveFileName, const char *pSaveFileType, int nFlags )
 {
-	CleanUpContextKeyValues();
-	SetCompletionState( IN_PROGRESS );
-	m_pContextKeyValues = pContextKeyValues;
-	m_FileName = pSaveFileName;
-	m_SaveFileType = pSaveFileType;
-	m_OpenFileType = pOpenFileType;
-	m_bShowPerforceDialogs = ( nFlags & FOSM_SHOW_PERFORCE_DIALOGS ) != 0;
-	m_bShowSaveQuery = ( nFlags & FOSM_SHOW_SAVE_QUERY ) != 0;
-	m_bIsOpeningFile = true;
-	m_bWroteFile = false;
-	m_OpenFileName = pOpenFileName;
-	if ( m_bShowSaveQuery )
-	{
-		ShowSaveQuery();
-		return;
-	}
+    CleanUpContextKeyValues();
+    SetCompletionState( IN_PROGRESS );
+    m_pContextKeyValues = pContextKeyValues;
+    m_FileName = pSaveFileName;
+    m_SaveFileType = pSaveFileType;
+    m_OpenFileType = pOpenFileType;
+    m_bShowPerforceDialogs = ( nFlags & FOSM_SHOW_PERFORCE_DIALOGS ) != 0;
+    m_bShowSaveQuery = ( nFlags & FOSM_SHOW_SAVE_QUERY ) != 0;
+    m_bIsOpeningFile = true;
+    m_bWroteFile = false;
+    m_OpenFileName = pOpenFileName;
+    if ( m_bShowSaveQuery )
+    {
+        ShowSaveQuery();
+        return;
+    }
 
-	OpenFileDialog();
+    OpenFileDialog();
 }
 
 

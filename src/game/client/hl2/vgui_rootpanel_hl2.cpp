@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -12,15 +12,15 @@
 #include "tier0/memdbgon.h"
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void VGUI_CreateClientDLLRootPanel( void )
 {
-	// Just using PANEL_ROOT in HL2 right now
+    // Just using PANEL_ROOT in HL2 right now
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void VGUI_DestroyClientDLLRootPanel( void )
 {
@@ -32,6 +32,6 @@ void VGUI_DestroyClientDLLRootPanel( void )
 //-----------------------------------------------------------------------------
 vgui::VPANEL VGui_GetClientDLLRootPanel( void )
 {
-	vgui::VPANEL root = enginevgui->GetPanel( PANEL_CLIENTDLL );
-	return root;
+    vgui::VPANEL root = enginevgui->GetPanel( PANEL_CLIENTDLL );
+    return root;
 }

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -22,65 +22,65 @@
 class CTEShowLine : public CTEParticleSystem
 {
 public:
-	DECLARE_CLASS( CTEShowLine, CTEParticleSystem );
-	DECLARE_SERVERCLASS();
+    DECLARE_CLASS( CTEShowLine, CTEParticleSystem );
+    DECLARE_SERVERCLASS();
 
-					CTEShowLine( const char *name );
-	virtual			~CTEShowLine( void );
+                    CTEShowLine( const char *name );
+    virtual         ~CTEShowLine( void );
 
-	virtual void	Test( const Vector& current_origin, const QAngle& current_angles );
+    virtual void    Test( const Vector& current_origin, const QAngle& current_angles );
 
 
 public:
-	CNetworkVector( m_vecEnd );
+    CNetworkVector( m_vecEnd );
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *name - 
+// Purpose:
+// Input  : *name -
 //-----------------------------------------------------------------------------
 CTEShowLine::CTEShowLine( const char *name ) :
-	BaseClass( name )
+    BaseClass( name )
 {
-	m_vecEnd.Init();
+    m_vecEnd.Init();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CTEShowLine::~CTEShowLine( void )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *current_origin - 
-//			*current_angles - 
+// Purpose:
+// Input  : *current_origin -
+//          *current_angles -
 //-----------------------------------------------------------------------------
 void CTEShowLine::Test( const Vector& current_origin, const QAngle& current_angles )
 {
-	// Fill in data
-	m_vecOrigin = current_origin;
-	
-	Vector forward, right;
+    // Fill in data
+    m_vecOrigin = current_origin;
 
-	m_vecOrigin.GetForModify()[2] += 24;
+    Vector forward, right;
 
-	AngleVectors( current_angles, &forward, &right, NULL );
-	forward[2] = 0.0;
-	VectorNormalize( forward );
+    m_vecOrigin.GetForModify()[2] += 24;
 
-	VectorMA( m_vecOrigin, 100.0, forward, m_vecEnd.GetForModify() );
+    AngleVectors( current_angles, &forward, &right, NULL );
+    forward[2] = 0.0;
+    VectorNormalize( forward );
 
-	m_vecOrigin = m_vecEnd + right * -128;
-	m_vecEnd += right * 128;
+    VectorMA( m_vecOrigin, 100.0, forward, m_vecEnd.GetForModify() );
 
-	CBroadcastRecipientFilter filter;
-	Create( filter, 0.0 );
+    m_vecOrigin = m_vecEnd + right * -128;
+    m_vecEnd += right * 128;
+
+    CBroadcastRecipientFilter filter;
+    Create( filter, 0.0 );
 }
 
 IMPLEMENT_SERVERCLASS_ST( CTEShowLine, DT_TEShowLine)
-	SendPropVector( SENDINFO(m_vecEnd), -1, SPROP_COORD),
+    SendPropVector( SENDINFO(m_vecEnd), -1, SPROP_COORD),
 END_SEND_TABLE()
 
 
@@ -88,20 +88,20 @@ END_SEND_TABLE()
 static CTEShowLine g_TEShowLine( "Show Line" );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : msg_dest - 
-//			delay - 
-//			*origin - 
-//			*recipient - 
-//			*start - 
-//			*end - 
+// Purpose:
+// Input  : msg_dest -
+//          delay -
+//          *origin -
+//          *recipient -
+//          *start -
+//          *end -
 //-----------------------------------------------------------------------------
 void TE_ShowLine( IRecipientFilter& filter, float delay,
-	const Vector* start, const Vector* end )
+    const Vector* start, const Vector* end )
 {
-	g_TEShowLine.m_vecOrigin = *start;
-	g_TEShowLine.m_vecEnd = *end;	
+    g_TEShowLine.m_vecOrigin = *start;
+    g_TEShowLine.m_vecEnd = *end;
 
-	// Send it over the wire
-	g_TEShowLine.Create( filter, delay );
+    // Send it over the wire
+    g_TEShowLine.Create( filter, delay );
 }

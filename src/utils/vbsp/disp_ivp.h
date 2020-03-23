@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -23,22 +23,22 @@ struct dmodel_t;
 class CVBSPTesselateHelper : public CBaseTesselateHelper
 {
 public:
-	void EndTriangle()
-	{
-		m_pIndices->AddToTail( m_TempIndices[0] );
-		m_pIndices->AddToTail( m_TempIndices[1] );
-		m_pIndices->AddToTail( m_TempIndices[2] );
-	}
+    void EndTriangle()
+    {
+        m_pIndices->AddToTail( m_TempIndices[0] );
+        m_pIndices->AddToTail( m_TempIndices[1] );
+        m_pIndices->AddToTail( m_TempIndices[2] );
+    }
 
-	DispNodeInfo_t& GetNodeInfo( int iNodeBit )
-	{
-		// VBSP doesn't care about these. Give it back something to play with.
-		static DispNodeInfo_t dummy;
-		return dummy;
-	}
-	
+    DispNodeInfo_t& GetNodeInfo( int iNodeBit )
+    {
+        // VBSP doesn't care about these. Give it back something to play with.
+        static DispNodeInfo_t dummy;
+        return dummy;
+    }
+
 public:
-	CUtlVector<unsigned short> *m_pIndices;
+    CUtlVector<unsigned short> *m_pIndices;
 };
 
 

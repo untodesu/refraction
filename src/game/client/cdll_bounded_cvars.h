@@ -23,7 +23,7 @@ float GetClientInterpAmount();
 
 
 #if !defined( NO_ENTITY_PREDICTION )
-extern bool g_bForceCLPredictOff;	// If this is set to true, then prediction is forced off. Used temporarily for kill cam.
+extern bool g_bForceCLPredictOff;   // If this is set to true, then prediction is forced off. Used temporarily for kill cam.
 #endif
 
 

@@ -1,7 +1,7 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Keyframed animation header
-//			shared between game and tools
+//          shared between game and tools
 //=============================================================================//
 
 #ifndef KEYFRAME_H
@@ -12,14 +12,14 @@
 class IPositionInterpolator
 {
 public:
-	virtual void		Release() = 0;
+    virtual void        Release() = 0;
 
-	virtual void		GetDetails( char **outName, int *outMinKeyReq, int *outMaxKeyReq ) = 0;
-	virtual void		SetKeyPosition( int keyNum, Vector const &vPos ) = 0;
-	virtual void		InterpolatePosition( float time, Vector &vOut ) = 0;
-	
-	// Returns true if the key causes a change that changes the interpolated positions.
-	virtual bool		ProcessKey( char const *pName, char const *pValue ) = 0;
+    virtual void        GetDetails( char **outName, int *outMinKeyReq, int *outMaxKeyReq ) = 0;
+    virtual void        SetKeyPosition( int keyNum, Vector const &vPos ) = 0;
+    virtual void        InterpolatePosition( float time, Vector &vOut ) = 0;
+
+    // Returns true if the key causes a change that changes the interpolated positions.
+    virtual bool        ProcessKey( char const *pName, char const *pValue ) = 0;
 };
 
 

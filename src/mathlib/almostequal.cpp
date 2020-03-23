@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: Fast ways to compare equality of two floats.  Assumes 
+// Purpose: Fast ways to compare equality of two floats.  Assumes
 // sizeof(float) == sizeof(int) and we are using IEEE format.
 //
 // Source:  http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm

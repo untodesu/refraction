@@ -1,7 +1,7 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: returns the module handle of the game dll
-//			this is in its own file to protect it from tier0 PROTECTED_THINGS
+//          this is in its own file to protect it from tier0 PROTECTED_THINGS
 //=============================================================================//
 
 
@@ -19,10 +19,10 @@ extern HMODULE win32DLLHandle;
 void *GetGameModuleHandle()
 {
 #if defined(_WIN32)
-	return (void *)win32DLLHandle;
+    return (void *)win32DLLHandle;
 #elif defined(POSIX)
-	Assert(0);
-	return NULL; // NOT implemented
+    Assert(0);
+    return NULL; // NOT implemented
 #else
 #error "GetGameModuleHandle() needs to be implemented"
 #endif

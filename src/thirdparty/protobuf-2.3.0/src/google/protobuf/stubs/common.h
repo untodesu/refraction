@@ -716,7 +716,7 @@ class LIBPROTOBUF_EXPORT LogFinisher {
 #endif  // !NDEBUG
 
 typedef void LogHandler(LogLevel level, const char* filename, int line,
-						const std::string& message);
+                        const std::string& message);
 
 // The protobuf library sometimes writes warning and error messages to
 // stderr.  These messages are primarily useful for developers, but may
@@ -1160,9 +1160,9 @@ LIBPROTOBUF_EXPORT void OnShutdown(void (*func)());
 // where it would leak outside of it's scope if declared above due to some compiler bug.
 namespace google
 {
-	namespace protobuf {
-		using namespace std;  // Don't do this at home, kids.
-	}
+    namespace protobuf {
+        using namespace std;  // Don't do this at home, kids.
+    }
 }
 // VALVE
 

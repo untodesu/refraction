@@ -85,23 +85,23 @@ static const CRC32_t pulCRCTable[NUM_BYTES] =
 
 void CRC32_Init(CRC32_t *pulCRC)
 {
-	*pulCRC = CRC32_INIT_VALUE;
+    *pulCRC = CRC32_INIT_VALUE;
 }
 
 void CRC32_Final(CRC32_t *pulCRC)
 {
-	*pulCRC ^= CRC32_XOR_VALUE;
+    *pulCRC ^= CRC32_XOR_VALUE;
 }
 
-CRC32_t	CRC32_GetTableEntry( unsigned int slot )
+CRC32_t CRC32_GetTableEntry( unsigned int slot )
 {
-	return pulCRCTable[(unsigned char)slot];
+    return pulCRCTable[(unsigned char)slot];
 }
 
 void CRC32_ProcessBuffer(CRC32_t *pulCRC, const void *pBuffer, int nBuffer)
 {
-	CRC32_t ulCrc = *pulCRC;
-	unsigned char *pb = (unsigned char *)pBuffer;
+    CRC32_t ulCrc = *pulCRC;
+    unsigned char *pb = (unsigned char *)pBuffer;
     unsigned int nFront;
     int nMain;
 
@@ -124,7 +124,7 @@ JustAfew:
         ulCrc  = pulCRCTable[(unsigned char)ulCrc] ^ (ulCrc >> 8);
         ulCrc  = pulCRCTable[(unsigned char)ulCrc] ^ (ulCrc >> 8);
         ulCrc  = pulCRCTable[(unsigned char)ulCrc] ^ (ulCrc >> 8);
-		*pulCRC = ulCrc;
+        *pulCRC = ulCrc;
         return;
 
     case 3:
@@ -137,7 +137,7 @@ JustAfew:
         ulCrc  = pulCRCTable[*pb++ ^ (unsigned char)ulCrc] ^ (ulCrc >> 8);
 
     case 0:
-		*pulCRC = ulCrc;
+        *pulCRC = ulCrc;
         return;
     }
 

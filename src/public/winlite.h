@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -11,7 +11,7 @@
 #pragma once
 
 #ifdef _WIN32
-// 
+//
 // Prevent tons of unused windows definitions
 //
 #ifndef WIN32_LEAN_AND_MEAN
@@ -29,7 +29,7 @@
 #endif
 #undef PostMessage
 
-#pragma warning( disable: 4800 )	// forcing value to bool 'true' or 'false' (performance warning)
+#pragma warning( disable: 4800 )    // forcing value to bool 'true' or 'false' (performance warning)
 
 #endif // WIN32
 #endif // WINLITE_H

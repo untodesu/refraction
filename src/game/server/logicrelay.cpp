@@ -19,28 +19,28 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-const int SF_REMOVE_ON_FIRE				= 0x001;	// Relay will remove itself after being triggered.
-const int SF_ALLOW_FAST_RETRIGGER		= 0x002;	// Unless set, relay will disable itself until the last output is sent.
+const int SF_REMOVE_ON_FIRE             = 0x001;    // Relay will remove itself after being triggered.
+const int SF_ALLOW_FAST_RETRIGGER       = 0x002;    // Unless set, relay will disable itself until the last output is sent.
 
 LINK_ENTITY_TO_CLASS(logic_relay, CLogicRelay);
 
 
 BEGIN_DATADESC( CLogicRelay )
 
-	DEFINE_FIELD(m_bWaitForRefire, FIELD_BOOLEAN),
-	DEFINE_KEYFIELD(m_bDisabled, FIELD_BOOLEAN, "StartDisabled"),
+    DEFINE_FIELD(m_bWaitForRefire, FIELD_BOOLEAN),
+    DEFINE_KEYFIELD(m_bDisabled, FIELD_BOOLEAN, "StartDisabled"),
 
-	// Inputs
-	DEFINE_INPUTFUNC(FIELD_VOID, "Enable", InputEnable),
-	DEFINE_INPUTFUNC(FIELD_VOID, "EnableRefire", InputEnableRefire),
-	DEFINE_INPUTFUNC(FIELD_VOID, "Disable", InputDisable),
-	DEFINE_INPUTFUNC(FIELD_VOID, "Toggle", InputToggle),
-	DEFINE_INPUTFUNC(FIELD_VOID, "Trigger", InputTrigger),
-	DEFINE_INPUTFUNC(FIELD_VOID, "CancelPending", InputCancelPending),
+    // Inputs
+    DEFINE_INPUTFUNC(FIELD_VOID, "Enable", InputEnable),
+    DEFINE_INPUTFUNC(FIELD_VOID, "EnableRefire", InputEnableRefire),
+    DEFINE_INPUTFUNC(FIELD_VOID, "Disable", InputDisable),
+    DEFINE_INPUTFUNC(FIELD_VOID, "Toggle", InputToggle),
+    DEFINE_INPUTFUNC(FIELD_VOID, "Trigger", InputTrigger),
+    DEFINE_INPUTFUNC(FIELD_VOID, "CancelPending", InputCancelPending),
 
-	// Outputs
-	DEFINE_OUTPUT(m_OnTrigger, "OnTrigger"),
-	DEFINE_OUTPUT(m_OnSpawn, "OnSpawn"),
+    // Outputs
+    DEFINE_OUTPUT(m_OnTrigger, "OnTrigger"),
+    DEFINE_OUTPUT(m_OnSpawn, "OnSpawn"),
 
 END_DATADESC()
 
@@ -59,12 +59,12 @@ CLogicRelay::CLogicRelay(void)
 //------------------------------------------------------------------------------
 void CLogicRelay::Activate()
 {
-	BaseClass::Activate();
-	
-	if ( m_OnSpawn.NumberOfElements() > 0)
-	{
-		SetNextThink( gpGlobals->curtime + 0.01 );
-	}
+    BaseClass::Activate();
+
+    if ( m_OnSpawn.NumberOfElements() > 0)
+    {
+        SetNextThink( gpGlobals->curtime + 0.01 );
+    }
 }
 
 
@@ -74,16 +74,16 @@ void CLogicRelay::Activate()
 //-----------------------------------------------------------------------------
 void CLogicRelay::Think()
 {
-	// Fire an output when we spawn. This is used for self-starting an entity
-	// template -- since the logic_relay is inside the template, it gets all the
-	// name and I/O connection fixup, so can target other entities in the template.
-	m_OnSpawn.FireOutput( this, this );
+    // Fire an output when we spawn. This is used for self-starting an entity
+    // template -- since the logic_relay is inside the template, it gets all the
+    // name and I/O connection fixup, so can target other entities in the template.
+    m_OnSpawn.FireOutput( this, this );
 
-	// We only get here if we had OnSpawn connections, so this is safe.
-	if ( m_spawnflags & SF_REMOVE_ON_FIRE )
-	{
-		UTIL_Remove(this);
-	}
+    // We only get here if we had OnSpawn connections, so this is safe.
+    if ( m_spawnflags & SF_REMOVE_ON_FIRE )
+    {
+        UTIL_Remove(this);
+    }
 }
 
 
@@ -92,16 +92,16 @@ void CLogicRelay::Think()
 //------------------------------------------------------------------------------
 void CLogicRelay::InputEnable( inputdata_t &inputdata )
 {
-	m_bDisabled = false;
+    m_bDisabled = false;
 }
 
 //------------------------------------------------------------------------------
 // Purpose: Enables us to fire again. This input is only posted from our Trigger
-//			function to prevent rapid refire.
+//          function to prevent rapid refire.
 //------------------------------------------------------------------------------
 void CLogicRelay::InputEnableRefire( inputdata_t &inputdata )
-{ 
-	m_bWaitForRefire = false;
+{
+    m_bWaitForRefire = false;
 }
 
 
@@ -109,11 +109,11 @@ void CLogicRelay::InputEnableRefire( inputdata_t &inputdata )
 // Purpose: Cancels any I/O events in the queue that were fired by us.
 //------------------------------------------------------------------------------
 void CLogicRelay::InputCancelPending( inputdata_t &inputdata )
-{ 
-	g_EventQueue.CancelEvents( this );
+{
+    g_EventQueue.CancelEvents( this );
 
-	// Stop waiting; allow another Trigger.
-	m_bWaitForRefire = false;
+    // Stop waiting; allow another Trigger.
+    m_bWaitForRefire = false;
 }
 
 
@@ -121,8 +121,8 @@ void CLogicRelay::InputCancelPending( inputdata_t &inputdata )
 // Purpose: Turns off the relay, preventing it from firing outputs.
 //------------------------------------------------------------------------------
 void CLogicRelay::InputDisable( inputdata_t &inputdata )
-{ 
-	m_bDisabled = true;
+{
+    m_bDisabled = true;
 }
 
 
@@ -130,8 +130,8 @@ void CLogicRelay::InputDisable( inputdata_t &inputdata )
 // Purpose: Toggles the enabled/disabled state of the relay.
 //------------------------------------------------------------------------------
 void CLogicRelay::InputToggle( inputdata_t &inputdata )
-{ 
-	m_bDisabled = !m_bDisabled;
+{
+    m_bDisabled = !m_bDisabled;
 }
 
 
@@ -140,23 +140,23 @@ void CLogicRelay::InputToggle( inputdata_t &inputdata )
 //-----------------------------------------------------------------------------
 void CLogicRelay::InputTrigger( inputdata_t &inputdata )
 {
-	if ((!m_bDisabled) && (!m_bWaitForRefire))
-	{
-		m_OnTrigger.FireOutput( inputdata.pActivator, this );
-		
-		if (m_spawnflags & SF_REMOVE_ON_FIRE)
-		{
-			UTIL_Remove(this);
-		}
-		else if (!(m_spawnflags & SF_ALLOW_FAST_RETRIGGER))
-		{
-			//
-			// Disable the relay so that it cannot be refired until after the last output
-			// has been fired and post an input to re-enable ourselves.
-			//
-			m_bWaitForRefire = true;
-			g_EventQueue.AddEvent(this, "EnableRefire", m_OnTrigger.GetMaxDelay() + 0.001, this, this);
-		}
-	}
+    if ((!m_bDisabled) && (!m_bWaitForRefire))
+    {
+        m_OnTrigger.FireOutput( inputdata.pActivator, this );
+
+        if (m_spawnflags & SF_REMOVE_ON_FIRE)
+        {
+            UTIL_Remove(this);
+        }
+        else if (!(m_spawnflags & SF_ALLOW_FAST_RETRIGGER))
+        {
+            //
+            // Disable the relay so that it cannot be refired until after the last output
+            // has been fired and post an input to re-enable ourselves.
+            //
+            m_bWaitForRefire = true;
+            g_EventQueue.AddEvent(this, "EnableRefire", m_OnTrigger.GetMaxDelay() + 0.001, this, this);
+        }
+    }
 }
 

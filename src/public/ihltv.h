@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -23,26 +23,26 @@ struct netadr_s;
 //-----------------------------------------------------------------------------
 // Interface the HLTV module exposes to the engine
 //-----------------------------------------------------------------------------
-#define INTERFACEVERSION_HLTVSERVER	"HLTVServer001"
+#define INTERFACEVERSION_HLTVSERVER "HLTVServer001"
 
 class IHLTVServer : public IBaseInterface
 {
 public:
-	virtual	~IHLTVServer() {}
+    virtual ~IHLTVServer() {}
 
-	virtual	IServer	*GetBaseServer( void ) = 0; // get HLTV base server interface
-	virtual	IHLTVDirector *GetDirector( void ) = 0;	// get director interface
-	virtual	int		GetHLTVSlot( void ) = 0; // return entity index-1 of HLTV in game
-	virtual float	GetOnlineTime( void ) = 0; // seconds since broadcast started
-	virtual void	GetLocalStats( int &proxies, int &slots, int &specs ) = 0; 
-	virtual void	GetGlobalStats( int &proxies, int &slots, int &specs ) = 0; 
+    virtual IServer *GetBaseServer( void ) = 0; // get HLTV base server interface
+    virtual IHLTVDirector *GetDirector( void ) = 0; // get director interface
+    virtual int     GetHLTVSlot( void ) = 0; // return entity index-1 of HLTV in game
+    virtual float   GetOnlineTime( void ) = 0; // seconds since broadcast started
+    virtual void    GetLocalStats( int &proxies, int &slots, int &specs ) = 0;
+    virtual void    GetGlobalStats( int &proxies, int &slots, int &specs ) = 0;
 
-	virtual const netadr_s *GetRelayAddress( void ) = 0; // returns relay address
+    virtual const netadr_s *GetRelayAddress( void ) = 0; // returns relay address
 
-	virtual bool	IsMasterProxy( void ) = 0; // true, if this is the HLTV master proxy
-	virtual bool	IsDemoPlayback( void ) = 0; // true if this is a HLTV demo
+    virtual bool    IsMasterProxy( void ) = 0; // true, if this is the HLTV master proxy
+    virtual bool    IsDemoPlayback( void ) = 0; // true if this is a HLTV demo
 
-	virtual void	BroadcastEvent(IGameEvent *event) = 0; // send a director command to all specs
+    virtual void    BroadcastEvent(IGameEvent *event) = 0; // send a director command to all specs
 };
 
 #endif

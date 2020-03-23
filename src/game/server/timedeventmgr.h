@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -28,7 +28,7 @@ class CTimedEventMgr;
 abstract_class IEventRegisterCallback
 {
 public:
-	virtual void FireEvent() = 0;
+    virtual void FireEvent() = 0;
 };
 
 
@@ -38,31 +38,31 @@ friend bool TimedEventMgr_LessFunc( CEventRegister* const &a, CEventRegister* co
 friend class CTimedEventMgr;
 
 public:
-	CEventRegister();
-	~CEventRegister();
+    CEventRegister();
+    ~CEventRegister();
 
-	// Call this before ever calling SetUpdateInterval().
-	void Init( CTimedEventMgr *pMgr, IEventRegisterCallback *pCallback );
-	
-	// Use these to start and stop getting updates.
-	void SetUpdateInterval( float interval );
-	void StopUpdates();
+    // Call this before ever calling SetUpdateInterval().
+    void Init( CTimedEventMgr *pMgr, IEventRegisterCallback *pCallback );
 
-	inline bool IsRegistered() const { return m_bRegistered; }
+    // Use these to start and stop getting updates.
+    void SetUpdateInterval( float interval );
+    void StopUpdates();
+
+    inline bool IsRegistered() const { return m_bRegistered; }
+
+private:
+
+    void Reregister();  // After having an event processed, this is called to have it register for the next one.
+    void Term();
+
 
 private:
 
-	void Reregister();	// After having an event processed, this is called to have it register for the next one.
-	void Term();
-
-
-private:
-	
-	CTimedEventMgr *m_pEventMgr;
-	float m_flNextEventTime;
-	float m_flUpdateInterval;
-	IEventRegisterCallback *m_pCallback;
-	bool m_bRegistered;
+    CTimedEventMgr *m_pEventMgr;
+    float m_flNextEventTime;
+    float m_flUpdateInterval;
+    IEventRegisterCallback *m_pCallback;
+    bool m_bRegistered;
 };
 
 
@@ -71,22 +71,22 @@ class CTimedEventMgr
 friend class CEventRegister;
 
 public:
-	CTimedEventMgr();
+    CTimedEventMgr();
 
-	// Call this each frame to fire events.
-	void FireEvents();
+    // Call this each frame to fire events.
+    void FireEvents();
 
 
 private:
 
-	// Things used by CEventRegister.
-	void RegisterForNextEvent( CEventRegister *pEvent );
-	void RemoveEvent( CEventRegister *pEvent );	
-	
-private:	
-	
-	// Events, sorted by the time at which they will fire.
-	CUtlPriorityQueue<CEventRegister*> m_Events;
+    // Things used by CEventRegister.
+    void RegisterForNextEvent( CEventRegister *pEvent );
+    void RemoveEvent( CEventRegister *pEvent );
+
+private:
+
+    // Events, sorted by the time at which they will fire.
+    CUtlPriorityQueue<CEventRegister*> m_Events;
 };
 
 

@@ -15,45 +15,45 @@
 
 class CWeaponAlyxGun : public CHLSelectFireMachineGun
 {
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 public:
-	DECLARE_CLASS( CWeaponAlyxGun, CHLSelectFireMachineGun );
+    DECLARE_CLASS( CWeaponAlyxGun, CHLSelectFireMachineGun );
 
-	CWeaponAlyxGun();
-	~CWeaponAlyxGun();
+    CWeaponAlyxGun();
+    ~CWeaponAlyxGun();
 
-	DECLARE_SERVERCLASS();
-	
-	void	Precache( void );
+    DECLARE_SERVERCLASS();
 
-	virtual int		GetMinBurst( void ) { return 4; }
-	virtual int		GetMaxBurst( void ) { return 7; }
-	virtual float	GetMinRestTime( void );
-	virtual float	GetMaxRestTime( void );
+    void    Precache( void );
 
-	virtual void Equip( CBaseCombatCharacter *pOwner );
+    virtual int     GetMinBurst( void ) { return 4; }
+    virtual int     GetMaxBurst( void ) { return 7; }
+    virtual float   GetMinRestTime( void );
+    virtual float   GetMaxRestTime( void );
 
-	float	GetFireRate( void ) { return 0.1f; }
-	int		CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
-	int		WeaponRangeAttack1Condition( float flDot, float flDist );
-	int		WeaponRangeAttack2Condition( float flDot, float flDist );
+    virtual void Equip( CBaseCombatCharacter *pOwner );
 
-	virtual const Vector& GetBulletSpread( void );
+    float   GetFireRate( void ) { return 0.1f; }
+    int     CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+    int     WeaponRangeAttack1Condition( float flDot, float flDist );
+    int     WeaponRangeAttack2Condition( float flDot, float flDist );
 
-	void FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
+    virtual const Vector& GetBulletSpread( void );
 
-	void Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
-	void Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+    void FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
 
-	virtual void SetPickupTouch( void )
-	{
-		// Alyx gun cannot be picked up
-		SetTouch(NULL);
-	}
+    void Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
+    void Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
 
-	float m_flTooCloseTimer;
+    virtual void SetPickupTouch( void )
+    {
+        // Alyx gun cannot be picked up
+        SetTouch(NULL);
+    }
 
-	DECLARE_ACTTABLE();
+    float m_flTooCloseTimer;
+
+    DECLARE_ACTTABLE();
 
 };
 

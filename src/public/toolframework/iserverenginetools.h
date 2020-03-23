@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -18,31 +18,31 @@
 class IServerEngineTools : public IBaseInterface
 {
 public:
-	// Level init, shutdown
-	virtual void LevelInitPreEntityAllTools() = 0;
-	// entities are created / spawned / precached here
-	virtual void LevelInitPostEntityAllTools() = 0;
+    // Level init, shutdown
+    virtual void LevelInitPreEntityAllTools() = 0;
+    // entities are created / spawned / precached here
+    virtual void LevelInitPostEntityAllTools() = 0;
 
-	virtual void LevelShutdownPreEntityAllTools() = 0;
-	// Entities are deleted / released here...
-	virtual void LevelShutdownPostEntityAllTools() = 0;
-	// end of level shutdown
+    virtual void LevelShutdownPreEntityAllTools() = 0;
+    // Entities are deleted / released here...
+    virtual void LevelShutdownPostEntityAllTools() = 0;
+    // end of level shutdown
 
-	// Called each frame before entities think
-	virtual void FrameUpdatePreEntityThinkAllTools() = 0;
-	// called after entities think
-	virtual void FrameUpdatePostEntityThinkAllTools() = 0;
+    // Called each frame before entities think
+    virtual void FrameUpdatePreEntityThinkAllTools() = 0;
+    // called after entities think
+    virtual void FrameUpdatePostEntityThinkAllTools() = 0;
 
-	virtual void PreClientUpdateAllTools() = 0;
-	// FIXME:  PostClientUpdateAllTools()???
+    virtual void PreClientUpdateAllTools() = 0;
+    // FIXME:  PostClientUpdateAllTools()???
 
-	// The server uses this to call into the tools to get the actual
-	// entities to spawn on startup
-	virtual const char* GetEntityData( const char *pActualEntityData ) = 0;
+    // The server uses this to call into the tools to get the actual
+    // entities to spawn on startup
+    virtual const char* GetEntityData( const char *pActualEntityData ) = 0;
 
-	virtual void PreSetupVisibilityAllTools() = 0;
+    virtual void PreSetupVisibilityAllTools() = 0;
 
-	virtual bool InToolMode() = 0;
+    virtual bool InToolMode() = 0;
 };
 
 #define VSERVERENGINETOOLS_INTERFACE_VERSION "VSERVERENGINETOOLS001"

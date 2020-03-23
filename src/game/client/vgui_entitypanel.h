@@ -27,58 +27,58 @@ class KeyValues;
 class CEntityPanel : public CBasePanel
 {
 public:
-	DECLARE_CLASS( CEntityPanel, CBasePanel );
+    DECLARE_CLASS( CEntityPanel, CBasePanel );
 
-	// constructor
-	CEntityPanel( vgui::Panel *pParent, const char *panelName );
+    // constructor
+    CEntityPanel( vgui::Panel *pParent, const char *panelName );
 
-	virtual void	ComputeParent( void );
-	virtual void	ComputeAndSetSize( void );
+    virtual void    ComputeParent( void );
+    virtual void    ComputeAndSetSize( void );
 
-	// Initialize from key values
-	bool Init( KeyValues* pKeyValues, C_BaseEntity* pEntity );
+    // Initialize from key values
+    bool Init( KeyValues* pKeyValues, C_BaseEntity* pEntity );
 
-	// Determine where our entity is in screen space.
-	void GetEntityPosition( int& sx, int& sy );
+    // Determine where our entity is in screen space.
+    void GetEntityPosition( int& sx, int& sy );
 
-	// Base implementation of ShouldDraw
-	bool ShouldDraw();
+    // Base implementation of ShouldDraw
+    bool ShouldDraw();
 
-	// called when we're ticked (updates our position)...
-	virtual void OnTick( void );
+    // called when we're ticked (updates our position)...
+    virtual void OnTick( void );
 
-	virtual void OnCursorEntered();
-	virtual void OnCursorExited();
+    virtual void OnCursorEntered();
+    virtual void OnCursorExited();
 
-	const char *GetMouseOverText( void );
+    const char *GetMouseOverText( void );
 
-	C_BaseEntity* GetEntity() { return (C_BaseEntity*)m_pBaseEntity; }
+    C_BaseEntity* GetEntity() { return (C_BaseEntity*)m_pBaseEntity; }
 
-	// Attach to a new entity
-	void	SetEntity( C_BaseEntity* pEntity );
+    // Attach to a new entity
+    void    SetEntity( C_BaseEntity* pEntity );
 
 public:
-	enum
-	{
-		MAX_ENTITY_MOUSEOVER = 256
-	};
+    enum
+    {
+        MAX_ENTITY_MOUSEOVER = 256
+    };
 
-	// Offset from entity that we should draw
-	int m_OffsetX, m_OffsetY;
+    // Offset from entity that we should draw
+    int m_OffsetX, m_OffsetY;
 
-	char			m_szMouseOverText[ MAX_ENTITY_MOUSEOVER ];
+    char            m_szMouseOverText[ MAX_ENTITY_MOUSEOVER ];
 
-	bool			m_bShowInNormal;
+    bool            m_bShowInNormal;
 
-	int				m_iOrgWidth;
-	int				m_iOrgHeight;
-	int				m_iOrgOffsetX;
-	int				m_iOrgOffsetY;
-	float			m_flScale;
+    int             m_iOrgWidth;
+    int             m_iOrgHeight;
+    int             m_iOrgOffsetX;
+    int             m_iOrgOffsetY;
+    float           m_flScale;
 
 private:
-	// This is the entity to which we're attached
-	EHANDLE			m_pBaseEntity;
+    // This is the entity to which we're attached
+    EHANDLE         m_pBaseEntity;
 };
 
 #endif //  VGUI_ENTITYPANEL_H

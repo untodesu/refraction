@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -21,27 +21,27 @@
 class CLampBeamProxy : public CEntityMaterialProxy
 {
 public:
-						CLampBeamProxy( void );
-	virtual				~CLampBeamProxy( void );
-	virtual bool		Init( IMaterial *pMaterial, KeyValues* pKeyValues );
-	virtual void		OnBind( C_BaseEntity *pC_BaseEntity );
+                        CLampBeamProxy( void );
+    virtual             ~CLampBeamProxy( void );
+    virtual bool        Init( IMaterial *pMaterial, KeyValues* pKeyValues );
+    virtual void        OnBind( C_BaseEntity *pC_BaseEntity );
 
-	virtual IMaterial *	GetMaterial();
+    virtual IMaterial * GetMaterial();
 
 private:
-	IMaterialVar		*m_pFadeValue;
+    IMaterialVar        *m_pFadeValue;
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CLampBeamProxy::CLampBeamProxy( void )
 {
-	m_pFadeValue = NULL;
+    m_pFadeValue = NULL;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CLampBeamProxy::~CLampBeamProxy( void )
 {
@@ -49,43 +49,43 @@ CLampBeamProxy::~CLampBeamProxy( void )
 
 //-----------------------------------------------------------------------------
 // Purpose: Get pointer to the color value
-// Input  : *pMaterial - 
+// Input  : *pMaterial -
 //-----------------------------------------------------------------------------
 bool CLampBeamProxy::Init( IMaterial *pMaterial, KeyValues* pKeyValues )
 {
-	assert( pMaterial );
+    assert( pMaterial );
 
-	// Need to get the color variable.
-	bool found;
-	m_pFadeValue = pMaterial->FindVar( "$alpha", &found );
-	return found;
+    // Need to get the color variable.
+    bool found;
+    m_pFadeValue = pMaterial->FindVar( "$alpha", &found );
+    return found;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pC_BaseEntity - 
+// Purpose:
+// Input  : *pC_BaseEntity -
 //-----------------------------------------------------------------------------
-#define FADE_DIST	150
+#define FADE_DIST   150
 
 void CLampBeamProxy::OnBind( C_BaseEntity *pEnt )
 {
-	if ( !m_pFadeValue )
-		return;
+    if ( !m_pFadeValue )
+        return;
 
-	Vector vecLocal = pEnt->GetAbsOrigin() - CurrentViewOrigin();
-	VectorNormalize( vecLocal );
+    Vector vecLocal = pEnt->GetAbsOrigin() - CurrentViewOrigin();
+    VectorNormalize( vecLocal );
 
-	float fade = 1.0 - fabs( vecLocal.z );
+    float fade = 1.0 - fabs( vecLocal.z );
 
-	m_pFadeValue->SetFloatValue( fade );
+    m_pFadeValue->SetFloatValue( fade );
 }
 
 IMaterial *CLampBeamProxy::GetMaterial()
 {
-	if ( !m_pFadeValue )
-		return NULL;
+    if ( !m_pFadeValue )
+        return NULL;
 
-	return m_pFadeValue->GetOwningMaterial();
+    return m_pFadeValue->GetOwningMaterial();
 }
 
 EXPOSE_INTERFACE( CLampBeamProxy, IMaterialProxy, "lampbeam" IMATERIAL_PROXY_INTERFACE_VERSION );

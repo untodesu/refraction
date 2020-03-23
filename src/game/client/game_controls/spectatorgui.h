@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -26,14 +26,14 @@ class KeyValues;
 
 namespace vgui
 {
-	class TextEntry;
-	class Button;
-	class Panel;
-	class ImagePanel;
-	class ComboBox;
+    class TextEntry;
+    class Button;
+    class Panel;
+    class ImagePanel;
+    class ComboBox;
 }
 
-#define BLACK_BAR_COLOR	Color(0, 0, 0, 196)
+#define BLACK_BAR_COLOR Color(0, 0, 0, 196)
 
 class IBaseFileSystem;
 
@@ -42,62 +42,62 @@ class IBaseFileSystem;
 //-----------------------------------------------------------------------------
 class CSpectatorGUI : public vgui::EditablePanel, public IViewPortPanel
 {
-	DECLARE_CLASS_SIMPLE( CSpectatorGUI, vgui::EditablePanel );
+    DECLARE_CLASS_SIMPLE( CSpectatorGUI, vgui::EditablePanel );
 
 public:
-	CSpectatorGUI( IViewPort *pViewPort );
-	virtual ~CSpectatorGUI();
+    CSpectatorGUI( IViewPort *pViewPort );
+    virtual ~CSpectatorGUI();
 
-	virtual const char *GetName( void ) { return PANEL_SPECGUI; }
-	virtual void SetData(KeyValues *data) {};
-	virtual void Reset() {};
-	virtual void Update();
-	virtual bool NeedsUpdate( void ) { return false; }
-	virtual bool HasInputElements( void ) { return false; }
-	virtual void ShowPanel( bool bShow );
-	
-	// both vgui::Frame and IViewPortPanel define these, so explicitly define them here as passthroughs to vgui
-	vgui::VPANEL GetVPanel( void ) { return BaseClass::GetVPanel(); }
-	virtual bool IsVisible() { return BaseClass::IsVisible(); }
-	virtual void SetParent(vgui::VPANEL parent) { BaseClass::SetParent(parent); }
-	virtual void OnThink();
+    virtual const char *GetName( void ) { return PANEL_SPECGUI; }
+    virtual void SetData(KeyValues *data) {};
+    virtual void Reset() {};
+    virtual void Update();
+    virtual bool NeedsUpdate( void ) { return false; }
+    virtual bool HasInputElements( void ) { return false; }
+    virtual void ShowPanel( bool bShow );
 
-	virtual int GetTopBarHeight() { return m_pTopBar->GetTall(); }
-	virtual int GetBottomBarHeight() { return m_pBottomBarBlank->GetTall(); }
-	
-	virtual bool ShouldShowPlayerLabel( int specmode );
+    // both vgui::Frame and IViewPortPanel define these, so explicitly define them here as passthroughs to vgui
+    vgui::VPANEL GetVPanel( void ) { return BaseClass::GetVPanel(); }
+    virtual bool IsVisible() { return BaseClass::IsVisible(); }
+    virtual void SetParent(vgui::VPANEL parent) { BaseClass::SetParent(parent); }
+    virtual void OnThink();
 
-	virtual Color GetBlackBarColor( void ) { return BLACK_BAR_COLOR; }
+    virtual int GetTopBarHeight() { return m_pTopBar->GetTall(); }
+    virtual int GetBottomBarHeight() { return m_pBottomBarBlank->GetTall(); }
 
-	virtual const char *GetResFile( void ) { return "Resource/UI/Spectator.res"; }
-	
+    virtual bool ShouldShowPlayerLabel( int specmode );
+
+    virtual Color GetBlackBarColor( void ) { return BLACK_BAR_COLOR; }
+
+    virtual const char *GetResFile( void ) { return "Resource/UI/Spectator.res"; }
+
 protected:
 
-	void SetLabelText(const char *textEntryName, const char *text);
-	void SetLabelText(const char *textEntryName, wchar_t *text);
-	void MoveLabelToFront(const char *textEntryName);
-	void UpdateTimer();
-	void SetLogoImage(const char *image);
+    void SetLabelText(const char *textEntryName, const char *text);
+    void SetLabelText(const char *textEntryName, wchar_t *text);
+    void MoveLabelToFront(const char *textEntryName);
+    void UpdateTimer();
+    void SetLogoImage(const char *image);
 
-protected:	
-	enum { INSET_OFFSET = 2 } ; 
+protected:
+    enum { INSET_OFFSET = 2 } ;
 
-	// vgui overrides
-	virtual void PerformLayout();
-	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
-//	virtual void OnCommand( const char *command );
+    // vgui overrides
+    virtual void PerformLayout();
+    virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
+//  virtual void OnCommand( const char *command );
 
-	vgui::Panel *m_pTopBar;
-	vgui::Panel *m_pBottomBarBlank;
+    vgui::Panel *m_pTopBar;
+    vgui::Panel *m_pBottomBarBlank;
 
-	vgui::ImagePanel *m_pBannerImage;
-	vgui::Label *m_pPlayerLabel;
+    vgui::ImagePanel *m_pBannerImage;
+    vgui::Label *m_pPlayerLabel;
 
-	IViewPort *m_pViewPort;
+    IViewPort *m_pViewPort;
 
-	// bool m_bHelpShown;
-	// bool m_bInsetVisible;
-	bool m_bSpecScoreboard;
+    // bool m_bHelpShown;
+    // bool m_bInsetVisible;
+    bool m_bSpecScoreboard;
 };
 
 
@@ -107,46 +107,46 @@ protected:
 //----------------------------------------------------------------------------
 class CSpectatorMenu : public vgui::Frame, public IViewPortPanel, public CGameEventListener
 {
-	DECLARE_CLASS_SIMPLE(  CSpectatorMenu, vgui::Frame );
+    DECLARE_CLASS_SIMPLE(  CSpectatorMenu, vgui::Frame );
 
 public:
-	CSpectatorMenu( IViewPort *pViewPort );
-	~CSpectatorMenu() {}
+    CSpectatorMenu( IViewPort *pViewPort );
+    ~CSpectatorMenu() {}
 
-	virtual const char *GetName( void ) { return PANEL_SPECMENU; }
-	virtual void SetData(KeyValues *data) {};
-	virtual void Reset( void ) { m_pPlayerList->DeleteAllItems(); }
-	virtual void Update( void );
-	virtual bool NeedsUpdate( void ) { return false; }
-	virtual bool HasInputElements( void ) { return true; }
-	virtual void ShowPanel( bool bShow );
-	virtual void FireGameEvent( IGameEvent *event );
+    virtual const char *GetName( void ) { return PANEL_SPECMENU; }
+    virtual void SetData(KeyValues *data) {};
+    virtual void Reset( void ) { m_pPlayerList->DeleteAllItems(); }
+    virtual void Update( void );
+    virtual bool NeedsUpdate( void ) { return false; }
+    virtual bool HasInputElements( void ) { return true; }
+    virtual void ShowPanel( bool bShow );
+    virtual void FireGameEvent( IGameEvent *event );
 
-	// both vgui::Frame and IViewPortPanel define these, so explicitly define them here as passthroughs to vgui
-	virtual bool IsVisible() { return BaseClass::IsVisible(); }
-	vgui::VPANEL GetVPanel( void ) { return BaseClass::GetVPanel(); }
-	virtual void SetParent(vgui::VPANEL parent) { BaseClass::SetParent(parent); }
+    // both vgui::Frame and IViewPortPanel define these, so explicitly define them here as passthroughs to vgui
+    virtual bool IsVisible() { return BaseClass::IsVisible(); }
+    vgui::VPANEL GetVPanel( void ) { return BaseClass::GetVPanel(); }
+    virtual void SetParent(vgui::VPANEL parent) { BaseClass::SetParent(parent); }
 
 private:
-	// VGUI2 overrides
-	MESSAGE_FUNC_PARAMS( OnTextChanged, "TextChanged", data );
-	virtual void OnCommand( const char *command );
-	virtual void OnKeyCodePressed(vgui::KeyCode code);
-	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
-	virtual void PerformLayout();
+    // VGUI2 overrides
+    MESSAGE_FUNC_PARAMS( OnTextChanged, "TextChanged", data );
+    virtual void OnCommand( const char *command );
+    virtual void OnKeyCodePressed(vgui::KeyCode code);
+    virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
+    virtual void PerformLayout();
 
-	void SetViewModeText( const char *text ) { m_pViewOptions->SetText( text ); }
-	void SetPlayerFgColor( Color c1 ) { m_pPlayerList->SetFgColor(c1); }
+    void SetViewModeText( const char *text ) { m_pViewOptions->SetText( text ); }
+    void SetPlayerFgColor( Color c1 ) { m_pPlayerList->SetFgColor(c1); }
 
-	vgui::ComboBox *m_pPlayerList;
-	vgui::ComboBox *m_pViewOptions;
-	vgui::ComboBox *m_pConfigSettings;
+    vgui::ComboBox *m_pPlayerList;
+    vgui::ComboBox *m_pViewOptions;
+    vgui::ComboBox *m_pConfigSettings;
 
-	vgui::Button *m_pLeftButton;
-	vgui::Button *m_pRightButton;
+    vgui::Button *m_pLeftButton;
+    vgui::Button *m_pRightButton;
 
-	IViewPort *m_pViewPort;
-	ButtonCode_t m_iDuckKey;
+    IViewPort *m_pViewPort;
+    ButtonCode_t m_iDuckKey;
 };
 
 extern CSpectatorGUI * g_pSpectatorGUI;

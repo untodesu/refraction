@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -13,54 +13,54 @@
 //--------------------------------------------------------------------------------------------------------------
 enum NavEditColor
 {
-	// Degenerate area colors
-	NavDegenerateFirstColor = 0,
-	NavDegenerateSecondColor,
+    // Degenerate area colors
+    NavDegenerateFirstColor = 0,
+    NavDegenerateSecondColor,
 
-	// Place painting color
-	NavSamePlaceColor,
-	NavDifferentPlaceColor,
-	NavNoPlaceColor,
+    // Place painting color
+    NavSamePlaceColor,
+    NavDifferentPlaceColor,
+    NavNoPlaceColor,
 
-	// Normal colors
-	NavSelectedColor,
-	NavMarkedColor,
-	NavNormalColor,
-	NavCornerColor,
-	NavBlockedByDoorColor,
-	NavBlockedByFuncNavBlockerColor,
+    // Normal colors
+    NavSelectedColor,
+    NavMarkedColor,
+    NavNormalColor,
+    NavCornerColor,
+    NavBlockedByDoorColor,
+    NavBlockedByFuncNavBlockerColor,
 
-	// Hiding spot colors
-	NavIdealSniperColor,
-	NavGoodSniperColor,
-	NavGoodCoverColor,
-	NavExposedColor,
-	NavApproachPointColor,
+    // Hiding spot colors
+    NavIdealSniperColor,
+    NavGoodSniperColor,
+    NavGoodCoverColor,
+    NavExposedColor,
+    NavApproachPointColor,
 
-	// Connector colors
-	NavConnectedTwoWaysColor,
-	NavConnectedOneWayColor,
-	NavConnectedContiguous,
-	NavConnectedNonContiguous,
+    // Connector colors
+    NavConnectedTwoWaysColor,
+    NavConnectedOneWayColor,
+    NavConnectedContiguous,
+    NavConnectedNonContiguous,
 
-	// Editing colors
-	NavCursorColor,
-	NavSplitLineColor,
-	NavCreationColor,
-	NavInvalidCreationColor,
-	NavGridColor,
-	NavDragSelectionColor,
+    // Editing colors
+    NavCursorColor,
+    NavSplitLineColor,
+    NavCreationColor,
+    NavInvalidCreationColor,
+    NavGridColor,
+    NavDragSelectionColor,
 
-	// Nav attribute colors
-	NavAttributeCrouchColor,
-	NavAttributeJumpColor,
-	NavAttributePreciseColor,
-	NavAttributeNoJumpColor,
-	NavAttributeStopColor,
-	NavAttributeRunColor,
-	NavAttributeWalkColor,
-	NavAttributeAvoidColor,
-	NavAttributeStairColor,
+    // Nav attribute colors
+    NavAttributeCrouchColor,
+    NavAttributeJumpColor,
+    NavAttributePreciseColor,
+    NavAttributeNoJumpColor,
+    NavAttributeStopColor,
+    NavAttributeRunColor,
+    NavAttributeWalkColor,
+    NavAttributeAvoidColor,
+    NavAttributeStairColor,
 };
 
 //--------------------------------------------------------------------------------------------------------------

@@ -1,13 +1,13 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
 //=============================================================================//
 //
 // MessageBuffer - handy for packing and upacking
-// structures to be sent as messages  
+// structures to be sent as messages
 //
 #ifndef _MESSAGEBUFFER
 #define _MESSAGEBUFFER
@@ -16,37 +16,37 @@
 #define DEFAULT_MESSAGE_BUFFER_SIZE 2048
 
 class MessageBuffer {
-	public:
-		char * data;
+    public:
+        char * data;
 
-		MessageBuffer();
-		MessageBuffer(int size);
-		~MessageBuffer();
+        MessageBuffer();
+        MessageBuffer(int size);
+        ~MessageBuffer();
 
-		int		getSize();
-		int		getLen();
-		int		setLen(int len);
-		int		getOffset();
-		int		setOffset(int offset);
-		
-		int		write(void const * p, int bytes);
-		int		update(int loc, void const * p, int bytes);
-		int		extract(int loc, void * p, int bytes);
-		int		read(void * p, int bytes);
+        int     getSize();
+        int     getLen();
+        int     setLen(int len);
+        int     getOffset();
+        int     setOffset(int offset);
 
-		int		WriteString( const char *pString );
-		int		ReadString( char *pOut, int bufferLength );
+        int     write(void const * p, int bytes);
+        int     update(int loc, void const * p, int bytes);
+        int     extract(int loc, void * p, int bytes);
+        int     read(void * p, int bytes);
 
-		void	clear();
-		void	clear(int minsize);
-		void	reset(int minsize);
-		void	print(FILE * ofile, int num);	
+        int     WriteString( const char *pString );
+        int     ReadString( char *pOut, int bufferLength );
 
-	private:
-		void	resize(int minsize);
-		int		size;
-		int		offset;
-		int		len;
+        void    clear();
+        void    clear(int minsize);
+        void    reset(int minsize);
+        void    print(FILE * ofile, int num);
+
+    private:
+        void    resize(int minsize);
+        int     size;
+        int     offset;
+        int     len;
 };
 
 #endif

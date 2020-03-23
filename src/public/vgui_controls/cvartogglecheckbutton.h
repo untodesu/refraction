@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -21,30 +21,30 @@ namespace vgui
 template< class T >
 class CvarToggleCheckButton : public CheckButton
 {
-	DECLARE_CLASS_SIMPLE( CvarToggleCheckButton, CheckButton );
+    DECLARE_CLASS_SIMPLE( CvarToggleCheckButton, CheckButton );
 
 public:
-	CvarToggleCheckButton( Panel *parent, const char *panelName, const char *text = "", 
-		char const *cvarname = NULL, bool ignoreMissingCvar = false );
-	~CvarToggleCheckButton();
+    CvarToggleCheckButton( Panel *parent, const char *panelName, const char *text = "",
+        char const *cvarname = NULL, bool ignoreMissingCvar = false );
+    ~CvarToggleCheckButton();
 
-	virtual void	SetSelected( bool state );
+    virtual void    SetSelected( bool state );
 
-	virtual void	Paint();
+    virtual void    Paint();
 
-	void			Reset();
-	void			ApplyChanges();
-	bool			HasBeenModified();
-	virtual void	ApplySettings( KeyValues *inResourceData );
+    void            Reset();
+    void            ApplyChanges();
+    bool            HasBeenModified();
+    virtual void    ApplySettings( KeyValues *inResourceData );
 
 private:
-	// Called when the OK / Apply button is pressed.  Changed data should be written into cvar.
-	MESSAGE_FUNC( OnApplyChanges, "ApplyChanges" );
-	MESSAGE_FUNC( OnButtonChecked, "CheckButtonChecked" );
+    // Called when the OK / Apply button is pressed.  Changed data should be written into cvar.
+    MESSAGE_FUNC( OnApplyChanges, "ApplyChanges" );
+    MESSAGE_FUNC( OnButtonChecked, "CheckButtonChecked" );
 
-	T			m_cvar;
-	bool			m_bStartValue;
-	bool			m_bIgnoreMissingCvar;
+    T           m_cvar;
+    bool            m_bStartValue;
+    bool            m_bIgnoreMissingCvar;
 };
 
 //-----------------------------------------------------------------------------
@@ -52,15 +52,15 @@ private:
 //-----------------------------------------------------------------------------
 template< class T >
 CvarToggleCheckButton<T>::CvarToggleCheckButton( Panel *parent, const char *panelName, const char *text, char const *cvarname, bool ignoreMissingCvar )
-	: CheckButton( parent, panelName, text ), m_cvar( (cvarname)?cvarname:"", (cvarname)?ignoreMissingCvar:true )
+    : CheckButton( parent, panelName, text ), m_cvar( (cvarname)?cvarname:"", (cvarname)?ignoreMissingCvar:true )
 {
-	m_bIgnoreMissingCvar = ignoreMissingCvar;
+    m_bIgnoreMissingCvar = ignoreMissingCvar;
 
-	if (m_cvar.IsValid())
-	{
-		Reset();
-	}
-	AddActionSignalTarget( this );
+    if (m_cvar.IsValid())
+    {
+        Reset();
+    }
+    AddActionSignalTarget( this );
 }
 
 //-----------------------------------------------------------------------------
@@ -72,25 +72,25 @@ CvarToggleCheckButton<T>::~CvarToggleCheckButton()
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 template< class T >
 void CvarToggleCheckButton<T>::Paint()
 {
-	if ( !m_cvar.IsValid() ) 
-	{
-		BaseClass::Paint();
-		return;
-	}
+    if ( !m_cvar.IsValid() )
+    {
+        BaseClass::Paint();
+        return;
+    }
 
-	bool value = m_cvar.GetBool();
+    bool value = m_cvar.GetBool();
 
-	if ( value != m_bStartValue )
-	{
-		SetSelected( value );
-		m_bStartValue = value;
-	}
-	BaseClass::Paint();
+    if ( value != m_bStartValue )
+    {
+        SetSelected( value );
+        m_bStartValue = value;
+    }
+    BaseClass::Paint();
 }
 
 //-----------------------------------------------------------------------------
@@ -99,91 +99,91 @@ void CvarToggleCheckButton<T>::Paint()
 template< class T >
 void CvarToggleCheckButton<T>::OnApplyChanges()
 {
-	ApplyChanges();
+    ApplyChanges();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 template< class T >
 void CvarToggleCheckButton<T>::ApplyChanges()
 {
-	if ( !m_cvar.IsValid() ) 
-		return;
+    if ( !m_cvar.IsValid() )
+        return;
 
-	m_bStartValue = IsSelected();
-	m_cvar.SetValue( m_bStartValue );
+    m_bStartValue = IsSelected();
+    m_cvar.SetValue( m_bStartValue );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 template< class T >
 void CvarToggleCheckButton<T>::Reset()
 {
-	if ( !m_cvar.IsValid() ) 
-		return;
+    if ( !m_cvar.IsValid() )
+        return;
 
-	m_bStartValue = m_cvar.GetBool();
-	SetSelected(m_bStartValue);
+    m_bStartValue = m_cvar.GetBool();
+    SetSelected(m_bStartValue);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 template< class T >
 bool CvarToggleCheckButton<T>::HasBeenModified()
 {
-	return IsSelected() != m_bStartValue;
+    return IsSelected() != m_bStartValue;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *panel - 
+// Purpose:
+// Input  : *panel -
 //-----------------------------------------------------------------------------
 template< class T >
 void CvarToggleCheckButton<T>::SetSelected( bool state )
 {
-	BaseClass::SetSelected( state );
+    BaseClass::SetSelected( state );
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 template< class T >
 void CvarToggleCheckButton<T>::OnButtonChecked()
 {
-	if (HasBeenModified())
-	{
-		PostActionSignal(new KeyValues("ControlModified"));
-	}
+    if (HasBeenModified())
+    {
+        PostActionSignal(new KeyValues("ControlModified"));
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 template< class T >
 void CvarToggleCheckButton<T>::ApplySettings( KeyValues *inResourceData )
 {
-	BaseClass::ApplySettings( inResourceData );
+    BaseClass::ApplySettings( inResourceData );
 
-	const char *cvarName = inResourceData->GetString("cvar_name", "");
-	const char *cvarValue = inResourceData->GetString("cvar_value", "");
+    const char *cvarName = inResourceData->GetString("cvar_name", "");
+    const char *cvarValue = inResourceData->GetString("cvar_value", "");
 
-	if( Q_stricmp( cvarName, "") == 0 )
-		return;// Doesn't have cvar set up in res file, must have been constructed with it.
+    if( Q_stricmp( cvarName, "") == 0 )
+        return;// Doesn't have cvar set up in res file, must have been constructed with it.
 
-	if( Q_stricmp( cvarValue, "1") == 0 )
-		m_bStartValue = true;
-	else
-		m_bStartValue = false;
+    if( Q_stricmp( cvarValue, "1") == 0 )
+        m_bStartValue = true;
+    else
+        m_bStartValue = false;
 
-	m_cvar.Init( cvarName, m_bIgnoreMissingCvar );
-	if ( m_cvar.IsValid() )
-	{
-		SetSelected( m_cvar.GetBool() );
-	}
+    m_cvar.Init( cvarName, m_bIgnoreMissingCvar );
+    if ( m_cvar.IsValid() )
+    {
+        SetSelected( m_cvar.GetBool() );
+    }
 }
 
 } // namespace vgui

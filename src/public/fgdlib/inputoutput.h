@@ -15,48 +15,48 @@
 
 enum InputOutputType_t
 {
-	iotInvalid = -1,
-	iotVoid,
-	iotInt,
-	iotBool,
-	iotString,
-	iotFloat,
-	iotVector,
-	iotEHandle,
-	iotColor,
+    iotInvalid = -1,
+    iotVoid,
+    iotInt,
+    iotBool,
+    iotString,
+    iotFloat,
+    iotVector,
+    iotEHandle,
+    iotColor,
 };
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class CClassInputOutputBase
 {
-	public:
+    public:
 
-		CClassInputOutputBase(void);
-		CClassInputOutputBase(const char *pszName, InputOutputType_t eType);
-		virtual ~CClassInputOutputBase(void);
+        CClassInputOutputBase(void);
+        CClassInputOutputBase(const char *pszName, InputOutputType_t eType);
+        virtual ~CClassInputOutputBase(void);
 
-		inline const char *GetName(void) { return(m_szName); }
-		InputOutputType_t GetType(void) { return(m_eType);  }
-		const char *GetTypeText(void);
-		inline const char *GetDescription(void);
+        inline const char *GetName(void) { return(m_szName); }
+        InputOutputType_t GetType(void) { return(m_eType);  }
+        const char *GetTypeText(void);
+        inline const char *GetDescription(void);
 
-		inline void SetName(const char *szName) { V_strcpy_safe(m_szName, szName); }
-		inline void SetType(InputOutputType_t eType) { m_eType = eType; }
-		InputOutputType_t SetType(const char *szType);
-		inline void SetDescription(char *pszDescription) { m_pszDescription = pszDescription; }
+        inline void SetName(const char *szName) { V_strcpy_safe(m_szName, szName); }
+        inline void SetType(InputOutputType_t eType) { m_eType = eType; }
+        InputOutputType_t SetType(const char *szType);
+        inline void SetDescription(char *pszDescription) { m_pszDescription = pszDescription; }
 
-		CClassInputOutputBase &operator =(CClassInputOutputBase &);
+        CClassInputOutputBase &operator =(CClassInputOutputBase &);
 
-	protected:
+    protected:
 
-		static char *g_pszEmpty;
+        static char *g_pszEmpty;
 
-		char m_szName[MAX_IO_NAME_LEN];
-		InputOutputType_t m_eType;
-		char *m_pszDescription;
+        char m_szName[MAX_IO_NAME_LEN];
+        InputOutputType_t m_eType;
+        char *m_pszDescription;
 };
 
 
@@ -65,36 +65,36 @@ class CClassInputOutputBase
 //-----------------------------------------------------------------------------
 const char *CClassInputOutputBase::GetDescription(void)
 {
-	if (m_pszDescription != NULL)
-	{
-		return(m_pszDescription);
-	}
+    if (m_pszDescription != NULL)
+    {
+        return(m_pszDescription);
+    }
 
-	return(g_pszEmpty);
+    return(g_pszEmpty);
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class CClassInput : public CClassInputOutputBase
 {
-	public:
+    public:
 
-		CClassInput(void);
-		CClassInput(const char *pszName, InputOutputType_t eType);
+        CClassInput(void);
+        CClassInput(const char *pszName, InputOutputType_t eType);
 };
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class CClassOutput : public CClassInputOutputBase
 {
-	public:
+    public:
 
-		CClassOutput(void);
-		CClassOutput(const char *pszName, InputOutputType_t eType);
+        CClassOutput(void);
+        CClassOutput(const char *pszName, InputOutputType_t eType);
 };
 
 

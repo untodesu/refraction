@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -15,9 +15,9 @@
 
 void CServerGameClients::GetPlayerLimits( int& minplayers, int& maxplayers, int &defaultMaxPlayers ) const
 {
-	minplayers = 2;  // Force multiplayer.
-	maxplayers = MAX_PLAYERS;
-	defaultMaxPlayers = 32;
+    minplayers = 2;  // Force multiplayer.
+    maxplayers = MAX_PLAYERS;
+    defaultMaxPlayers = 32;
 }
 
 // -------------------------------------------------------------------------------------------- //

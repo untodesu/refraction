@@ -19,26 +19,26 @@
 
 enum PrimType
 {
-	PT_LIST,
-	PT_STRIP,
-	PT_FAN
+    PT_LIST,
+    PT_STRIP,
+    PT_FAN
 };
 
 struct PrimitiveGroup
 {
-	PrimType type;
-	unsigned int numIndices;
-	unsigned short* indices;
+    PrimType type;
+    unsigned int numIndices;
+    unsigned short* indices;
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-	PrimitiveGroup() : type(PT_STRIP), numIndices(0), indices(NULL) {}
-	~PrimitiveGroup()
-	{
-		if(indices)
-			delete[] indices;
-		indices = NULL;
-	}
+    PrimitiveGroup() : type(PT_STRIP), numIndices(0), indices(NULL) {}
+    ~PrimitiveGroup()
+    {
+        if(indices)
+            delete[] indices;
+        indices = NULL;
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ void SetListsOnly(const bool bListsOnly);
 // Be sure to call delete[] on the returned primGroups to avoid leaking mem
 //
 void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numIndices,
-					PrimitiveGroup** primGroups, unsigned short* numGroups);
+                    PrimitiveGroup** primGroups, unsigned short* numGroups);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -113,12 +113,12 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 //  of acceptable values for indices in your primitive groups.
 // remappedGroups: array of remapped PrimitiveGroups
 //
-// Note that, according to the remapping handed back to you, you must reorder your 
+// Note that, according to the remapping handed back to you, you must reorder your
 //  vertex buffer.
 //
 // Credit goes to the MS Xbox crew for the idea for this interface.
 //
-void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numGroups, 
-				  const unsigned short numVerts, PrimitiveGroup** remappedGroups);
+void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numGroups,
+                  const unsigned short numVerts, PrimitiveGroup** remappedGroups);
 
 #endif

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -30,16 +30,16 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 ScrollBarSlider::ScrollBarSlider(Panel *parent, const char *panelName, bool vertical) : Panel(parent, panelName)
 {
-	_vertical=vertical;	
-	_dragging=false;
-	_value=0;
-	_range[0]=0;
-	_range[1]=0;
-	_rangeWindow=0;
-	_buttonOffset=0;
-	_ScrollBarSliderBorder=NULL;
-	RecomputeNobPosFromValue();
-	SetBlockDragChaining( true );
+    _vertical=vertical;
+    _dragging=false;
+    _value=0;
+    _range[0]=0;
+    _range[1]=0;
+    _rangeWindow=0;
+    _buttonOffset=0;
+    _ScrollBarSliderBorder=NULL;
+    RecomputeNobPosFromValue();
+    SetBlockDragChaining( true );
 }
 
 //-----------------------------------------------------------------------------
@@ -47,8 +47,8 @@ ScrollBarSlider::ScrollBarSlider(Panel *parent, const char *panelName, bool vert
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::SetSize(int wide,int tall)
 {
-	BaseClass::SetSize(wide,tall);
-	RecomputeNobPosFromValue();
+    BaseClass::SetSize(wide,tall);
+    RecomputeNobPosFromValue();
 }
 
 //-----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ void ScrollBarSlider::SetSize(int wide,int tall)
 //-----------------------------------------------------------------------------
 bool ScrollBarSlider::IsVertical()
 {
-	return _vertical;
+    return _vertical;
 }
 
 //-----------------------------------------------------------------------------
@@ -64,26 +64,26 @@ bool ScrollBarSlider::IsVertical()
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::SetValue(int value)
 {
-	int oldValue = _value;
+    int oldValue = _value;
 
-	if (value > _range[1] - _rangeWindow)
-	{
-		// note our scrolling range must take into acount _rangeWindow
-		value = _range[1] - _rangeWindow;	
-	}
+    if (value > _range[1] - _rangeWindow)
+    {
+        // note our scrolling range must take into acount _rangeWindow
+        value = _range[1] - _rangeWindow;
+    }
 
-	if (value < _range[0])
-	{
-		value = _range[0];
-	}
+    if (value < _range[0])
+    {
+        value = _range[0];
+    }
 
-	_value = value;
-	RecomputeNobPosFromValue();
+    _value = value;
+    RecomputeNobPosFromValue();
 
-	if (_value != oldValue)
-	{
-		SendScrollBarSliderMovedMessage();
-	}
+    if (_value != oldValue)
+    {
+        SendScrollBarSliderMovedMessage();
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -91,16 +91,16 @@ void ScrollBarSlider::SetValue(int value)
 //-----------------------------------------------------------------------------
 int ScrollBarSlider::GetValue()
 {
-	return _value;
+    return _value;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::PerformLayout()
 {
-	RecomputeNobPosFromValue();
-	BaseClass::PerformLayout();
+    RecomputeNobPosFromValue();
+    BaseClass::PerformLayout();
 }
 
 //-----------------------------------------------------------------------------
@@ -108,68 +108,68 @@ void ScrollBarSlider::PerformLayout()
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::RecomputeNobPosFromValue()
 {
-	int wide, tall;
-	GetPaintSize(wide, tall);
+    int wide, tall;
+    GetPaintSize(wide, tall);
 
-	float fwide = (float)( wide - 1 );
-	float ftall = (float)( tall - 1 );
-	float frange = (float)(_range[1] -_range[0]);
-	float fvalue = (float)(_value - _range[0]);
-	float frangewindow = (float)(_rangeWindow);
-	float fper = ( frange != frangewindow ) ? fvalue / ( frange-frangewindow ) : 0;
+    float fwide = (float)( wide - 1 );
+    float ftall = (float)( tall - 1 );
+    float frange = (float)(_range[1] -_range[0]);
+    float fvalue = (float)(_value - _range[0]);
+    float frangewindow = (float)(_rangeWindow);
+    float fper = ( frange != frangewindow ) ? fvalue / ( frange-frangewindow ) : 0;
 
-//	Msg( "fwide: %f  ftall: %f  frange: %f  fvalue: %f  frangewindow: %f  fper: %f\n",
-//		fwide, ftall, frange, fvalue, frangewindow, fper );
+//  Msg( "fwide: %f  ftall: %f  frange: %f  fvalue: %f  frangewindow: %f  fper: %f\n",
+//      fwide, ftall, frange, fvalue, frangewindow, fper );
 
-	if ( frangewindow > 0 )
-	{
-		if ( frange <= 0.0 )
-		{
-			frange = 1.0;
-		}
+    if ( frangewindow > 0 )
+    {
+        if ( frange <= 0.0 )
+        {
+            frange = 1.0;
+        }
 
-		float width, length;
-		if (_vertical)
-		{
-			width = fwide;
-			length = ftall;
-		}
-		else
-		{
-			width = ftall;
-			length = fwide;
-		}
-		
-		// our size is proportional to frangewindow/frange
-		// the scroll bar nob's length reflects the amount of stuff on the screen 
-		// vs the total amount of stuff we could scroll through in window
-		// so if a window showed half its contents and the other half is hidden the
-		// scroll bar's length is half the window.
-		// if everything is on the screen no nob is displayed
-		// frange is how many 'lines' of stuff we can display
-		// frangewindow is how many 'lines' are in the display window
-		
-		// proportion of whole window that is on screen
-		float proportion = frangewindow / frange;
-		float fnobsize = length * proportion;
-		if ( fnobsize < width ) fnobsize = (float)width;
-		
-		float freepixels = length - fnobsize;
-		
-		float firstpixel = freepixels * fper;
-		
-		_nobPos[0] = (int)( firstpixel );
-		_nobPos[1] = (int)( firstpixel + fnobsize );
-		
-		if ( _nobPos[1] > length )
-		{
-			_nobPos[0] = (int)( length - fnobsize );
-			_nobPos[1] = (int)length;
-		}
-		
-	}
+        float width, length;
+        if (_vertical)
+        {
+            width = fwide;
+            length = ftall;
+        }
+        else
+        {
+            width = ftall;
+            length = fwide;
+        }
 
-	Repaint();
+        // our size is proportional to frangewindow/frange
+        // the scroll bar nob's length reflects the amount of stuff on the screen
+        // vs the total amount of stuff we could scroll through in window
+        // so if a window showed half its contents and the other half is hidden the
+        // scroll bar's length is half the window.
+        // if everything is on the screen no nob is displayed
+        // frange is how many 'lines' of stuff we can display
+        // frangewindow is how many 'lines' are in the display window
+
+        // proportion of whole window that is on screen
+        float proportion = frangewindow / frange;
+        float fnobsize = length * proportion;
+        if ( fnobsize < width ) fnobsize = (float)width;
+
+        float freepixels = length - fnobsize;
+
+        float firstpixel = freepixels * fper;
+
+        _nobPos[0] = (int)( firstpixel );
+        _nobPos[1] = (int)( firstpixel + fnobsize );
+
+        if ( _nobPos[1] > length )
+        {
+            _nobPos[0] = (int)( length - fnobsize );
+            _nobPos[1] = (int)length;
+        }
+
+    }
+
+    Repaint();
 }
 
 //-----------------------------------------------------------------------------
@@ -177,121 +177,121 @@ void ScrollBarSlider::RecomputeNobPosFromValue()
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::RecomputeValueFromNobPos()
 {
-	int wide, tall;
-	GetPaintSize(wide, tall);
+    int wide, tall;
+    GetPaintSize(wide, tall);
 
-	float fwide = (float)( wide - 1 );
-	float ftall = (float)( tall - 1 );
-	float frange = (float)( _range[1] - _range[0] );
-	float fvalue = (float)( _value - _range[0] );
-	float fnob = (float)_nobPos[0];
-	float frangewindow = (float)(_rangeWindow);
+    float fwide = (float)( wide - 1 );
+    float ftall = (float)( tall - 1 );
+    float frange = (float)( _range[1] - _range[0] );
+    float fvalue = (float)( _value - _range[0] );
+    float fnob = (float)_nobPos[0];
+    float frangewindow = (float)(_rangeWindow);
 
-	if ( frangewindow > 0 )
-	{
-		if ( frange <= 0.0 )
-		{
-			frange = 1.0;
-		}
+    if ( frangewindow > 0 )
+    {
+        if ( frange <= 0.0 )
+        {
+            frange = 1.0;
+        }
 
-		// set local width and length
-		float width, length;
-		if ( _vertical )
-		{
-			width = fwide;
-			length = ftall;
-		}
-		else
-		{
-			width = ftall;
-			length = fwide;
-		}
-		
-		// calculate the size of the nob
-		float proportion = frangewindow / frange;
-		float fnobsize = length * proportion;
-		
-		if ( fnobsize < width )
-		{
-			fnobsize = width;
-		}
-		
-		// Our scroll bar actually doesnt scroll through all frange lines in the truerange, we
-		// actually only scroll through frange-frangewindow number of lines so we must take that 
-		// into account when we calculate the value
-		// convert to our local size system
+        // set local width and length
+        float width, length;
+        if ( _vertical )
+        {
+            width = fwide;
+            length = ftall;
+        }
+        else
+        {
+            width = ftall;
+            length = fwide;
+        }
 
-		// Make sure we don't divide by zero
-		if ( length - fnobsize == 0 )
-		{
-			fvalue = 0.0f;
-		}
-		else
-		{
-			fvalue = (frange - frangewindow) * ( fnob / ( length - fnobsize ) );
-		}
-	}
+        // calculate the size of the nob
+        float proportion = frangewindow / frange;
+        float fnobsize = length * proportion;
 
-	// check to see if we should just snap to the bottom
-	if (fabs(fvalue + _rangeWindow - _range[1]) < (0.01f * frange))
-	{
-		// snap to the end
-		_value = _range[1] - _rangeWindow;
-	}
-	else
-	{
-		// Take care of rounding issues.
-		_value = (int)( fvalue + _range[0] + 0.5);
-	}
+        if ( fnobsize < width )
+        {
+            fnobsize = width;
+        }
 
-	// Clamp final result
-	_value = ( _value < (_range[1] - _rangeWindow) ) ? _value : (_range[1] - _rangeWindow);
+        // Our scroll bar actually doesnt scroll through all frange lines in the truerange, we
+        // actually only scroll through frange-frangewindow number of lines so we must take that
+        // into account when we calculate the value
+        // convert to our local size system
 
-	if (_value < _range[0])
-	{
-		_value = _range[0];
-	}
+        // Make sure we don't divide by zero
+        if ( length - fnobsize == 0 )
+        {
+            fvalue = 0.0f;
+        }
+        else
+        {
+            fvalue = (frange - frangewindow) * ( fnob / ( length - fnobsize ) );
+        }
+    }
+
+    // check to see if we should just snap to the bottom
+    if (fabs(fvalue + _rangeWindow - _range[1]) < (0.01f * frange))
+    {
+        // snap to the end
+        _value = _range[1] - _rangeWindow;
+    }
+    else
+    {
+        // Take care of rounding issues.
+        _value = (int)( fvalue + _range[0] + 0.5);
+    }
+
+    // Clamp final result
+    _value = ( _value < (_range[1] - _rangeWindow) ) ? _value : (_range[1] - _rangeWindow);
+
+    if (_value < _range[0])
+    {
+        _value = _range[0];
+    }
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Check if the ScrollBarSlider can move through one or more pixels per
-//			unit of its range.
+//          unit of its range.
 //-----------------------------------------------------------------------------
 bool ScrollBarSlider::HasFullRange()
 {
-	int wide, tall;
-	GetPaintSize(wide, tall);
+    int wide, tall;
+    GetPaintSize(wide, tall);
 
-	float frangewindow = (float)(_rangeWindow);
+    float frangewindow = (float)(_rangeWindow);
 
-	float checkAgainst = 0;
-	if(_vertical)
-	{
-		checkAgainst = (float)tall;
-	}
-	else
-	{
-		checkAgainst = (float)wide;
-	}
+    float checkAgainst = 0;
+    if(_vertical)
+    {
+        checkAgainst = (float)tall;
+    }
+    else
+    {
+        checkAgainst = (float)wide;
+    }
 
-	if ( frangewindow > 0 )
-	{
-		if( frangewindow <= ( checkAgainst + _buttonOffset ) )
-		{
-			return true;
-		}
-	}
+    if ( frangewindow > 0 )
+    {
+        if( frangewindow <= ( checkAgainst + _buttonOffset ) )
+        {
+            return true;
+        }
+    }
 
-	return false;
+    return false;
 }
-	
+
 //-----------------------------------------------------------------------------
 // Purpose: Inform other watchers that the ScrollBarSlider was moved
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::SendScrollBarSliderMovedMessage()
-{	
-	// send a changed message
-	PostActionSignal(new KeyValues("ScrollBarSliderMoved", "position", _value));
+{
+    // send a changed message
+    PostActionSignal(new KeyValues("ScrollBarSliderMoved", "position", _value));
 }
 
 //-----------------------------------------------------------------------------
@@ -299,39 +299,39 @@ void ScrollBarSlider::SendScrollBarSliderMovedMessage()
 //-----------------------------------------------------------------------------
 bool ScrollBarSlider::IsSliderVisible( void )
 {
-	int itemRange = _range[1] - _range[0];
+    int itemRange = _range[1] - _range[0];
 
-	// Don't draw nob, no items in list
-	if ( itemRange <= 0 )
-		return false ;
+    // Don't draw nob, no items in list
+    if ( itemRange <= 0 )
+        return false ;
 
-	// Not enough range
-	if ( itemRange <= _rangeWindow )
-		return false;
+    // Not enough range
+    if ( itemRange <= _rangeWindow )
+        return false;
 
-	return true;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::ApplySchemeSettings(IScheme *pScheme)
 {
-	BaseClass::ApplySchemeSettings(pScheme);
+    BaseClass::ApplySchemeSettings(pScheme);
 
-	SetFgColor(GetSchemeColor("ScrollBarSlider.FgColor", pScheme));
-	SetBgColor(GetSchemeColor("ScrollBarSlider.BgColor", pScheme));
+    SetFgColor(GetSchemeColor("ScrollBarSlider.FgColor", pScheme));
+    SetBgColor(GetSchemeColor("ScrollBarSlider.BgColor", pScheme));
 
-	IBorder *newBorder = pScheme->GetBorder("ScrollBarSliderBorder");
+    IBorder *newBorder = pScheme->GetBorder("ScrollBarSliderBorder");
 
-	if ( newBorder )
-	{
-		_ScrollBarSliderBorder = newBorder;
-	}
-	else
-	{
-		_ScrollBarSliderBorder = pScheme->GetBorder("ButtonBorder");
-	}
+    if ( newBorder )
+    {
+        _ScrollBarSliderBorder = newBorder;
+    }
+    else
+    {
+        _ScrollBarSliderBorder = pScheme->GetBorder("ButtonBorder");
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -339,13 +339,13 @@ void ScrollBarSlider::ApplySchemeSettings(IScheme *pScheme)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::ApplySettings( KeyValues *pInResourceData )
 {
-	BaseClass::ApplySettings( pInResourceData );
+    BaseClass::ApplySettings( pInResourceData );
 
-	const char *pButtonBorderName = pInResourceData->GetString( "ButtonBorder", NULL );
-	if ( pButtonBorderName )
-	{
-		_ScrollBarSliderBorder = vgui::scheme()->GetIScheme( GetScheme() )->GetBorder( pButtonBorderName );
-	}
+    const char *pButtonBorderName = pInResourceData->GetString( "ButtonBorder", NULL );
+    if ( pButtonBorderName )
+    {
+        _ScrollBarSliderBorder = vgui::scheme()->GetIScheme( GetScheme() )->GetBorder( pButtonBorderName );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -353,44 +353,44 @@ void ScrollBarSlider::ApplySettings( KeyValues *pInResourceData )
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::Paint()
 {
-	int wide,tall;
-	GetPaintSize(wide,tall);
+    int wide,tall;
+    GetPaintSize(wide,tall);
 
-	if ( !IsSliderVisible() )	
-		return;
+    if ( !IsSliderVisible() )
+        return;
 
-	Color col = GetFgColor();
-	surface()->DrawSetColor(col);
+    Color col = GetFgColor();
+    surface()->DrawSetColor(col);
 
-	if (_vertical)
-	{
-		if ( GetPaintBackgroundType() == 2 )
-		{
-			DrawBox( 1, _nobPos[0], wide - 2, _nobPos[1] - _nobPos[0], col, 1.0f );
-		}
-		else
-		{
-			// Nob
-			surface()->DrawFilledRect(1, _nobPos[0], wide - 2, _nobPos[1]);
-		}
+    if (_vertical)
+    {
+        if ( GetPaintBackgroundType() == 2 )
+        {
+            DrawBox( 1, _nobPos[0], wide - 2, _nobPos[1] - _nobPos[0], col, 1.0f );
+        }
+        else
+        {
+            // Nob
+            surface()->DrawFilledRect(1, _nobPos[0], wide - 2, _nobPos[1]);
+        }
 
-		// border
-		if (_ScrollBarSliderBorder)
-		{
-			_ScrollBarSliderBorder->Paint(0, _nobPos[0], wide, _nobPos[1]);
-		}
-	}
-	else
-	{
-		// horizontal nob
-		surface()->DrawFilledRect(_nobPos[0], 1, _nobPos[1], tall - 2 );
+        // border
+        if (_ScrollBarSliderBorder)
+        {
+            _ScrollBarSliderBorder->Paint(0, _nobPos[0], wide, _nobPos[1]);
+        }
+    }
+    else
+    {
+        // horizontal nob
+        surface()->DrawFilledRect(_nobPos[0], 1, _nobPos[1], tall - 2 );
 
-		// border
-		if (_ScrollBarSliderBorder)
-		{
-			_ScrollBarSliderBorder->Paint(_nobPos[0] - 1, 1, _nobPos[1], tall );
-		}
-	}
+        // border
+        if (_ScrollBarSliderBorder)
+        {
+            _ScrollBarSliderBorder->Paint(_nobPos[0] - 1, 1, _nobPos[1], tall );
+        }
+    }
 
 }
 
@@ -399,12 +399,12 @@ void ScrollBarSlider::Paint()
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::PaintBackground()
 {
-//	BaseClass::PaintBackground();
-	
-	int wide,tall;
-	GetPaintSize(wide,tall);
-	surface()->DrawSetColor(GetBgColor());
-	surface()->DrawFilledRect(0, 0, wide-1, tall-1);
+//  BaseClass::PaintBackground();
+
+    int wide,tall;
+    GetPaintSize(wide,tall);
+    surface()->DrawSetColor(GetBgColor());
+    surface()->DrawFilledRect(0, 0, wide-1, tall-1);
 }
 
 //-----------------------------------------------------------------------------
@@ -412,22 +412,22 @@ void ScrollBarSlider::PaintBackground()
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::SetRange(int min,int max)
 {
-	if(max<min)
-	{
-		max=min;
-	}
+    if(max<min)
+    {
+        max=min;
+    }
 
-	if(min>max)
-	{
-		min=max;
-	}
+    if(min>max)
+    {
+        min=max;
+    }
 
-	_range[0]=min;
-	_range[1]=max;
+    _range[0]=min;
+    _range[1]=max;
 
-	// update the value (forces it within the range)
-	SetValue( _value );
-	InvalidateLayout();
+    // update the value (forces it within the range)
+    SetValue( _value );
+    InvalidateLayout();
 }
 
 //-----------------------------------------------------------------------------
@@ -435,8 +435,8 @@ void ScrollBarSlider::SetRange(int min,int max)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::GetRange(int& min,int& max)
 {
-	min=_range[0];
-	max=_range[1];
+    min=_range[0];
+    max=_range[1];
 }
 
 //-----------------------------------------------------------------------------
@@ -444,52 +444,52 @@ void ScrollBarSlider::GetRange(int& min,int& max)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::OnCursorMoved(int x,int y)
 {
-	if (!_dragging)
-	{
-		return;
-	}
+    if (!_dragging)
+    {
+        return;
+    }
 
-//	input()->GetCursorPos(x, y);
-//	ScreenToLocal(x, y);
+//  input()->GetCursorPos(x, y);
+//  ScreenToLocal(x, y);
 
-	int wide, tall;
-	GetPaintSize(wide, tall);
+    int wide, tall;
+    GetPaintSize(wide, tall);
 
-	if (_vertical)
-	{
-		_nobPos[0] = _nobDragStartPos[0] + (y - _dragStartPos[1]);
-		_nobPos[1] = _nobDragStartPos[1] + (y - _dragStartPos[1]);
-		
-		if (_nobPos[1] > tall)
-		{
-			_nobPos[0] = tall - (_nobPos[1] - _nobPos[0]);
-			_nobPos[1] = tall;
-			SetValue( _range[1] - _rangeWindow );
-		}
-	}
-	else
-	{
-		_nobPos[0] = _nobDragStartPos[0] + (x - _dragStartPos[0]);
-		_nobPos[1] = _nobDragStartPos[1] + (x - _dragStartPos[0]);
-		
-		if (_nobPos[1] > wide)
-		{
-			_nobPos[0] = wide - (_nobPos[1] - _nobPos[0]);
-			_nobPos[1] = wide;
-		}
-		
-	}
-	if (_nobPos[0] < 0)
-	{
-		_nobPos[1] = _nobPos[1] - _nobPos[0];
-		_nobPos[0] = 0;
-		SetValue(0);
-	}
-	
-	InvalidateLayout();		// not invalidatelayout - because it won't draw while we're scrolling the slider
-	RecomputeValueFromNobPos();
-//	Repaint();
-	SendScrollBarSliderMovedMessage();
+    if (_vertical)
+    {
+        _nobPos[0] = _nobDragStartPos[0] + (y - _dragStartPos[1]);
+        _nobPos[1] = _nobDragStartPos[1] + (y - _dragStartPos[1]);
+
+        if (_nobPos[1] > tall)
+        {
+            _nobPos[0] = tall - (_nobPos[1] - _nobPos[0]);
+            _nobPos[1] = tall;
+            SetValue( _range[1] - _rangeWindow );
+        }
+    }
+    else
+    {
+        _nobPos[0] = _nobDragStartPos[0] + (x - _dragStartPos[0]);
+        _nobPos[1] = _nobDragStartPos[1] + (x - _dragStartPos[0]);
+
+        if (_nobPos[1] > wide)
+        {
+            _nobPos[0] = wide - (_nobPos[1] - _nobPos[0]);
+            _nobPos[1] = wide;
+        }
+
+    }
+    if (_nobPos[0] < 0)
+    {
+        _nobPos[1] = _nobPos[1] - _nobPos[0];
+        _nobPos[0] = 0;
+        SetValue(0);
+    }
+
+    InvalidateLayout();     // not invalidatelayout - because it won't draw while we're scrolling the slider
+    RecomputeValueFromNobPos();
+//  Repaint();
+    SendScrollBarSliderMovedMessage();
 }
 
 //-----------------------------------------------------------------------------
@@ -497,62 +497,62 @@ void ScrollBarSlider::OnCursorMoved(int x,int y)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::OnMousePressed(MouseCode code)
 {
-	int x,y;
-	input()->GetCursorPos(x,y);
-	ScreenToLocal(x,y);
+    int x,y;
+    input()->GetCursorPos(x,y);
+    ScreenToLocal(x,y);
 
-	if (_vertical)
-	{
-		if ((y >= _nobPos[0]) && (y < _nobPos[1]))
-		{
-			_dragging = true;
-			input()->SetMouseCapture(GetVPanel());
-			_nobDragStartPos[0] = _nobPos[0];
-			_nobDragStartPos[1] = _nobPos[1];
-			_dragStartPos[0] = x;
-			_dragStartPos[1] = y;
-		}
-		else if (y < _nobPos[0])
-		{
-			// jump the bar up by the range window
-			int val = GetValue();
-			val -= _rangeWindow;
-			SetValue(val);
-		}
-		else if (y >= _nobPos[1])
-		{
-			// jump the bar down by the range window
-			int val = GetValue();
-			val += _rangeWindow;
-			SetValue(val);
-		}
-	}
-	else
-	{
-		if((x >= _nobPos[0]) && (x < _nobPos[1]))
-		{
-			_dragging = true;
-			input()->SetMouseCapture(GetVPanel());
-			_nobDragStartPos[0] = _nobPos[0];
-			_nobDragStartPos[1] = _nobPos[1];
-			_dragStartPos[0] = x;
-			_dragStartPos[1] = y;
-		}
-		else if (x < _nobPos[0])
-		{
-			// jump the bar up by the range window
-			int val = GetValue();
-			val -= _rangeWindow;
-			SetValue(val);
-		}
-		else if (x >= _nobPos[1])
-		{
-			// jump the bar down by the range window
-			int val = GetValue();
-			val += _rangeWindow;
-			SetValue(val);
-		}
-	}
+    if (_vertical)
+    {
+        if ((y >= _nobPos[0]) && (y < _nobPos[1]))
+        {
+            _dragging = true;
+            input()->SetMouseCapture(GetVPanel());
+            _nobDragStartPos[0] = _nobPos[0];
+            _nobDragStartPos[1] = _nobPos[1];
+            _dragStartPos[0] = x;
+            _dragStartPos[1] = y;
+        }
+        else if (y < _nobPos[0])
+        {
+            // jump the bar up by the range window
+            int val = GetValue();
+            val -= _rangeWindow;
+            SetValue(val);
+        }
+        else if (y >= _nobPos[1])
+        {
+            // jump the bar down by the range window
+            int val = GetValue();
+            val += _rangeWindow;
+            SetValue(val);
+        }
+    }
+    else
+    {
+        if((x >= _nobPos[0]) && (x < _nobPos[1]))
+        {
+            _dragging = true;
+            input()->SetMouseCapture(GetVPanel());
+            _nobDragStartPos[0] = _nobPos[0];
+            _nobDragStartPos[1] = _nobPos[1];
+            _dragStartPos[0] = x;
+            _dragStartPos[1] = y;
+        }
+        else if (x < _nobPos[0])
+        {
+            // jump the bar up by the range window
+            int val = GetValue();
+            val -= _rangeWindow;
+            SetValue(val);
+        }
+        else if (x >= _nobPos[1])
+        {
+            // jump the bar down by the range window
+            int val = GetValue();
+            val += _rangeWindow;
+            SetValue(val);
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -560,7 +560,7 @@ void ScrollBarSlider::OnMousePressed(MouseCode code)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::OnMouseDoublePressed(MouseCode code)
 {
-	OnMousePressed(code);
+    OnMousePressed(code);
 }
 
 //-----------------------------------------------------------------------------
@@ -568,8 +568,8 @@ void ScrollBarSlider::OnMouseDoublePressed(MouseCode code)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::OnMouseReleased(MouseCode code)
 {
-	_dragging = false;
-	input()->SetMouseCapture(null);
+    _dragging = false;
+    input()->SetMouseCapture(null);
 }
 
 //-----------------------------------------------------------------------------
@@ -577,8 +577,8 @@ void ScrollBarSlider::OnMouseReleased(MouseCode code)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::GetNobPos(int& min, int& max)
 {
-	min=_nobPos[0];
-	max=_nobPos[1];
+    min=_nobPos[0];
+    max=_nobPos[1];
 }
 
 //-----------------------------------------------------------------------------
@@ -586,7 +586,7 @@ void ScrollBarSlider::GetNobPos(int& min, int& max)
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::SetRangeWindow(int rangeWindow)
 {
-	_rangeWindow = rangeWindow;
+    _rangeWindow = rangeWindow;
 }
 
 //-----------------------------------------------------------------------------
@@ -594,7 +594,7 @@ void ScrollBarSlider::SetRangeWindow(int rangeWindow)
 //-----------------------------------------------------------------------------
 int ScrollBarSlider::GetRangeWindow()
 {
-	return _rangeWindow;
+    return _rangeWindow;
 }
 
 //-----------------------------------------------------------------------------
@@ -602,5 +602,5 @@ int ScrollBarSlider::GetRangeWindow()
 //-----------------------------------------------------------------------------
 void ScrollBarSlider::SetButtonOffset(int buttonOffset)
 {
-	_buttonOffset = buttonOffset;
+    _buttonOffset = buttonOffset;
 }

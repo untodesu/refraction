@@ -13,7 +13,7 @@ const int kLenIdNeedInit = -2;
 
 void CDecoder::Init()
 {
-  { 
+  {
     for(int i = 0; i < kNumStates; i++)
     {
       for (UInt32 j = 0; j <= _posStateMask; j++)
@@ -27,11 +27,11 @@ void CDecoder::Init()
       _isRepG2[i].Init();
     }
   }
-  { 
+  {
     for (UInt32 i = 0; i < kNumLenToPosStates; i++)
     _posSlotDecoder[i].Init();
   }
-  { 
+  {
     for(UInt32 i = 0; i < kNumFullDistances - kEndPosModelIndex; i++)
       _posDecoders[i].Init();
   }
@@ -97,17 +97,17 @@ HRESULT CDecoder::CodeSpec(UInt32 curSize)
       if (_isMatch[state.Index][posState].Decode(&_rangeDecoder) == 0)
       {
         if(!state.IsCharState())
-          previousByte = _literalDecoder.DecodeWithMatchByte(&_rangeDecoder, 
+          previousByte = _literalDecoder.DecodeWithMatchByte(&_rangeDecoder,
               (UInt32)nowPos64, previousByte, _outWindowStream.GetByte(rep0));
         else
-          previousByte = _literalDecoder.DecodeNormal(&_rangeDecoder, 
+          previousByte = _literalDecoder.DecodeNormal(&_rangeDecoder,
               (UInt32)nowPos64, previousByte);
         _outWindowStream.PutByte(previousByte);
         state.UpdateChar();
         curSize--;
         nowPos64++;
       }
-      else             
+      else
       {
         UInt32 len;
         if(_isRep[state.Index].Decode(&_rangeDecoder) == 1)
@@ -126,7 +126,7 @@ HRESULT CDecoder::CodeSpec(UInt32 curSize)
             UInt32 distance;
             if(_isRepG1[state.Index].Decode(&_rangeDecoder) == 0)
               distance = rep1;
-            else 
+            else
             {
               if (_isRepG2[state.Index].Decode(&_rangeDecoder) == 0)
                 distance = rep2;
@@ -160,7 +160,7 @@ HRESULT CDecoder::CodeSpec(UInt32 curSize)
             rep0 = ((2 | (posSlot & 1)) << numDirectBits);
 
             if (posSlot < kEndPosModelIndex)
-              rep0 += NRangeCoder::ReverseBitTreeDecode(_posDecoders + 
+              rep0 += NRangeCoder::ReverseBitTreeDecode(_posDecoders +
                   rep0 - posSlot - 1, &_rangeDecoder, numDirectBits);
             else
             {
@@ -211,7 +211,7 @@ HRESULT CDecoder::CodeSpec(UInt32 curSize)
 }
 
 STDMETHODIMP CDecoder::CodeReal(ISequentialInStream *inStream,
-    ISequentialOutStream *outStream, 
+    ISequentialOutStream *outStream,
     const UInt64 *, const UInt64 *outSize,
     ICompressProgressInfo *progress)
 {
@@ -235,7 +235,7 @@ STDMETHODIMP CDecoder::CodeReal(ISequentialInStream *inStream,
     if (_outSizeDefined)
       if (_outWindowStream.GetProcessedSize() >= _outSize)
         break;
-  } 
+  }
   flusher.NeedFlush = false;
   return Flush();
 }
@@ -248,7 +248,7 @@ STDMETHODIMP CDecoder::CodeReal(ISequentialInStream *inStream,
 
 #else
 
-#define LZMA_TRY_BEGIN try { 
+#define LZMA_TRY_BEGIN try {
 #define LZMA_TRY_END } \
   catch(const CInBufferException &e)  { return e.ErrorCode; } \
   catch(const CLZOutWindowException &e)  { return e.ErrorCode; } \
@@ -262,7 +262,7 @@ STDMETHODIMP CDecoder::Code(ISequentialInStream *inStream,
       ICompressProgressInfo *progress)
 {
   LZMA_TRY_BEGIN
-  return CodeReal(inStream, outStream, inSize, outSize, progress); 
+  return CodeReal(inStream, outStream, inSize, outSize, progress);
   LZMA_TRY_END
 }
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $NoKeywords: $
@@ -20,11 +20,11 @@
 //-----------------------------------------------------------------------------
 
 // -----------------------------------------
-//	Sounds
+//  Sounds
 // -----------------------------------------
 
 struct animevent_t;
 
-extern void	SpawnBlood(Vector vecSpot, const Vector &vecDir, int bloodColor, float flDamage);
+extern void SpawnBlood(Vector vecSpot, const Vector &vecDir, int bloodColor, float flDamage);
 
 #endif // COMBATWEAPON_H

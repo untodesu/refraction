@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -28,7 +28,7 @@ void LayoutBackgroundPanel( vgui::EditablePanel *pWindow );
 void ApplyBackgroundSchemeSettings( vgui::EditablePanel *pWindow, vgui::IScheme *pScheme );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void ResizeWindowControls( vgui::EditablePanel *pWindow, int tall, int wide, int offsetX, int offsetY );
 

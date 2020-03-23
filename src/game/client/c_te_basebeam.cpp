@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -21,62 +21,62 @@
 //-----------------------------------------------------------------------------
 C_TEBaseBeam::C_TEBaseBeam( void )
 {
-	m_nModelIndex	= 0;
-	m_nHaloIndex	= 0;
-	m_nStartFrame	= 0;
-	m_nFrameRate	= 0;
-	m_fLife			= 0.0;
-	m_fWidth		= 0;
-	m_fEndWidth		= 0;
-	m_nFadeLength	= 0;
-	m_fAmplitude	= 0;
-	r = g = b = a = 0;
-	m_nSpeed		= 0;
-	m_nFlags		= 0;
+    m_nModelIndex   = 0;
+    m_nHaloIndex    = 0;
+    m_nStartFrame   = 0;
+    m_nFrameRate    = 0;
+    m_fLife         = 0.0;
+    m_fWidth        = 0;
+    m_fEndWidth     = 0;
+    m_nFadeLength   = 0;
+    m_fAmplitude    = 0;
+    r = g = b = a = 0;
+    m_nSpeed        = 0;
+    m_nFlags        = 0;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 C_TEBaseBeam::~C_TEBaseBeam( void )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : bool - 
+// Purpose:
+// Input  : bool -
 //-----------------------------------------------------------------------------
-void C_TEBaseBeam::PreDataUpdate( DataUpdateType_t updateType ) 
-{ 
+void C_TEBaseBeam::PreDataUpdate( DataUpdateType_t updateType )
+{
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : bool - 
+// Purpose:
+// Input  : bool -
 //-----------------------------------------------------------------------------
 void C_TEBaseBeam::PostDataUpdate( DataUpdateType_t updateType )
 {
-	Assert( 0 );
+    Assert( 0 );
 }
 
 
 IMPLEMENT_CLIENTCLASS(C_TEBaseBeam, DT_BaseBeam, CTEBaseBeam);
 
 BEGIN_RECV_TABLE_NOBASE( C_TEBaseBeam, DT_BaseBeam )
-	RecvPropInt( RECVINFO(m_nModelIndex)),
-	RecvPropInt( RECVINFO(m_nHaloIndex)),
-	RecvPropInt( RECVINFO(m_nStartFrame)),
-	RecvPropInt( RECVINFO(m_nFrameRate)),
-	RecvPropFloat( RECVINFO(m_fLife)),
-	RecvPropFloat( RECVINFO(m_fWidth)),
-	RecvPropFloat( RECVINFO(m_fEndWidth)),
-	RecvPropInt( RECVINFO(m_nFadeLength)),
-	RecvPropFloat( RECVINFO(m_fAmplitude)),
-	RecvPropInt( RECVINFO(m_nSpeed)),
-	RecvPropInt( RECVINFO(r)),
-	RecvPropInt( RECVINFO(g)),
-	RecvPropInt( RECVINFO(b)),
-	RecvPropInt( RECVINFO(a)),
-	RecvPropInt( RECVINFO(m_nFlags)),
+    RecvPropInt( RECVINFO(m_nModelIndex)),
+    RecvPropInt( RECVINFO(m_nHaloIndex)),
+    RecvPropInt( RECVINFO(m_nStartFrame)),
+    RecvPropInt( RECVINFO(m_nFrameRate)),
+    RecvPropFloat( RECVINFO(m_fLife)),
+    RecvPropFloat( RECVINFO(m_fWidth)),
+    RecvPropFloat( RECVINFO(m_fEndWidth)),
+    RecvPropInt( RECVINFO(m_nFadeLength)),
+    RecvPropFloat( RECVINFO(m_fAmplitude)),
+    RecvPropInt( RECVINFO(m_nSpeed)),
+    RecvPropInt( RECVINFO(r)),
+    RecvPropInt( RECVINFO(g)),
+    RecvPropInt( RECVINFO(b)),
+    RecvPropInt( RECVINFO(a)),
+    RecvPropInt( RECVINFO(m_nFlags)),
 END_RECV_TABLE()
 

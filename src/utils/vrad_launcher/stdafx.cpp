@@ -1,13 +1,13 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
 //=============================================================================//
 // stdafx.cpp : source file that includes just the standard includes
-//	vrad_launcher.pch will be the pre-compiled header
-//	stdafx.obj will contain the pre-compiled type information
+//  vrad_launcher.pch will be the pre-compiled header
+//  stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
 

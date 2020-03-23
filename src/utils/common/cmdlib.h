@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -20,9 +20,9 @@
 
 // This can go away when everything is in bin.
 #if defined( CMDLIB_NODBGLIB )
-	void Error( PRINTF_FORMAT_STRING char const *pMsg, ... );
+    void Error( PRINTF_FORMAT_STRING char const *pMsg, ... );
 #else
-	#include "tier0/dbg.h"
+    #include "tier0/dbg.h"
 #endif
 
 #include <stdio.h>
@@ -53,9 +53,9 @@ extern bool g_bSuppressPrintfOutput;
 extern IBaseFileSystem *g_pFileSystem;
 
 // These call right into the functions in filesystem_tools.h
-void				CmdLib_InitFileSystem( const char *pFilename, int maxMemoryUsage = 0 );
-void				CmdLib_TermFileSystem();	// GracefulExit calls this.
-CreateInterfaceFn	CmdLib_GetFileSystemFactory();
+void                CmdLib_InitFileSystem( const char *pFilename, int maxMemoryUsage = 0 );
+void                CmdLib_TermFileSystem();    // GracefulExit calls this.
+CreateInterfaceFn   CmdLib_GetFileSystemFactory();
 
 
 #ifdef _WIN32
@@ -80,12 +80,12 @@ extern int myargc;
 extern char **myargv;
 
 int Q_filelength (FileHandle_t f);
-int	FileTime (char *path);
+int FileTime (char *path);
 
-void	Q_mkdir( char *path );
+void    Q_mkdir( char *path );
 
-char *ExpandArg (char *path);	// expand relative to CWD
-char *ExpandPath (char *path);	// expand relative to gamedir
+char *ExpandArg (char *path);   // expand relative to CWD
+char *ExpandPath (char *path);  // expand relative to gamedir
 
 char *ExpandPathAndArchive (char *path);
 
@@ -94,24 +94,24 @@ void GetHourMinuteSecondsString( int nInputSeconds, char *pOut, int outLen );
 
 
 
-int		CheckParm (char *check);
+int     CheckParm (char *check);
 
-FileHandle_t	SafeOpenWrite ( const char *filename );
-FileHandle_t	SafeOpenRead ( const char *filename );
-void			SafeRead( FileHandle_t f, void *buffer, int count);
-void			SafeWrite( FileHandle_t f, void *buffer, int count);
+FileHandle_t    SafeOpenWrite ( const char *filename );
+FileHandle_t    SafeOpenRead ( const char *filename );
+void            SafeRead( FileHandle_t f, void *buffer, int count);
+void            SafeWrite( FileHandle_t f, void *buffer, int count);
 
-int		LoadFile ( const char *filename, void **bufferptr );
-void	SaveFile ( const char *filename, void *buffer, int count );
-qboolean	FileExists ( const char *filename );
+int     LoadFile ( const char *filename, void **bufferptr );
+void    SaveFile ( const char *filename, void *buffer, int count );
+qboolean    FileExists ( const char *filename );
 
-int 	ParseNum (char *str);
+int     ParseNum (char *str);
 
 // Do a printf in the specified color.
-#define CP_ERROR	stderr, 1, 0, 0, 1		// default colors..
-#define CP_WARNING	stderr, 1, 1, 0, 1		
-#define CP_STARTUP	stdout, 0, 1, 1, 1		
-#define CP_NOTIFY	stdout, 1, 1, 1, 1
+#define CP_ERROR    stderr, 1, 0, 0, 1      // default colors..
+#define CP_WARNING  stderr, 1, 1, 0, 1
+#define CP_STARTUP  stdout, 0, 1, 1, 1
+#define CP_NOTIFY   stdout, 1, 1, 1, 1
 void ColorPrintf( FILE *pFile, bool red, bool green, bool blue, bool intensity, PRINTF_FORMAT_STRING char const *pFormat, ... );
 
 // Initialize spew output.
@@ -127,9 +127,9 @@ void InstallAllocationFunctions();
 // This shuts down mgrs that use threads gracefully. If you just call exit(), the threads can
 // get in a state where you can't tell if they are shutdown or not, and it can stall forever.
 typedef void (*CleanupFn)();
-void CmdLib_AtCleanup( CleanupFn pFn );	// register a callback when Cleanup() is called.
+void CmdLib_AtCleanup( CleanupFn pFn ); // register a callback when Cleanup() is called.
 void CmdLib_Cleanup();
-void CmdLib_Exit( int exitCode );	// Use this to cleanup and call exit().
+void CmdLib_Exit( int exitCode );   // Use this to cleanup and call exit().
 
 // entrypoint if chaining spew functions
 SpewRetval_t CmdLib_SpewOutputFunc( SpewType_t type, char const *pMsg );
@@ -141,18 +141,18 @@ void SetSpewFunctionLogFile( char const *pFilename );
 
 char *COM_Parse (char *data);
 
-extern	char		com_token[1024];
+extern  char        com_token[1024];
 
 char *copystring(const char *s);
 
-void	CreatePath( char *path );
-void	QCopyFile( char *from, char *to );
-void	SafeCreatePath( char *path );
+void    CreatePath( char *path );
+void    QCopyFile( char *from, char *to );
+void    SafeCreatePath( char *path );
 
-extern	qboolean		archive;
-extern	char			archivedir[1024];
+extern  qboolean        archive;
+extern  char            archivedir[1024];
 
-extern	qboolean verbose;
+extern  qboolean verbose;
 
 void qprintf( PRINTF_FORMAT_STRING const char *format, ... );
 
@@ -170,8 +170,8 @@ extern bool g_bStopOnExit;
 // for compression routines
 typedef struct
 {
-	byte	*data;
-	int		count;
+    byte    *data;
+    int     count;
 } cblock_t;
 
 

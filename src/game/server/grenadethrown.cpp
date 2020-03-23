@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -23,21 +23,21 @@
 // Precaches a grenade and ensures clients know of it's "ammo"
 void UTIL_PrecacheOtherGrenade( const char *szClassname )
 {
-	CBaseEntity *pEntity = CreateEntityByName( szClassname );
-	if ( !pEntity )
-	{
-		Msg( "NULL Ent in UTIL_PrecacheOtherGrenade\n" );
-		return;
-	}
-	
-	CThrownGrenade *pGrenade = dynamic_cast<CThrownGrenade *>( pEntity );
+    CBaseEntity *pEntity = CreateEntityByName( szClassname );
+    if ( !pEntity )
+    {
+        Msg( "NULL Ent in UTIL_PrecacheOtherGrenade\n" );
+        return;
+    }
 
-	if (pGrenade)
-	{
-		pGrenade->Precache( );
-	}
+    CThrownGrenade *pGrenade = dynamic_cast<CThrownGrenade *>( pEntity );
 
-	UTIL_Remove( pEntity );
+    if (pGrenade)
+    {
+        pGrenade->Precache( );
+    }
+
+    UTIL_Remove( pEntity );
 }
 
 //-----------------------------------------------------------------------------
@@ -45,37 +45,37 @@ void UTIL_PrecacheOtherGrenade( const char *szClassname )
 //-----------------------------------------------------------------------------
 void CThrownGrenade::Spawn( void )
 {
-	// point sized, solid, bouncing
-	SetMoveType( MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE );
-	SetSolid( SOLID_BBOX );
-	UTIL_SetSize(this, vec3_origin, vec3_origin);
+    // point sized, solid, bouncing
+    SetMoveType( MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE );
+    SetSolid( SOLID_BBOX );
+    UTIL_SetSize(this, vec3_origin, vec3_origin);
 
-	// Movement
-	SetGravity( UTIL_ScaleForGravity( 648 ) );
-	SetFriction(0.6);
-	QAngle angles;
-	VectorAngles( GetAbsVelocity(), angles );
-	SetLocalAngles( angles );
-	QAngle vecAngVel( random->RandomFloat ( -100, -500 ), 0, 0 );
-	SetLocalAngularVelocity( vecAngVel );
-	
-	SetTouch( &CThrownGrenade::BounceTouch );
+    // Movement
+    SetGravity( UTIL_ScaleForGravity( 648 ) );
+    SetFriction(0.6);
+    QAngle angles;
+    VectorAngles( GetAbsVelocity(), angles );
+    SetLocalAngles( angles );
+    QAngle vecAngVel( random->RandomFloat ( -100, -500 ), 0, 0 );
+    SetLocalAngularVelocity( vecAngVel );
+
+    SetTouch( &CThrownGrenade::BounceTouch );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Throw the grenade.
 // Input  : vecOrigin - Starting position
-//			vecVelocity - Starting velocity
-//			flExplodeTime - Time at which to detonate
+//          vecVelocity - Starting velocity
+//          flExplodeTime - Time at which to detonate
 //-----------------------------------------------------------------------------
 void CThrownGrenade::Thrown( Vector vecOrigin, Vector vecVelocity, float flExplodeTime )
 {
-	// Throw
-	SetLocalOrigin( vecOrigin );
-	SetAbsVelocity( vecVelocity );
+    // Throw
+    SetLocalOrigin( vecOrigin );
+    SetAbsVelocity( vecVelocity );
 
-	// Explode in 3 seconds
-	SetThink( &CThrownGrenade::Detonate );
-	SetNextThink( gpGlobals->curtime + flExplodeTime );
+    // Explode in 3 seconds
+    SetThink( &CThrownGrenade::Detonate );
+    SetNextThink( gpGlobals->curtime + flExplodeTime );
 }
 

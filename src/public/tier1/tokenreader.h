@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -32,18 +32,18 @@
 
 typedef enum
 {
-	TOKENSTRINGTOOLONG = -4,
-	TOKENERROR = -3,
-	TOKENNONE = -2,
-	TOKENEOF = -1,
-	OPERATOR,
-	INTEGER,
-	STRING,
-	IDENT
+    TOKENSTRINGTOOLONG = -4,
+    TOKENERROR = -3,
+    TOKENNONE = -2,
+    TOKENEOF = -1,
+    OPERATOR,
+    INTEGER,
+    STRING,
+    IDENT
 } trtoken_t;
 
 
-#define IsToken(s1, s2)	!strcmpi(s1, s2)
+#define IsToken(s1, s2) !strcmpi(s1, s2)
 
 #define MAX_TOKEN 128 + 1
 #define MAX_IDENT 64 + 1
@@ -54,36 +54,36 @@ class TokenReader : private std::ifstream
 {
 public:
 
-	TokenReader();
+    TokenReader();
 
-	bool Open(const char *pszFilename);
-	trtoken_t NextToken(char *pszStore, int nSize);
-	trtoken_t NextTokenDynamic(char **ppszStore);
-	void Close();
+    bool Open(const char *pszFilename);
+    trtoken_t NextToken(char *pszStore, int nSize);
+    trtoken_t NextTokenDynamic(char **ppszStore);
+    void Close();
 
-	void IgnoreTill(trtoken_t ttype, const char *pszToken);
-	void Stuff(trtoken_t ttype, const char *pszToken);
-	bool Expecting(trtoken_t ttype, const char *pszToken);
-	const char *Error(char *error, ...);
-	trtoken_t PeekTokenType(char* = NULL, int maxlen = 0);
+    void IgnoreTill(trtoken_t ttype, const char *pszToken);
+    void Stuff(trtoken_t ttype, const char *pszToken);
+    bool Expecting(trtoken_t ttype, const char *pszToken);
+    const char *Error(char *error, ...);
+    trtoken_t PeekTokenType(char* = NULL, int maxlen = 0);
 
-	inline int GetErrorCount(void);
+    inline int GetErrorCount(void);
 
 private:
-	// compiler can't generate an assignment operator since descended from std::ifstream
-	inline TokenReader(TokenReader const &);
-	inline int operator=(TokenReader const &);
+    // compiler can't generate an assignment operator since descended from std::ifstream
+    inline TokenReader(TokenReader const &);
+    inline int operator=(TokenReader const &);
 
-	trtoken_t GetString(char *pszStore, int nSize);
-	bool SkipWhiteSpace(void);
+    trtoken_t GetString(char *pszStore, int nSize);
+    bool SkipWhiteSpace(void);
 
-	int m_nLine;
-	int m_nErrorCount;
+    int m_nLine;
+    int m_nErrorCount;
 
-	char m_szFilename[128];
-	char m_szStuffed[128];
-	bool m_bStuffed;
-	trtoken_t m_eStuffed;
+    char m_szFilename[128];
+    char m_szStuffed[128];
+    bool m_bStuffed;
+    trtoken_t m_eStuffed;
 };
 
 
@@ -92,7 +92,7 @@ private:
 //-----------------------------------------------------------------------------
 int TokenReader::GetErrorCount(void)
 {
-	return(m_nErrorCount);
+    return(m_nErrorCount);
 }
 
 

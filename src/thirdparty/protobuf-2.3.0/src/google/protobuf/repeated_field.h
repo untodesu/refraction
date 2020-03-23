@@ -580,7 +580,7 @@ void RepeatedField<Element>::Reserve(int new_size) {
   Element* old_elements = elements_;
   total_size_ =  total_size_ * 2;
   if ( total_size_ < new_size )
-	  total_size_ = new_size;
+      total_size_ = new_size;
   elements_ = new Element[total_size_];
   MoveArray(elements_, old_elements, current_size_);
   if (old_elements != initial_space_) {

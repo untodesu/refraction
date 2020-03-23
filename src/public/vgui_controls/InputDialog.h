@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -26,27 +26,27 @@ class TextEntry;
 //-----------------------------------------------------------------------------
 class BaseInputDialog : public Frame
 {
-	DECLARE_CLASS_SIMPLE( BaseInputDialog, Frame );
+    DECLARE_CLASS_SIMPLE( BaseInputDialog, Frame );
 
 public:
-	BaseInputDialog( vgui::Panel *parent, const char *title );
-	~BaseInputDialog();
+    BaseInputDialog( vgui::Panel *parent, const char *title );
+    ~BaseInputDialog();
 
-	void DoModal( KeyValues *pContextKeyValues = NULL );
+    void DoModal( KeyValues *pContextKeyValues = NULL );
 
 protected:
-	virtual void PerformLayout();
-	virtual void PerformLayout( int x, int y, int w, int h ) {}
+    virtual void PerformLayout();
+    virtual void PerformLayout( int x, int y, int w, int h ) {}
 
-	// command buttons
-	virtual void OnCommand( const char *command );
+    // command buttons
+    virtual void OnCommand( const char *command );
 
-	void CleanUpContextKeyValues();
-	KeyValues		*m_pContextKeyValues;
+    void CleanUpContextKeyValues();
+    KeyValues       *m_pContextKeyValues;
 
 private:
-	vgui::Button	*m_pCancelButton;
-	vgui::Button	*m_pOKButton;
+    vgui::Button    *m_pCancelButton;
+    vgui::Button    *m_pOKButton;
 };
 
 //-----------------------------------------------------------------------------
@@ -54,17 +54,17 @@ private:
 //-----------------------------------------------------------------------------
 class InputMessageBox : public BaseInputDialog
 {
-	DECLARE_CLASS_SIMPLE( InputMessageBox, BaseInputDialog );
+    DECLARE_CLASS_SIMPLE( InputMessageBox, BaseInputDialog );
 
 public:
-	InputMessageBox( vgui::Panel *parent, const char *title, char const *prompt );
-	~InputMessageBox();
+    InputMessageBox( vgui::Panel *parent, const char *title, char const *prompt );
+    ~InputMessageBox();
 
 protected:
-	virtual void PerformLayout( int x, int y, int w, int h );
+    virtual void PerformLayout( int x, int y, int w, int h );
 
 private:
-	vgui::Label			*m_pPrompt;
+    vgui::Label         *m_pPrompt;
 };
 
 //-----------------------------------------------------------------------------
@@ -72,32 +72,32 @@ private:
 //-----------------------------------------------------------------------------
 class InputDialog : public BaseInputDialog
 {
-	DECLARE_CLASS_SIMPLE( InputDialog, BaseInputDialog );
+    DECLARE_CLASS_SIMPLE( InputDialog, BaseInputDialog );
 
 public:
-	InputDialog( vgui::Panel *parent, const char *title, char const *prompt, char const *defaultValue = "" );
-	~InputDialog();
+    InputDialog( vgui::Panel *parent, const char *title, char const *prompt, char const *defaultValue = "" );
+    ~InputDialog();
 
-	void SetMultiline( bool state );
+    void SetMultiline( bool state );
 
-	/* action signals
+    /* action signals
 
-		"InputCompleted"
-			"text"	- the text entered
+        "InputCompleted"
+            "text"  - the text entered
 
-		"InputCanceled"
-	*/
-	void AllowNumericInputOnly( bool bOnlyNumeric );
+        "InputCanceled"
+    */
+    void AllowNumericInputOnly( bool bOnlyNumeric );
 
 protected:
-	virtual void PerformLayout( int x, int y, int w, int h );
+    virtual void PerformLayout( int x, int y, int w, int h );
 
-	// command buttons
-	virtual void OnCommand(const char *command);
+    // command buttons
+    virtual void OnCommand(const char *command);
 
 private:
-	vgui::Label			*m_pPrompt;
-	vgui::TextEntry		*m_pInput;
+    vgui::Label         *m_pPrompt;
+    vgui::TextEntry     *m_pInput;
 };
 
 } // namespace vgui

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -11,15 +11,15 @@
 #endif
 
 // List of the last 5 lines of speech from NPCs for bug reports
-#define SPEECH_LIST_MAX_SOUNDS	5
+#define SPEECH_LIST_MAX_SOUNDS  5
 
 class AI_Response;
 
 struct recentNPCSpeech_t
 {
-	float	time;
-	char	name[ 512 ];
-	char	sceneName[ 128 ];
+    float   time;
+    char    name[ 512 ];
+    char    sceneName[ 128 ];
 };
 
 int GetRecentNPCSpeech( recentNPCSpeech_t speech[ SPEECH_LIST_MAX_SOUNDS ] );

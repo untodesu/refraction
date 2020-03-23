@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -13,10 +13,10 @@
 
 struct kbutton_t
 {
-	// key nums holding it down
-	int		down[ 2 ];		
-	// low bit is down state
-	int		state;			
+    // key nums holding it down
+    int     down[ 2 ];
+    // low bit is down state
+    int     state;
 };
 
 #endif // KBUTTON_H

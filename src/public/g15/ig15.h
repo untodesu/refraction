@@ -1,6 +1,6 @@
-//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
+//====== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. =======
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -30,29 +30,29 @@ typedef enum
 class IG15
 {
 public:
-	virtual void		GetLCDSize( int &w, int &h ) = 0;
-	
-	// w, h should match the return value from GetLCDSize!!!
+    virtual void        GetLCDSize( int &w, int &h ) = 0;
 
-	// Creates the underlying object
-	virtual bool		Init( char const *name ) = 0;
-	// Destroys the underlying object
-	virtual void		Shutdown() = 0;
+    // w, h should match the return value from GetLCDSize!!!
 
-	virtual bool		IsConnected() = 0;
+    // Creates the underlying object
+    virtual bool        Init( char const *name ) = 0;
+    // Destroys the underlying object
+    virtual void        Shutdown() = 0;
 
-	// Add/remove
-	virtual G15_HANDLE	AddText(G15ObjectType type, G15TextSize size, int alignment, int maxLengthPixels) = 0;
-	virtual G15_HANDLE	AddIcon( void *icon, int sizeX, int sizeY) = 0;
-	virtual void		RemoveAndDestroyObject( G15_HANDLE hObject ) = 0;
+    virtual bool        IsConnected() = 0;
 
-	// Change
-	virtual int			SetText(G15_HANDLE handle, char const * text) = 0;
-	virtual int			SetOrigin(G15_HANDLE handle, int x, int y) = 0;
-	virtual int			SetVisible(G15_HANDLE handle, bool visible) = 0;
+    // Add/remove
+    virtual G15_HANDLE  AddText(G15ObjectType type, G15TextSize size, int alignment, int maxLengthPixels) = 0;
+    virtual G15_HANDLE  AddIcon( void *icon, int sizeX, int sizeY) = 0;
+    virtual void        RemoveAndDestroyObject( G15_HANDLE hObject ) = 0;
 
-	virtual bool		ButtonTriggered(int button) = 0;
-	virtual void		UpdateLCD( unsigned int dwTimestamp) = 0;
+    // Change
+    virtual int         SetText(G15_HANDLE handle, char const * text) = 0;
+    virtual int         SetOrigin(G15_HANDLE handle, int x, int y) = 0;
+    virtual int         SetVisible(G15_HANDLE handle, bool visible) = 0;
+
+    virtual bool        ButtonTriggered(int button) = 0;
+    virtual void        UpdateLCD( unsigned int dwTimestamp) = 0;
 };
 
 #define G15_INTERFACE_VERSION "G15_INTERFACE_VERSION001"

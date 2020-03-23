@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -13,10 +13,10 @@ C_ParticleTrail::C_ParticleTrail( void )
 
 C_ParticleTrail::~C_ParticleTrail( void )
 {
-	if ( m_pParticleMgr )
-	{
-		m_pParticleMgr->RemoveEffect( &m_ParticleEffect );
-	}
+    if ( m_pParticleMgr )
+    {
+        m_pParticleMgr->RemoveEffect( &m_ParticleEffect );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -24,23 +24,23 @@ C_ParticleTrail::~C_ParticleTrail( void )
 //-----------------------------------------------------------------------------
 void C_ParticleTrail::GetAimEntOrigin( IClientEntity *pAttachedTo, Vector *pAbsOrigin, QAngle *pAbsAngles )
 {
-	C_BaseEntity *pEnt = pAttachedTo->GetBaseEntity();
+    C_BaseEntity *pEnt = pAttachedTo->GetBaseEntity();
 
-	if ( pEnt && (m_nAttachment > 0) )
-	{
-		pEnt->GetAttachment( m_nAttachment, *pAbsOrigin, *pAbsAngles );
-		return;
-	}
+    if ( pEnt && (m_nAttachment > 0) )
+    {
+        pEnt->GetAttachment( m_nAttachment, *pAbsOrigin, *pAbsAngles );
+        return;
+    }
 
-	BaseClass::GetAimEntOrigin( pAttachedTo, pAbsOrigin, pAbsAngles );
+    BaseClass::GetAimEntOrigin( pAttachedTo, pAbsOrigin, pAbsAngles );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: Turn on the emission of particles 
+// Purpose: Turn on the emission of particles
 //-----------------------------------------------------------------------------
 void C_ParticleTrail::SetEmit( bool bEmit )
 {
-	m_bEmit = bEmit;
+    m_bEmit = bEmit;
 }
 
 //-----------------------------------------------------------------------------
@@ -48,8 +48,8 @@ void C_ParticleTrail::SetEmit( bool bEmit )
 //-----------------------------------------------------------------------------
 void C_ParticleTrail::SetSpawnRate( float rate )
 {
-	m_SpawnRate = rate;
-	m_ParticleSpawn.Init( rate );
+    m_SpawnRate = rate;
+    m_ParticleSpawn.Init( rate );
 }
 
 //-----------------------------------------------------------------------------
@@ -57,22 +57,22 @@ void C_ParticleTrail::SetSpawnRate( float rate )
 //-----------------------------------------------------------------------------
 void C_ParticleTrail::OnDataChanged(DataUpdateType_t updateType)
 {
-	C_BaseEntity::OnDataChanged(updateType);
+    C_BaseEntity::OnDataChanged(updateType);
 
-	if ( updateType == DATA_UPDATE_CREATED )
-	{
-		Start( ParticleMgr(), NULL );
-	}
+    if ( updateType == DATA_UPDATE_CREATED )
+    {
+        Start( ParticleMgr(), NULL );
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void C_ParticleTrail::Start( CParticleMgr *pParticleMgr, IPrototypeArgAccess *pArgs )
 {
-	if( pParticleMgr->AddEffect( &m_ParticleEffect, this ) == false )
-		return;
+    if( pParticleMgr->AddEffect( &m_ParticleEffect, this ) == false )
+        return;
 
-	m_pParticleMgr = pParticleMgr;
+    m_pParticleMgr = pParticleMgr;
 }
 

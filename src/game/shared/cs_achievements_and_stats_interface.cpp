@@ -58,13 +58,13 @@ void CSAchievementsAndStatsInterface::DisplayPanel()
     PositionDialog(m_pAchievementAndStatsSummary);
     m_pAchievementAndStatsSummary->Activate();
 
-	//Make sure the top of the page appears on the screen (for video modes such as 1280x720).
-	int x, y;
-	m_pAchievementAndStatsSummary->GetPos( x, y );
-	if ( y <  0 )
-	{
-		m_pAchievementAndStatsSummary->SetPos( x, 0 );
-	}
+    //Make sure the top of the page appears on the screen (for video modes such as 1280x720).
+    int x, y;
+    m_pAchievementAndStatsSummary->GetPos( x, y );
+    if ( y <  0 )
+    {
+        m_pAchievementAndStatsSummary->SetPos( x, 0 );
+    }
 }
 
 void CSAchievementsAndStatsInterface::ReleasePanel()

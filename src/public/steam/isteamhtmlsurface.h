@@ -21,165 +21,165 @@ const uint32 INVALID_HTTMLBROWSER = 0;
 class ISteamHTMLSurface
 {
 public:
-	virtual ~ISteamHTMLSurface() {}
+    virtual ~ISteamHTMLSurface() {}
 
-	// Must call init and shutdown when starting/ending use of the interface
-	virtual bool Init() = 0;
-	virtual bool Shutdown() = 0;
+    // Must call init and shutdown when starting/ending use of the interface
+    virtual bool Init() = 0;
+    virtual bool Shutdown() = 0;
 
-	// Create a browser object for display of a html page, when creation is complete the call handle
-	// will return a HTML_BrowserReady_t callback for the HHTMLBrowser of your new browser.
-	//   The user agent string is a substring to be added to the general user agent string so you can
-	// identify your client on web servers.
-	//   The userCSS string lets you apply a CSS style sheet to every displayed page, leave null if
-	// you do not require this functionality.
-	virtual SteamAPICall_t CreateBrowser( const char *pchUserAgent, const char *pchUserCSS ) = 0;
+    // Create a browser object for display of a html page, when creation is complete the call handle
+    // will return a HTML_BrowserReady_t callback for the HHTMLBrowser of your new browser.
+    //   The user agent string is a substring to be added to the general user agent string so you can
+    // identify your client on web servers.
+    //   The userCSS string lets you apply a CSS style sheet to every displayed page, leave null if
+    // you do not require this functionality.
+    virtual SteamAPICall_t CreateBrowser( const char *pchUserAgent, const char *pchUserCSS ) = 0;
 
-	// Call this when you are done with a html surface, this lets us free the resources being used by it
-	virtual void RemoveBrowser( HHTMLBrowser unBrowserHandle ) = 0;
+    // Call this when you are done with a html surface, this lets us free the resources being used by it
+    virtual void RemoveBrowser( HHTMLBrowser unBrowserHandle ) = 0;
 
-	// Navigate to this URL, results in a HTML_StartRequest_t as the request commences 
-	virtual void LoadURL( HHTMLBrowser unBrowserHandle, const char *pchURL, const char *pchPostData ) = 0;
+    // Navigate to this URL, results in a HTML_StartRequest_t as the request commences
+    virtual void LoadURL( HHTMLBrowser unBrowserHandle, const char *pchURL, const char *pchPostData ) = 0;
 
-	// Tells the surface the size in pixels to display the surface
-	virtual void SetSize( HHTMLBrowser unBrowserHandle, uint32 unWidth, uint32 unHeight ) = 0;
+    // Tells the surface the size in pixels to display the surface
+    virtual void SetSize( HHTMLBrowser unBrowserHandle, uint32 unWidth, uint32 unHeight ) = 0;
 
-	// Stop the load of the current html page
-	virtual void StopLoad( HHTMLBrowser unBrowserHandle ) = 0;
-	// Reload (most likely from local cache) the current page
-	virtual void Reload( HHTMLBrowser unBrowserHandle ) = 0;
-	// navigate back in the page history
-	virtual void GoBack( HHTMLBrowser unBrowserHandle ) = 0;
-	// navigate forward in the page history
-	virtual void GoForward( HHTMLBrowser unBrowserHandle ) = 0;
+    // Stop the load of the current html page
+    virtual void StopLoad( HHTMLBrowser unBrowserHandle ) = 0;
+    // Reload (most likely from local cache) the current page
+    virtual void Reload( HHTMLBrowser unBrowserHandle ) = 0;
+    // navigate back in the page history
+    virtual void GoBack( HHTMLBrowser unBrowserHandle ) = 0;
+    // navigate forward in the page history
+    virtual void GoForward( HHTMLBrowser unBrowserHandle ) = 0;
 
-	// add this header to any url requests from this browser
-	virtual void AddHeader( HHTMLBrowser unBrowserHandle, const char *pchKey, const char *pchValue ) = 0;
-	// run this javascript script in the currently loaded page
-	virtual void ExecuteJavascript( HHTMLBrowser unBrowserHandle, const char *pchScript ) = 0;
+    // add this header to any url requests from this browser
+    virtual void AddHeader( HHTMLBrowser unBrowserHandle, const char *pchKey, const char *pchValue ) = 0;
+    // run this javascript script in the currently loaded page
+    virtual void ExecuteJavascript( HHTMLBrowser unBrowserHandle, const char *pchScript ) = 0;
 
-	enum EHTMLMouseButton
-	{
-		eHTMLMouseButton_Left = 0,
-		eHTMLMouseButton_Right = 1,
-		eHTMLMouseButton_Middle = 2,
-	};
+    enum EHTMLMouseButton
+    {
+        eHTMLMouseButton_Left = 0,
+        eHTMLMouseButton_Right = 1,
+        eHTMLMouseButton_Middle = 2,
+    };
 
-	// Mouse click and mouse movement commands
-	virtual void MouseUp( HHTMLBrowser unBrowserHandle, EHTMLMouseButton eMouseButton ) = 0;
-	virtual void MouseDown( HHTMLBrowser unBrowserHandle, EHTMLMouseButton eMouseButton ) = 0;
-	virtual void MouseDoubleClick( HHTMLBrowser unBrowserHandle, EHTMLMouseButton eMouseButton ) = 0;
-	// x and y are relative to the HTML bounds
-	virtual void MouseMove( HHTMLBrowser unBrowserHandle, int x, int y ) = 0;
-	// nDelta is pixels of scroll
-	virtual void MouseWheel( HHTMLBrowser unBrowserHandle, int32 nDelta ) = 0;
+    // Mouse click and mouse movement commands
+    virtual void MouseUp( HHTMLBrowser unBrowserHandle, EHTMLMouseButton eMouseButton ) = 0;
+    virtual void MouseDown( HHTMLBrowser unBrowserHandle, EHTMLMouseButton eMouseButton ) = 0;
+    virtual void MouseDoubleClick( HHTMLBrowser unBrowserHandle, EHTMLMouseButton eMouseButton ) = 0;
+    // x and y are relative to the HTML bounds
+    virtual void MouseMove( HHTMLBrowser unBrowserHandle, int x, int y ) = 0;
+    // nDelta is pixels of scroll
+    virtual void MouseWheel( HHTMLBrowser unBrowserHandle, int32 nDelta ) = 0;
 
-	enum EMouseCursor
-	{
-		dc_user = 0,
-		dc_none,
-		dc_arrow,
-		dc_ibeam,
-		dc_hourglass,
-		dc_waitarrow,
-		dc_crosshair,
-		dc_up,
-		dc_sizenw,
-		dc_sizese,
-		dc_sizene,
-		dc_sizesw,
-		dc_sizew,
-		dc_sizee,
-		dc_sizen,
-		dc_sizes,
-		dc_sizewe,
-		dc_sizens,
-		dc_sizeall,
-		dc_no,
-		dc_hand,
-		dc_blank, // don't show any custom cursor, just use your default
-		dc_middle_pan,
-		dc_north_pan,
-		dc_north_east_pan,
-		dc_east_pan,
-		dc_south_east_pan,
-		dc_south_pan,
-		dc_south_west_pan,
-		dc_west_pan,
-		dc_north_west_pan,
-		dc_alias,
-		dc_cell,
-		dc_colresize,
-		dc_copycur,
-		dc_verticaltext,
-		dc_rowresize,
-		dc_zoomin,
-		dc_zoomout,
-		dc_help,
-		dc_custom,
+    enum EMouseCursor
+    {
+        dc_user = 0,
+        dc_none,
+        dc_arrow,
+        dc_ibeam,
+        dc_hourglass,
+        dc_waitarrow,
+        dc_crosshair,
+        dc_up,
+        dc_sizenw,
+        dc_sizese,
+        dc_sizene,
+        dc_sizesw,
+        dc_sizew,
+        dc_sizee,
+        dc_sizen,
+        dc_sizes,
+        dc_sizewe,
+        dc_sizens,
+        dc_sizeall,
+        dc_no,
+        dc_hand,
+        dc_blank, // don't show any custom cursor, just use your default
+        dc_middle_pan,
+        dc_north_pan,
+        dc_north_east_pan,
+        dc_east_pan,
+        dc_south_east_pan,
+        dc_south_pan,
+        dc_south_west_pan,
+        dc_west_pan,
+        dc_north_west_pan,
+        dc_alias,
+        dc_cell,
+        dc_colresize,
+        dc_copycur,
+        dc_verticaltext,
+        dc_rowresize,
+        dc_zoomin,
+        dc_zoomout,
+        dc_help,
+        dc_custom,
 
-		dc_last, // custom cursors start from this value and up
-	};
+        dc_last, // custom cursors start from this value and up
+    };
 
-	enum EHTMLKeyModifiers
-	{
-		eHTMLKeyModifier_None = 0,
-		eHTMLKeyModifier_AltDown = 1 << 0,
-		eHTMLKeyModifier_CrtlDown = 1 << 1,
-		eHTMLKeyModifier_ShiftDown = 1 << 2,
-	};
+    enum EHTMLKeyModifiers
+    {
+        eHTMLKeyModifier_None = 0,
+        eHTMLKeyModifier_AltDown = 1 << 0,
+        eHTMLKeyModifier_CrtlDown = 1 << 1,
+        eHTMLKeyModifier_ShiftDown = 1 << 2,
+    };
 
-	// keyboard interactions, native keycode is the virtual key code value from your OS
-	virtual void KeyDown( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
-	virtual void KeyUp( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
-	// cUnicodeChar is the unicode character point for this keypress (and potentially multiple chars per press)
-	virtual void KeyChar( HHTMLBrowser unBrowserHandle, uint32 cUnicodeChar, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
+    // keyboard interactions, native keycode is the virtual key code value from your OS
+    virtual void KeyDown( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
+    virtual void KeyUp( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
+    // cUnicodeChar is the unicode character point for this keypress (and potentially multiple chars per press)
+    virtual void KeyChar( HHTMLBrowser unBrowserHandle, uint32 cUnicodeChar, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
 
-	// programmatically scroll this many pixels on the page
-	virtual void SetHorizontalScroll( HHTMLBrowser unBrowserHandle, uint32 nAbsolutePixelScroll ) = 0;
-	virtual void SetVerticalScroll( HHTMLBrowser unBrowserHandle, uint32 nAbsolutePixelScroll ) = 0;
+    // programmatically scroll this many pixels on the page
+    virtual void SetHorizontalScroll( HHTMLBrowser unBrowserHandle, uint32 nAbsolutePixelScroll ) = 0;
+    virtual void SetVerticalScroll( HHTMLBrowser unBrowserHandle, uint32 nAbsolutePixelScroll ) = 0;
 
-	// tell the html control if it has key focus currently, controls showing the I-beam cursor in text controls amongst other things
-	virtual void SetKeyFocus( HHTMLBrowser unBrowserHandle, bool bHasKeyFocus ) = 0;
+    // tell the html control if it has key focus currently, controls showing the I-beam cursor in text controls amongst other things
+    virtual void SetKeyFocus( HHTMLBrowser unBrowserHandle, bool bHasKeyFocus ) = 0;
 
-	// open the current pages html code in the local editor of choice, used for debugging
-	virtual void ViewSource( HHTMLBrowser unBrowserHandle ) = 0;
-	// copy the currently selected text on the html page to the local clipboard
-	virtual void CopyToClipboard( HHTMLBrowser unBrowserHandle ) = 0;
-	// paste from the local clipboard to the current html page
-	virtual void PasteFromClipboard( HHTMLBrowser unBrowserHandle ) = 0;
+    // open the current pages html code in the local editor of choice, used for debugging
+    virtual void ViewSource( HHTMLBrowser unBrowserHandle ) = 0;
+    // copy the currently selected text on the html page to the local clipboard
+    virtual void CopyToClipboard( HHTMLBrowser unBrowserHandle ) = 0;
+    // paste from the local clipboard to the current html page
+    virtual void PasteFromClipboard( HHTMLBrowser unBrowserHandle ) = 0;
 
-	// find this string in the browser, if bCurrentlyInFind is true then instead cycle to the next matching element
-	virtual void Find( HHTMLBrowser unBrowserHandle, const char *pchSearchStr, bool bCurrentlyInFind, bool bReverse ) = 0;
-	// cancel a currently running find
-	virtual void StopFind( HHTMLBrowser unBrowserHandle ) = 0;
+    // find this string in the browser, if bCurrentlyInFind is true then instead cycle to the next matching element
+    virtual void Find( HHTMLBrowser unBrowserHandle, const char *pchSearchStr, bool bCurrentlyInFind, bool bReverse ) = 0;
+    // cancel a currently running find
+    virtual void StopFind( HHTMLBrowser unBrowserHandle ) = 0;
 
-	// return details about the link at position x,y on the current page
-	virtual void GetLinkAtPosition(  HHTMLBrowser unBrowserHandle, int x, int y ) = 0;
+    // return details about the link at position x,y on the current page
+    virtual void GetLinkAtPosition(  HHTMLBrowser unBrowserHandle, int x, int y ) = 0;
 
-	// set a webcookie for the hostname in question
-	virtual void SetCookie( const char *pchHostname, const char *pchKey, const char *pchValue, const char *pchPath = "/", RTime32 nExpires = 0, bool bSecure = false, bool bHTTPOnly = false ) = 0;
+    // set a webcookie for the hostname in question
+    virtual void SetCookie( const char *pchHostname, const char *pchKey, const char *pchValue, const char *pchPath = "/", RTime32 nExpires = 0, bool bSecure = false, bool bHTTPOnly = false ) = 0;
 
-	// Zoom the current page by flZoom ( from 0.0 to 4.0, so to zoom to 120% use 1.2 ), zooming around point X,Y in the page (use 0,0 if you don't care)
-	virtual void SetPageScaleFactor( HHTMLBrowser unBrowserHandle, float flZoom, int nPointX, int nPointY ) = 0;
+    // Zoom the current page by flZoom ( from 0.0 to 4.0, so to zoom to 120% use 1.2 ), zooming around point X,Y in the page (use 0,0 if you don't care)
+    virtual void SetPageScaleFactor( HHTMLBrowser unBrowserHandle, float flZoom, int nPointX, int nPointY ) = 0;
 
-	// CALLBACKS
-	//
-	//  These set of functions are used as responses to callback requests
-	//
+    // CALLBACKS
+    //
+    //  These set of functions are used as responses to callback requests
+    //
 
-	// You MUST call this in response to a HTML_StartRequest_t callback
-	//  Set bAllowed to true to allow this navigation, false to cancel it and stay 
-	// on the current page. You can use this feature to limit the valid pages
-	// allowed in your HTML surface.
-	virtual void AllowStartRequest( HHTMLBrowser unBrowserHandle, bool bAllowed ) = 0;
+    // You MUST call this in response to a HTML_StartRequest_t callback
+    //  Set bAllowed to true to allow this navigation, false to cancel it and stay
+    // on the current page. You can use this feature to limit the valid pages
+    // allowed in your HTML surface.
+    virtual void AllowStartRequest( HHTMLBrowser unBrowserHandle, bool bAllowed ) = 0;
 
-	// You MUST call this in response to a HTML_JSAlert_t or HTML_JSConfirm_t callback
-	//  Set bResult to true for the OK option of a confirm, use false otherwise
-	virtual void JSDialogResponse( HHTMLBrowser unBrowserHandle, bool bResult ) = 0;
+    // You MUST call this in response to a HTML_JSAlert_t or HTML_JSConfirm_t callback
+    //  Set bResult to true for the OK option of a confirm, use false otherwise
+    virtual void JSDialogResponse( HHTMLBrowser unBrowserHandle, bool bResult ) = 0;
 
-	// You MUST call this in response to a HTML_FileOpenDialog_t callback
-	virtual void FileLoadDialogResponse( HHTMLBrowser unBrowserHandle, const char **pchSelectedFiles ) = 0;
+    // You MUST call this in response to a HTML_FileOpenDialog_t callback
+    virtual void FileLoadDialogResponse( HHTMLBrowser unBrowserHandle, const char **pchSelectedFiles ) = 0;
 };
 
 #define STEAMHTMLSURFACE_INTERFACE_VERSION "STEAMHTMLSURFACE_INTERFACE_VERSION_002"
@@ -191,7 +191,7 @@ public:
 #pragma pack( push, 8 )
 #else
 #error isteamclient.h must be included
-#endif 
+#endif
 
 
 //-----------------------------------------------------------------------------
@@ -227,7 +227,7 @@ END_DEFINE_CALLBACK_12()
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK(HTML_StartRequest_t, k_iSteamHTMLSurfaceCallbacks + 3)
 CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface navigating
-CALLBACK_MEMBER(1, const char *, pchURL) // the url they wish to navigate to 
+CALLBACK_MEMBER(1, const char *, pchURL) // the url they wish to navigate to
 CALLBACK_MEMBER(2, const char *, pchTarget) // the html link target type  (i.e _blank, _self, _parent, _top )
 CALLBACK_MEMBER(3, const char *, pchPostData ) // any posted data for the request
 CALLBACK_MEMBER(4, bool, bIsRedirect) // true if this was a http/html redirect from the last load request
@@ -238,7 +238,7 @@ END_DEFINE_CALLBACK_5()
 // Purpose: The browser has been requested to close due to user interaction (usually from a javascript window.close() call)
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK(HTML_CloseBrowser_t, k_iSteamHTMLSurfaceCallbacks + 4)
-CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface
 END_DEFINE_CALLBACK_1()
 
 
@@ -247,7 +247,7 @@ END_DEFINE_CALLBACK_1()
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_URLChanged_t, k_iSteamHTMLSurfaceCallbacks + 5 )
 CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface navigating
-CALLBACK_MEMBER( 1, const char *, pchURL ) // the url they wish to navigate to 
+CALLBACK_MEMBER( 1, const char *, pchURL ) // the url they wish to navigate to
 CALLBACK_MEMBER( 2, const char *, pchPostData ) // any posted data for the request
 CALLBACK_MEMBER( 3, bool, bIsRedirect ) // true if this was a http/html redirect from the last load request
 CALLBACK_MEMBER( 4, const char *, pchPageTitle ) // the title of the page
@@ -259,9 +259,9 @@ END_DEFINE_CALLBACK_6()
 // Purpose: A page is finished loading
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_FinishedRequest_t, k_iSteamHTMLSurfaceCallbacks + 6 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, const char *, pchURL ) // 
-CALLBACK_MEMBER( 2, const char *, pchPageTitle ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, const char *, pchURL ) //
+CALLBACK_MEMBER( 2, const char *, pchPageTitle ) //
 END_DEFINE_CALLBACK_3()
 
 
@@ -269,8 +269,8 @@ END_DEFINE_CALLBACK_3()
 // Purpose: a request to load this url in a new tab
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_OpenLinkInNewTab_t, k_iSteamHTMLSurfaceCallbacks + 7 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, const char *, pchURL ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, const char *, pchURL ) //
 END_DEFINE_CALLBACK_2()
 
 
@@ -278,8 +278,8 @@ END_DEFINE_CALLBACK_2()
 // Purpose: the page has a new title now
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_ChangedTitle_t, k_iSteamHTMLSurfaceCallbacks + 8 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, const char *, pchTitle ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, const char *, pchTitle ) //
 END_DEFINE_CALLBACK_2()
 
 
@@ -287,9 +287,9 @@ END_DEFINE_CALLBACK_2()
 // Purpose: results from a search
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_SearchResults_t, k_iSteamHTMLSurfaceCallbacks + 9 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, uint32, unResults ) // 
-CALLBACK_MEMBER( 2, uint32, unCurrentMatch ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, uint32, unResults ) //
+CALLBACK_MEMBER( 2, uint32, unCurrentMatch ) //
 END_DEFINE_CALLBACK_3()
 
 
@@ -297,9 +297,9 @@ END_DEFINE_CALLBACK_3()
 // Purpose: page history status changed on the ability to go backwards and forward
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_CanGoBackAndForward_t, k_iSteamHTMLSurfaceCallbacks + 10 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, bool, bCanGoBack ) // 
-CALLBACK_MEMBER( 2, bool, bCanGoForward ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, bool, bCanGoBack ) //
+CALLBACK_MEMBER( 2, bool, bCanGoForward ) //
 END_DEFINE_CALLBACK_3()
 
 
@@ -307,12 +307,12 @@ END_DEFINE_CALLBACK_3()
 // Purpose: details on the visibility and size of the horizontal scrollbar
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_HorizontalScroll_t, k_iSteamHTMLSurfaceCallbacks + 11 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
-CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) // 
-CALLBACK_MEMBER( 3, float, flPageScale ) // 
-CALLBACK_MEMBER( 4, bool , bVisible ) // 
-CALLBACK_MEMBER( 5, uint32, unPageSize ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, uint32, unScrollMax ) //
+CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) //
+CALLBACK_MEMBER( 3, float, flPageScale ) //
+CALLBACK_MEMBER( 4, bool , bVisible ) //
+CALLBACK_MEMBER( 5, uint32, unPageSize ) //
 END_DEFINE_CALLBACK_6()
 
 
@@ -320,57 +320,57 @@ END_DEFINE_CALLBACK_6()
 // Purpose: details on the visibility and size of the vertical scrollbar
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_VerticalScroll_t, k_iSteamHTMLSurfaceCallbacks + 12 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
-CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) // 
-CALLBACK_MEMBER( 3, float, flPageScale ) // 
-CALLBACK_MEMBER( 4, bool, bVisible ) // 
-CALLBACK_MEMBER( 5, uint32, unPageSize ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, uint32, unScrollMax ) //
+CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) //
+CALLBACK_MEMBER( 3, float, flPageScale ) //
+CALLBACK_MEMBER( 4, bool, bVisible ) //
+CALLBACK_MEMBER( 5, uint32, unPageSize ) //
 END_DEFINE_CALLBACK_6()
 
 
 //-----------------------------------------------------------------------------
-// Purpose: response to GetLinkAtPosition call 
+// Purpose: response to GetLinkAtPosition call
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_LinkAtPosition_t, k_iSteamHTMLSurfaceCallbacks + 13 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, uint32, x ) // 
-CALLBACK_MEMBER( 2, uint32, y ) // 
-CALLBACK_MEMBER( 3, const char *, pchURL ) // 
-CALLBACK_MEMBER( 4, bool, bInput ) // 
-CALLBACK_MEMBER( 5, bool, bLiveLink ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, uint32, x ) //
+CALLBACK_MEMBER( 2, uint32, y ) //
+CALLBACK_MEMBER( 3, const char *, pchURL ) //
+CALLBACK_MEMBER( 4, bool, bInput ) //
+CALLBACK_MEMBER( 5, bool, bLiveLink ) //
 END_DEFINE_CALLBACK_6()
 
 
 
 //-----------------------------------------------------------------------------
-// Purpose: show a Javascript alert dialog, call JSDialogResponse 
+// Purpose: show a Javascript alert dialog, call JSDialogResponse
 //   when the user dismisses this dialog (or right away to ignore it)
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_JSAlert_t, k_iSteamHTMLSurfaceCallbacks + 14 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, const char *, pchMessage ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, const char *, pchMessage ) //
 END_DEFINE_CALLBACK_2()
 
 
 //-----------------------------------------------------------------------------
-// Purpose: show a Javascript confirmation dialog, call JSDialogResponse 
+// Purpose: show a Javascript confirmation dialog, call JSDialogResponse
 //   when the user dismisses this dialog (or right away to ignore it)
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_JSConfirm_t, k_iSteamHTMLSurfaceCallbacks + 15 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, const char *, pchMessage ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, const char *, pchMessage ) //
 END_DEFINE_CALLBACK_2()
 
 
 //-----------------------------------------------------------------------------
-// Purpose: show a Javascript confirmation dialog, call JSDialogResponse 
+// Purpose: show a Javascript confirmation dialog, call JSDialogResponse
 //   when the user dismisses this dialog (or right away to ignore it)
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_FileOpenDialog_t, k_iSteamHTMLSurfaceCallbacks + 16 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-CALLBACK_MEMBER( 1, const char *, pchTitle ) // 
-CALLBACK_MEMBER( 2, const char *, pchInitialFile ) // 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
+CALLBACK_MEMBER( 1, const char *, pchTitle ) //
+CALLBACK_MEMBER( 2, const char *, pchInitialFile ) //
 END_DEFINE_CALLBACK_3()
 
 
@@ -378,7 +378,7 @@ END_DEFINE_CALLBACK_3()
 // Purpose: a popup item (i.e combo box) on the page needs rendering
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_ComboNeedsPaint_t, k_iSteamHTMLSurfaceCallbacks + 17 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, const char *, pBGRA ) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
 CALLBACK_MEMBER( 2, uint32, unWide ) // the total width of the pBGRA texture
 CALLBACK_MEMBER( 3, uint32, unTall ) // the total height of the pBGRA texture
@@ -389,7 +389,7 @@ END_DEFINE_CALLBACK_4()
 // Purpose: a popup (i.e combo box) wants to display
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_ShowPopup_t, k_iSteamHTMLSurfaceCallbacks + 18 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 END_DEFINE_CALLBACK_1()
 
 
@@ -397,7 +397,7 @@ END_DEFINE_CALLBACK_1()
 // Purpose: a popup (i.e combo box) wants to hide
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_HidePopup_t, k_iSteamHTMLSurfaceCallbacks + 19 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 END_DEFINE_CALLBACK_1()
 
 
@@ -405,7 +405,7 @@ END_DEFINE_CALLBACK_1()
 // Purpose: a popup (i.e combo box) wants to hide
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_SizePopup_t, k_iSteamHTMLSurfaceCallbacks + 20 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, uint32, unX ) // the x pos into the page to display the popup
 CALLBACK_MEMBER( 2, uint32, unY ) // the y pos into the page to display the popup
 CALLBACK_MEMBER( 3, uint32, unWide ) // the total width of the pBGRA texture
@@ -414,10 +414,10 @@ END_DEFINE_CALLBACK_5()
 
 
 //-----------------------------------------------------------------------------
-// Purpose: a new html window has been created 
+// Purpose: a new html window has been created
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_NewWindow_t, k_iSteamHTMLSurfaceCallbacks + 21 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, const char *, pchURL ) // the page to load
 CALLBACK_MEMBER( 2, uint32, unX ) // the x pos into the page to display the popup
 CALLBACK_MEMBER( 3, uint32, unY ) // the y pos into the page to display the popup
@@ -430,7 +430,7 @@ END_DEFINE_CALLBACK_6()
 // Purpose: change the cursor to display
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_SetCursor_t, k_iSteamHTMLSurfaceCallbacks + 22 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, uint32, eMouseCursor ) // the EMouseCursor to display
 END_DEFINE_CALLBACK_2()
 
@@ -439,7 +439,7 @@ END_DEFINE_CALLBACK_2()
 // Purpose: informational message from the browser
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_StatusText_t, k_iSteamHTMLSurfaceCallbacks + 23 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
 END_DEFINE_CALLBACK_2()
 
@@ -448,7 +448,7 @@ END_DEFINE_CALLBACK_2()
 // Purpose: show a tooltip
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_ShowToolTip_t, k_iSteamHTMLSurfaceCallbacks + 24 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
 END_DEFINE_CALLBACK_2()
 
@@ -457,7 +457,7 @@ END_DEFINE_CALLBACK_2()
 // Purpose: update the text of an existing tooltip
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_UpdateToolTip_t, k_iSteamHTMLSurfaceCallbacks + 25 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
 END_DEFINE_CALLBACK_2()
 
@@ -466,7 +466,7 @@ END_DEFINE_CALLBACK_2()
 // Purpose: hide the tooltip you are showing
 //-----------------------------------------------------------------------------
 DEFINE_CALLBACK( HTML_HideToolTip_t, k_iSteamHTMLSurfaceCallbacks + 26 )
-CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface
 END_DEFINE_CALLBACK_1()
 
 

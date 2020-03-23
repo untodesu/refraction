@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose:		Projectile shot from the AR2 
+// Purpose:     Projectile shot from the AR2
 //
 // $Workfile:     $
 // $Date:         $
@@ -11,8 +11,8 @@
 // $NoKeywords: $
 //=============================================================================//
 
-#ifndef	WEAPONAR2_H
-#define	WEAPONAR2_H
+#ifndef WEAPONAR2_H
+#define WEAPONAR2_H
 
 #include "basegrenade_shared.h"
 #include "basehlcombatweapon.h"
@@ -20,60 +20,60 @@
 class CWeaponAR2 : public CHLMachineGun
 {
 public:
-	DECLARE_CLASS( CWeaponAR2, CHLMachineGun );
+    DECLARE_CLASS( CWeaponAR2, CHLMachineGun );
 
-	CWeaponAR2();
+    CWeaponAR2();
 
-	DECLARE_SERVERCLASS();
+    DECLARE_SERVERCLASS();
 
-	void	ItemPostFrame( void );
-	void	Precache( void );
-	
-	void	SecondaryAttack( void );
-	void	DelayedAttack( void );
+    void    ItemPostFrame( void );
+    void    Precache( void );
 
-	const char *GetTracerType( void ) { return "AR2Tracer"; }
+    void    SecondaryAttack( void );
+    void    DelayedAttack( void );
 
-	void	AddViewKick( void );
+    const char *GetTracerType( void ) { return "AR2Tracer"; }
 
-	void	FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
-	void	FireNPCSecondaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
-	void	Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
-	void	Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+    void    AddViewKick( void );
 
-	int		GetMinBurst( void ) { return 2; }
-	int		GetMaxBurst( void ) { return 5; }
-	float	GetFireRate( void ) { return 0.1f; }
+    void    FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
+    void    FireNPCSecondaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
+    void    Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
+    void    Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
 
-	bool	CanHolster( void );
-	bool	Reload( void );
+    int     GetMinBurst( void ) { return 2; }
+    int     GetMaxBurst( void ) { return 5; }
+    float   GetFireRate( void ) { return 0.1f; }
 
-	int		CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+    bool    CanHolster( void );
+    bool    Reload( void );
 
-	Activity	GetPrimaryAttackActivity( void );
-	
-	void	DoImpactEffect( trace_t &tr, int nDamageType );
+    int     CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
 
-	virtual const Vector& GetBulletSpread( void )
-	{
-		static Vector cone;
-		
-		cone = VECTOR_CONE_3DEGREES;
+    Activity    GetPrimaryAttackActivity( void );
 
-		return cone;
-	}
+    void    DoImpactEffect( trace_t &tr, int nDamageType );
 
-	const WeaponProficiencyInfo_t *GetProficiencyValues();
+    virtual const Vector& GetBulletSpread( void )
+    {
+        static Vector cone;
+
+        cone = VECTOR_CONE_3DEGREES;
+
+        return cone;
+    }
+
+    const WeaponProficiencyInfo_t *GetProficiencyValues();
 
 protected:
 
-	float					m_flDelayedFire;
-	bool					m_bShotDelayed;
-	int						m_nVentPose;
-	
-	DECLARE_ACTTABLE();
-	DECLARE_DATADESC();
+    float                   m_flDelayedFire;
+    bool                    m_bShotDelayed;
+    int                     m_nVentPose;
+
+    DECLARE_ACTTABLE();
+    DECLARE_DATADESC();
 };
 
 
-#endif	//WEAPONAR2_H
+#endif  //WEAPONAR2_H

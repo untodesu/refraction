@@ -27,45 +27,45 @@ struct Bitmap_t;
 //-----------------------------------------------------------------------------
 class CBitmapPanel : public vgui::Panel
 {
-	typedef vgui::Panel BaseClass;
+    typedef vgui::Panel BaseClass;
 
 public:
-	// constructor
-	CBitmapPanel( );
-	CBitmapPanel( vgui::Panel *pParent, const char *pName );
-	~CBitmapPanel();
+    // constructor
+    CBitmapPanel( );
+    CBitmapPanel( vgui::Panel *pParent, const char *pName );
+    ~CBitmapPanel();
 
-	// initialization
-	bool Init( KeyValues* pInitData );
+    // initialization
+    bool Init( KeyValues* pInitData );
 
-	// initialization from build-mode dialog style .res files
-	virtual void ApplySettings(KeyValues *inResourceData);
+    // initialization from build-mode dialog style .res files
+    virtual void ApplySettings(KeyValues *inResourceData);
 
-	virtual void Paint( void );
-	virtual void PaintBackground( void ) {}
+    virtual void Paint( void );
+    virtual void PaintBackground( void ) {}
 
-	virtual void OnCursorEntered();
-	virtual void OnCursorExited();
+    virtual void OnCursorEntered();
+    virtual void OnCursorExited();
 
-	// Setup for panels that aren't created by the commander overlay factory (i.e. aren't parsed from a keyvalues file)
-	virtual void SetImage( BitmapImage *pImage );
+    // Setup for panels that aren't created by the commander overlay factory (i.e. aren't parsed from a keyvalues file)
+    virtual void SetImage( BitmapImage *pImage );
 
-	/// Set bitmap data directly
-	virtual void SetBitmap( const Bitmap_t &bitmap );
+    /// Set bitmap data directly
+    virtual void SetBitmap( const Bitmap_t &bitmap );
 
-	const char *GetMouseOverText( void );
+    const char *GetMouseOverText( void );
 
 private:
-	enum
-	{
-		MAX_ENTITY_MOUSEOVER = 256
-	};
-	// The bitmap to render
-	BitmapImage *m_pImage;
-	int m_r, m_g, m_b, m_a;
-	bool m_bOwnsImage;
+    enum
+    {
+        MAX_ENTITY_MOUSEOVER = 256
+    };
+    // The bitmap to render
+    BitmapImage *m_pImage;
+    int m_r, m_g, m_b, m_a;
+    bool m_bOwnsImage;
 
-	char			m_szMouseOverText[ MAX_ENTITY_MOUSEOVER ];
+    char            m_szMouseOverText[ MAX_ENTITY_MOUSEOVER ];
 
 };
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 #include "cbase.h"
@@ -21,20 +21,20 @@ IMPLEMENT_CLIENTCLASS_DT(C_BreakableProp, DT_BreakableProp, CBreakableProp)
 END_RECV_TABLE()
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 C_BreakableProp::C_BreakableProp( void )
 {
-	m_takedamage = DAMAGE_YES;
+    m_takedamage = DAMAGE_YES;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void C_BreakableProp::SetFadeMinMax( float fademin, float fademax )
 {
-	m_fadeMinDist = fademin;
-	m_fadeMaxDist = fademax;
+    m_fadeMinDist = fademin;
+    m_fadeMaxDist = fademax;
 }
 
 //-----------------------------------------------------------------------------
@@ -42,5 +42,5 @@ void C_BreakableProp::SetFadeMinMax( float fademin, float fademax )
 //-----------------------------------------------------------------------------
 void C_BreakableProp::CopyFadeFrom( C_BreakableProp *pSource )
 {
-	m_flFadeScale = pSource->m_flFadeScale;
+    m_flFadeScale = pSource->m_flFadeScale;
 }

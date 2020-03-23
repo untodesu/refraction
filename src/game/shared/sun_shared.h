@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -14,7 +14,7 @@
 
 #define MAX_SUN_LAYERS 4
 
-#define	SF_LIGHTGLOW_DIRECTIONAL	(1<<0)
-#define	SF_MODULATE_BY_DIRECTION	(1<<1)
+#define SF_LIGHTGLOW_DIRECTIONAL    (1<<0)
+#define SF_MODULATE_BY_DIRECTION    (1<<1)
 
 #endif // SUN_SHARED_H

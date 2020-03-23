@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,34 +15,34 @@
 #include "entityoutput.h"
 
 
-#define SF_MESSAGE_ONCE			0x0001		// Fade in, not out
-#define SF_MESSAGE_ALL			0x0002		// Send to all clients
+#define SF_MESSAGE_ONCE         0x0001      // Fade in, not out
+#define SF_MESSAGE_ALL          0x0002      // Send to all clients
 
 class CMessage : public CPointEntity
 {
 public:
-	DECLARE_CLASS( CMessage, CPointEntity );
+    DECLARE_CLASS( CMessage, CPointEntity );
 
-	void	Spawn( void );
-	void	Precache( void );
+    void    Spawn( void );
+    void    Precache( void );
 
-	inline void SetMessage( string_t iszMessage ) { m_iszMessage = iszMessage; }
+    inline void SetMessage( string_t iszMessage ) { m_iszMessage = iszMessage; }
 
-	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+    void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 private:
 
-	void InputShowMessage( inputdata_t &inputdata );
+    void InputShowMessage( inputdata_t &inputdata );
 
-	string_t m_iszMessage;		// Message to display.
-	float m_MessageVolume;
-	int m_MessageAttenuation;
-	float m_Radius;
+    string_t m_iszMessage;      // Message to display.
+    float m_MessageVolume;
+    int m_MessageAttenuation;
+    float m_Radius;
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
-	string_t m_sNoise;
-	COutputEvent m_OnShowMessage;
+    string_t m_sNoise;
+    COutputEvent m_OnShowMessage;
 };
 
 #endif // ENVMESSAGE_H

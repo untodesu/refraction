@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //===========================================================================//
@@ -23,30 +23,30 @@ namespace vgui
 //-----------------------------------------------------------------------------
 class ToggleButton : public Button
 {
-	DECLARE_CLASS_SIMPLE( ToggleButton, Button );
+    DECLARE_CLASS_SIMPLE( ToggleButton, Button );
 
 public:
-	ToggleButton(Panel *parent, const char *panelName, const char *text);
+    ToggleButton(Panel *parent, const char *panelName, const char *text);
 
-	virtual void DoClick();
+    virtual void DoClick();
 
-	/* messages sent (get via AddActionSignalTarget()):
-		"ButtonToggled"
-			int "state"
-	*/
+    /* messages sent (get via AddActionSignalTarget()):
+        "ButtonToggled"
+            int "state"
+    */
 
 protected:
-	// overrides
-	virtual void OnMouseDoublePressed(MouseCode code);
+    // overrides
+    virtual void OnMouseDoublePressed(MouseCode code);
 
-	virtual Color GetButtonFgColor();
-	virtual void ApplySchemeSettings(IScheme *pScheme);
+    virtual Color GetButtonFgColor();
+    virtual void ApplySchemeSettings(IScheme *pScheme);
 
     virtual bool CanBeDefaultButton(void);
     virtual void OnKeyCodePressed(KeyCode code);
 
 private:
-	Color _selectedColor;
+    Color _selectedColor;
 };
 
 } // namespace vgui

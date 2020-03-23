@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -15,27 +15,27 @@
 
 class CChoreoEvent;
 
-#define SCENECACHE_VERSION		7
+#define SCENECACHE_VERSION      7
 
 #pragma pack(1)
 class CSceneCache : public IBaseCacheInfo
 {
 public:
-	unsigned int		msecs;
-	CUtlVector< unsigned short > sounds;
+    unsigned int        msecs;
+    CUtlVector< unsigned short > sounds;
 
-	CSceneCache();
-	CSceneCache( const CSceneCache& src );
+    CSceneCache();
+    CSceneCache( const CSceneCache& src );
 
-	int	GetSoundCount() const;
-	char const *GetSoundName( int index );
+    int GetSoundCount() const;
+    char const *GetSoundName( int index );
 
-	virtual void Save( CUtlBuffer& buf  );
-	virtual void Restore( CUtlBuffer& buf  );
-	virtual void Rebuild( char const *filename );
+    virtual void Save( CUtlBuffer& buf  );
+    virtual void Restore( CUtlBuffer& buf  );
+    virtual void Rebuild( char const *filename );
 
-	static unsigned int ComputeSoundScriptFileTimestampChecksum();
-	static void PrecacheSceneEvent( CChoreoEvent *event, CUtlVector< unsigned short >& soundlist );
+    static unsigned int ComputeSoundScriptFileTimestampChecksum();
+    static void PrecacheSceneEvent( CChoreoEvent *event, CUtlVector< unsigned short >& soundlist );
 };
 #pragma pack()
 

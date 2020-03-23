@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //===========================================================================//
@@ -21,10 +21,10 @@ CUtlLinkedList<CParticleEffect*,int> g_ParticleEffects;
 class CEffectChecker
 {
 public:
-	~CEffectChecker()
-	{
-		Assert( g_ParticleEffects.Count() == 0 );
-	}
+    ~CEffectChecker()
+    {
+        Assert( g_ParticleEffects.Count() == 0 );
+    }
 } g_EffectChecker;
 
 
@@ -33,15 +33,15 @@ public:
 //-----------------------------------------------------------------------------
 CParticleEffect::CParticleEffect( const char *pName )
 {
-	m_pDebugName = pName;
-	m_vSortOrigin.Init();
-	m_Flags = FLAG_ALLOCATED;
-	m_nToolParticleEffectId = TOOLPARTICLESYSTEMID_INVALID;
-	m_RefCount = 0;
-	m_bSimulate = true;
-	ParticleMgr()->AddEffect( &m_ParticleEffect, this );
+    m_pDebugName = pName;
+    m_vSortOrigin.Init();
+    m_Flags = FLAG_ALLOCATED;
+    m_nToolParticleEffectId = TOOLPARTICLESYSTEMID_INVALID;
+    m_RefCount = 0;
+    m_bSimulate = true;
+    ParticleMgr()->AddEffect( &m_ParticleEffect, this );
 #if defined( _DEBUG )
-	g_ParticleEffects.AddToTail( this );
+    g_ParticleEffects.AddToTail( this );
 #endif
 }
 
@@ -51,97 +51,97 @@ CParticleEffect::CParticleEffect( const char *pName )
 CParticleEffect::~CParticleEffect( void )
 {
 #if defined( _DEBUG )
-	int index = g_ParticleEffects.Find( this );
-	Assert( g_ParticleEffects.IsValidIndex(index) );
-	g_ParticleEffects.Remove( index );
+    int index = g_ParticleEffects.Find( this );
+    Assert( g_ParticleEffects.IsValidIndex(index) );
+    g_ParticleEffects.Remove( index );
 #endif
-	// HACKHACK: Prevent re-entering the destructor, clear m_Flags.
-	// For some reason we'll get a callback into NotifyRemove() after being deleted!
-	// Investigate dangling pointer
-	m_Flags = 0;
+    // HACKHACK: Prevent re-entering the destructor, clear m_Flags.
+    // For some reason we'll get a callback into NotifyRemove() after being deleted!
+    // Investigate dangling pointer
+    m_Flags = 0;
 
 #if !defined( _XBOX )
-	if ( ( m_nToolParticleEffectId != TOOLPARTICLESYSTEMID_INVALID ) && clienttools->IsInRecordingMode() )
-	{
-		KeyValues *msg = new KeyValues( "OldParticleSystem_Destroy" );
-		msg->SetInt( "id", m_nToolParticleEffectId );
-		msg->SetFloat( "time", gpGlobals->curtime );
-		ToolFramework_PostToolMessage( HTOOLHANDLE_INVALID, msg );
-		m_nToolParticleEffectId = TOOLPARTICLESYSTEMID_INVALID; 
-	}
+    if ( ( m_nToolParticleEffectId != TOOLPARTICLESYSTEMID_INVALID ) && clienttools->IsInRecordingMode() )
+    {
+        KeyValues *msg = new KeyValues( "OldParticleSystem_Destroy" );
+        msg->SetInt( "id", m_nToolParticleEffectId );
+        msg->SetFloat( "time", gpGlobals->curtime );
+        ToolFramework_PostToolMessage( HTOOLHANDLE_INVALID, msg );
+        m_nToolParticleEffectId = TOOLPARTICLESYSTEMID_INVALID;
+    }
 #endif
 }
 
 
 void CParticleEffect::SetDynamicallyAllocated( bool bDynamic )
 {
-	if( bDynamic )
-		m_Flags |= FLAG_ALLOCATED;
-	else
-		m_Flags &= ~FLAG_ALLOCATED;
+    if( bDynamic )
+        m_Flags |= FLAG_ALLOCATED;
+    else
+        m_Flags &= ~FLAG_ALLOCATED;
 }
 
 
 int CParticleEffect::IsReleased()
 {
-	return m_RefCount == 0;
+    return m_RefCount == 0;
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CParticleEffect::AddRef()
 {
-	++m_RefCount;
+    ++m_RefCount;
 }
 
 
 void CParticleEffect::Release()
 {
-	Assert( m_RefCount > 0 );
-	--m_RefCount;
+    Assert( m_RefCount > 0 );
+    --m_RefCount;
 
-	// If all the particles are already gone, delete ourselves now.
-	// If there are still particles, wait for the last NotifyDestroyParticle.
-	if ( m_RefCount == 0 )
-	{
-		if ( m_Flags & FLAG_ALLOCATED )
-		{
-			if ( m_ParticleEffect.GetNumActiveParticles() == 0 )
-			{
-				m_ParticleEffect.SetRemoveFlag();
-			}
-		}
-	}
+    // If all the particles are already gone, delete ourselves now.
+    // If there are still particles, wait for the last NotifyDestroyParticle.
+    if ( m_RefCount == 0 )
+    {
+        if ( m_Flags & FLAG_ALLOCATED )
+        {
+            if ( m_ParticleEffect.GetNumActiveParticles() == 0 )
+            {
+                m_ParticleEffect.SetRemoveFlag();
+            }
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : &vSortOrigin - 
+// Purpose:
+// Input  : &vSortOrigin -
 //-----------------------------------------------------------------------------
 const Vector &CParticleEffect::GetSortOrigin()
 {
-	Assert(m_vSortOrigin.IsValid());
-	return m_vSortOrigin;
+    Assert(m_vSortOrigin.IsValid());
+    return m_vSortOrigin;
 }
 
 const char *CParticleEffect::GetEffectName()
 {
-	return m_pDebugName;
+    return m_pDebugName;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : pParticle - 
+// Purpose:
+// Input  : pParticle -
 //-----------------------------------------------------------------------------
 void CParticleEffect::NotifyDestroyParticle( Particle* pParticle )
 {
-	// Go away if we're released and there are no more particles.
-	if( m_ParticleEffect.GetNumActiveParticles() == 0 && IsReleased() && (m_Flags & FLAG_ALLOCATED) && !(m_Flags & FLAG_DONT_REMOVE) )
-	{
-		m_ParticleEffect.SetRemoveFlag();
-	}
+    // Go away if we're released and there are no more particles.
+    if( m_ParticleEffect.GetNumActiveParticles() == 0 && IsReleased() && (m_Flags & FLAG_ALLOCATED) && !(m_Flags & FLAG_DONT_REMOVE) )
+    {
+        m_ParticleEffect.SetRemoveFlag();
+    }
 }
 
 
@@ -151,67 +151,67 @@ void CParticleEffect::Update( float flTimeDelta )
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CParticleEffect::NotifyRemove()
 {
-	if( m_Flags & FLAG_ALLOCATED )
-	{
-		Assert( IsReleased() );
-		delete this;
-	}
+    if( m_Flags & FLAG_ALLOCATED )
+    {
+        Assert( IsReleased() );
+        delete this;
+    }
 }
 
 
 void CParticleEffect::SetSortOrigin( const Vector &vSortOrigin )
 {
-	if ( GetBinding().GetAutoUpdateBBox() )
-	{
-		if ( m_ParticleEffect.EnlargeBBoxToContain( vSortOrigin ) )
-		{
-			m_vSortOrigin = vSortOrigin;
-		}
-	}
-	else
-	{
-		// If not auto-updating bbox, don't change the bbox, just set the sort origin.
-		m_vSortOrigin = vSortOrigin;
-	}
+    if ( GetBinding().GetAutoUpdateBBox() )
+    {
+        if ( m_ParticleEffect.EnlargeBBoxToContain( vSortOrigin ) )
+        {
+            m_vSortOrigin = vSortOrigin;
+        }
+    }
+    else
+    {
+        // If not auto-updating bbox, don't change the bbox, just set the sort origin.
+        m_vSortOrigin = vSortOrigin;
+    }
 }
 
 void CParticleEffect::SetParticleCullRadius( float radius )
 {
-	m_ParticleEffect.SetParticleCullRadius( radius );
+    m_ParticleEffect.SetParticleCullRadius( radius );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *name - 
+// Purpose:
+// Input  : *name -
 // Output : PMaterialHandle
 //-----------------------------------------------------------------------------
 PMaterialHandle CParticleEffect::GetPMaterial(const char *name)
 {
-	return m_ParticleEffect.FindOrAddMaterial(name);
+    return m_ParticleEffect.FindOrAddMaterial(name);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : particleSize - 
-//			material - 
+// Purpose:
+// Input  : particleSize -
+//          material -
 // Output : SimpleParticle
 //-----------------------------------------------------------------------------
 Particle *CParticleEffect::AddParticle( unsigned int particleSize, PMaterialHandle material, const Vector &origin )
 {
-	// If you get here, then you must call SetSortOrigin before adding particles.
-	Assert( m_vSortOrigin.IsValid() );
+    // If you get here, then you must call SetSortOrigin before adding particles.
+    Assert( m_vSortOrigin.IsValid() );
 
-	Particle *pParticle = (Particle *) m_ParticleEffect.AddParticle( particleSize, material );
+    Particle *pParticle = (Particle *) m_ParticleEffect.AddParticle( particleSize, material );
 
-	if( pParticle == NULL )
-		return NULL;
+    if( pParticle == NULL )
+        return NULL;
 
-	pParticle->m_Pos = origin;
-	return pParticle;
+    pParticle->m_Pos = origin;
+    return pParticle;
 }
 
 
@@ -223,8 +223,8 @@ REGISTER_EFFECT_USING_CREATE( CSimpleEmitter );
 
 CSimpleEmitter::CSimpleEmitter( const char *pDebugName ) : CParticleEffect( pDebugName )
 {
-	m_flNearClipMin	= 16.0f;
-	m_flNearClipMax	= 64.0f;
+    m_flNearClipMin = 16.0f;
+    m_flNearClipMax = 64.0f;
 }
 
 
@@ -234,71 +234,71 @@ CSimpleEmitter::~CSimpleEmitter()
 
 CSmartPtr<CSimpleEmitter> CSimpleEmitter::Create( const char *pDebugName )
 {
-	CSimpleEmitter *pRet = new CSimpleEmitter( pDebugName );
-	pRet->SetDynamicallyAllocated( true );
-	return pRet;
+    CSimpleEmitter *pRet = new CSimpleEmitter( pDebugName );
+    pRet->SetDynamicallyAllocated( true );
+    return pRet;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Set the internal near clip range for this particle system
 // Input  : nearClipMin - beginning of clip range
-//			nearClipMax - end of clip range
+//          nearClipMax - end of clip range
 //-----------------------------------------------------------------------------
 void CSimpleEmitter::SetNearClip( float nearClipMin, float nearClipMax )
-{ 
-	m_flNearClipMin = nearClipMin;
-	m_flNearClipMax = nearClipMax;
+{
+    m_flNearClipMin = nearClipMin;
+    m_flNearClipMax = nearClipMax;
 }
 
 
-SimpleParticle*	CSimpleEmitter::AddSimpleParticle( 
-	PMaterialHandle hMaterial, 
-	const Vector &vOrigin,
-	float flDieTime,
-	unsigned char uchSize )
+SimpleParticle* CSimpleEmitter::AddSimpleParticle(
+    PMaterialHandle hMaterial,
+    const Vector &vOrigin,
+    float flDieTime,
+    unsigned char uchSize )
 {
-	SimpleParticle *pRet = (SimpleParticle*)AddParticle( sizeof( SimpleParticle ), hMaterial, vOrigin );
-	if ( pRet )
-	{
-		pRet->m_Pos = vOrigin;
-		pRet->m_vecVelocity.Init();
-		pRet->m_flRoll = 0;
-		pRet->m_flRollDelta = 0;
-		pRet->m_flLifetime = 0;
-		pRet->m_flDieTime = flDieTime;
-		pRet->m_uchColor[0] = pRet->m_uchColor[1] = pRet->m_uchColor[2] = 0;
-		pRet->m_uchStartAlpha = pRet->m_uchEndAlpha = 255;
-		pRet->m_uchStartSize = pRet->m_uchEndSize = uchSize;
-		pRet->m_iFlags = 0;
-	}
+    SimpleParticle *pRet = (SimpleParticle*)AddParticle( sizeof( SimpleParticle ), hMaterial, vOrigin );
+    if ( pRet )
+    {
+        pRet->m_Pos = vOrigin;
+        pRet->m_vecVelocity.Init();
+        pRet->m_flRoll = 0;
+        pRet->m_flRollDelta = 0;
+        pRet->m_flLifetime = 0;
+        pRet->m_flDieTime = flDieTime;
+        pRet->m_uchColor[0] = pRet->m_uchColor[1] = pRet->m_uchColor[2] = 0;
+        pRet->m_uchStartAlpha = pRet->m_uchEndAlpha = 255;
+        pRet->m_uchStartSize = pRet->m_uchEndSize = uchSize;
+        pRet->m_iFlags = 0;
+    }
 
-	return pRet;
+    return pRet;
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : fTimeDelta - 
+// Purpose:
+// Input  : fTimeDelta -
 // Output : float
 //-----------------------------------------------------------------------------
 float CSimpleEmitter::UpdateAlpha( const SimpleParticle *pParticle )
 {
-	return (pParticle->m_uchStartAlpha/255.0f) + ( (float)(pParticle->m_uchEndAlpha/255.0f) - (float)(pParticle->m_uchStartAlpha/255.0f) ) * (pParticle->m_flLifetime / pParticle->m_flDieTime);
+    return (pParticle->m_uchStartAlpha/255.0f) + ( (float)(pParticle->m_uchEndAlpha/255.0f) - (float)(pParticle->m_uchStartAlpha/255.0f) ) * (pParticle->m_flLifetime / pParticle->m_flDieTime);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : fTimeDelta - 
+// Purpose:
+// Input  : fTimeDelta -
 // Output : float
 //-----------------------------------------------------------------------------
 float CSimpleEmitter::UpdateScale( const SimpleParticle *pParticle )
 {
-	return	(float)pParticle->m_uchStartSize + ( (float)pParticle->m_uchEndSize - (float)pParticle->m_uchStartSize ) * (pParticle->m_flLifetime / pParticle->m_flDieTime);
+    return  (float)pParticle->m_uchStartSize + ( (float)pParticle->m_uchEndSize - (float)pParticle->m_uchStartSize ) * (pParticle->m_flLifetime / pParticle->m_flDieTime);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : fTimeDelta - 
+// Purpose:
+// Input  : fTimeDelta -
 // Output : Vector
 //-----------------------------------------------------------------------------
 
@@ -306,116 +306,116 @@ float CSimpleEmitter::UpdateScale( const SimpleParticle *pParticle )
 
 void CSimpleEmitter::UpdateVelocity( SimpleParticle *pParticle, float timeDelta )
 {
-	if (pParticle->m_iFlags & SIMPLE_PARTICLE_FLAG_WINDBLOWN)
-	{
-		Vector vecWind;
-		GetWindspeedAtTime( gpGlobals->curtime, vecWind );
+    if (pParticle->m_iFlags & SIMPLE_PARTICLE_FLAG_WINDBLOWN)
+    {
+        Vector vecWind;
+        GetWindspeedAtTime( gpGlobals->curtime, vecWind );
 
-		for ( int i = 0 ; i < 2 ; i++ )
-		{
-			if ( pParticle->m_vecVelocity[i] < vecWind[i] )
-			{
-				pParticle->m_vecVelocity[i] += ( timeDelta * WIND_ACCEL );
+        for ( int i = 0 ; i < 2 ; i++ )
+        {
+            if ( pParticle->m_vecVelocity[i] < vecWind[i] )
+            {
+                pParticle->m_vecVelocity[i] += ( timeDelta * WIND_ACCEL );
 
-				// clamp
-				if ( pParticle->m_vecVelocity[i] > vecWind[i] )
-					pParticle->m_vecVelocity[i] = vecWind[i];
-			}
-			else if (pParticle->m_vecVelocity[i] > vecWind[i] )
-			{
-				pParticle->m_vecVelocity[i] -= ( timeDelta * WIND_ACCEL );
+                // clamp
+                if ( pParticle->m_vecVelocity[i] > vecWind[i] )
+                    pParticle->m_vecVelocity[i] = vecWind[i];
+            }
+            else if (pParticle->m_vecVelocity[i] > vecWind[i] )
+            {
+                pParticle->m_vecVelocity[i] -= ( timeDelta * WIND_ACCEL );
 
-				// clamp.
-				if ( pParticle->m_vecVelocity[i] < vecWind[i] )
-					pParticle->m_vecVelocity[i] = vecWind[i];
-			}
-		}
-	}
+                // clamp.
+                if ( pParticle->m_vecVelocity[i] < vecWind[i] )
+                    pParticle->m_vecVelocity[i] = vecWind[i];
+            }
+        }
+    }
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : fTimeDelta - 
+// Purpose:
+// Input  : fTimeDelta -
 // Output : float
 //-----------------------------------------------------------------------------
 float CSimpleEmitter::UpdateRoll( SimpleParticle *pParticle, float timeDelta )
 {
-	pParticle->m_flRoll += pParticle->m_flRollDelta * timeDelta;
+    pParticle->m_flRoll += pParticle->m_flRollDelta * timeDelta;
 
-	return pParticle->m_flRoll;
+    return pParticle->m_flRoll;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pParticle - 
-//			timeDelta - 
+// Purpose:
+// Input  : *pParticle -
+//          timeDelta -
 //-----------------------------------------------------------------------------
 Vector CSimpleEmitter::UpdateColor( const SimpleParticle *pParticle )
 {
-	static Vector	cColor;
+    static Vector   cColor;
 
-	cColor[0] = pParticle->m_uchColor[0] / 255.0f;
-	cColor[1] = pParticle->m_uchColor[1] / 255.0f;
-	cColor[2] = pParticle->m_uchColor[2] / 255.0f;
+    cColor[0] = pParticle->m_uchColor[0] / 255.0f;
+    cColor[1] = pParticle->m_uchColor[1] / 255.0f;
+    cColor[2] = pParticle->m_uchColor[2] / 255.0f;
 
-	return cColor;
+    return cColor;
 }
 
 void CSimpleEmitter::SimulateParticles( CParticleSimulateIterator *pIterator )
 {
-	float timeDelta = pIterator->GetTimeDelta();
+    float timeDelta = pIterator->GetTimeDelta();
 
-	SimpleParticle *pParticle = (SimpleParticle*)pIterator->GetFirst();
-	while ( pParticle )
-	{
-		//Update velocity
-		UpdateVelocity( pParticle, timeDelta );
-		pParticle->m_Pos += pParticle->m_vecVelocity * timeDelta;
+    SimpleParticle *pParticle = (SimpleParticle*)pIterator->GetFirst();
+    while ( pParticle )
+    {
+        //Update velocity
+        UpdateVelocity( pParticle, timeDelta );
+        pParticle->m_Pos += pParticle->m_vecVelocity * timeDelta;
 
-		//Should this particle die?
-		pParticle->m_flLifetime += timeDelta;
-		UpdateRoll( pParticle, timeDelta );
+        //Should this particle die?
+        pParticle->m_flLifetime += timeDelta;
+        UpdateRoll( pParticle, timeDelta );
 
-		if ( pParticle->m_flLifetime >= pParticle->m_flDieTime )
-			pIterator->RemoveParticle( pParticle );
+        if ( pParticle->m_flLifetime >= pParticle->m_flDieTime )
+            pIterator->RemoveParticle( pParticle );
 
-		pParticle = (SimpleParticle*)pIterator->GetNext();
-	}
+        pParticle = (SimpleParticle*)pIterator->GetNext();
+    }
 }
 
 void CSimpleEmitter::RenderParticles( CParticleRenderIterator *pIterator )
 {
-	const SimpleParticle *pParticle = (const SimpleParticle *)pIterator->GetFirst();
-	while ( pParticle )
-	{
-		//Render
-		Vector	tPos;
+    const SimpleParticle *pParticle = (const SimpleParticle *)pIterator->GetFirst();
+    while ( pParticle )
+    {
+        //Render
+        Vector  tPos;
 
-		TransformParticle( ParticleMgr()->GetModelView(), pParticle->m_Pos, tPos );
-		float sortKey = (int) tPos.z;
+        TransformParticle( ParticleMgr()->GetModelView(), pParticle->m_Pos, tPos );
+        float sortKey = (int) tPos.z;
 
-		//Render it
-		RenderParticle_ColorSizeAngle(
-			pIterator->GetParticleDraw(),
-			tPos,
-			UpdateColor( pParticle ),
-			UpdateAlpha( pParticle ) * GetAlphaDistanceFade( tPos, m_flNearClipMin, m_flNearClipMax ),
-			UpdateScale( pParticle ),
-			pParticle->m_flRoll
-			);
+        //Render it
+        RenderParticle_ColorSizeAngle(
+            pIterator->GetParticleDraw(),
+            tPos,
+            UpdateColor( pParticle ),
+            UpdateAlpha( pParticle ) * GetAlphaDistanceFade( tPos, m_flNearClipMin, m_flNearClipMax ),
+            UpdateScale( pParticle ),
+            pParticle->m_flRoll
+            );
 
-		pParticle = (const SimpleParticle *)pIterator->GetNext( sortKey );
-	}
+        pParticle = (const SimpleParticle *)pIterator->GetNext( sortKey );
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : state - 
+// Purpose:
+// Input  : state -
 //-----------------------------------------------------------------------------
 void CSimpleEmitter::SetDrawBeforeViewModel( bool state )
 {
-	m_ParticleEffect.SetDrawBeforeViewModel( state );
+    m_ParticleEffect.SetDrawBeforeViewModel( state );
 }
 
 //==================================================
@@ -429,49 +429,49 @@ CEmberEffect::CEmberEffect( const char *pDebugName ) : CSimpleEmitter( pDebugNam
 
 CSmartPtr<CEmberEffect> CEmberEffect::Create( const char *pDebugName )
 {
-	CEmberEffect *pRet = new CEmberEffect( pDebugName );
-	pRet->SetDynamicallyAllocated( true );
-	return pRet;
+    CEmberEffect *pRet = new CEmberEffect( pDebugName );
+    pRet->SetDynamicallyAllocated( true );
+    return pRet;
 }
 
 
 void CEmberEffect::UpdateVelocity( SimpleParticle *pParticle, float timeDelta )
 {
-	float	speed = VectorNormalize( pParticle->m_vecVelocity );
-	Vector	offset;
+    float   speed = VectorNormalize( pParticle->m_vecVelocity );
+    Vector  offset;
 
-	speed -= ( 12.0f * timeDelta );
+    speed -= ( 12.0f * timeDelta );
 
-	offset.Random( -0.125f, 0.125f );
+    offset.Random( -0.125f, 0.125f );
 
-	pParticle->m_vecVelocity += offset;
-	VectorNormalize( pParticle->m_vecVelocity );
+    pParticle->m_vecVelocity += offset;
+    VectorNormalize( pParticle->m_vecVelocity );
 
-	pParticle->m_vecVelocity *= speed;
+    pParticle->m_vecVelocity *= speed;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pParticle - 
-//			timeDelta - 
+// Purpose:
+// Input  : *pParticle -
+//          timeDelta -
 //-----------------------------------------------------------------------------
 Vector CEmberEffect::UpdateColor( const SimpleParticle *pParticle )
 {
-	Vector	color;
-	float	ramp = 1.0f - ( pParticle->m_flLifetime / pParticle->m_flDieTime );
+    Vector  color;
+    float   ramp = 1.0f - ( pParticle->m_flLifetime / pParticle->m_flDieTime );
 
-	color[0] = ( (float) pParticle->m_uchColor[0] * ramp ) / 255.0f;
-	color[1] = ( (float) pParticle->m_uchColor[1] * ramp ) / 255.0f;
-	color[2] = ( (float) pParticle->m_uchColor[2] * ramp ) / 255.0f;
+    color[0] = ( (float) pParticle->m_uchColor[0] * ramp ) / 255.0f;
+    color[1] = ( (float) pParticle->m_uchColor[1] * ramp ) / 255.0f;
+    color[2] = ( (float) pParticle->m_uchColor[2] * ramp ) / 255.0f;
 
-	return color;
+    return color;
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pParticle - 
-//			timeDelta - 
+// Purpose:
+// Input  : *pParticle -
+//          timeDelta -
 // Output : float
 //-----------------------------------------------------------------------------
 CFireSmokeEffect::CFireSmokeEffect( const char *pDebugName ) : CSimpleEmitter( pDebugName )
@@ -481,21 +481,21 @@ CFireSmokeEffect::CFireSmokeEffect( const char *pDebugName ) : CSimpleEmitter( p
 
 CSmartPtr<CFireSmokeEffect> CFireSmokeEffect::Create( const char *pDebugName )
 {
-	CFireSmokeEffect *pRet = new CFireSmokeEffect( pDebugName );
-	pRet->SetDynamicallyAllocated( true );
-	return pRet;
+    CFireSmokeEffect *pRet = new CFireSmokeEffect( pDebugName );
+    pRet->SetDynamicallyAllocated( true );
+    return pRet;
 }
 
 
 float CFireSmokeEffect::UpdateAlpha( const SimpleParticle *pParticle )
 {
-	return ( ((float)pParticle->m_uchStartAlpha/255.0f) * sin( M_PI * (pParticle->m_flLifetime / pParticle->m_flDieTime) ) );
+    return ( ((float)pParticle->m_uchStartAlpha/255.0f) * sin( M_PI * (pParticle->m_flLifetime / pParticle->m_flDieTime) ) );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pParticle - 
-//			timeDelta - 
+// Purpose:
+// Input  : *pParticle -
+//          timeDelta -
 //-----------------------------------------------------------------------------
 void CFireSmokeEffect::UpdateVelocity( SimpleParticle *pParticle, float timeDelta )
 {
@@ -503,9 +503,9 @@ void CFireSmokeEffect::UpdateVelocity( SimpleParticle *pParticle, float timeDelt
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pParticle - 
-//			timeDelta - 
+// Purpose:
+// Input  : *pParticle -
+//          timeDelta -
 // Output : Vector
 //-----------------------------------------------------------------------------
 CFireParticle::CFireParticle( const char *pDebugName ) : CSimpleEmitter( pDebugName )
@@ -515,19 +515,19 @@ CFireParticle::CFireParticle( const char *pDebugName ) : CSimpleEmitter( pDebugN
 
 CSmartPtr<CFireParticle> CFireParticle::Create( const char *pDebugName )
 {
-	CFireParticle *pRet = new CFireParticle( pDebugName );
-	pRet->SetDynamicallyAllocated( true );
-	return pRet;
+    CFireParticle *pRet = new CFireParticle( pDebugName );
+    pRet->SetDynamicallyAllocated( true );
+    return pRet;
 }
 
 
 Vector CFireParticle::UpdateColor( const SimpleParticle *pParticle )
 {
-	for ( int i = 0; i < 3; i++ )
-	{
-		//FIXME: This is frame dependant... but I don't want to store off start/end colors yet
-		//pParticle->m_uchColor[i] = MAX( 0, pParticle->m_uchColor[i]-2 );
-	}
+    for ( int i = 0; i < 3; i++ )
+    {
+        //FIXME: This is frame dependant... but I don't want to store off start/end colors yet
+        //pParticle->m_uchColor[i] = MAX( 0, pParticle->m_uchColor[i]-2 );
+    }
 
-	return CSimpleEmitter::UpdateColor( pParticle );
+    return CSimpleEmitter::UpdateColor( pParticle );
 }

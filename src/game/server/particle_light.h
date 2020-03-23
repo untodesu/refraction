@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -16,25 +16,25 @@
 
 
 //==================================================
-// CParticleLight. These are tied to 
+// CParticleLight. These are tied to
 //==================================================
 
-#define PARTICLELIGHT_ENTNAME	"env_particlelight"
+#define PARTICLELIGHT_ENTNAME   "env_particlelight"
 
 class CParticleLight : public CServerOnlyPointEntity
 {
 public:
-	DECLARE_CLASS( CParticleLight, CServerOnlyPointEntity );
-	DECLARE_DATADESC();
+    DECLARE_CLASS( CParticleLight, CServerOnlyPointEntity );
+    DECLARE_DATADESC();
 
-					CParticleLight();
+                    CParticleLight();
 
 
 public:
-	float			m_flIntensity;
-	Vector			m_vColor;	// 0-255
-	string_t		m_PSName;	// Name of the particle system entity this light affects.
-	bool			m_bDirectional;
+    float           m_flIntensity;
+    Vector          m_vColor;   // 0-255
+    string_t        m_PSName;   // Name of the particle system entity this light affects.
+    bool            m_bDirectional;
 };
 
 

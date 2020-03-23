@@ -16,16 +16,16 @@
 //=========================================================
 class CWaterBullet : public CBaseAnimating
 {
-	DECLARE_CLASS( CWaterBullet, CBaseAnimating );
+    DECLARE_CLASS( CWaterBullet, CBaseAnimating );
 
 public:
-	void Precache();
-	void Spawn( const Vector &vecOrigin, const Vector &vecDir );
-	void Touch( CBaseEntity *pOther );
-	void BulletThink();
+    void Precache();
+    void Spawn( const Vector &vecOrigin, const Vector &vecDir );
+    void Touch( CBaseEntity *pOther );
+    void BulletThink();
 
-	DECLARE_DATADESC();
-	DECLARE_SERVERCLASS();
+    DECLARE_DATADESC();
+    DECLARE_SERVERCLASS();
 };
 
 #endif // WEAPON_WATERBULLET_H

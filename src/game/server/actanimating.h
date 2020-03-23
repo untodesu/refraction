@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -17,17 +17,17 @@
 class CActAnimating : public CBaseAnimating
 {
 public:
-	DECLARE_CLASS( CActAnimating, CBaseAnimating );
+    DECLARE_CLASS( CActAnimating, CBaseAnimating );
 
-	void			SetActivity( Activity act );
-	inline Activity	GetActivity( void ) { return m_Activity; }
+    void            SetActivity( Activity act );
+    inline Activity GetActivity( void ) { return m_Activity; }
 
-	virtual int	ObjectCaps( void ) { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+    virtual int ObjectCaps( void ) { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
 private:
-	Activity	m_Activity;
+    Activity    m_Activity;
 };
 
 

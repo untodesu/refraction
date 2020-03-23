@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -18,80 +18,80 @@
 abstract_class CHLMachineGun : public CBaseHLCombatWeapon
 {
 public:
-	DECLARE_CLASS( CHLMachineGun, CBaseHLCombatWeapon );
-	DECLARE_DATADESC();
+    DECLARE_CLASS( CHLMachineGun, CBaseHLCombatWeapon );
+    DECLARE_DATADESC();
 
-	CHLMachineGun();
-	
-	DECLARE_SERVERCLASS();
+    CHLMachineGun();
 
-	void	PrimaryAttack( void );
+    DECLARE_SERVERCLASS();
 
-	// Default calls through to m_hOwner, but plasma weapons can override and shoot projectiles here.
-	virtual void	ItemPostFrame( void );
-	virtual void	FireBullets( const FireBulletsInfo_t &info );
-	virtual float	GetFireRate( void ) = 0;
-	virtual int		WeaponRangeAttack1Condition( float flDot, float flDist );
-	virtual bool	Deploy( void );
+    void    PrimaryAttack( void );
 
-	virtual const Vector &GetBulletSpread( void );
+    // Default calls through to m_hOwner, but plasma weapons can override and shoot projectiles here.
+    virtual void    ItemPostFrame( void );
+    virtual void    FireBullets( const FireBulletsInfo_t &info );
+    virtual float   GetFireRate( void ) = 0;
+    virtual int     WeaponRangeAttack1Condition( float flDot, float flDist );
+    virtual bool    Deploy( void );
 
-	int				WeaponSoundRealtime( WeaponSound_t shoot_type );
+    virtual const Vector &GetBulletSpread( void );
 
-	// utility function
-	static void DoMachineGunKick( CBasePlayer *pPlayer, float dampEasy, float maxVerticleKickAngle, float fireDurationTime, float slideLimitTime );
+    int             WeaponSoundRealtime( WeaponSound_t shoot_type );
+
+    // utility function
+    static void DoMachineGunKick( CBasePlayer *pPlayer, float dampEasy, float maxVerticleKickAngle, float fireDurationTime, float slideLimitTime );
 
 protected:
 
-	int	m_nShotsFired;	// Number of consecutive shots fired
+    int m_nShotsFired;  // Number of consecutive shots fired
 
-	float	m_flNextSoundTime;	// real-time clock of when to make next sound
+    float   m_flNextSoundTime;  // real-time clock of when to make next sound
 };
 
 //=========================================================
-// Machine guns capable of switching between full auto and 
+// Machine guns capable of switching between full auto and
 // burst fire modes.
 //=========================================================
 // Mode settings for select fire weapons
 enum
 {
-	FIREMODE_FULLAUTO = 1,
-	FIREMODE_SEMI,
-	FIREMODE_3RNDBURST,
+    FIREMODE_FULLAUTO = 1,
+    FIREMODE_SEMI,
+    FIREMODE_3RNDBURST,
 };
 
 //=========================================================
-//	>> CHLSelectFireMachineGun
+//  >> CHLSelectFireMachineGun
 //=========================================================
 class CHLSelectFireMachineGun : public CHLMachineGun
 {
-	DECLARE_CLASS( CHLSelectFireMachineGun, CHLMachineGun );
+    DECLARE_CLASS( CHLSelectFireMachineGun, CHLMachineGun );
 public:
 
-	CHLSelectFireMachineGun( void );
-	
-	DECLARE_SERVERCLASS();
+    CHLSelectFireMachineGun( void );
 
-	virtual float	GetBurstCycleRate( void );
-	virtual float	GetFireRate( void );
+    DECLARE_SERVERCLASS();
 
-	virtual bool	Deploy( void );
-	virtual void	WeaponSound( WeaponSound_t shoot_type, float soundtime = 0.0f );
+    virtual float   GetBurstCycleRate( void );
+    virtual float   GetFireRate( void );
 
-	DECLARE_DATADESC();
+    virtual bool    Deploy( void );
+    virtual void    WeaponSound( WeaponSound_t shoot_type, float soundtime = 0.0f );
 
-	virtual int		GetBurstSize( void ) { return 3; };
+    DECLARE_DATADESC();
 
-	void			BurstThink( void );
+    virtual int     GetBurstSize( void ) { return 3; };
 
-	virtual void	PrimaryAttack( void );
-	virtual void	SecondaryAttack( void );
+    void            BurstThink( void );
 
-	virtual int		WeaponRangeAttack1Condition( float flDot, float flDist );
-	virtual int		WeaponRangeAttack2Condition( float flDot, float flDist );
+    virtual void    PrimaryAttack( void );
+    virtual void    SecondaryAttack( void );
+
+    virtual int     WeaponRangeAttack1Condition( float flDot, float flDist );
+    virtual int     WeaponRangeAttack2Condition( float flDot, float flDist );
 
 protected:
-	int m_iBurstSize;
-	int	m_iFireMode;
+    int m_iBurstSize;
+    int m_iFireMode;
 };
 #endif // BASEHLCOMBATWEAPON_H

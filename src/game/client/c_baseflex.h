@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -24,13 +24,13 @@
 class CFlexSceneFile
 {
 public:
-	enum
-	{
-		MAX_FLEX_FILENAME = 128,
-	};
+    enum
+    {
+        MAX_FLEX_FILENAME = 128,
+    };
 
-	char			filename[ MAX_FLEX_FILENAME ];
-	void			*buffer;
+    char            filename[ MAX_FLEX_FILENAME ];
+    void            *buffer;
 };
 
 // For phoneme emphasis track
@@ -39,59 +39,59 @@ class CSentence;
 
 enum
 {
-	PHONEME_CLASS_WEAK = 0,
-	PHONEME_CLASS_NORMAL,
-	PHONEME_CLASS_STRONG,
+    PHONEME_CLASS_WEAK = 0,
+    PHONEME_CLASS_NORMAL,
+    PHONEME_CLASS_STRONG,
 
-	NUM_PHONEME_CLASSES
+    NUM_PHONEME_CLASSES
 };
 
 // Mapping for each loaded scene file used by this actor
 struct FS_LocalToGlobal_t
 {
-	explicit FS_LocalToGlobal_t() :
-	m_Key( 0 ),
-		m_nCount( 0 ),
-		m_Mapping( 0 )
-	{
-	}
+    explicit FS_LocalToGlobal_t() :
+    m_Key( 0 ),
+        m_nCount( 0 ),
+        m_Mapping( 0 )
+    {
+    }
 
-	explicit FS_LocalToGlobal_t( const flexsettinghdr_t *key ) :
-	m_Key( key ),
-		m_nCount( 0 ),
-		m_Mapping( 0 )
-	{
-	}		
+    explicit FS_LocalToGlobal_t( const flexsettinghdr_t *key ) :
+    m_Key( key ),
+        m_nCount( 0 ),
+        m_Mapping( 0 )
+    {
+    }
 
-	void SetCount( int count )
-	{
-		Assert( !m_Mapping );
-		Assert( count > 0 );
-		m_nCount = count;
-		m_Mapping = new int[ m_nCount ];
-		Q_memset( m_Mapping, 0, m_nCount * sizeof( int ) );
-	}
+    void SetCount( int count )
+    {
+        Assert( !m_Mapping );
+        Assert( count > 0 );
+        m_nCount = count;
+        m_Mapping = new int[ m_nCount ];
+        Q_memset( m_Mapping, 0, m_nCount * sizeof( int ) );
+    }
 
-	FS_LocalToGlobal_t( const FS_LocalToGlobal_t& src )
-	{
-		m_Key = src.m_Key;
-		delete m_Mapping;
-		m_Mapping = new int[ src.m_nCount ];
-		Q_memcpy( m_Mapping, src.m_Mapping, src.m_nCount * sizeof( int ) );
+    FS_LocalToGlobal_t( const FS_LocalToGlobal_t& src )
+    {
+        m_Key = src.m_Key;
+        delete m_Mapping;
+        m_Mapping = new int[ src.m_nCount ];
+        Q_memcpy( m_Mapping, src.m_Mapping, src.m_nCount * sizeof( int ) );
 
-		m_nCount = src.m_nCount;
-	}
+        m_nCount = src.m_nCount;
+    }
 
-	~FS_LocalToGlobal_t()
-	{
-		delete m_Mapping;
-		m_nCount = 0;
-		m_Mapping = 0;
-	}
+    ~FS_LocalToGlobal_t()
+    {
+        delete m_Mapping;
+        m_nCount = 0;
+        m_Mapping = 0;
+    }
 
-	const flexsettinghdr_t	*m_Key;
-	int						m_nCount;
-	int						*m_Mapping;	
+    const flexsettinghdr_t  *m_Key;
+    int                     m_nCount;
+    int                     *m_Mapping;
 };
 
 bool FlexSettingLessFunc( const FS_LocalToGlobal_t& lhs, const FS_LocalToGlobal_t& rhs );
@@ -99,199 +99,199 @@ bool FlexSettingLessFunc( const FS_LocalToGlobal_t& lhs, const FS_LocalToGlobal_
 class IHasLocalToGlobalFlexSettings
 {
 public:
-	virtual void		EnsureTranslations( const flexsettinghdr_t *pSettinghdr ) = 0;
+    virtual void        EnsureTranslations( const flexsettinghdr_t *pSettinghdr ) = 0;
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 struct Emphasized_Phoneme
 {
-	// Global fields, setup at start
-	char			classname[ 64 ];
-	bool			required;
-	// Global fields setup first time tracks played
-	bool			basechecked;
-	const flexsettinghdr_t *base;
-	const flexsetting_t *exp;
+    // Global fields, setup at start
+    char            classname[ 64 ];
+    bool            required;
+    // Global fields setup first time tracks played
+    bool            basechecked;
+    const flexsettinghdr_t *base;
+    const flexsetting_t *exp;
 
-	// Local fields, processed for each sentence
-	bool			valid;
-	float			amount;
+    // Local fields, processed for each sentence
+    bool            valid;
+    float           amount;
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class C_BaseFlex : public C_BaseAnimatingOverlay, public IHasLocalToGlobalFlexSettings
 {
-	DECLARE_CLASS( C_BaseFlex, C_BaseAnimatingOverlay );
+    DECLARE_CLASS( C_BaseFlex, C_BaseAnimatingOverlay );
 public:
-	DECLARE_CLIENTCLASS();
-	DECLARE_PREDICTABLE();
-	DECLARE_INTERPOLATION();
+    DECLARE_CLIENTCLASS();
+    DECLARE_PREDICTABLE();
+    DECLARE_INTERPOLATION();
 
-					C_BaseFlex();
-	virtual			~C_BaseFlex();
+                    C_BaseFlex();
+    virtual         ~C_BaseFlex();
 
-	virtual void Spawn();
+    virtual void Spawn();
 
-	virtual void InitPhonemeMappings();
+    virtual void InitPhonemeMappings();
 
-	void		SetupMappings( char const *pchFileRoot );
+    void        SetupMappings( char const *pchFileRoot );
 
-	virtual CStudioHdr *OnNewModel( void );
+    virtual CStudioHdr *OnNewModel( void );
 
-	virtual void	StandardBlendingRules( CStudioHdr *hdr, Vector pos[], Quaternion q[], float currentTime, int boneMask );
+    virtual void    StandardBlendingRules( CStudioHdr *hdr, Vector pos[], Quaternion q[], float currentTime, int boneMask );
 
-	virtual void OnThreadedDrawSetup();
+    virtual void OnThreadedDrawSetup();
 
-	// model specific
-	virtual void BuildTransformations( CStudioHdr *pStudioHdr, Vector *pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList &boneComputed );
-	static void		LinkToGlobalFlexControllers( CStudioHdr *hdr );
-	virtual	void	SetupWeights( const matrix3x4_t *pBoneToWorld, int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights );
-	virtual	bool	SetupGlobalWeights( const matrix3x4_t *pBoneToWorld, int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights );
-	static void		RunFlexDelay( int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights, float &flFlexDelayTime );
-	virtual	void	SetupLocalWeights( const matrix3x4_t *pBoneToWorld, int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights );
-	virtual bool	UsesFlexDelayedWeights();
+    // model specific
+    virtual void BuildTransformations( CStudioHdr *pStudioHdr, Vector *pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList &boneComputed );
+    static void     LinkToGlobalFlexControllers( CStudioHdr *hdr );
+    virtual void    SetupWeights( const matrix3x4_t *pBoneToWorld, int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights );
+    virtual bool    SetupGlobalWeights( const matrix3x4_t *pBoneToWorld, int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights );
+    static void     RunFlexDelay( int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights, float &flFlexDelayTime );
+    virtual void    SetupLocalWeights( const matrix3x4_t *pBoneToWorld, int nFlexWeightCount, float *pFlexWeights, float *pFlexDelayedWeights );
+    virtual bool    UsesFlexDelayedWeights();
 
-	static	void	RunFlexRules( CStudioHdr *pStudioHdr, float *dest );
+    static  void    RunFlexRules( CStudioHdr *pStudioHdr, float *dest );
 
-	virtual Vector	SetViewTarget( CStudioHdr *pStudioHdr );
+    virtual Vector  SetViewTarget( CStudioHdr *pStudioHdr );
 
-	virtual bool	GetSoundSpatialization( SpatializationInfo_t& info );
+    virtual bool    GetSoundSpatialization( SpatializationInfo_t& info );
 
-	virtual void	GetToolRecordingState( KeyValues *msg );
+    virtual void    GetToolRecordingState( KeyValues *msg );
 
-	// Called at the lowest level to actually apply a flex animation
-	void				AddFlexAnimation( CSceneEventInfo *info );
+    // Called at the lowest level to actually apply a flex animation
+    void                AddFlexAnimation( CSceneEventInfo *info );
 
-	void			SetFlexWeight( LocalFlexController_t index, float value );
-	float			GetFlexWeight( LocalFlexController_t index );
+    void            SetFlexWeight( LocalFlexController_t index, float value );
+    float           GetFlexWeight( LocalFlexController_t index );
 
-	// Look up flex controller index by global name
-	LocalFlexController_t				FindFlexController( const char *szName );
-
-public:
-	Vector			m_viewtarget;
-	CInterpolatedVar< Vector >	m_iv_viewtarget;
-	// indexed by model local flexcontroller
-	float			m_flexWeight[MAXSTUDIOFLEXCTRL];
-	CInterpolatedVarArray< float, MAXSTUDIOFLEXCTRL >	m_iv_flexWeight;
-
-	int				m_blinktoggle;
-
-	static int		AddGlobalFlexController( const char *szName );
-	static char const *GetGlobalFlexControllerName( int idx );
-
-	// bah, this should be unified with all prev/current stuff.
+    // Look up flex controller index by global name
+    LocalFlexController_t               FindFlexController( const char *szName );
 
 public:
+    Vector          m_viewtarget;
+    CInterpolatedVar< Vector >  m_iv_viewtarget;
+    // indexed by model local flexcontroller
+    float           m_flexWeight[MAXSTUDIOFLEXCTRL];
+    CInterpolatedVarArray< float, MAXSTUDIOFLEXCTRL >   m_iv_flexWeight;
 
-	// Keep track of what scenes are being played
-	void				StartChoreoScene( CChoreoScene *scene );
-	void				RemoveChoreoScene( CChoreoScene *scene );
+    int             m_blinktoggle;
 
-	// Start the specifics of an scene event
-	virtual bool		StartSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event, CChoreoActor *actor, C_BaseEntity *pTarget );
+    static int      AddGlobalFlexController( const char *szName );
+    static char const *GetGlobalFlexControllerName( int idx );
 
-	// Manipulation of events for the object
-	// Should be called by think function to process all scene events
-	// The default implementation resets m_flexWeight array and calls
-	//  AddSceneEvents
-	virtual void		ProcessSceneEvents( bool bFlexEvents );
+    // bah, this should be unified with all prev/current stuff.
 
-	// Assumes m_flexWeight array has been set up, this adds the actual currently playing
-	//  expressions to the flex weights and adds other scene events as needed
-	virtual	bool		ProcessSceneEvent( bool bFlexEvents, CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
+public:
 
-	virtual bool		ProcessSequenceSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
+    // Keep track of what scenes are being played
+    void                StartChoreoScene( CChoreoScene *scene );
+    void                RemoveChoreoScene( CChoreoScene *scene );
 
-	// Remove all playing events
-	void				ClearSceneEvents( CChoreoScene *scene, bool canceled );
+    // Start the specifics of an scene event
+    virtual bool        StartSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event, CChoreoActor *actor, C_BaseEntity *pTarget );
 
-	// Stop specifics of event
-	virtual	bool		ClearSceneEvent( CSceneEventInfo *info, bool fastKill, bool canceled );
+    // Manipulation of events for the object
+    // Should be called by think function to process all scene events
+    // The default implementation resets m_flexWeight array and calls
+    //  AddSceneEvents
+    virtual void        ProcessSceneEvents( bool bFlexEvents );
 
-	// Add the event to the queue for this actor
-	void				AddSceneEvent( CChoreoScene *scene, CChoreoEvent *event, C_BaseEntity *pTarget = NULL, bool bClientSide = false );
+    // Assumes m_flexWeight array has been set up, this adds the actual currently playing
+    //  expressions to the flex weights and adds other scene events as needed
+    virtual bool        ProcessSceneEvent( bool bFlexEvents, CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
 
-	// Remove the event from the queue for this actor
-	void				RemoveSceneEvent( CChoreoScene *scene, CChoreoEvent *event, bool fastKill );
+    virtual bool        ProcessSequenceSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
 
-	// Checks to see if the event should be considered "completed"
-	bool				CheckSceneEvent( float currenttime, CChoreoScene *scene, CChoreoEvent *event );
+    // Remove all playing events
+    void                ClearSceneEvents( CChoreoScene *scene, bool canceled );
 
-	// Checks to see if a event should be considered "completed"
-	virtual bool		CheckSceneEventCompletion( CSceneEventInfo *info, float currenttime, CChoreoScene *scene, CChoreoEvent *event );
+    // Stop specifics of event
+    virtual bool        ClearSceneEvent( CSceneEventInfo *info, bool fastKill, bool canceled );
 
-	int					FlexControllerLocalToGlobal( const flexsettinghdr_t *pSettinghdr, int key );
+    // Add the event to the queue for this actor
+    void                AddSceneEvent( CChoreoScene *scene, CChoreoEvent *event, C_BaseEntity *pTarget = NULL, bool bClientSide = false );
 
-	// IHasLocalToGlobalFlexSettings
-	virtual void		EnsureTranslations( const flexsettinghdr_t *pSettinghdr );
+    // Remove the event from the queue for this actor
+    void                RemoveSceneEvent( CChoreoScene *scene, CChoreoEvent *event, bool fastKill );
 
-	// For handling scene files
-	void				*FindSceneFile( const char *filename );
+    // Checks to see if the event should be considered "completed"
+    bool                CheckSceneEvent( float currenttime, CChoreoScene *scene, CChoreoEvent *event );
+
+    // Checks to see if a event should be considered "completed"
+    virtual bool        CheckSceneEventCompletion( CSceneEventInfo *info, float currenttime, CChoreoScene *scene, CChoreoEvent *event );
+
+    int                 FlexControllerLocalToGlobal( const flexsettinghdr_t *pSettinghdr, int key );
+
+    // IHasLocalToGlobalFlexSettings
+    virtual void        EnsureTranslations( const flexsettinghdr_t *pSettinghdr );
+
+    // For handling scene files
+    void                *FindSceneFile( const char *filename );
 
 private:
 
-	bool RequestStartSequenceSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event, CChoreoActor *actor, CBaseEntity *pTarget );
+    bool RequestStartSequenceSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event, CChoreoActor *actor, CBaseEntity *pTarget );
 
-	bool ProcessFlexAnimationSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
-	bool ProcessFlexSettingSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
-	void AddFlexSetting( const char *expr, float scale, 
-		const flexsettinghdr_t *pSettinghdr, bool newexpression );
+    bool ProcessFlexAnimationSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
+    bool ProcessFlexSettingSceneEvent( CSceneEventInfo *info, CChoreoScene *scene, CChoreoEvent *event );
+    void AddFlexSetting( const char *expr, float scale,
+        const flexsettinghdr_t *pSettinghdr, bool newexpression );
 
-	// Array of active SceneEvents, in order oldest to newest
-	CUtlVector < CSceneEventInfo >		m_SceneEvents;
-	CUtlVector < CChoreoScene * >		m_ActiveChoreoScenes;
+    // Array of active SceneEvents, in order oldest to newest
+    CUtlVector < CSceneEventInfo >      m_SceneEvents;
+    CUtlVector < CChoreoScene * >       m_ActiveChoreoScenes;
 
-	bool				HasSceneEvents() const;
+    bool                HasSceneEvents() const;
 
 private:
-	CUtlRBTree< FS_LocalToGlobal_t, unsigned short > m_LocalToGlobal;
+    CUtlRBTree< FS_LocalToGlobal_t, unsigned short > m_LocalToGlobal;
 
-	float			m_blinktime;
-	int				m_prevblinktoggle;
+    float           m_blinktime;
+    int             m_prevblinktoggle;
 
-	int				m_iBlink;
-	LocalFlexController_t				m_iEyeUpdown;
-	LocalFlexController_t				m_iEyeRightleft;
-	bool			m_bSearchedForEyeFlexes;
-	int				m_iMouthAttachment;
+    int             m_iBlink;
+    LocalFlexController_t               m_iEyeUpdown;
+    LocalFlexController_t               m_iEyeRightleft;
+    bool            m_bSearchedForEyeFlexes;
+    int             m_iMouthAttachment;
 
-	float			m_flFlexDelayTime;
-	float			*m_flFlexDelayedWeight;
-	int				m_cFlexDelayedWeight;
+    float           m_flFlexDelayTime;
+    float           *m_flFlexDelayedWeight;
+    int             m_cFlexDelayedWeight;
 
-	// shared flex controllers
-	static int		g_numflexcontrollers;
-	static char		*g_flexcontroller[MAXSTUDIOFLEXCTRL*4]; // room for global set of flexcontrollers
-	static float	g_flexweight[MAXSTUDIOFLEXDESC];
+    // shared flex controllers
+    static int      g_numflexcontrollers;
+    static char     *g_flexcontroller[MAXSTUDIOFLEXCTRL*4]; // room for global set of flexcontrollers
+    static float    g_flexweight[MAXSTUDIOFLEXDESC];
 
 protected:
 
-	Emphasized_Phoneme m_PhonemeClasses[ NUM_PHONEME_CLASSES ];
+    Emphasized_Phoneme m_PhonemeClasses[ NUM_PHONEME_CLASSES ];
 
 private:
 
-	C_BaseFlex( const C_BaseFlex & ); // not defined, not accessible
+    C_BaseFlex( const C_BaseFlex & ); // not defined, not accessible
 
-	const flexsetting_t *FindNamedSetting( const flexsettinghdr_t *pSettinghdr, const char *expr );
+    const flexsetting_t *FindNamedSetting( const flexsettinghdr_t *pSettinghdr, const char *expr );
 
-	void			ProcessVisemes( Emphasized_Phoneme *classes );
-	void			AddVisemesForSentence( Emphasized_Phoneme *classes, float emphasis_intensity, CSentence *sentence, float t, float dt, bool juststarted );
-	void			AddViseme( Emphasized_Phoneme *classes, float emphasis_intensity, int phoneme, float scale, bool newexpression );
-	bool			SetupEmphasisBlend( Emphasized_Phoneme *classes, int phoneme );
-	void			ComputeBlendedSetting( Emphasized_Phoneme *classes, float emphasis_intensity );
+    void            ProcessVisemes( Emphasized_Phoneme *classes );
+    void            AddVisemesForSentence( Emphasized_Phoneme *classes, float emphasis_intensity, CSentence *sentence, float t, float dt, bool juststarted );
+    void            AddViseme( Emphasized_Phoneme *classes, float emphasis_intensity, int phoneme, float scale, bool newexpression );
+    bool            SetupEmphasisBlend( Emphasized_Phoneme *classes, int phoneme );
+    void            ComputeBlendedSetting( Emphasized_Phoneme *classes, float emphasis_intensity );
 
 #ifdef HL2_CLIENT_DLL
 public:
 
-	Vector			m_vecLean;
-	CInterpolatedVar< Vector >	m_iv_vecLean;
-	Vector			m_vecShift;
-	CInterpolatedVar< Vector >	m_iv_vecShift;
+    Vector          m_vecLean;
+    CInterpolatedVar< Vector >  m_iv_vecLean;
+    Vector          m_vecShift;
+    CInterpolatedVar< Vector >  m_iv_vecShift;
 #endif
 };
 
@@ -303,20 +303,20 @@ class CFlexSceneFileManager : CAutoGameSystem
 {
 public:
 
-	CFlexSceneFileManager() : CAutoGameSystem( "CFlexSceneFileManager" )
-	{
-	}
+    CFlexSceneFileManager() : CAutoGameSystem( "CFlexSceneFileManager" )
+    {
+    }
 
-	virtual bool Init();
-	virtual void Shutdown();
+    virtual bool Init();
+    virtual void Shutdown();
 
-	void EnsureTranslations( IHasLocalToGlobalFlexSettings *instance, const flexsettinghdr_t *pSettinghdr );
-	void *FindSceneFile( IHasLocalToGlobalFlexSettings *instance, const char *filename, bool allowBlockingIO );
+    void EnsureTranslations( IHasLocalToGlobalFlexSettings *instance, const flexsettinghdr_t *pSettinghdr );
+    void *FindSceneFile( IHasLocalToGlobalFlexSettings *instance, const char *filename, bool allowBlockingIO );
 
 private:
-	void DeleteSceneFiles();
+    void DeleteSceneFiles();
 
-	CUtlVector< CFlexSceneFile * > m_FileList;
+    CUtlVector< CFlexSceneFile * > m_FileList;
 };
 
 
@@ -325,7 +325,7 @@ private:
 //-----------------------------------------------------------------------------
 inline bool C_BaseFlex::HasSceneEvents() const
 {
-	return m_SceneEvents.Count() != 0;
+    return m_SceneEvents.Count() != 0;
 }
 
 

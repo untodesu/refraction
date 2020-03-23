@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -31,30 +31,30 @@ DECLARE_BUILD_FACTORY( PanelListPanel );
 //-----------------------------------------------------------------------------
 PanelListPanel::PanelListPanel( vgui::Panel *parent, char const *panelName ) : EditablePanel( parent, panelName )
 {
-	SetBounds( 0, 0, 100, 100 );
+    SetBounds( 0, 0, 100, 100 );
 
-	m_vbar = new ScrollBar(this, "PanelListPanelVScroll", true);
-	m_vbar->SetVisible(false);
-	m_vbar->AddActionSignalTarget( this );
+    m_vbar = new ScrollBar(this, "PanelListPanelVScroll", true);
+    m_vbar->SetVisible(false);
+    m_vbar->AddActionSignalTarget( this );
 
-	m_pPanelEmbedded = new EditablePanel(this, "PanelListEmbedded");
-	m_pPanelEmbedded->SetBounds(0, 0, 20, 20);
-	m_pPanelEmbedded->SetPaintBackgroundEnabled( false );
-	m_pPanelEmbedded->SetPaintBorderEnabled(false);
+    m_pPanelEmbedded = new EditablePanel(this, "PanelListEmbedded");
+    m_pPanelEmbedded->SetBounds(0, 0, 20, 20);
+    m_pPanelEmbedded->SetPaintBackgroundEnabled( false );
+    m_pPanelEmbedded->SetPaintBorderEnabled(false);
 
-	m_iFirstColumnWidth = 100; // default width
-	m_iNumColumns = 1; // 1 column by default
+    m_iFirstColumnWidth = 100; // default width
+    m_iNumColumns = 1; // 1 column by default
 
-	if ( IsProportional() )
-	{
-		m_iDefaultHeight = scheme()->GetProportionalScaledValueEx( GetScheme(), DEFAULT_HEIGHT );
-		m_iPanelBuffer = scheme()->GetProportionalScaledValueEx( GetScheme(), PANELBUFFER );
-	}
-	else
-	{
-		m_iDefaultHeight = DEFAULT_HEIGHT;
-		m_iPanelBuffer = PANELBUFFER;
-	}
+    if ( IsProportional() )
+    {
+        m_iDefaultHeight = scheme()->GetProportionalScaledValueEx( GetScheme(), DEFAULT_HEIGHT );
+        m_iPanelBuffer = scheme()->GetProportionalScaledValueEx( GetScheme(), PANELBUFFER );
+    }
+    else
+    {
+        m_iDefaultHeight = DEFAULT_HEIGHT;
+        m_iPanelBuffer = PANELBUFFER;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -62,62 +62,62 @@ PanelListPanel::PanelListPanel( vgui::Panel *parent, char const *panelName ) : E
 //-----------------------------------------------------------------------------
 PanelListPanel::~PanelListPanel()
 {
-	// free data from table
-	DeleteAllItems();
+    // free data from table
+    DeleteAllItems();
 }
 
 void PanelListPanel::SetVerticalBufferPixels( int buffer )
 {
-	m_iPanelBuffer = buffer;
-	InvalidateLayout();
+    m_iPanelBuffer = buffer;
+    InvalidateLayout();
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: counts the total vertical pixels
 //-----------------------------------------------------------------------------
-int	PanelListPanel::ComputeVPixelsNeeded()
+int PanelListPanel::ComputeVPixelsNeeded()
 {
-	int iCurrentItem = 0;
-	int iLargestH = 0;
+    int iCurrentItem = 0;
+    int iLargestH = 0;
 
-	int pixels = 0;
-	for ( int i = 0; i < m_SortedItems.Count(); i++ )
-	{
-		Panel *panel = m_DataItems[ m_SortedItems[i] ].panel;
-		if ( !panel )
-			continue;
+    int pixels = 0;
+    for ( int i = 0; i < m_SortedItems.Count(); i++ )
+    {
+        Panel *panel = m_DataItems[ m_SortedItems[i] ].panel;
+        if ( !panel )
+            continue;
 
-		if ( panel->IsLayoutInvalid() )
-		{
-			panel->InvalidateLayout( true );
-		}
+        if ( panel->IsLayoutInvalid() )
+        {
+            panel->InvalidateLayout( true );
+        }
 
-		int iCurrentColumn = iCurrentItem % m_iNumColumns;
+        int iCurrentColumn = iCurrentItem % m_iNumColumns;
 
-		int w, h;
-		panel->GetSize( w, h );
+        int w, h;
+        panel->GetSize( w, h );
 
-		if ( iLargestH < h )
-			iLargestH = h;
+        if ( iLargestH < h )
+            iLargestH = h;
 
-		if ( iCurrentColumn == 0 )
-			pixels += m_iPanelBuffer; // add in buffer. between rows.
+        if ( iCurrentColumn == 0 )
+            pixels += m_iPanelBuffer; // add in buffer. between rows.
 
-		if ( iCurrentColumn >= m_iNumColumns - 1 )
-		{
-			pixels += iLargestH;
-			iLargestH = 0;
-		}
+        if ( iCurrentColumn >= m_iNumColumns - 1 )
+        {
+            pixels += iLargestH;
+            iLargestH = 0;
+        }
 
-		iCurrentItem++;
-	}
+        iCurrentItem++;
+    }
 
-	// Add in remaining largest height
-	pixels += iLargestH;
+    // Add in remaining largest height
+    pixels += iLargestH;
 
-	pixels += m_iPanelBuffer; // add in buffer below last item
+    pixels += m_iPanelBuffer; // add in buffer below last item
 
-	return pixels;
+    return pixels;
 }
 
 //-----------------------------------------------------------------------------
@@ -125,52 +125,52 @@ int	PanelListPanel::ComputeVPixelsNeeded()
 //-----------------------------------------------------------------------------
 Panel *PanelListPanel::GetCellRenderer( int row )
 {
-	if ( !m_SortedItems.IsValidIndex(row) )
-		return NULL;
+    if ( !m_SortedItems.IsValidIndex(row) )
+        return NULL;
 
-	Panel *panel = m_DataItems[ m_SortedItems[row] ].panel;
-	return panel;
+    Panel *panel = m_DataItems[ m_SortedItems[row] ].panel;
+    return panel;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: adds an item to the view
-//			data->GetName() is used to uniquely identify an item
-//			data sub items are matched against column header name to be used in the table
+//          data->GetName() is used to uniquely identify an item
+//          data sub items are matched against column header name to be used in the table
 //-----------------------------------------------------------------------------
 int PanelListPanel::AddItem( Panel *labelPanel, Panel *panel )
 {
-	Assert(panel);
+    Assert(panel);
 
-	if ( labelPanel )
-	{
-		labelPanel->SetParent( m_pPanelEmbedded );
-	}
+    if ( labelPanel )
+    {
+        labelPanel->SetParent( m_pPanelEmbedded );
+    }
 
-	panel->SetParent( m_pPanelEmbedded );
+    panel->SetParent( m_pPanelEmbedded );
 
-	int itemID = m_DataItems.AddToTail();
-	DATAITEM &newitem = m_DataItems[itemID];
-	newitem.labelPanel = labelPanel;
-	newitem.panel = panel;
-	m_SortedItems.AddToTail(itemID);
+    int itemID = m_DataItems.AddToTail();
+    DATAITEM &newitem = m_DataItems[itemID];
+    newitem.labelPanel = labelPanel;
+    newitem.panel = panel;
+    m_SortedItems.AddToTail(itemID);
 
-	InvalidateLayout();
-	return itemID;
+    InvalidateLayout();
+    return itemID;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: iteration accessor
 //-----------------------------------------------------------------------------
-int	PanelListPanel::GetItemCount() const
+int PanelListPanel::GetItemCount() const
 {
-	return m_DataItems.Count();
+    return m_DataItems.Count();
 }
 
 int PanelListPanel::GetItemIDFromRow( int nRow ) const
 {
-	if ( nRow < 0 || nRow >= GetItemCount() )
-		return m_DataItems.InvalidIndex();
-	return m_SortedItems[ nRow ];
+    if ( nRow < 0 || nRow >= GetItemCount() )
+        return m_DataItems.InvalidIndex();
+    return m_SortedItems[ nRow ];
 }
 
 
@@ -179,17 +179,17 @@ int PanelListPanel::GetItemIDFromRow( int nRow ) const
 //-----------------------------------------------------------------------------
 int PanelListPanel::FirstItem() const
 {
-	return m_DataItems.Head();
+    return m_DataItems.Head();
 }
 
 int PanelListPanel::NextItem( int nItemID ) const
 {
-	return m_DataItems.Next( nItemID );
+    return m_DataItems.Next( nItemID );
 }
 
 int PanelListPanel::InvalidItemID() const
 {
-	return m_DataItems.InvalidIndex( );
+    return m_DataItems.InvalidIndex( );
 }
 
 
@@ -198,10 +198,10 @@ int PanelListPanel::InvalidItemID() const
 //-----------------------------------------------------------------------------
 Panel *PanelListPanel::GetItemLabel(int itemID)
 {
-	if ( !m_DataItems.IsValidIndex(itemID) )
-		return NULL;
+    if ( !m_DataItems.IsValidIndex(itemID) )
+        return NULL;
 
-	return m_DataItems[itemID].labelPanel;
+    return m_DataItems[itemID].labelPanel;
 }
 
 //-----------------------------------------------------------------------------
@@ -209,34 +209,34 @@ Panel *PanelListPanel::GetItemLabel(int itemID)
 //-----------------------------------------------------------------------------
 Panel *PanelListPanel::GetItemPanel(int itemID)
 {
-	if ( !m_DataItems.IsValidIndex(itemID) )
-		return NULL;
+    if ( !m_DataItems.IsValidIndex(itemID) )
+        return NULL;
 
-	return m_DataItems[itemID].panel;
+    return m_DataItems[itemID].panel;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PanelListPanel::RemoveItem(int itemID)
 {
-	if ( !m_DataItems.IsValidIndex(itemID) )
-		return;
+    if ( !m_DataItems.IsValidIndex(itemID) )
+        return;
 
-	DATAITEM &item = m_DataItems[itemID];
-	if ( item.panel )
-	{
-		item.panel->MarkForDeletion();
-	}
-	if ( item.labelPanel )
-	{
-		item.labelPanel->MarkForDeletion();
-	}
+    DATAITEM &item = m_DataItems[itemID];
+    if ( item.panel )
+    {
+        item.panel->MarkForDeletion();
+    }
+    if ( item.labelPanel )
+    {
+        item.labelPanel->MarkForDeletion();
+    }
 
-	m_DataItems.Remove(itemID);
-	m_SortedItems.FindAndRemove(itemID);
+    m_DataItems.Remove(itemID);
+    m_SortedItems.FindAndRemove(itemID);
 
-	InvalidateLayout();
+    InvalidateLayout();
 }
 
 //-----------------------------------------------------------------------------
@@ -244,18 +244,18 @@ void PanelListPanel::RemoveItem(int itemID)
 //-----------------------------------------------------------------------------
 void PanelListPanel::DeleteAllItems()
 {
-	FOR_EACH_LL( m_DataItems, i )
-	{
-		if ( m_DataItems[i].panel )
-		{
-			delete m_DataItems[i].panel;
-		}
-	}
+    FOR_EACH_LL( m_DataItems, i )
+    {
+        if ( m_DataItems[i].panel )
+        {
+            delete m_DataItems[i].panel;
+        }
+    }
 
-	m_DataItems.RemoveAll();
-	m_SortedItems.RemoveAll();
+    m_DataItems.RemoveAll();
+    m_SortedItems.RemoveAll();
 
-	InvalidateLayout();
+    InvalidateLayout();
 }
 
 //-----------------------------------------------------------------------------
@@ -263,22 +263,22 @@ void PanelListPanel::DeleteAllItems()
 //-----------------------------------------------------------------------------
 void PanelListPanel::RemoveAll()
 {
-	m_DataItems.RemoveAll();
-	m_SortedItems.RemoveAll();
+    m_DataItems.RemoveAll();
+    m_SortedItems.RemoveAll();
 
-	// move the scrollbar to the top of the list
-	m_vbar->SetValue(0);
-	InvalidateLayout();
+    // move the scrollbar to the top of the list
+    m_vbar->SetValue(0);
+    InvalidateLayout();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PanelListPanel::OnSizeChanged(int wide, int tall)
 {
-	BaseClass::OnSizeChanged(wide, tall);
-	InvalidateLayout();
-	Repaint();
+    BaseClass::OnSizeChanged(wide, tall);
+    InvalidateLayout();
+    Repaint();
 }
 
 //-----------------------------------------------------------------------------
@@ -286,67 +286,67 @@ void PanelListPanel::OnSizeChanged(int wide, int tall)
 //-----------------------------------------------------------------------------
 void PanelListPanel::PerformLayout()
 {
-	int wide, tall;
-	GetSize( wide, tall );
+    int wide, tall;
+    GetSize( wide, tall );
 
-	int vpixels = ComputeVPixelsNeeded();
+    int vpixels = ComputeVPixelsNeeded();
 
-	m_vbar->SetRange( 0, vpixels );
-	m_vbar->SetRangeWindow( tall );
-	m_vbar->SetButtonPressedScrollValue( tall / 4 ); // standard height of labels/buttons etc.
+    m_vbar->SetRange( 0, vpixels );
+    m_vbar->SetRangeWindow( tall );
+    m_vbar->SetButtonPressedScrollValue( tall / 4 ); // standard height of labels/buttons etc.
 
-	m_vbar->SetPos( wide - m_vbar->GetWide() - 2, 0 );
-	m_vbar->SetSize( m_vbar->GetWide(), tall - 2 );
+    m_vbar->SetPos( wide - m_vbar->GetWide() - 2, 0 );
+    m_vbar->SetSize( m_vbar->GetWide(), tall - 2 );
 
-	int top = m_vbar->GetValue();
+    int top = m_vbar->GetValue();
 
-	m_pPanelEmbedded->SetPos( 0, -top );
-	m_pPanelEmbedded->SetSize( wide - m_vbar->GetWide(), vpixels );	// scrollbar will sit on top (zpos set explicitly)
+    m_pPanelEmbedded->SetPos( 0, -top );
+    m_pPanelEmbedded->SetSize( wide - m_vbar->GetWide(), vpixels ); // scrollbar will sit on top (zpos set explicitly)
 
-	bool bScrollbarVisible = true;
-	// If we're supposed to automatically hide the scrollbar when unnecessary, check it now
-	if ( m_bAutoHideScrollbar )
-	{
-		bScrollbarVisible = (m_pPanelEmbedded->GetTall() > tall);
-	}
-	m_vbar->SetVisible( bScrollbarVisible );
-	
-	// Now lay out the controls on the embedded panel
-	int y = 0;
-	int h = 0;
-	int totalh = 0;
+    bool bScrollbarVisible = true;
+    // If we're supposed to automatically hide the scrollbar when unnecessary, check it now
+    if ( m_bAutoHideScrollbar )
+    {
+        bScrollbarVisible = (m_pPanelEmbedded->GetTall() > tall);
+    }
+    m_vbar->SetVisible( bScrollbarVisible );
 
-	int xpos = m_iFirstColumnWidth + m_iPanelBuffer;
-	int iColumnWidth = ( wide - xpos - m_vbar->GetWide() - 12 ) / m_iNumColumns;
-	
-	for ( int i = 0; i < m_SortedItems.Count(); i++ )
-	{
-		int iCurrentColumn = i % m_iNumColumns;
+    // Now lay out the controls on the embedded panel
+    int y = 0;
+    int h = 0;
+    int totalh = 0;
 
-		// add in a little buffer between panels
-		if ( iCurrentColumn == 0 )
-			y += m_iPanelBuffer;
+    int xpos = m_iFirstColumnWidth + m_iPanelBuffer;
+    int iColumnWidth = ( wide - xpos - m_vbar->GetWide() - 12 ) / m_iNumColumns;
 
-		DATAITEM &item = m_DataItems[ m_SortedItems[i] ];
+    for ( int i = 0; i < m_SortedItems.Count(); i++ )
+    {
+        int iCurrentColumn = i % m_iNumColumns;
 
-		if ( h < item.panel->GetTall() )
-			h = item.panel->GetTall();
+        // add in a little buffer between panels
+        if ( iCurrentColumn == 0 )
+            y += m_iPanelBuffer;
 
-		if ( item.labelPanel )
-		{
-			item.labelPanel->SetBounds( 0, y, m_iFirstColumnWidth, item.panel->GetTall() );
-		}
+        DATAITEM &item = m_DataItems[ m_SortedItems[i] ];
 
-		item.panel->SetBounds( xpos + iCurrentColumn * iColumnWidth, y, iColumnWidth, item.panel->GetTall() );
+        if ( h < item.panel->GetTall() )
+            h = item.panel->GetTall();
 
-		if ( iCurrentColumn >= m_iNumColumns - 1 )
-		{
-			y += h;
-			totalh += h;
+        if ( item.labelPanel )
+        {
+            item.labelPanel->SetBounds( 0, y, m_iFirstColumnWidth, item.panel->GetTall() );
+        }
 
-			h = 0;
-		}
-	}
+        item.panel->SetBounds( xpos + iCurrentColumn * iColumnWidth, y, iColumnWidth, item.panel->GetTall() );
+
+        if ( iCurrentColumn >= m_iNumColumns - 1 )
+        {
+            y += h;
+            totalh += h;
+
+            h = 0;
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -354,35 +354,35 @@ void PanelListPanel::PerformLayout()
 //-----------------------------------------------------------------------------
 void PanelListPanel::ApplySchemeSettings(IScheme *pScheme)
 {
-	BaseClass::ApplySchemeSettings(pScheme);
+    BaseClass::ApplySchemeSettings(pScheme);
 
-	SetBorder(pScheme->GetBorder("ButtonDepressedBorder"));
-	SetBgColor(GetSchemeColor("ListPanel.BgColor", GetBgColor(), pScheme));
+    SetBorder(pScheme->GetBorder("ButtonDepressedBorder"));
+    SetBgColor(GetSchemeColor("ListPanel.BgColor", GetBgColor(), pScheme));
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PanelListPanel::OnSliderMoved( int position )
 {
-	InvalidateLayout();
-	Repaint();
+    InvalidateLayout();
+    Repaint();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PanelListPanel::MoveScrollBarToTop()
 {
-	m_vbar->SetValue(0);
+    m_vbar->SetValue(0);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PanelListPanel::SetFirstColumnWidth( int width )
 {
-	m_iFirstColumnWidth = width;
+    m_iFirstColumnWidth = width;
 }
 
 //-----------------------------------------------------------------------------
@@ -390,17 +390,17 @@ void PanelListPanel::SetFirstColumnWidth( int width )
 //-----------------------------------------------------------------------------
 int PanelListPanel::GetFirstColumnWidth()
 {
-	return m_iFirstColumnWidth;
+    return m_iFirstColumnWidth;
 }
 
 void PanelListPanel::SetNumColumns( int iNumColumns )
 {
-	m_iNumColumns = iNumColumns;
+    m_iNumColumns = iNumColumns;
 }
 
 int PanelListPanel::GetNumColumns( void )
 {
-	return m_iNumColumns;
+    return m_iNumColumns;
 }
 
 //-----------------------------------------------------------------------------
@@ -408,9 +408,9 @@ int PanelListPanel::GetNumColumns( void )
 //-----------------------------------------------------------------------------
 void PanelListPanel::OnMouseWheeled(int delta)
 {
-	int val = m_vbar->GetValue();
-	val -= (delta * DEFAULT_HEIGHT);
-	m_vbar->SetValue(val);	
+    int val = m_vbar->GetValue();
+    val -= (delta * DEFAULT_HEIGHT);
+    m_vbar->SetValue(val);
 }
 
 //-----------------------------------------------------------------------------
@@ -418,19 +418,19 @@ void PanelListPanel::OnMouseWheeled(int delta)
 //-----------------------------------------------------------------------------
 void PanelListPanel::SetSelectedPanel( Panel *panel )
 {
-	if ( panel != m_hSelectedItem )
-	{
-		// notify the panels of the selection change
-		if ( m_hSelectedItem )
-		{
-			PostMessage( m_hSelectedItem.Get(), new KeyValues("PanelSelected", "state", 0) );
-		}
-		if ( panel )
-		{
-			PostMessage( panel, new KeyValues("PanelSelected", "state", 1) );
-		}
-		m_hSelectedItem = panel;
-	}
+    if ( panel != m_hSelectedItem )
+    {
+        // notify the panels of the selection change
+        if ( m_hSelectedItem )
+        {
+            PostMessage( m_hSelectedItem.Get(), new KeyValues("PanelSelected", "state", 0) );
+        }
+        if ( panel )
+        {
+            PostMessage( panel, new KeyValues("PanelSelected", "state", 1) );
+        }
+        m_hSelectedItem = panel;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -438,38 +438,38 @@ void PanelListPanel::SetSelectedPanel( Panel *panel )
 //-----------------------------------------------------------------------------
 Panel *PanelListPanel::GetSelectedPanel()
 {
-	return m_hSelectedItem;
+    return m_hSelectedItem;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void PanelListPanel::ScrollToItem( int itemNumber )
 {
-	if (!m_vbar->IsVisible())
-	{
-		return;
-	}
+    if (!m_vbar->IsVisible())
+    {
+        return;
+    }
 
-	DATAITEM& item = m_DataItems[ m_SortedItems[ itemNumber ] ];
-	if ( !item.panel )
-		return;
+    DATAITEM& item = m_DataItems[ m_SortedItems[ itemNumber ] ];
+    if ( !item.panel )
+        return;
 
-	int x, y;
-	item.panel->GetPos( x, y );
-	int lx, ly;
-	lx = x;
-	ly = y;
-	m_pPanelEmbedded->LocalToScreen( lx, ly );
-	ScreenToLocal( lx, ly );
+    int x, y;
+    item.panel->GetPos( x, y );
+    int lx, ly;
+    lx = x;
+    ly = y;
+    m_pPanelEmbedded->LocalToScreen( lx, ly );
+    ScreenToLocal( lx, ly );
 
-	int h = item.panel->GetTall();
+    int h = item.panel->GetTall();
 
-	if ( ly >= 0 && ly + h < GetTall() )
-		return;
+    if ( ly >= 0 && ly + h < GetTall() )
+        return;
 
-	m_vbar->SetValue( y );
-	InvalidateLayout();
+    m_vbar->SetValue( y );
+    InvalidateLayout();
 }
 
 

@@ -14,7 +14,7 @@ DEFINE_GUID(CLSID_CCompressConvert ## Name,  \
 
 #define MyClass_a(Name, id, subId)  \
 MyClass2_a(Name ## _Encoder, id, subId, 0x01) \
-MyClass2_a(Name ## _Decoder, id, subId, 0x00) 
+MyClass2_a(Name ## _Decoder, id, subId, 0x00)
 
 MyClass_a(BCJ2_x86, 0x01, 0x1B)
 
@@ -57,7 +57,7 @@ public:
     ~CCoderReleaser() {  _coder->ReleaseStreams(); }
   };
 
-public: 
+public:
 
   MY_UNKNOWN_IMP
 
@@ -75,14 +75,14 @@ public:
       const UInt64 **outSizes,
       UInt32 numOutStreams,
       ICompressProgressInfo *progress);
-}; 
+};
 
 #endif
 
 class CBCJ2_x86_Decoder:
   public ICompressCoder2,
   public CMyUnknownImp
-{ 
+{
 public:
   CInBuffer _mainInStream;
   CInBuffer _callStream;
@@ -112,7 +112,7 @@ public:
     ~CCoderReleaser()  { _coder->ReleaseStreams(); }
   };
 
-public: 
+public:
   MY_UNKNOWN_IMP
   HRESULT CodeReal(ISequentialInStream **inStreams,
       const UInt64 **inSizes,
@@ -128,6 +128,6 @@ public:
       const UInt64 **outSizes,
       UInt32 numOutStreams,
       ICompressProgressInfo *progress);
-}; 
+};
 
 #endif

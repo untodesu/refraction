@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -15,7 +15,7 @@
 
 // Loops that poll sockets should Sleep for this amount of time between iterations
 // so they don't hog all the CPU.
-#define LOOP_POLL_INTERVAL	5
+#define LOOP_POLL_INTERVAL  5
 
 
 // Useful for putting the arguments into a printf statement.
@@ -26,21 +26,21 @@
 class CIPAddr
 {
 public:
-					CIPAddr();
-					CIPAddr( const int inputIP[4], const int inputPort );
-					CIPAddr( int ip0, int ip1, int ip2, int ip3, int ipPort );
-	
-	void			Init( int ip0, int ip1, int ip2, int ip3, int ipPort );
-	bool			operator==( const CIPAddr &o ) const;
-	bool			operator!=( const CIPAddr &o ) const;
+                    CIPAddr();
+                    CIPAddr( const int inputIP[4], const int inputPort );
+                    CIPAddr( int ip0, int ip1, int ip2, int ip3, int ipPort );
 
-	// Setup to send to the local machine on the specified port.
-	void			SetupLocal( int inPort );
+    void            Init( int ip0, int ip1, int ip2, int ip3, int ipPort );
+    bool            operator==( const CIPAddr &o ) const;
+    bool            operator!=( const CIPAddr &o ) const;
+
+    // Setup to send to the local machine on the specified port.
+    void            SetupLocal( int inPort );
 
 public:
 
-	unsigned char	ip[4];
-	unsigned short	port;
+    unsigned char   ip[4];
+    unsigned short  port;
 };
 
 
@@ -50,21 +50,21 @@ public:
 class CChunkWalker
 {
 public:
-					CChunkWalker( void const * const *pChunks, const int *pChunkLengths, int nChunks );
+                    CChunkWalker( void const * const *pChunks, const int *pChunkLengths, int nChunks );
 
-	int				GetTotalLength() const;
-	void			CopyTo( void *pOut, int nBytes );	
+    int             GetTotalLength() const;
+    void            CopyTo( void *pOut, int nBytes );
 
 private:
-	
-	void const * const		*m_pChunks;
-	const int				*m_pChunkLengths;
-	int						m_nChunks;
-	
-	int						m_iCurChunk;
-	int						m_iCurChunkPos;
 
-	int						m_TotalLength;
+    void const * const      *m_pChunks;
+    const int               *m_pChunkLengths;
+    int                     m_nChunks;
+
+    int                     m_iCurChunk;
+    int                     m_iCurChunkPos;
+
+    int                     m_TotalLength;
 };
 
 
@@ -75,23 +75,23 @@ private:
 // CWaitTimer waitTimer( 5.0 );
 // while ( 1 )
 // {
-//		do your thing here like Recv() from a socket.
+//      do your thing here like Recv() from a socket.
 //
-//		if ( waitTimer.ShouldKeepWaiting() )
-//			Sleep() for some time interval like 5ms so you don't hog the CPU
-//		else
-//			BREAK HERE
+//      if ( waitTimer.ShouldKeepWaiting() )
+//          Sleep() for some time interval like 5ms so you don't hog the CPU
+//      else
+//          BREAK HERE
 // }
 class CWaitTimer
 {
 public:
-			CWaitTimer( double flSeconds );
+            CWaitTimer( double flSeconds );
 
-	bool	ShouldKeepWaiting();	
+    bool    ShouldKeepWaiting();
 
 private:
-	unsigned long	m_StartTime;
-	unsigned long	m_WaitMS;
+    unsigned long   m_StartTime;
+    unsigned long   m_WaitMS;
 };
 
 
@@ -103,29 +103,29 @@ class ISocket
 {
 public:
 
-	// Call this when you're done.	
-	virtual void	Release() = 0;
+    // Call this when you're done.
+    virtual void    Release() = 0;
 
-	
-	// Bind the socket so you can send and receive with it.
-	// If you bind to port 0, then the system will select the port for you.
-	virtual bool	Bind( const CIPAddr *pAddr ) = 0;
-	virtual bool	BindToAny( const unsigned short port ) = 0;
 
-	
-	// Broadcast some data.
-	virtual bool	Broadcast( const void *pData, const int len, const unsigned short port ) = 0;
-	
-	// Send a packet.
-	virtual bool	SendTo( const CIPAddr *pAddr, const void *pData, const int len ) = 0;
-	virtual bool	SendChunksTo( const CIPAddr *pAddr, void const * const *pChunks, const int *pChunkLengths, int nChunks ) = 0;
+    // Bind the socket so you can send and receive with it.
+    // If you bind to port 0, then the system will select the port for you.
+    virtual bool    Bind( const CIPAddr *pAddr ) = 0;
+    virtual bool    BindToAny( const unsigned short port ) = 0;
 
-	// Receive a packet. Returns the length received or -1 if no data came in.
-	// If pFrom is set, then it is filled in with the sender's IP address.
-	virtual int		RecvFrom( void *pData, int maxDataLen, CIPAddr *pFrom ) = 0;
 
-	// How long has it been since we successfully received a packet?
-	virtual double	GetRecvTimeout() = 0;
+    // Broadcast some data.
+    virtual bool    Broadcast( const void *pData, const int len, const unsigned short port ) = 0;
+
+    // Send a packet.
+    virtual bool    SendTo( const CIPAddr *pAddr, const void *pData, const int len ) = 0;
+    virtual bool    SendChunksTo( const CIPAddr *pAddr, void const * const *pChunks, const int *pChunkLengths, int nChunks ) = 0;
+
+    // Receive a packet. Returns the length received or -1 if no data came in.
+    // If pFrom is set, then it is filled in with the sender's IP address.
+    virtual int     RecvFrom( void *pData, int maxDataLen, CIPAddr *pFrom ) = 0;
+
+    // How long has it been since we successfully received a packet?
+    virtual double  GetRecvTimeout() = 0;
 };
 
 // Create a connectionless socket that you can send packets out of.
@@ -134,10 +134,10 @@ ISocket* CreateIPSocket();
 // This sets up the socket to receive multicast data on the specified group.
 // By default, localInterface is INADDR_ANY, but if you want to specify a specific interface
 // the data should come in through, you can.
-ISocket* CreateMulticastListenSocket( 
-	const CIPAddr &addr, 
-	const CIPAddr &localInterface = CIPAddr() 
-	);
+ISocket* CreateMulticastListenSocket(
+    const CIPAddr &addr,
+    const CIPAddr &localInterface = CIPAddr()
+    );
 
 
 // Setup a CIPAddr from the string. The string can be a dotted IP address or

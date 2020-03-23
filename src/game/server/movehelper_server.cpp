@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -11,7 +11,7 @@
 #include "player.h"
 #include "model_types.h"
 #include "movehelper_server.h"
-#include "shake.h"				// For screen fade constants
+#include "shake.h"              // For screen fade constants
 #include "engine/IEngineSound.h"
 
 //=============================================================================
@@ -41,47 +41,47 @@ extern IPhysicsCollision *physcollision;
 class CMoveHelperServer : public IMoveHelperServer
 {
 public:
-	CMoveHelperServer( void );
-	virtual ~CMoveHelperServer();
+    CMoveHelperServer( void );
+    virtual ~CMoveHelperServer();
 
-	// Methods associated with a particular entity
-	virtual	char const*		GetName( EntityHandle_t handle ) const;
+    // Methods associated with a particular entity
+    virtual char const*     GetName( EntityHandle_t handle ) const;
 
-	// Touch list...
-	virtual void	ResetTouchList( void );
-	virtual bool	AddToTouched( const trace_t &tr, const Vector& impactvelocity );
- 	virtual void	ProcessImpacts( void );
+    // Touch list...
+    virtual void    ResetTouchList( void );
+    virtual bool    AddToTouched( const trace_t &tr, const Vector& impactvelocity );
+    virtual void    ProcessImpacts( void );
 
-	virtual bool	PlayerFallingDamage( void );
-	virtual void	PlayerSetAnimation( PLAYER_ANIM eAnim );
+    virtual bool    PlayerFallingDamage( void );
+    virtual void    PlayerSetAnimation( PLAYER_ANIM eAnim );
 
-	// Numbered line printf
-	virtual void	Con_NPrintf( int idx, char const* fmt, ... );
-	
-	// These have separate server vs client impementations
-	virtual void	StartSound( const Vector& origin, int channel, char const* sample, float volume, soundlevel_t soundlevel, int fFlags, int pitch );
-	virtual void	StartSound( const Vector& origin, const char *soundname ); 
+    // Numbered line printf
+    virtual void    Con_NPrintf( int idx, char const* fmt, ... );
 
-	virtual void	PlaybackEventFull( int flags, int clientindex, unsigned short eventindex, float delay, Vector& origin, Vector& angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
-	virtual IPhysicsSurfaceProps *GetSurfaceProps( void );
+    // These have separate server vs client impementations
+    virtual void    StartSound( const Vector& origin, int channel, char const* sample, float volume, soundlevel_t soundlevel, int fFlags, int pitch );
+    virtual void    StartSound( const Vector& origin, const char *soundname );
 
-	void			SetHost( CBasePlayer *host );
+    virtual void    PlaybackEventFull( int flags, int clientindex, unsigned short eventindex, float delay, Vector& origin, Vector& angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
+    virtual IPhysicsSurfaceProps *GetSurfaceProps( void );
 
-	virtual bool IsWorldEntity( const CBaseHandle &handle );
+    void            SetHost( CBasePlayer *host );
+
+    virtual bool IsWorldEntity( const CBaseHandle &handle );
 
 private:
-	CBasePlayer*	m_pHostPlayer;
+    CBasePlayer*    m_pHostPlayer;
 
-	// results, tallied on client and server, but only used by server to run SV_Impact.
-	// we store off our velocity in the trace_t structure so that we can determine results
-	// of shoving boxes etc. around.
-	struct touchlist_t
-	{
-		Vector	deltavelocity;
-		trace_t trace;
-	};
+    // results, tallied on client and server, but only used by server to run SV_Impact.
+    // we store off our velocity in the trace_t structure so that we can determine results
+    // of shoving boxes etc. around.
+    struct touchlist_t
+    {
+        Vector  deltavelocity;
+        trace_t trace;
+    };
 
-	CUtlVector<touchlist_t>	m_TouchList;
+    CUtlVector<touchlist_t> m_TouchList;
 };
 
 
@@ -93,8 +93,8 @@ IMPLEMENT_MOVEHELPER();
 
 IMoveHelperServer* MoveHelperServer()
 {
-	static CMoveHelperServer s_MoveHelperServer;
-	return &s_MoveHelperServer;
+    static CMoveHelperServer s_MoveHelperServer;
+    return &s_MoveHelperServer;
 }
 
 
@@ -104,7 +104,7 @@ IMoveHelperServer* MoveHelperServer()
 
 static inline edict_t* GetEdict( EntityHandle_t handle )
 {
-	return gEntList.GetEdict( handle );
+    return gEntList.GetEdict( handle );
 }
 
 
@@ -114,13 +114,13 @@ static inline edict_t* GetEdict( EntityHandle_t handle )
 
 CMoveHelperServer::CMoveHelperServer( void ) : m_TouchList( 0, 128 )
 {
-	m_pHostPlayer = 0;
-	SetSingleton( this );
+    m_pHostPlayer = 0;
+    SetSingleton( this );
 }
 
 CMoveHelperServer::~CMoveHelperServer( void )
 {
-	SetSingleton( 0 );
+    SetSingleton( 0 );
 }
 
 //-----------------------------------------------------------------------------
@@ -129,10 +129,10 @@ CMoveHelperServer::~CMoveHelperServer( void )
 
 void CMoveHelperServer::SetHost( CBasePlayer *host )
 {
-	m_pHostPlayer = host;
+    m_pHostPlayer = host;
 
-	// In case any stuff is ever left over, sigh...
-	ResetTouchList();
+    // In case any stuff is ever left over, sigh...
+    ResetTouchList();
 }
 
 
@@ -141,33 +141,33 @@ void CMoveHelperServer::SetHost( CBasePlayer *host )
 //-----------------------------------------------------------------------------
 char const* CMoveHelperServer::GetName( EntityHandle_t handle ) const
 {
-	// This ain't pertickulerly fast, but it's for debugging anyways
-	edict_t* pEdict = GetEdict(handle);
-	CBaseEntity *ent = CBaseEntity::Instance( pEdict );
-	
-	// Is it the world?
-	if (ENTINDEX(pEdict) == 0)
-		return STRING(gpGlobals->mapname);
+    // This ain't pertickulerly fast, but it's for debugging anyways
+    edict_t* pEdict = GetEdict(handle);
+    CBaseEntity *ent = CBaseEntity::Instance( pEdict );
 
-	// Is it a model?
-	if ( ent && ent->GetModelName() != NULL_STRING )
-		return STRING( ent->GetModelName() );
+    // Is it the world?
+    if (ENTINDEX(pEdict) == 0)
+        return STRING(gpGlobals->mapname);
 
-	if ( ent->GetClassname() != NULL )
-	{
-		return ent->GetClassname();
-	}
+    // Is it a model?
+    if ( ent && ent->GetModelName() != NULL_STRING )
+        return STRING( ent->GetModelName() );
 
-	return "?";
-}	
+    if ( ent->GetClassname() != NULL )
+    {
+        return ent->GetClassname();
+    }
+
+    return "?";
+}
 
 //-----------------------------------------------------------------------------
-// When we do a collision test, we report everything we hit.. 
+// When we do a collision test, we report everything we hit..
 //-----------------------------------------------------------------------------
 
 void CMoveHelperServer::ResetTouchList( void )
 {
-	m_TouchList.RemoveAll();
+    m_TouchList.RemoveAll();
 }
 
 
@@ -177,32 +177,32 @@ void CMoveHelperServer::ResetTouchList( void )
 
 bool CMoveHelperServer::AddToTouched( const trace_t &tr, const Vector& impactvelocity )
 {
-	Assert( m_pHostPlayer );
+    Assert( m_pHostPlayer );
 
-	// Trace missed
-	if ( !tr.m_pEnt )
-		return false;
+    // Trace missed
+    if ( !tr.m_pEnt )
+        return false;
 
-	if ( tr.m_pEnt == m_pHostPlayer )
-	{
-		Assert( !"CMoveHelperServer::AddToTouched:  Tried to add self to touchlist!!!" );
-		return false;
-	}
+    if ( tr.m_pEnt == m_pHostPlayer )
+    {
+        Assert( !"CMoveHelperServer::AddToTouched:  Tried to add self to touchlist!!!" );
+        return false;
+    }
 
-	// Check for duplicate entities
-	for ( int j = m_TouchList.Size(); --j >= 0; )
-	{
-		if ( m_TouchList[j].trace.m_pEnt == tr.m_pEnt )
-		{
-			return false;
-		}
-	}
-	
-	int i = m_TouchList.AddToTail();
-	m_TouchList[i].trace = tr;
-	VectorCopy( impactvelocity, m_TouchList[i].deltavelocity );
+    // Check for duplicate entities
+    for ( int j = m_TouchList.Size(); --j >= 0; )
+    {
+        if ( m_TouchList[j].trace.m_pEnt == tr.m_pEnt )
+        {
+            return false;
+        }
+    }
 
-	return true;
+    int i = m_TouchList.AddToTail();
+    m_TouchList[i].trace = tr;
+    VectorCopy( impactvelocity, m_TouchList[i].deltavelocity );
+
+    return true;
 }
 
 
@@ -211,113 +211,113 @@ bool CMoveHelperServer::AddToTouched( const trace_t &tr, const Vector& impactvel
 //-----------------------------------------------------------------------------
 void CMoveHelperServer::ProcessImpacts( void )
 {
-	Assert( m_pHostPlayer );
+    Assert( m_pHostPlayer );
 
-	// Relink in order to build absorigin and absmin/max to reflect any changes
-	//  from prediction.  Relink will early out on SOLID_NOT
-	m_pHostPlayer->PhysicsTouchTriggers();
+    // Relink in order to build absorigin and absmin/max to reflect any changes
+    //  from prediction.  Relink will early out on SOLID_NOT
+    m_pHostPlayer->PhysicsTouchTriggers();
 
-	// Don't bother if the player ain't solid
-	if ( m_pHostPlayer->IsSolidFlagSet( FSOLID_NOT_SOLID ) )
-		return;
+    // Don't bother if the player ain't solid
+    if ( m_pHostPlayer->IsSolidFlagSet( FSOLID_NOT_SOLID ) )
+        return;
 
-	// Save off the velocity, cause we need to temporarily reset it
-	Vector vel = m_pHostPlayer->GetAbsVelocity();
+    // Save off the velocity, cause we need to temporarily reset it
+    Vector vel = m_pHostPlayer->GetAbsVelocity();
 
-	// Touch other objects that were intersected during the movement.
-	for (int i = 0 ; i < m_TouchList.Size(); i++)
-	{
-		CBaseHandle entindex = m_TouchList[i].trace.m_pEnt->GetRefEHandle();
+    // Touch other objects that were intersected during the movement.
+    for (int i = 0 ; i < m_TouchList.Size(); i++)
+    {
+        CBaseHandle entindex = m_TouchList[i].trace.m_pEnt->GetRefEHandle();
 
-		// We should have culled negative indices by now
-		Assert( entindex.IsValid() );
+        // We should have culled negative indices by now
+        Assert( entindex.IsValid() );
 
-		edict_t* ent = GetEdict( entindex );
-		if (!ent)
-			continue;
+        edict_t* ent = GetEdict( entindex );
+        if (!ent)
+            continue;
 
-		// Run the impact function as if we had run it during movement.
-		CBaseEntity *entity = GetContainingEntity( ent );
-		if ( !entity )
-			continue;
+        // Run the impact function as if we had run it during movement.
+        CBaseEntity *entity = GetContainingEntity( ent );
+        if ( !entity )
+            continue;
 
-		Assert( entity != m_pHostPlayer );
-		// Don't ever collide with self!!!!
-		if ( entity == m_pHostPlayer )
-			continue;
+        Assert( entity != m_pHostPlayer );
+        // Don't ever collide with self!!!!
+        if ( entity == m_pHostPlayer )
+            continue;
 
-		// Reconstruct trace results.
-		m_TouchList[i].trace.m_pEnt = CBaseEntity::Instance( ent );
+        // Reconstruct trace results.
+        m_TouchList[i].trace.m_pEnt = CBaseEntity::Instance( ent );
 
-		// Use the velocity we had when we collided, so boxes will move, etc.
-		m_pHostPlayer->SetAbsVelocity( m_TouchList[i].deltavelocity );
-		
-		entity->PhysicsImpact( m_pHostPlayer, m_TouchList[i].trace );
-	}
+        // Use the velocity we had when we collided, so boxes will move, etc.
+        m_pHostPlayer->SetAbsVelocity( m_TouchList[i].deltavelocity );
 
-	// Restore the velocity
-	m_pHostPlayer->SetAbsVelocity( vel );
+        entity->PhysicsImpact( m_pHostPlayer, m_TouchList[i].trace );
+    }
 
-	// So no stuff is ever left over, sigh...
-	ResetTouchList();
+    // Restore the velocity
+    m_pHostPlayer->SetAbsVelocity( vel );
+
+    // So no stuff is ever left over, sigh...
+    ResetTouchList();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : origin - 
-//			*soundname - 
+// Purpose:
+// Input  : origin -
+//          *soundname -
 //-----------------------------------------------------------------------------
 void CMoveHelperServer::StartSound( const Vector& origin, const char *soundname )
 {
-	//MDB - Changing this to send to PAS, as the overloaded function below has done.
-	//Also removed the UsePredictionRules, client does not yet play the equivalent sound
+    //MDB - Changing this to send to PAS, as the overloaded function below has done.
+    //Also removed the UsePredictionRules, client does not yet play the equivalent sound
 
-	CRecipientFilter filter;
-	filter.AddRecipientsByPAS( origin );
+    CRecipientFilter filter;
+    filter.AddRecipientsByPAS( origin );
 
-	CBaseEntity::EmitSound( filter, m_pHostPlayer->entindex(), soundname );
+    CBaseEntity::EmitSound( filter, m_pHostPlayer->entindex(), soundname );
 }
 
 //-----------------------------------------------------------------------------
 // plays a sound
 //-----------------------------------------------------------------------------
-void CMoveHelperServer::StartSound( const Vector& origin, int channel, char const* sample, 
-						float volume, soundlevel_t soundlevel, int fFlags, int pitch )
+void CMoveHelperServer::StartSound( const Vector& origin, int channel, char const* sample,
+                        float volume, soundlevel_t soundlevel, int fFlags, int pitch )
 {
 
-	CRecipientFilter filter;
-	filter.AddRecipientsByPAS( origin );
-	// FIXME, these sounds should not go to the host entity ( SND_NOTHOST )
-	if ( gpGlobals->maxClients == 1 )
-	{
-		// Always send sounds down in SP
+    CRecipientFilter filter;
+    filter.AddRecipientsByPAS( origin );
+    // FIXME, these sounds should not go to the host entity ( SND_NOTHOST )
+    if ( gpGlobals->maxClients == 1 )
+    {
+        // Always send sounds down in SP
 
-		EmitSound_t ep;
-		ep.m_nChannel = channel;
-		ep.m_pSoundName = sample;
-		ep.m_flVolume = volume;
-		ep.m_SoundLevel = soundlevel;
-		ep.m_nFlags = fFlags;
-		ep.m_nPitch = pitch;
-		ep.m_pOrigin = &origin;
+        EmitSound_t ep;
+        ep.m_nChannel = channel;
+        ep.m_pSoundName = sample;
+        ep.m_flVolume = volume;
+        ep.m_SoundLevel = soundlevel;
+        ep.m_nFlags = fFlags;
+        ep.m_nPitch = pitch;
+        ep.m_pOrigin = &origin;
 
-		CBaseEntity::EmitSound( filter, m_pHostPlayer->entindex(), ep );
-	}
-	else
-	{
-		filter.UsePredictionRules();
+        CBaseEntity::EmitSound( filter, m_pHostPlayer->entindex(), ep );
+    }
+    else
+    {
+        filter.UsePredictionRules();
 
-		EmitSound_t ep;
-		ep.m_nChannel = channel;
-		ep.m_pSoundName = sample;
-		ep.m_flVolume = volume;
-		ep.m_SoundLevel = soundlevel;
-		ep.m_nFlags = fFlags;
-		ep.m_nPitch = pitch;
-		ep.m_pOrigin = &origin;
+        EmitSound_t ep;
+        ep.m_nChannel = channel;
+        ep.m_pSoundName = sample;
+        ep.m_flVolume = volume;
+        ep.m_SoundLevel = soundlevel;
+        ep.m_nFlags = fFlags;
+        ep.m_nPitch = pitch;
+        ep.m_pOrigin = &origin;
 
-		CBaseEntity::EmitSound( filter, m_pHostPlayer->entindex(), ep );
-	}
+        CBaseEntity::EmitSound( filter, m_pHostPlayer->entindex(), ep );
+    }
 }
 
 
@@ -326,44 +326,44 @@ void CMoveHelperServer::StartSound( const Vector& origin, int channel, char cons
 //-----------------------------------------------------------------------------
 void CMoveHelperServer::PlaybackEventFull( int flags, int clientindex, unsigned short eventindex, float delay, Vector& origin, Vector& angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 )
 {
-	// FIXME, Redo with new event system parameter stuff
+    // FIXME, Redo with new event system parameter stuff
 }
 
 IPhysicsSurfaceProps *CMoveHelperServer::GetSurfaceProps( void )
 {
-	extern IPhysicsSurfaceProps *physprops;
-	return physprops;
+    extern IPhysicsSurfaceProps *physprops;
+    return physprops;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Note that this only works on a listen server (since it requires graphical output)
-//			*pFormat - 
-//			... - 
+//          *pFormat -
+//          ... -
 //-----------------------------------------------------------------------------
 void CMoveHelperServer::Con_NPrintf( int idx, char const* pFormat, ...)
 {
-	va_list marker;
-	char msg[8192];
+    va_list marker;
+    char msg[8192];
 
-	va_start(marker, pFormat);
-	Q_vsnprintf(msg, sizeof( msg ), pFormat, marker);
-	va_end(marker);
-	
-	engine->Con_NPrintf( idx, msg );
+    va_start(marker, pFormat);
+    Q_vsnprintf(msg, sizeof( msg ), pFormat, marker);
+    va_end(marker);
+
+    engine->Con_NPrintf( idx, msg );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Called when the player falls onto a surface fast enough to take
-//			damage, according to the rules in CGameMovement::CheckFalling.
+//          damage, according to the rules in CGameMovement::CheckFalling.
 // Output : Returns true if the player survived the fall, false if they died.
 //-----------------------------------------------------------------------------
 bool CMoveHelperServer::PlayerFallingDamage( void )
 {
-	float flFallDamage = g_pGameRules->FlPlayerFallDamage( m_pHostPlayer );	
-	if ( flFallDamage > 0 )
-	{
-		m_pHostPlayer->TakeDamage( CTakeDamageInfo( GetContainingEntity(INDEXENT(0)), GetContainingEntity(INDEXENT(0)), flFallDamage, DMG_FALL ) ); 
-		StartSound( m_pHostPlayer->GetAbsOrigin(), "Player.FallDamage" );
+    float flFallDamage = g_pGameRules->FlPlayerFallDamage( m_pHostPlayer );
+    if ( flFallDamage > 0 )
+    {
+        m_pHostPlayer->TakeDamage( CTakeDamageInfo( GetContainingEntity(INDEXENT(0)), GetContainingEntity(INDEXENT(0)), flFallDamage, DMG_FALL ) );
+        StartSound( m_pHostPlayer->GetAbsOrigin(), "Player.FallDamage" );
 
         //=============================================================================
         // HPE_BEGIN:
@@ -387,17 +387,17 @@ bool CMoveHelperServer::PlayerFallingDamage( void )
 
     }
 
-	if ( m_pHostPlayer->m_iHealth <= 0 )
-	{
-		if ( g_pGameRules->FlPlayerFallDeathDoesScreenFade( m_pHostPlayer ) )
-		{
-			color32 black = {0, 0, 0, 255};
-			UTIL_ScreenFade( m_pHostPlayer, black, 0, 9999, FFADE_OUT | FFADE_STAYOUT );
-		}
-		return(false);
-	}
+    if ( m_pHostPlayer->m_iHealth <= 0 )
+    {
+        if ( g_pGameRules->FlPlayerFallDeathDoesScreenFade( m_pHostPlayer ) )
+        {
+            color32 black = {0, 0, 0, 255};
+            UTIL_ScreenFade( m_pHostPlayer, black, 0, 9999, FFADE_OUT | FFADE_STAYOUT );
+        }
+        return(false);
+    }
 
-	return(true);
+    return(true);
 }
 
 
@@ -407,10 +407,10 @@ bool CMoveHelperServer::PlayerFallingDamage( void )
 //-----------------------------------------------------------------------------
 void CMoveHelperServer::PlayerSetAnimation( PLAYER_ANIM eAnim )
 {
-	m_pHostPlayer->SetAnimation( eAnim );
+    m_pHostPlayer->SetAnimation( eAnim );
 }
 
 bool CMoveHelperServer::IsWorldEntity( const CBaseHandle &handle )
 {
-	return handle == CBaseEntity::Instance( 0 );
+    return handle == CBaseEntity::Instance( 0 );
 }

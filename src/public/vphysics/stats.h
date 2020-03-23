@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -13,27 +13,27 @@
 // internal counters to measure cost of physics simulation
 struct physics_stats_t
 {
-	float	maxRescueSpeed;
-	float	maxSpeedGain;
-	
-	int		impactSysNum;
-	int		impactCounter;
-	int		impactSumSys;
-	int		impactHardRescueCount;
-	int		impactRescueAfterCount;
-	int		impactDelayedCount;
-	int		impactCollisionChecks;
-	int		impactStaticCount;
+    float   maxRescueSpeed;
+    float   maxSpeedGain;
 
-	double	totalEnergyDestroyed;
-	int		collisionPairsTotal;
-	int		collisionPairsCreated;
-	int		collisionPairsDestroyed;
+    int     impactSysNum;
+    int     impactCounter;
+    int     impactSumSys;
+    int     impactHardRescueCount;
+    int     impactRescueAfterCount;
+    int     impactDelayedCount;
+    int     impactCollisionChecks;
+    int     impactStaticCount;
 
-	int		potentialCollisionsObjectVsObject;
-	int		potentialCollisionsObjectVsWorld;
+    double  totalEnergyDestroyed;
+    int     collisionPairsTotal;
+    int     collisionPairsCreated;
+    int     collisionPairsDestroyed;
 
-	int		frictionEventsProcessed;
+    int     potentialCollisionsObjectVsObject;
+    int     potentialCollisionsObjectVsWorld;
+
+    int     frictionEventsProcessed;
 };
 
 

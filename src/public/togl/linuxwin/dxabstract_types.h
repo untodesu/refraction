@@ -9,7 +9,7 @@
 #pragma once
 
 #if GL_BATCH_PERF_ANALYSIS
-	class simple_bitmap;
+    class simple_bitmap;
 #endif
 
 struct IUnknown;
@@ -39,15 +39,15 @@ class CGLMProgram;
 class CGLMFBO;
 
 #ifdef TOGL_DLL_EXPORT
-	#define TOGL_INTERFACE	DLL_EXPORT
-	#define TOGL_OVERLOAD	DLL_GLOBAL_EXPORT
-	#define TOGL_CLASS		DLL_CLASS_EXPORT
-	#define TOGL_GLOBAL		DLL_GLOBAL_EXPORT
+    #define TOGL_INTERFACE  DLL_EXPORT
+    #define TOGL_OVERLOAD   DLL_GLOBAL_EXPORT
+    #define TOGL_CLASS      DLL_CLASS_EXPORT
+    #define TOGL_GLOBAL     DLL_GLOBAL_EXPORT
 #else
-	#define TOGL_INTERFACE	DLL_IMPORT
-	#define TOGL_OVERLOAD	DLL_GLOBAL_IMPORT
-	#define TOGL_CLASS		DLL_CLASS_IMPORT
-	#define TOGL_GLOBAL		DLL_GLOBAL_IMPORT
+    #define TOGL_INTERFACE  DLL_IMPORT
+    #define TOGL_OVERLOAD   DLL_GLOBAL_IMPORT
+    #define TOGL_CLASS      DLL_CLASS_IMPORT
+    #define TOGL_GLOBAL     DLL_GLOBAL_IMPORT
 #endif
 
 #ifdef OSX
@@ -71,96 +71,96 @@ typedef void* VD3DHANDLE;
 //
 #if !defined(_WINNT_)
 
-	typedef int INT;
-	typedef unsigned long ULONG;
-	typedef long LONG;
-	typedef float FLOAT;
-	typedef unsigned int DWORD;
-	typedef unsigned short WORD;
-	typedef long long LONGLONG;
-	typedef unsigned int UINT;
-	typedef long HRESULT;
-	typedef unsigned char BYTE;
-	#define CONST const
-		
-	#if defined(POSIX)
-		typedef size_t ULONG_PTR;
-	#else
-		typedef unsigned long ULONG_PTR;
-	#endif
+    typedef int INT;
+    typedef unsigned long ULONG;
+    typedef long LONG;
+    typedef float FLOAT;
+    typedef unsigned int DWORD;
+    typedef unsigned short WORD;
+    typedef long long LONGLONG;
+    typedef unsigned int UINT;
+    typedef long HRESULT;
+    typedef unsigned char BYTE;
+    #define CONST const
 
-	typedef ULONG_PTR SIZE_T;
+    #if defined(POSIX)
+        typedef size_t ULONG_PTR;
+    #else
+        typedef unsigned long ULONG_PTR;
+    #endif
 
-	typedef const char* LPCSTR;
-	typedef char* LPSTR;
-	typedef DWORD* LPDWORD;
+    typedef ULONG_PTR SIZE_T;
 
-	#define ZeroMemory RtlZeroMemory
-	#define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
+    typedef const char* LPCSTR;
+    typedef char* LPSTR;
+    typedef DWORD* LPDWORD;
 
-	typedef union _LARGE_INTEGER 
-	{
-		struct 
-		{
-			DWORD LowPart;
-			LONG HighPart;
-		};
-		struct 
-		{
-			DWORD LowPart;
-			LONG HighPart;
-		} u;
-		LONGLONG QuadPart;
-	} LARGE_INTEGER;
+    #define ZeroMemory RtlZeroMemory
+    #define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
 
-	typedef struct _GUID 
-	{
-		bool operator==( const struct _GUID &other ) const;
+    typedef union _LARGE_INTEGER
+    {
+        struct
+        {
+            DWORD LowPart;
+            LONG HighPart;
+        };
+        struct
+        {
+            DWORD LowPart;
+            LONG HighPart;
+        } u;
+        LONGLONG QuadPart;
+    } LARGE_INTEGER;
 
-		unsigned long  Data1;
-		unsigned short Data2;
-		unsigned short Data3;
-		unsigned char  Data4[ 8 ];
-	} GUID;
+    typedef struct _GUID
+    {
+        bool operator==( const struct _GUID &other ) const;
 
-	typedef struct _RECT 
-	{
-		int left;
-		int top;
-		int right;
-		int bottom;
-	} RECT;
+        unsigned long  Data1;
+        unsigned short Data2;
+        unsigned short Data3;
+        unsigned char  Data4[ 8 ];
+    } GUID;
 
-	typedef struct tagPOINT
-	{
-		LONG  x;
-		LONG  y;
-	} POINT, *PPOINT, *LPPOINT;
+    typedef struct _RECT
+    {
+        int left;
+        int top;
+        int right;
+        int bottom;
+    } RECT;
 
-	typedef struct _MEMORYSTATUS 
-	{
-	    DWORD dwLength;
-		SIZE_T dwTotalPhys;
-	} MEMORYSTATUS, *LPMEMORYSTATUS;
-	
-	typedef DWORD   COLORREF;
-	#define RGB(r,g,b)          ((COLORREF)(((BYTE)(r)|((WORD)((BYTE)(g))<<8))|(((DWORD)(BYTE)(b))<<16)))
+    typedef struct tagPOINT
+    {
+        LONG  x;
+        LONG  y;
+    } POINT, *PPOINT, *LPPOINT;
 
-	#define MAKE_HRESULT(sev,fac,code) ((HRESULT) (((unsigned long)(sev)<<31) | ((unsigned long)(fac)<<16) | ((unsigned long)(code))) )
+    typedef struct _MEMORYSTATUS
+    {
+        DWORD dwLength;
+        SIZE_T dwTotalPhys;
+    } MEMORYSTATUS, *LPMEMORYSTATUS;
 
-	#define S_FALSE ((HRESULT)0x00000001L)
-	#define S_OK 0
-	#define E_FAIL ((HRESULT)0x80004005L)
-	#define E_OUTOFMEMORY ((HRESULT)0x8007000EL)
+    typedef DWORD   COLORREF;
+    #define RGB(r,g,b)          ((COLORREF)(((BYTE)(r)|((WORD)((BYTE)(g))<<8))|(((DWORD)(BYTE)(b))<<16)))
 
-	#define FAILED(hr) ((HRESULT)(hr) < 0)
-	#define SUCCEEDED(hr) ((HRESULT)(hr) >= 0)
+    #define MAKE_HRESULT(sev,fac,code) ((HRESULT) (((unsigned long)(sev)<<31) | ((unsigned long)(fac)<<16) | ((unsigned long)(code))) )
 
-	struct RGNDATA
-	{
-	};
+    #define S_FALSE ((HRESULT)0x00000001L)
+    #define S_OK 0
+    #define E_FAIL ((HRESULT)0x80004005L)
+    #define E_OUTOFMEMORY ((HRESULT)0x8007000EL)
 
-	typedef const void* LPCVOID;
+    #define FAILED(hr) ((HRESULT)(hr) < 0)
+    #define SUCCEEDED(hr) ((HRESULT)(hr) >= 0)
+
+    struct RGNDATA
+    {
+    };
+
+    typedef const void* LPCVOID;
 #endif
 
 //-----------------------------------------------------------------------------
@@ -184,22 +184,22 @@ typedef enum _D3DFORMAT D3DFORMAT;
 #define D3DCOLORWRITEENABLE_ALPHA   (1L<<3)
 
 #define D3DSGR_NO_CALIBRATION 0x00000000L
-	
+
 #define D3DXINLINE inline
 
 #define D3D_SDK_VERSION   32
 
 #define _FACD3D  0x876
 #define MAKE_D3DHRESULT( code )  MAKE_HRESULT( 1, _FACD3D, code )
-	
-#define D3DERR_NOTFOUND							MAKE_D3DHRESULT(2150)
+
+#define D3DERR_NOTFOUND                         MAKE_D3DHRESULT(2150)
 #define D3DERR_DEVICELOST                       MAKE_D3DHRESULT(2152)
 #define D3DERR_NOTAVAILABLE                     MAKE_D3DHRESULT(2154)
 #define D3DERR_DEVICENOTRESET                   MAKE_D3DHRESULT(2153)
 #define D3DERR_INVALIDCALL                      MAKE_D3DHRESULT(2156)
 #define D3DERR_DRIVERINTERNALERROR              MAKE_D3DHRESULT(2087)
 #define D3DERR_OUTOFVIDEOMEMORY                 MAKE_D3DHRESULT(380)
-#define D3D_OK									S_OK
+#define D3D_OK                                  S_OK
 
 #define D3DPRESENT_RATE_DEFAULT         0x00000000
 
@@ -262,7 +262,7 @@ typedef enum _D3DFORMAT D3DFORMAT;
 
 
 
-#define D3DPTEXTURECAPS_NOPROJECTEDBUMPENV  0x00200000L /* Device does not support projected bump env lookup operation 
+#define D3DPTEXTURECAPS_NOPROJECTEDBUMPENV  0x00200000L /* Device does not support projected bump env lookup operation
                                                            in programmable and fixed function pixel shaders */
 #define D3DDEVCAPS2_STREAMOFFSET                        0x00000001L /* Device supports offsets in streams. Must be set by DX9 drivers */
 
@@ -299,7 +299,7 @@ typedef enum _D3DFORMAT D3DFORMAT;
 #define D3DPTEXTURECAPS_PROJECTED           0x00000400L /* Device can do D3DTTFF_PROJECTED */
 #define D3DTEXOPCAPS_ADD                        0x00000040L
 #define D3DTEXOPCAPS_MODULATE2X                 0x00000010L
-#define D3DPRASTERCAPS_DEPTHBIAS              0x04000000L 
+#define D3DPRASTERCAPS_DEPTHBIAS              0x04000000L
 #define D3DPRASTERCAPS_SLOPESCALEDEPTHBIAS    0x02000000L
 #define D3DVTXPCAPS_TEXGEN_SPHEREMAP    0x00000100L /* device supports D3DTSS_TCI_SPHEREMAP */
 #define D3DCAPS2_DYNAMICTEXTURES        0x20000000L
@@ -338,10 +338,10 @@ typedef enum _D3DFORMAT D3DFORMAT;
 #define D3DTA_ALPHAREPLICATE    0x00000020  // replicate alpha to color components (read modifier)
 
 
-#define D3DUSAGE_RENDERTARGET			(0x00000001L)
+#define D3DUSAGE_RENDERTARGET           (0x00000001L)
 #define D3DUSAGE_QUERY_VERTEXTEXTURE    (0x00100000L)
 #define D3DUSAGE_QUERY_FILTER           (0x00020000L)
-#define D3DUSAGE_DEPTHSTENCIL			(0x00000002L)
+#define D3DUSAGE_DEPTHSTENCIL           (0x00000002L)
 #define D3DUSAGE_WRITEONLY          (0x00000008L)
 #define D3DUSAGE_SOFTWAREPROCESSING (0x00000010L)
 #define D3DUSAGE_DYNAMIC            (0x00000200L)
@@ -512,7 +512,7 @@ typedef enum _D3DSHADER_INSTRUCTION_OPCODE_TYPE
     D3DSIO_RSQ          ,
     D3DSIO_DP3          ,
     D3DSIO_DP4          ,
-    D3DSIO_MIN          ,	//10
+    D3DSIO_MIN          ,   //10
     D3DSIO_MAX          ,
     D3DSIO_SLT          ,
     D3DSIO_SGE          ,
@@ -522,7 +522,7 @@ typedef enum _D3DSHADER_INSTRUCTION_OPCODE_TYPE
     D3DSIO_DST          ,
     D3DSIO_LRP          ,
     D3DSIO_FRC          ,
-    D3DSIO_M4x4         ,	//20
+    D3DSIO_M4x4         ,   //20
     D3DSIO_M4x3         ,
     D3DSIO_M3x4         ,
     D3DSIO_M3x3         ,
@@ -532,7 +532,7 @@ typedef enum _D3DSHADER_INSTRUCTION_OPCODE_TYPE
     D3DSIO_LOOP         ,
     D3DSIO_RET          ,
     D3DSIO_ENDLOOP      ,
-    D3DSIO_LABEL        ,	//30
+    D3DSIO_LABEL        ,   //30
     D3DSIO_DCL          ,
     D3DSIO_POW          ,
     D3DSIO_CRS          ,
@@ -542,7 +542,7 @@ typedef enum _D3DSHADER_INSTRUCTION_OPCODE_TYPE
     D3DSIO_SINCOS       ,
     D3DSIO_REP          ,
     D3DSIO_ENDREP       ,
-    D3DSIO_IF           ,	//40
+    D3DSIO_IF           ,   //40
     D3DSIO_IFC          ,
     D3DSIO_ELSE         ,
     D3DSIO_ENDIF        ,
@@ -610,7 +610,7 @@ typedef enum _D3DSWAPEFFECT
     D3DSWAPEFFECT_FORCE_DWORD       = 0x7fffffff
 } D3DSWAPEFFECT;
 
-typedef enum _D3DRESOURCETYPE 
+typedef enum _D3DRESOURCETYPE
 {
     D3DRTYPE_SURFACE                =  1,
     D3DRTYPE_TEXTURE                =  3,
@@ -618,7 +618,7 @@ typedef enum _D3DRESOURCETYPE
     D3DRTYPE_CUBETEXTURE            =  5,
     D3DRTYPE_VERTEXBUFFER           =  6,
     D3DRTYPE_INDEXBUFFER            =  7,
-	
+
     D3DRTYPE_FORCE_DWORD            = 0x7fffffff
 } D3DRESOURCETYPE;
 
@@ -628,15 +628,15 @@ typedef enum _D3DDEVTYPE
     D3DDEVTYPE_REF         = 2,
 
     D3DDEVTYPE_NULLREF     = 4,
-    
+
     D3DDEVTYPE_FORCE_DWORD  = 0x7fffffff
 } D3DDEVTYPE;
 
-typedef enum _D3DSTENCILOP 
+typedef enum _D3DSTENCILOP
 {
     D3DSTENCILOP_KEEP           = 1,
     D3DSTENCILOP_ZERO           = 2,
-	D3DSTENCILOP_REPLACE		= 3,
+    D3DSTENCILOP_REPLACE        = 3,
     D3DSTENCILOP_INCRSAT        = 4,
     D3DSTENCILOP_DECRSAT        = 5,
     D3DSTENCILOP_INVERT         = 6,
@@ -665,7 +665,7 @@ typedef enum _D3DPATCHEDGESTYLE
 
    Calling GetRenderState on D3DRS_DEBUGMONITORTOKEN is not of any use.
 */
-typedef enum _D3DDEBUGMONITORTOKENS 
+typedef enum _D3DDEBUGMONITORTOKENS
 {
     D3DDMT_ENABLE            = 0,    // enable debug monitor
 } D3DDEBUGMONITORTOKENS;
@@ -678,7 +678,7 @@ typedef enum _D3DDEGREETYPE
    D3DDEGREE_FORCE_DWORD = 0x7fffffff,
 } D3DDEGREETYPE;
 
-typedef enum _D3DBLENDOP 
+typedef enum _D3DBLENDOP
 {
     D3DBLENDOP_ADD              = 1,
     D3DBLENDOP_SUBTRACT         = 2,
@@ -712,7 +712,7 @@ typedef enum _D3DMULTISAMPLE_TYPE
 } D3DMULTISAMPLE_TYPE;
 
 /* Pool types */
-typedef enum _D3DPOOL 
+typedef enum _D3DPOOL
 {
     D3DPOOL_DEFAULT                 = 0,
     D3DPOOL_MANAGED                 = 1,
@@ -722,7 +722,7 @@ typedef enum _D3DPOOL
     D3DPOOL_FORCE_DWORD             = 0x7fffffff
 } D3DPOOL;
 
-typedef enum _D3DQUERYTYPE 
+typedef enum _D3DQUERYTYPE
 {
     D3DQUERYTYPE_RESOURCEMANAGER        = 5, /* D3DISSUE_END */
     D3DQUERYTYPE_EVENT                  = 8, /* D3DISSUE_END */
@@ -734,7 +734,7 @@ typedef enum _D3DQUERYTYPE
     D3DQUERYTYPE_CACHEUTILIZATION       = 18, /* D3DISSUE_BEGIN, D3DISSUE_END */
 } D3DQUERYTYPE;
 
-typedef enum _D3DRENDERSTATETYPE 
+typedef enum _D3DRENDERSTATETYPE
 {
     D3DRS_ZENABLE                   = 7,    /* D3DZBUFFERTYPE (or TRUE/FALSE for legacy) */
     D3DRS_FILLMODE                  = 8,    /* D3DFILLMODE */
@@ -844,7 +844,7 @@ typedef enum _D3DRENDERSTATETYPE
     D3DRS_FORCE_DWORD               = 0x7fffffff, /* force 32-bit size enum */
 } D3DRENDERSTATETYPE;
 
-typedef enum _D3DCULL 
+typedef enum _D3DCULL
 {
     D3DCULL_NONE                = 1,
     D3DCULL_CW                  = 2,
@@ -874,7 +874,7 @@ typedef enum _D3DBACKBUFFER_TYPE
 #define D3DTS_WORLD2 D3DTS_WORLDMATRIX(2)
 #define D3DTS_WORLD3 D3DTS_WORLDMATRIX(3)
 
-typedef enum _D3DCMPFUNC 
+typedef enum _D3DCMPFUNC
 {
     D3DCMP_NEVER                = 1,
     D3DCMP_LESS                 = 2,
@@ -887,7 +887,7 @@ typedef enum _D3DCMPFUNC
     D3DCMP_FORCE_DWORD          = 0x7fffffff, /* force 32-bit size enum */
 } D3DCMPFUNC;
 
-typedef enum _D3DZBUFFERTYPE 
+typedef enum _D3DZBUFFERTYPE
 {
     D3DZB_FALSE                 = 0,
     D3DZB_TRUE                  = 1, // Z buffering
@@ -895,7 +895,7 @@ typedef enum _D3DZBUFFERTYPE
     D3DZB_FORCE_DWORD           = 0x7fffffff, /* force 32-bit size enum */
 } D3DZBUFFERTYPE;
 
-typedef enum _D3DFILLMODE 
+typedef enum _D3DFILLMODE
 {
     D3DFILL_POINT               = 1,
     D3DFILL_WIREFRAME           = 2,
@@ -903,7 +903,7 @@ typedef enum _D3DFILLMODE
     D3DFILL_FORCE_DWORD         = 0x7fffffff, /* force 32-bit size enum */
 } D3DFILLMODE;
 
-typedef enum _D3DBLEND 
+typedef enum _D3DBLEND
 {
     D3DBLEND_ZERO               = 1,
     D3DBLEND_ONE                = 2,
@@ -938,7 +938,7 @@ typedef enum _D3DCUBEMAP_FACES
     D3DCUBEMAP_FACE_FORCE_DWORD    = 0x7fffffff
 } D3DCUBEMAP_FACES;
 
-typedef enum _D3DTEXTURETRANSFORMFLAGS 
+typedef enum _D3DTEXTURETRANSFORMFLAGS
 {
     D3DTTFF_DISABLE         = 0,    // texture coordinates are passed directly
     D3DTTFF_COUNT3          = 3,    // rasterizer should expect 3-D texture coords
@@ -946,7 +946,7 @@ typedef enum _D3DTEXTURETRANSFORMFLAGS
     D3DTTFF_FORCE_DWORD     = 0x7fffffff,
 } D3DTEXTURETRANSFORMFLAGS;
 
-typedef enum _D3DTEXTUREADDRESS 
+typedef enum _D3DTEXTUREADDRESS
 {
     D3DTADDRESS_WRAP            = 0,
     D3DTADDRESS_CLAMP           = 1,
@@ -954,7 +954,7 @@ typedef enum _D3DTEXTUREADDRESS
     D3DTADDRESS_FORCE_DWORD     = 0x7fffffff, /* force 32-bit size enum */
 } D3DTEXTUREADDRESS;
 
-typedef enum _D3DSHADEMODE 
+typedef enum _D3DSHADEMODE
 {
     D3DSHADE_FLAT               = 1,
     D3DSHADE_GOURAUD            = 2,
@@ -962,14 +962,14 @@ typedef enum _D3DSHADEMODE
     D3DSHADE_FORCE_DWORD        = 0x7fffffff, /* force 32-bit size enum */
 } D3DSHADEMODE;
 
-typedef enum _D3DFOGMODE 
+typedef enum _D3DFOGMODE
 {
     D3DFOG_NONE                 = 0,
     D3DFOG_LINEAR               = 3,
     D3DFOG_FORCE_DWORD          = 0x7fffffff, /* force 32-bit size enum */
 } D3DFOGMODE;
 
-typedef struct _D3DRECT 
+typedef struct _D3DRECT
 {
     LONG x1;
     LONG y1;
@@ -1009,12 +1009,12 @@ typedef enum _D3DSHADER_PARAM_REGISTER_TYPE
 #pragma warning(disable:4201) // warning C4201: nonstandard extension used : nameless struct/union
 #endif
 
-typedef struct _D3DMATRIX 
+typedef struct _D3DMATRIX
 {
-    union 
-	{
-        struct 
-		{
+    union
+    {
+        struct
+        {
             float        _11, _12, _13, _14;
             float        _21, _22, _23, _24;
             float        _31, _32, _33, _34;
@@ -1043,10 +1043,10 @@ typedef struct _D3DVERTEXBUFFER_DESC
 class TOGL_CLASS D3DXMATRIX : public D3DMATRIX
 {
 public:
-	D3DXMATRIX operator*( const D3DXMATRIX &o ) const;
-	operator FLOAT* ();
-	float& operator()( int row, int column );
-	const float& operator()( int row, int column ) const;
+    D3DXMATRIX operator*( const D3DXMATRIX &o ) const;
+    operator FLOAT* ();
+    float& operator()( int row, int column );
+    const float& operator()( int row, int column ) const;
 };
 
 typedef DWORD D3DCOLOR;
@@ -1110,23 +1110,23 @@ typedef enum _D3DDECLMETHOD
 
 typedef enum _D3DDECLUSAGE
 {
-    D3DDECLUSAGE_POSITION		= 0,
-    D3DDECLUSAGE_BLENDWEIGHT	= 1,
-    D3DDECLUSAGE_BLENDINDICES	= 2,
-    D3DDECLUSAGE_NORMAL			= 3,
-    D3DDECLUSAGE_PSIZE			= 4,
-    D3DDECLUSAGE_TEXCOORD		= 5,
-    D3DDECLUSAGE_TANGENT		= 6,
-    D3DDECLUSAGE_BINORMAL		= 7,
-    D3DDECLUSAGE_TESSFACTOR		= 8,
-    D3DDECLUSAGE_PLUGH			= 9,	// mystery value
-    D3DDECLUSAGE_COLOR			= 10,
-    D3DDECLUSAGE_FOG			= 11,
-    D3DDECLUSAGE_DEPTH			= 12,
-    D3DDECLUSAGE_SAMPLE			= 13,
+    D3DDECLUSAGE_POSITION       = 0,
+    D3DDECLUSAGE_BLENDWEIGHT    = 1,
+    D3DDECLUSAGE_BLENDINDICES   = 2,
+    D3DDECLUSAGE_NORMAL         = 3,
+    D3DDECLUSAGE_PSIZE          = 4,
+    D3DDECLUSAGE_TEXCOORD       = 5,
+    D3DDECLUSAGE_TANGENT        = 6,
+    D3DDECLUSAGE_BINORMAL       = 7,
+    D3DDECLUSAGE_TESSFACTOR     = 8,
+    D3DDECLUSAGE_PLUGH          = 9,    // mystery value
+    D3DDECLUSAGE_COLOR          = 10,
+    D3DDECLUSAGE_FOG            = 11,
+    D3DDECLUSAGE_DEPTH          = 12,
+    D3DDECLUSAGE_SAMPLE         = 13,
 } D3DDECLUSAGE;
 
-typedef enum _D3DPRIMITIVETYPE 
+typedef enum _D3DPRIMITIVETYPE
 {
     D3DPT_POINTLIST             = 1,
     D3DPT_LINELIST              = 2,
@@ -1141,13 +1141,13 @@ typedef enum _D3DPRIMITIVETYPE
 
 typedef struct TOGL_CLASS D3DXPLANE
 {
-	float& operator[]( int i );
-	bool operator==( const D3DXPLANE &o );
-	bool operator!=( const D3DXPLANE &o );
-	operator float*();
-	operator const float*() const;
+    float& operator[]( int i );
+    bool operator==( const D3DXPLANE &o );
+    bool operator!=( const D3DXPLANE &o );
+    operator float*();
+    operator const float*() const;
 
-	float a, b, c, d;
+    float a, b, c, d;
 } D3DXPLANE;
 
 typedef enum _D3DVERTEXBLENDFLAGS
@@ -1198,7 +1198,7 @@ typedef struct _D3DADAPTER_IDENTIFIER9
 
 } D3DADAPTER_IDENTIFIER9;
 
-typedef struct _D3DCOLORVALUE 
+typedef struct _D3DCOLORVALUE
 {
     float r;
     float g;
@@ -1206,7 +1206,7 @@ typedef struct _D3DCOLORVALUE
     float a;
 } D3DCOLORVALUE;
 
-typedef struct _D3DMATERIAL9 
+typedef struct _D3DMATERIAL9
 {
     D3DCOLORVALUE   Diffuse;        /* Diffuse color RGBA */
     D3DCOLORVALUE   Ambient;        /* Ambient color RGB */
@@ -1227,7 +1227,7 @@ typedef struct _D3DVOLUME_DESC
     UINT                Depth;
 } D3DVOLUME_DESC;
 
-typedef struct _D3DVIEWPORT9 
+typedef struct _D3DVIEWPORT9
 {
     DWORD       X;
     DWORD       Y;            /* Viewport Top left */
@@ -1254,7 +1254,7 @@ typedef struct _D3DCAPS9
     /* Caps from DX7 Draw */
     DWORD   Caps;
     DWORD   Caps2;
-    
+
     /* Cursor Caps */
     DWORD   CursorCaps;
 
@@ -1265,13 +1265,13 @@ typedef struct _D3DCAPS9
     DWORD   RasterCaps;
     DWORD   TextureCaps;
     DWORD   TextureFilterCaps;          // D3DPTFILTERCAPS for IDirect3DTexture9's
-    
+
     DWORD   MaxTextureWidth, MaxTextureHeight;
     DWORD   MaxVolumeExtent;
 
     DWORD   MaxTextureAspectRatio;
     DWORD   MaxAnisotropy;
-    
+
     DWORD   TextureOpCaps;
     DWORD   MaxTextureBlendStages;
     DWORD   MaxSimultaneousTextures;
@@ -1295,13 +1295,13 @@ typedef struct _D3DCAPS9
     D3DPSHADERCAPS2_0 PS20Caps;
 
     DWORD   NumSimultaneousRTs;         // Will be at least 1
-    DWORD   MaxVertexShader30InstructionSlots; 
+    DWORD   MaxVertexShader30InstructionSlots;
     DWORD   MaxPixelShader30InstructionSlots;
-	
-	// only on Posix/GL
-	DWORD	FakeSRGBWrite;				// 1 for parts which can't support SRGB writes due to driver issues - 0 for others
-	DWORD	MixedSizeTargets;			// 1 for parts which can mix attachment sizes (RT's color vs depth)
-	DWORD	CanDoSRGBReadFromRTs;		// 0 when we're on Leopard, 1 when on Snow Leopard
+
+    // only on Posix/GL
+    DWORD   FakeSRGBWrite;              // 1 for parts which can't support SRGB writes due to driver issues - 0 for others
+    DWORD   MixedSizeTargets;           // 1 for parts which can mix attachment sizes (RT's color vs depth)
+    DWORD   CanDoSRGBReadFromRTs;       // 0 when we're on Leopard, 1 when on Snow Leopard
 } D3DCAPS9;
 
 typedef struct _D3DDISPLAYMODE
@@ -1396,7 +1396,7 @@ typedef struct _D3DRASTER_STATUS
     UINT            ScanLine;
 } D3DRASTER_STATUS;
 
-typedef enum _D3DLIGHTTYPE 
+typedef enum _D3DLIGHTTYPE
 {
     D3DLIGHT_POINT          = 1,
     D3DLIGHT_SPOT           = 2,
@@ -1404,7 +1404,7 @@ typedef enum _D3DLIGHTTYPE
     D3DLIGHT_FORCE_DWORD    = 0x7fffffff, /* force 32-bit size enum */
 } D3DLIGHTTYPE;
 
-typedef struct TOGL_CLASS _D3DVECTOR 
+typedef struct TOGL_CLASS _D3DVECTOR
 {
     float x;
     float y;
@@ -1417,14 +1417,14 @@ public:
     operator FLOAT* ();
     operator CONST FLOAT* () const;
 
-	float x,y;
+    float x,y;
 };
 
 class TOGL_CLASS D3DXVECTOR3 : public D3DVECTOR
 {
 public:
-	D3DXVECTOR3() {}
-	D3DXVECTOR3( float a, float b, float c );
+    D3DXVECTOR3() {}
+    D3DXVECTOR3( float a, float b, float c );
     operator FLOAT* ();
     operator CONST FLOAT* () const;
 };
@@ -1438,7 +1438,7 @@ typedef enum _D3DXINCLUDE_TYPE
 
 } D3DXINCLUDE_TYPE;
 
-typedef struct _D3DLIGHT9 
+typedef struct _D3DLIGHT9
 {
     D3DLIGHTTYPE    Type;            /* Type of light source */
     D3DCOLORVALUE   Diffuse;         /* Diffuse color of light */
@@ -1458,10 +1458,10 @@ typedef struct _D3DLIGHT9
 class TOGL_CLASS D3DXVECTOR4
 {
 public:
-	D3DXVECTOR4() {}
-	D3DXVECTOR4( float a, float b, float c, float d );
+    D3DXVECTOR4() {}
+    D3DXVECTOR4( float a, float b, float c, float d );
 
-	float x,y,z,w;
+    float x,y,z,w;
 };
 
 //----------------------------------------------------------------------------
@@ -1490,7 +1490,7 @@ typedef struct _D3DXMACRO
 // ------------------------------------------------------------------------------------------------------------------------------ //
 
 // **** FIXED FUNCTION STUFF - None of this stuff needs support in GL.
-typedef enum _D3DTRANSFORMSTATETYPE 
+typedef enum _D3DTRANSFORMSTATETYPE
 {
     D3DTS_VIEW          = 2,
     D3DTS_PROJECTION    = 3,
@@ -1576,122 +1576,122 @@ typedef enum _D3DTEXTURESTAGESTATETYPE
     D3DTSS_TEXTURETRANSFORMFLAGS = 24, /* D3DTEXTURETRANSFORMFLAGS controls texture transform */
     D3DTSS_COLORARG0      = 26, /* D3DTA_* third arg for triadic ops */
     D3DTSS_RESULTARG      = 28, /* D3DTA_* arg for result (CURRENT or TEMP) */
-    
+
 
     D3DTSS_FORCE_DWORD   = 0x7fffffff, /* force 32-bit size enum */
 } D3DTEXTURESTAGESTATETYPE;
 
 //===========================================================================//
 
-enum	GLMVertexAttributeIndex
+enum    GLMVertexAttributeIndex
 {
-	kGLMGenericAttr00 = 0,
-	kGLMGenericAttr01,
-	kGLMGenericAttr02,
-	kGLMGenericAttr03,
-	kGLMGenericAttr04,
-	kGLMGenericAttr05,
-	kGLMGenericAttr06,
-	kGLMGenericAttr07,
-	kGLMGenericAttr08,
-	kGLMGenericAttr09,
-	kGLMGenericAttr10,
-	kGLMGenericAttr11,
-	kGLMGenericAttr12,
-	kGLMGenericAttr13,
-	kGLMGenericAttr14,
-	kGLMGenericAttr15,
+    kGLMGenericAttr00 = 0,
+    kGLMGenericAttr01,
+    kGLMGenericAttr02,
+    kGLMGenericAttr03,
+    kGLMGenericAttr04,
+    kGLMGenericAttr05,
+    kGLMGenericAttr06,
+    kGLMGenericAttr07,
+    kGLMGenericAttr08,
+    kGLMGenericAttr09,
+    kGLMGenericAttr10,
+    kGLMGenericAttr11,
+    kGLMGenericAttr12,
+    kGLMGenericAttr13,
+    kGLMGenericAttr14,
+    kGLMGenericAttr15,
 
-	kGLMVertexAttributeIndexMax			// ideally < 32
+    kGLMVertexAttributeIndexMax         // ideally < 32
 };
 
-struct GLMVertexAttributeDesc			// all the info you need to do vertex setup for one attribute
+struct GLMVertexAttributeDesc           // all the info you need to do vertex setup for one attribute
 {
-	CGLMBuffer				*m_pBuffer;	// NULL allowed in which case m_offset is the full 32-bit pointer.. so you can draw from plain RAM if desired
-	GLuint					m_nCompCount;	// comp count of the attribute (1-4)
-	GLenum					m_datatype;	// data type of the attribute (GL_FLOAT, GL_UNSIGNED_BYTE, etc)
-	GLuint					m_stride;
-	GLuint					m_offset;	// net offset to attribute 'zero' within the buffer.
-	GLuint					m_streamOffset;	// net offset to attribute 'zero' within the buffer.
-	GLboolean				m_normalized;	// apply to any fixed point data that needs normalizing, esp color bytes
+    CGLMBuffer              *m_pBuffer; // NULL allowed in which case m_offset is the full 32-bit pointer.. so you can draw from plain RAM if desired
+    GLuint                  m_nCompCount;   // comp count of the attribute (1-4)
+    GLenum                  m_datatype; // data type of the attribute (GL_FLOAT, GL_UNSIGNED_BYTE, etc)
+    GLuint                  m_stride;
+    GLuint                  m_offset;   // net offset to attribute 'zero' within the buffer.
+    GLuint                  m_streamOffset; // net offset to attribute 'zero' within the buffer.
+    GLboolean               m_normalized;   // apply to any fixed point data that needs normalizing, esp color bytes
 
-	inline uint GetDataTypeSizeInBytes() const 
-	{
-		switch ( m_datatype )
-		{
-			case GL_BYTE:
-			case GL_UNSIGNED_BYTE:
-				return 1;
-			case GL_SHORT:
-			case GL_UNSIGNED_SHORT:
-			case GL_HALF_FLOAT:
-				return 2;
-			case GL_INT:
-			case GL_FLOAT:
-				return 4;
-			default:
-				Assert( 0 );
-				break;
-		}
-		return 0;
-	}
+    inline uint GetDataTypeSizeInBytes() const
+    {
+        switch ( m_datatype )
+        {
+            case GL_BYTE:
+            case GL_UNSIGNED_BYTE:
+                return 1;
+            case GL_SHORT:
+            case GL_UNSIGNED_SHORT:
+            case GL_HALF_FLOAT:
+                return 2;
+            case GL_INT:
+            case GL_FLOAT:
+                return 4;
+            default:
+                Assert( 0 );
+                break;
+        }
+        return 0;
+    }
 
-	inline uint GetTotalAttributeSizeInBytes() const { Assert( m_nCompCount ); return m_nCompCount * GetDataTypeSizeInBytes(); }
+    inline uint GetTotalAttributeSizeInBytes() const { Assert( m_nCompCount ); return m_nCompCount * GetDataTypeSizeInBytes(); }
 
-	// may need a seed value at some point to be able to disambiguate re-lifed buffers holding same pointer
-	// simpler alternative is to do shoot-down inside the vertex/index buffer free calls.
-	// I'd rather not have to have each attribute fiddling a ref count on the buffer to which it refers..
+    // may need a seed value at some point to be able to disambiguate re-lifed buffers holding same pointer
+    // simpler alternative is to do shoot-down inside the vertex/index buffer free calls.
+    // I'd rather not have to have each attribute fiddling a ref count on the buffer to which it refers..
 
-//#define	EQ(fff) ( (src.fff) == (fff) )
-	// test in decreasing order of likelihood of difference, but do not include the buffer revision as caller is not supplying it..
-	//inline bool operator== ( const GLMVertexAttributeDesc& src ) const { return EQ( m_pBuffer ) && EQ( m_offset ) && EQ( m_stride ) && EQ( m_datatype ) && EQ( m_normalized ) && EQ( m_nCompCount ); }
+//#define   EQ(fff) ( (src.fff) == (fff) )
+    // test in decreasing order of likelihood of difference, but do not include the buffer revision as caller is not supplying it..
+    //inline bool operator== ( const GLMVertexAttributeDesc& src ) const { return EQ( m_pBuffer ) && EQ( m_offset ) && EQ( m_stride ) && EQ( m_datatype ) && EQ( m_normalized ) && EQ( m_nCompCount ); }
 //#undef EQ
 
-	uint					m_bufferRevision;	// only set in GLM context's copy, to disambiguate references that are same offset / same buffer but cross an orphan event
+    uint                    m_bufferRevision;   // only set in GLM context's copy, to disambiguate references that are same offset / same buffer but cross an orphan event
 };
 
-#define MAX_D3DVERTEXELEMENTS	16
+#define MAX_D3DVERTEXELEMENTS   16
 
 struct D3DVERTEXELEMENT9_GL
 {
-	// fields right out of the original decl element (copied)
-	D3DVERTEXELEMENT9		m_dxdecl;	// d3d info
-	//		WORD    Stream;     // Stream index
-	//		WORD    Offset;     // Offset in the stream in bytes
-	//		BYTE    Type;       // Data type
-	//		BYTE    Method;     // Processing method
-	//		BYTE    Usage;      // Semantics
-	//		BYTE    UsageIndex; // Semantic index
+    // fields right out of the original decl element (copied)
+    D3DVERTEXELEMENT9       m_dxdecl;   // d3d info
+    //      WORD    Stream;     // Stream index
+    //      WORD    Offset;     // Offset in the stream in bytes
+    //      BYTE    Type;       // Data type
+    //      BYTE    Method;     // Processing method
+    //      BYTE    Usage;      // Semantics
+    //      BYTE    UsageIndex; // Semantic index
 
-	GLMVertexAttributeDesc	m_gldecl;
-	// CGLMBuffer				*m_buffer;		// late-dropped from selected stream desc (left NULL, will replace with stream source buffer at sync time)
-	// GLuint					m_datasize;		// component count (1,2,3,4) of the attrib
-	// GLenum					m_datatype;		// data type of the attribute (GL_FLOAT et al)
-	// GLuint					m_stride;		// late-dropped from stream desc
-	// GLuint					m_offset;		// net offset to attribute 'zero' within the stream data.  Add the stream offset before passing to GL. 
-	// GLuint					m_normalized;	// net offset to attribute 'zero' within the stream data.  Add the stream offset before passing to GL. 
+    GLMVertexAttributeDesc  m_gldecl;
+    // CGLMBuffer               *m_buffer;      // late-dropped from selected stream desc (left NULL, will replace with stream source buffer at sync time)
+    // GLuint                   m_datasize;     // component count (1,2,3,4) of the attrib
+    // GLenum                   m_datatype;     // data type of the attribute (GL_FLOAT et al)
+    // GLuint                   m_stride;       // late-dropped from stream desc
+    // GLuint                   m_offset;       // net offset to attribute 'zero' within the stream data.  Add the stream offset before passing to GL.
+    // GLuint                   m_normalized;   // net offset to attribute 'zero' within the stream data.  Add the stream offset before passing to GL.
 };
 
 struct IDirect3DDevice9Params
 {
-	UINT					m_adapter;
-	D3DDEVTYPE				m_deviceType;
-	VD3DHWND				m_focusWindow;
-	DWORD					m_behaviorFlags;
-	D3DPRESENT_PARAMETERS	m_presentationParameters;
+    UINT                    m_adapter;
+    D3DDEVTYPE              m_deviceType;
+    VD3DHWND                m_focusWindow;
+    DWORD                   m_behaviorFlags;
+    D3DPRESENT_PARAMETERS   m_presentationParameters;
 };
 
-#define	D3D_MAX_STREAMS	4
+#define D3D_MAX_STREAMS 4
 struct D3DStreamDesc
 {
-	IDirect3DVertexBuffer9	*m_vtxBuffer;
-	uint					m_offset;
-	uint					m_stride;
+    IDirect3DVertexBuffer9  *m_vtxBuffer;
+    uint                    m_offset;
+    uint                    m_stride;
 };
 
 struct D3DIndexDesc
 {
-	IDirect3DIndexBuffer9	*m_idxBuffer;
+    IDirect3DIndexBuffer9   *m_idxBuffer;
 };
 
 // we latch sampler values until draw time and then convert them all to GL form
@@ -1700,13 +1700,13 @@ struct D3DIndexDesc
 
 struct D3DSamplerDesc
 {
-	DWORD					m_srgb;				// D3DSAMP_SRGBTEXTURE 0 = no SRGB sampling
+    DWORD                   m_srgb;             // D3DSAMP_SRGBTEXTURE 0 = no SRGB sampling
 };
 
 // Tracking and naming sampler dimensions
-#define SAMPLER_TYPE_2D		0
-#define SAMPLER_TYPE_CUBE	1
-#define SAMPLER_TYPE_3D		2
-#define SAMPLER_TYPE_UNUSED	3
+#define SAMPLER_TYPE_2D     0
+#define SAMPLER_TYPE_CUBE   1
+#define SAMPLER_TYPE_3D     2
+#define SAMPLER_TYPE_UNUSED 3
 
 #endif // DXABSTRACT_TYPES_H

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -18,14 +18,14 @@
 
 // Arrays that are indexed by thread should always be MAX_TOOL_THREADS+1
 // large so THREADINDEX_MAIN can be used from the main thread.
-#define MAX_TOOL_THREADS	16
-#define THREADINDEX_MAIN	(MAX_TOOL_THREADS)
+#define MAX_TOOL_THREADS    16
+#define THREADINDEX_MAIN    (MAX_TOOL_THREADS)
 
 
-extern	int		numthreads;
+extern  int     numthreads;
 
 // If set to true, then all the threads that are created are low priority.
-extern bool	g_bLowPriorityThreads;
+extern bool g_bLowPriorityThreads;
 
 typedef void (*ThreadWorkerFn)( int iThread, int iWorkItem );
 typedef void (*RunThreadsFn)( int iThread, void *pUserData );
@@ -33,9 +33,9 @@ typedef void (*RunThreadsFn)( int iThread, void *pUserData );
 
 enum ERunThreadsPriority
 {
-	k_eRunThreadsPriority_UseGlobalState=0,	// Default.. uses g_bLowPriorityThreads to decide what to set the priority to.
-	k_eRunThreadsPriority_Normal,			// Doesn't touch thread priorities.
-	k_eRunThreadsPriority_Idle				// Sets threads to idle priority.
+    k_eRunThreadsPriority_UseGlobalState=0, // Default.. uses g_bLowPriorityThreads to decide what to set the priority to.
+    k_eRunThreadsPriority_Normal,           // Doesn't touch thread priorities.
+    k_eRunThreadsPriority_Idle              // Sets threads to idle priority.
 };
 
 
@@ -43,7 +43,7 @@ enum ERunThreadsPriority
 void SetLowPriority();
 
 void ThreadSetDefault (void);
-int	GetThreadWork (void);
+int GetThreadWork (void);
 
 void RunThreadsOnIndividual ( int workcnt, qboolean showpacifier, ThreadWorkerFn fn );
 

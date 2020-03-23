@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -16,153 +16,153 @@
 
 // If this option is on the command line, then filesystem_init won't bring up the vconfig
 // dialog even if FS_ERRORMODE_VCONFIG is used.
-#define CMDLINEOPTION_NOVCONFIG	"-NoVConfig"
+#define CMDLINEOPTION_NOVCONFIG "-NoVConfig"
 
-#define	GAMEDIR_TOKEN		"VProject"
+#define GAMEDIR_TOKEN       "VProject"
 
 
 #if defined( _WIN32 ) || defined( WIN32 )
 #define PATHSEPARATOR(c) ((c) == '\\' || (c) == '/')
-#else	//_WIN32
+#else   //_WIN32
 #define PATHSEPARATOR(c) ((c) == '/')
-#endif	//_WIN32
+#endif  //_WIN32
 
 
 enum FSReturnCode_t
 {
-	FS_OK,
-	FS_MISSING_GAMEINFO_FILE,
-	FS_INVALID_GAMEINFO_FILE,
-	FS_INVALID_PARAMETERS,
-	FS_UNABLE_TO_INIT,
-	FS_MISSING_STEAM_DLL
+    FS_OK,
+    FS_MISSING_GAMEINFO_FILE,
+    FS_INVALID_GAMEINFO_FILE,
+    FS_INVALID_PARAMETERS,
+    FS_UNABLE_TO_INIT,
+    FS_MISSING_STEAM_DLL
 };
 
 
 enum FSErrorMode_t
 {
-	FS_ERRORMODE_AUTO,		// Call Error() in case of an error.
-	FS_ERRORMODE_VCONFIG,	// Call Error() for errors and run vconfig when appropriate.
-	FS_ERRORMODE_NONE,		// Just return FSReturnCode values and setup the string for FileSystem_GetLastErrorString.
+    FS_ERRORMODE_AUTO,      // Call Error() in case of an error.
+    FS_ERRORMODE_VCONFIG,   // Call Error() for errors and run vconfig when appropriate.
+    FS_ERRORMODE_NONE,      // Just return FSReturnCode values and setup the string for FileSystem_GetLastErrorString.
 };
 
 
 class CFSSteamSetupInfo
 {
 public:
-	CFSSteamSetupInfo();
+    CFSSteamSetupInfo();
 
 // Inputs.
 public:
-	// If this is set, then the init code will look in this directory up to the root for gameinfo.txt.
-	// It must be set for FileSystem_LoadSearchPaths to work.
-	//
-	// (default: null)
-	const char		*m_pDirectoryName;
+    // If this is set, then the init code will look in this directory up to the root for gameinfo.txt.
+    // It must be set for FileSystem_LoadSearchPaths to work.
+    //
+    // (default: null)
+    const char      *m_pDirectoryName;
 
-	// If this is true, then it won't look at -vproject, -game, or the vproject environment variable
-	// to find gameinfo.txt. If this is true, then m_pDirectoryName must be set.
-	//
-	// (default: false)
-	bool			m_bOnlyUseDirectoryName;
+    // If this is true, then it won't look at -vproject, -game, or the vproject environment variable
+    // to find gameinfo.txt. If this is true, then m_pDirectoryName must be set.
+    //
+    // (default: false)
+    bool            m_bOnlyUseDirectoryName;
 
-	// If this is true, then:
-	// 1. It will set the environment variables that steam.dll looks at for startup info.
-	// 2. It will look for ToolsAppId in the gameinfo.txt file and load the
-	// steam caches associated with that cache if it's there. This is so apps like Hammer and hlmv
-	// can load the main steam caches (like for Counter-Strike or Half-Life 2), and also load the
-	// caches that include tools-specific materials (materials\editor, materials\debug, etc).
-	//
-	// (default: true - should be FALSE for the engine)
-	bool			m_bToolsMode;
+    // If this is true, then:
+    // 1. It will set the environment variables that steam.dll looks at for startup info.
+    // 2. It will look for ToolsAppId in the gameinfo.txt file and load the
+    // steam caches associated with that cache if it's there. This is so apps like Hammer and hlmv
+    // can load the main steam caches (like for Counter-Strike or Half-Life 2), and also load the
+    // caches that include tools-specific materials (materials\editor, materials\debug, etc).
+    //
+    // (default: true - should be FALSE for the engine)
+    bool            m_bToolsMode;
 
-	// If this is true, and m_bToolsMode is false, then it will append the path to steam.dll to the
-	// PATH environment variable. This makes it so you can run the engine under Steam without
-	// having to copy steam.dll up into your hl2.exe folder.
-	// (default: false)
-	bool			m_bSetSteamDLLPath;
+    // If this is true, and m_bToolsMode is false, then it will append the path to steam.dll to the
+    // PATH environment variable. This makes it so you can run the engine under Steam without
+    // having to copy steam.dll up into your hl2.exe folder.
+    // (default: false)
+    bool            m_bSetSteamDLLPath;
 
-	// Are we loading the Steam filesystem? This should be the same value that 
-	// FileSystem_GetFileSystemDLLName gave you.
-	bool			m_bSteam;
+    // Are we loading the Steam filesystem? This should be the same value that
+    // FileSystem_GetFileSystemDLLName gave you.
+    bool            m_bSteam;
 
-	// If this is true, then it won't look for a gameinfo.txt.
-	//
-	// (default: false)
-	bool			m_bNoGameInfo;
+    // If this is true, then it won't look for a gameinfo.txt.
+    //
+    // (default: false)
+    bool            m_bNoGameInfo;
 
 // Outputs (if it returns FS_OK).
 public:
-	char			m_GameInfoPath[512];	// The directory that gameinfo.txt lives in.
-};	
+    char            m_GameInfoPath[512];    // The directory that gameinfo.txt lives in.
+};
 
 
-class CFSLoadModuleInfo	: public CFSSteamSetupInfo
+class CFSLoadModuleInfo : public CFSSteamSetupInfo
 {
 public:
-	CFSLoadModuleInfo();
+    CFSLoadModuleInfo();
 
 // Inputs.
 public:
-	// Full path to the file system DLL (gotten from FileSystem_GetFileSystemDLLName).
-	const char		*m_pFileSystemDLLName;
+    // Full path to the file system DLL (gotten from FileSystem_GetFileSystemDLLName).
+    const char      *m_pFileSystemDLLName;
 
-	// Passed to IFileSystem::Connect.
-	CreateInterfaceFn	m_ConnectFactory;
+    // Passed to IFileSystem::Connect.
+    CreateInterfaceFn   m_ConnectFactory;
 
 // Outputs (if it returns FS_OK).
 public:
-	// The filesystem you got from FileSystem_LoadFileSystemModule.
-	IFileSystem		*m_pFileSystem;
-	CSysModule		*m_pModule;
-};	
+    // The filesystem you got from FileSystem_LoadFileSystemModule.
+    IFileSystem     *m_pFileSystem;
+    CSysModule      *m_pModule;
+};
 
 
 class CFSMountContentInfo
 {
 public:
-	CFSMountContentInfo();
+    CFSMountContentInfo();
 
 // Inputs.
 public:
 
-	// See CFSLoadModuleInfo::m_bToolsMode (this valid should always be the same as you passed to CFSLoadModuleInfo::m_bToolsMode).
-	bool				m_bToolsMode;
+    // See CFSLoadModuleInfo::m_bToolsMode (this valid should always be the same as you passed to CFSLoadModuleInfo::m_bToolsMode).
+    bool                m_bToolsMode;
 
-	// This specifies the directory where gameinfo.txt is. This must be set.
-	// It can come from CFSLoadModuleInfo::m_GameInfoPath.
-	const char			*m_pDirectoryName;
+    // This specifies the directory where gameinfo.txt is. This must be set.
+    // It can come from CFSLoadModuleInfo::m_GameInfoPath.
+    const char          *m_pDirectoryName;
 
-	// Gotten from CFSLoadModuleInfo::m_pFileSystem.
-	IFileSystem			*m_pFileSystem;
+    // Gotten from CFSLoadModuleInfo::m_pFileSystem.
+    IFileSystem         *m_pFileSystem;
 };
 
 
 class CFSSearchPathsInit
 {
 public:
-	CFSSearchPathsInit();
+    CFSSearchPathsInit();
 
 // Inputs.
 public:
-	// This specifies the directory where gameinfo.txt is. This must be set.
-	const char		*m_pDirectoryName;
+    // This specifies the directory where gameinfo.txt is. This must be set.
+    const char      *m_pDirectoryName;
 
-	// If this is set, then any search paths with a _english will be replaced with _m_pLanguage and added before the
-	// _english path
-	// (default: null)
-	const char		*m_pLanguage;
+    // If this is set, then any search paths with a _english will be replaced with _m_pLanguage and added before the
+    // _english path
+    // (default: null)
+    const char      *m_pLanguage;
 
-	// This is the filesystem FileSystem_LoadSearchPaths is talking to.
-	IFileSystem		*m_pFileSystem;
+    // This is the filesystem FileSystem_LoadSearchPaths is talking to.
+    IFileSystem     *m_pFileSystem;
 
-	bool m_bMountHDContent;
-	bool m_bLowViolence;
+    bool m_bMountHDContent;
+    bool m_bLowViolence;
 
 // Outputs.
 public:
-	// This is the location of the first search path called "game", which also becomes your "mod" search path.
-	char			m_ModPath[512];
+    // This is the location of the first search path called "game", which also becomes your "mod" search path.
+    char            m_ModPath[512];
 };
 
 

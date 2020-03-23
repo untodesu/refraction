@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -22,35 +22,35 @@
 
 class CPredictedViewModel : public CBaseViewModel
 {
-	DECLARE_CLASS( CPredictedViewModel, CBaseViewModel );
+    DECLARE_CLASS( CPredictedViewModel, CBaseViewModel );
 public:
 
-	DECLARE_NETWORKCLASS();
+    DECLARE_NETWORKCLASS();
 
-	CPredictedViewModel( void );
-	virtual ~CPredictedViewModel( void );
-							
-	virtual void CalcViewModelLag( Vector& origin, QAngle& angles, QAngle& original_angles );
+    CPredictedViewModel( void );
+    virtual ~CPredictedViewModel( void );
+
+    virtual void CalcViewModelLag( Vector& origin, QAngle& angles, QAngle& original_angles );
 
 #if defined( CLIENT_DLL )
-	virtual bool ShouldPredict( void )
-	{
-		if ( GetOwner() && GetOwner() == C_BasePlayer::GetLocalPlayer() )
-			return true;
+    virtual bool ShouldPredict( void )
+    {
+        if ( GetOwner() && GetOwner() == C_BasePlayer::GetLocalPlayer() )
+            return true;
 
-		return BaseClass::ShouldPredict();
-	}
+        return BaseClass::ShouldPredict();
+    }
 #endif
 
 private:
-	
+
 #if defined( CLIENT_DLL )
 
-	// This is used to lag the angles.
-	CInterpolatedVar<QAngle> m_LagAnglesHistory;
-	QAngle m_vLagAngles;
+    // This is used to lag the angles.
+    CInterpolatedVar<QAngle> m_LagAnglesHistory;
+    QAngle m_vLagAngles;
 
-	CPredictedViewModel( const CPredictedViewModel & ); // not defined, not accessible
+    CPredictedViewModel( const CPredictedViewModel & ); // not defined, not accessible
 
 #endif
 };

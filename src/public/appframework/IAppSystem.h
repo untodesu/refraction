@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: An application framework 
+// Purpose: An application framework
 //
 // $Revision: $
 // $NoKeywords: $
@@ -26,75 +26,75 @@
 
 enum InitReturnVal_t
 {
-	INIT_FAILED = 0,
-	INIT_OK,
+    INIT_FAILED = 0,
+    INIT_OK,
 
-	INIT_LAST_VAL,
+    INIT_LAST_VAL,
 };
 
 
 abstract_class IAppSystem
 {
 public:
-	// Here's where the app systems get to learn about each other 
-	virtual bool Connect( CreateInterfaceFn factory ) = 0;
-	virtual void Disconnect() = 0;
+    // Here's where the app systems get to learn about each other
+    virtual bool Connect( CreateInterfaceFn factory ) = 0;
+    virtual void Disconnect() = 0;
 
-	// Here's where systems can access other interfaces implemented by this object
-	// Returns NULL if it doesn't implement the requested interface
-	virtual void *QueryInterface( const char *pInterfaceName ) = 0;
+    // Here's where systems can access other interfaces implemented by this object
+    // Returns NULL if it doesn't implement the requested interface
+    virtual void *QueryInterface( const char *pInterfaceName ) = 0;
 
-	// Init, shutdown
-	virtual InitReturnVal_t Init() = 0;
-	virtual void Shutdown() = 0;
+    // Init, shutdown
+    virtual InitReturnVal_t Init() = 0;
+    virtual void Shutdown() = 0;
 };
 
 
 //-----------------------------------------------------------------------------
 // Helper empty implementation of an IAppSystem
 //-----------------------------------------------------------------------------
-template< class IInterface > 
+template< class IInterface >
 class CBaseAppSystem : public IInterface
 {
 public:
-	// Here's where the app systems get to learn about each other 
-	virtual bool Connect( CreateInterfaceFn factory ) { return true; }
-	virtual void Disconnect() {}
+    // Here's where the app systems get to learn about each other
+    virtual bool Connect( CreateInterfaceFn factory ) { return true; }
+    virtual void Disconnect() {}
 
-	// Here's where systems can access other interfaces implemented by this object
-	// Returns NULL if it doesn't implement the requested interface
-	virtual void *QueryInterface( const char *pInterfaceName ) { return NULL; }
+    // Here's where systems can access other interfaces implemented by this object
+    // Returns NULL if it doesn't implement the requested interface
+    virtual void *QueryInterface( const char *pInterfaceName ) { return NULL; }
 
-	// Init, shutdown
-	virtual InitReturnVal_t Init() { return INIT_OK; }
-	virtual void Shutdown() {}
+    // Init, shutdown
+    virtual InitReturnVal_t Init() { return INIT_OK; }
+    virtual void Shutdown() {}
 };
 
 
 //-----------------------------------------------------------------------------
 // Helper implementation of an IAppSystem for tier0
 //-----------------------------------------------------------------------------
-template< class IInterface > 
+template< class IInterface >
 class CTier0AppSystem : public CBaseAppSystem< IInterface >
 {
 public:
-	CTier0AppSystem( bool bIsPrimaryAppSystem = true )
-	{
-		m_bIsPrimaryAppSystem = bIsPrimaryAppSystem;
-	}
+    CTier0AppSystem( bool bIsPrimaryAppSystem = true )
+    {
+        m_bIsPrimaryAppSystem = bIsPrimaryAppSystem;
+    }
 
 protected:
-	// NOTE: a single DLL may have multiple AppSystems it's trying to
-	// expose. If this is true, you must return true from only
-	// one of those AppSystems; not doing so will cause all static
-	// libraries connected to it to connect/disconnect multiple times
+    // NOTE: a single DLL may have multiple AppSystems it's trying to
+    // expose. If this is true, you must return true from only
+    // one of those AppSystems; not doing so will cause all static
+    // libraries connected to it to connect/disconnect multiple times
 
-	// NOTE: We don't do this as a virtual function to avoid
-	// having to up the version on all interfaces
-	bool IsPrimaryAppSystem() { return m_bIsPrimaryAppSystem; }
+    // NOTE: We don't do this as a virtual function to avoid
+    // having to up the version on all interfaces
+    bool IsPrimaryAppSystem() { return m_bIsPrimaryAppSystem; }
 
 private:
-	bool m_bIsPrimaryAppSystem;
+    bool m_bIsPrimaryAppSystem;
 };
 
 
@@ -105,17 +105,17 @@ private:
 abstract_class IAppSystemV0
 {
 public:
-	// Here's where the app systems get to learn about each other 
-	virtual bool Connect( CreateInterfaceFn factory ) = 0;
-	virtual void Disconnect() = 0;
+    // Here's where the app systems get to learn about each other
+    virtual bool Connect( CreateInterfaceFn factory ) = 0;
+    virtual void Disconnect() = 0;
 
-	// Here's where systems can access other interfaces implemented by this object
-	// Returns NULL if it doesn't implement the requested interface
-	virtual void *QueryInterface( const char *pInterfaceName ) = 0;
+    // Here's where systems can access other interfaces implemented by this object
+    // Returns NULL if it doesn't implement the requested interface
+    virtual void *QueryInterface( const char *pInterfaceName ) = 0;
 
-	// Init, shutdown
-	virtual InitReturnVal_t Init() = 0;
-	virtual void Shutdown() = 0;
+    // Init, shutdown
+    virtual InitReturnVal_t Init() = 0;
+    virtual void Shutdown() = 0;
 };
 
 #endif // IAPPSYSTEM_H

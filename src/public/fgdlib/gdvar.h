@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -18,40 +18,40 @@ class MDkeyvalue;
 
 enum GDIV_TYPE
 {
-	ivBadType = -1,
-	ivAngle,
-	ivTargetDest,
-	ivTargetNameOrClass,
-	ivTargetSrc,
-	ivInteger,
-	ivString,
-	ivChoices,
-	ivFlags,
-	ivDecal,
-	ivColor255,		// components are 0-255
-	ivColor1,		// components are 0-1
-	ivStudioModel,
-	ivSprite,
-	ivSound,
-	ivVector,
-	ivNPCClass,
-	ivFilterClass,
-	ivFloat,
-	ivMaterial,
-	ivScene,
-	ivSide,			// One brush face ID.
-	ivSideList,		// One or more brush face IDs, space delimited.
-	ivOrigin,		// The origin of an entity, in the form "x y z".
-	ivVecLine,		// An origin that draws a line back to the parent entity.
-	ivAxis,			// The axis of rotation for a rotating entity, in the form "x0 y0 z0, x1 y1 z1".
-	ivPointEntityClass,
-	ivNodeDest,
-	ivInstanceFile,			// used for hammer to know this field should display a browse button to find map files
-	ivAngleNegativePitch,	// used for instance rotating when just a pitch value is present
-	ivInstanceVariable,		// used for instance variables for easy hammer editing
-	ivInstanceParm,			// used for instance parameter declaration
+    ivBadType = -1,
+    ivAngle,
+    ivTargetDest,
+    ivTargetNameOrClass,
+    ivTargetSrc,
+    ivInteger,
+    ivString,
+    ivChoices,
+    ivFlags,
+    ivDecal,
+    ivColor255,     // components are 0-255
+    ivColor1,       // components are 0-1
+    ivStudioModel,
+    ivSprite,
+    ivSound,
+    ivVector,
+    ivNPCClass,
+    ivFilterClass,
+    ivFloat,
+    ivMaterial,
+    ivScene,
+    ivSide,         // One brush face ID.
+    ivSideList,     // One or more brush face IDs, space delimited.
+    ivOrigin,       // The origin of an entity, in the form "x y z".
+    ivVecLine,      // An origin that draws a line back to the parent entity.
+    ivAxis,         // The axis of rotation for a rotating entity, in the form "x0 y0 z0, x1 y1 z1".
+    ivPointEntityClass,
+    ivNodeDest,
+    ivInstanceFile,         // used for hammer to know this field should display a browse button to find map files
+    ivAngleNegativePitch,   // used for instance rotating when just a pitch value is present
+    ivInstanceVariable,     // used for instance variables for easy hammer editing
+    ivInstanceParm,         // used for instance parameter declaration
 
-	ivMax					// count of types
+    ivMax                   // count of types
 };
 
 
@@ -61,127 +61,127 @@ enum GDIV_TYPE
 //-----------------------------------------------------------------------------
 typedef struct
 {
-	unsigned long iValue;		// Bitflag value for ivFlags
-	char szValue[MAX_STRING];	// String value for ivChoices
-	char szCaption[MAX_STRING];	// Name of this choice
-	BOOL bDefault;				// Flag set by default?
+    unsigned long iValue;       // Bitflag value for ivFlags
+    char szValue[MAX_STRING];   // String value for ivChoices
+    char szCaption[MAX_STRING]; // Name of this choice
+    BOOL bDefault;              // Flag set by default?
 } GDIVITEM;
 
 
 class GDinputvariable
 {
-	public:
+    public:
 
-		GDinputvariable();
-		GDinputvariable( const char *szType, const char *szName );
-		~GDinputvariable();
+        GDinputvariable();
+        GDinputvariable( const char *szType, const char *szName );
+        ~GDinputvariable();
 
-		BOOL InitFromTokens(TokenReader& tr);
-		
-		// functions:
-		inline const char *GetName() { return m_szName; }
-		inline const char *GetLongName(void) { return m_szLongName; }
-		inline const char *GetDescription(void);
+        BOOL InitFromTokens(TokenReader& tr);
 
-		inline int GetFlagCount() { return m_Items.Count(); }
-		inline int GetFlagMask(int nFlag);
-		inline const char *GetFlagCaption(int nFlag);
-		
-		inline int GetChoiceCount() { return m_Items.Count(); }
-		inline const char *GetChoiceCaption(int nChoice);
+        // functions:
+        inline const char *GetName() { return m_szName; }
+        inline const char *GetLongName(void) { return m_szLongName; }
+        inline const char *GetDescription(void);
 
-		inline GDIV_TYPE GetType() { return m_eType; }
-		const char *GetTypeText(void);
-		
-		inline void GetDefault(int *pnStore)
-		{ 
-			pnStore[0] = m_nDefault; 
-		}
+        inline int GetFlagCount() { return m_Items.Count(); }
+        inline int GetFlagMask(int nFlag);
+        inline const char *GetFlagCaption(int nFlag);
 
-		inline void GetDefault(char *pszStore)
-		{ 
-			strcpy(pszStore, m_szDefault); 
-		}
-		
-		GDIV_TYPE GetTypeFromToken(const char *pszToken);
-		trtoken_t GetStoreAsFromType(GDIV_TYPE eType);
+        inline int GetChoiceCount() { return m_Items.Count(); }
+        inline const char *GetChoiceCaption(int nChoice);
 
-		const char *ItemStringForValue(const char *szValue);
-		const char *ItemValueForString(const char *szString);
+        inline GDIV_TYPE GetType() { return m_eType; }
+        const char *GetTypeText(void);
 
-		BOOL IsFlagSet(unsigned int);
-		void SetFlag(unsigned int, BOOL bSet);
+        inline void GetDefault(int *pnStore)
+        {
+            pnStore[0] = m_nDefault;
+        }
 
-		void ResetDefaults();
+        inline void GetDefault(char *pszStore)
+        {
+            strcpy(pszStore, m_szDefault);
+        }
 
-		void ToKeyValue(MDkeyvalue* pkv);
-		void FromKeyValue(MDkeyvalue* pkv);
+        GDIV_TYPE GetTypeFromToken(const char *pszToken);
+        trtoken_t GetStoreAsFromType(GDIV_TYPE eType);
 
-		inline bool IsReportable(void);
-		inline bool IsReadOnly(void);
+        const char *ItemStringForValue(const char *szValue);
+        const char *ItemValueForString(const char *szString);
 
-		GDinputvariable &operator =(GDinputvariable &Other);
-		void Merge(GDinputvariable &Other);
+        BOOL IsFlagSet(unsigned int);
+        void SetFlag(unsigned int, BOOL bSet);
 
-		static const char *GetVarTypeName( GDIV_TYPE eType );
+        void ResetDefaults();
 
-	private:
+        void ToKeyValue(MDkeyvalue* pkv);
+        void FromKeyValue(MDkeyvalue* pkv);
 
-		// for choices/flags:
-		CUtlVector<GDIVITEM> m_Items;
+        inline bool IsReportable(void);
+        inline bool IsReadOnly(void);
 
-		static char *m_pszEmpty;
+        GDinputvariable &operator =(GDinputvariable &Other);
+        void Merge(GDinputvariable &Other);
 
-		char m_szName[MAX_IDENT];
-		char m_szLongName[MAX_STRING];
-		char *m_pszDescription;
+        static const char *GetVarTypeName( GDIV_TYPE eType );
 
-		GDIV_TYPE m_eType;
+    private:
 
-		int m_nDefault;
-		char m_szDefault[MAX_STRING];
+        // for choices/flags:
+        CUtlVector<GDIVITEM> m_Items;
 
-		int m_nValue;
-		char m_szValue[MAX_STRING];
+        static char *m_pszEmpty;
 
-		bool m_bReportable;
-		bool m_bReadOnly;
+        char m_szName[MAX_IDENT];
+        char m_szLongName[MAX_STRING];
+        char *m_pszDescription;
 
-		friend class GDclass;
+        GDIV_TYPE m_eType;
+
+        int m_nDefault;
+        char m_szDefault[MAX_STRING];
+
+        int m_nValue;
+        char m_szValue[MAX_STRING];
+
+        bool m_bReportable;
+        bool m_bReadOnly;
+
+        friend class GDclass;
 };
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 const char *GDinputvariable::GetDescription(void)
 {
-	if (m_pszDescription != NULL)
-	{	
-		return(m_pszDescription);
-	}
+    if (m_pszDescription != NULL)
+    {
+        return(m_pszDescription);
+    }
 
-	return(m_pszEmpty);
+    return(m_pszEmpty);
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Returns whether or not this variable is read only. Read only variables
-//			cannot be edited in the Entity Properties dialog.
+//          cannot be edited in the Entity Properties dialog.
 //-----------------------------------------------------------------------------
 bool GDinputvariable::IsReadOnly(void)
 {
-	return(m_bReadOnly);
+    return(m_bReadOnly);
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Returns whether or not this variable should be displayed in the Entity
-//			Report dialog.
+//          Report dialog.
 //-----------------------------------------------------------------------------
 bool GDinputvariable::IsReportable(void)
 {
-	return(m_bReportable);
+    return(m_bReportable);
 }
 
 
@@ -191,8 +191,8 @@ bool GDinputvariable::IsReportable(void)
 //-----------------------------------------------------------------------------
 int GDinputvariable::GetFlagMask(int nFlag)
 {
-	Assert(m_eType == ivFlags);
-	return m_Items.Element(nFlag).iValue;
+    Assert(m_eType == ivFlags);
+    return m_Items.Element(nFlag).iValue;
 }
 
 
@@ -201,8 +201,8 @@ int GDinputvariable::GetFlagMask(int nFlag)
 //-----------------------------------------------------------------------------
 const char *GDinputvariable::GetFlagCaption(int nFlag)
 {
-	Assert(m_eType == ivFlags);
-	return m_Items.Element(nFlag).szCaption;
+    Assert(m_eType == ivFlags);
+    return m_Items.Element(nFlag).szCaption;
 }
 
 
@@ -211,8 +211,8 @@ const char *GDinputvariable::GetFlagCaption(int nFlag)
 //-----------------------------------------------------------------------------
 const char *GDinputvariable::GetChoiceCaption(int nChoice)
 {
-	Assert(m_eType == ivChoices);
-	return m_Items.Element(nChoice).szCaption;
+    Assert(m_eType == ivChoices);
+    return m_Items.Element(nChoice).szCaption;
 }
 
 

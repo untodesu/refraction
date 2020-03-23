@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -19,8 +19,8 @@
 class ILaunchableDLL
 {
 public:
-	// All vrad.exe does is load the VRAD DLL and run this.
-	virtual int			main( int argc, char **argv ) = 0;
+    // All vrad.exe does is load the VRAD DLL and run this.
+    virtual int         main( int argc, char **argv ) = 0;
 };
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -18,153 +18,153 @@ LINK_ENTITY_TO_CLASS( ai_goal_police, CAI_PoliceGoal );
 
 BEGIN_DATADESC( CAI_PoliceGoal )
 
-	DEFINE_KEYFIELD( m_flRadius,	FIELD_FLOAT,	"PoliceRadius" ),
-	DEFINE_KEYFIELD( m_iszTarget,	FIELD_STRING,	"PoliceTarget" ),
-	
-	DEFINE_FIELD( m_bOverrideKnockOut, FIELD_BOOLEAN ),
-	// m_hTarget
+    DEFINE_KEYFIELD( m_flRadius,    FIELD_FLOAT,    "PoliceRadius" ),
+    DEFINE_KEYFIELD( m_iszTarget,   FIELD_STRING,   "PoliceTarget" ),
 
-	DEFINE_INPUTFUNC( FIELD_VOID, "EnableKnockOut", InputEnableKnockOut ),
-	DEFINE_INPUTFUNC( FIELD_VOID, "DisableKnockOut", InputDisableKnockOut ),
+    DEFINE_FIELD( m_bOverrideKnockOut, FIELD_BOOLEAN ),
+    // m_hTarget
 
-	DEFINE_OUTPUT( m_OnKnockOut,		"OnKnockOut" ),
-	DEFINE_OUTPUT( m_OnFirstWarning,	"OnFirstWarning" ),
-	DEFINE_OUTPUT( m_OnSecondWarning,	"OnSecondWarning" ),
-	DEFINE_OUTPUT( m_OnLastWarning,		"OnLastWarning" ),
-	DEFINE_OUTPUT( m_OnSupressingTarget,"OnSupressingTarget" ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "EnableKnockOut", InputEnableKnockOut ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "DisableKnockOut", InputDisableKnockOut ),
+
+    DEFINE_OUTPUT( m_OnKnockOut,        "OnKnockOut" ),
+    DEFINE_OUTPUT( m_OnFirstWarning,    "OnFirstWarning" ),
+    DEFINE_OUTPUT( m_OnSecondWarning,   "OnSecondWarning" ),
+    DEFINE_OUTPUT( m_OnLastWarning,     "OnLastWarning" ),
+    DEFINE_OUTPUT( m_OnSupressingTarget,"OnSupressingTarget" ),
 
 END_DATADESC()
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CAI_PoliceGoal::CAI_PoliceGoal( void )
 {
-	m_hTarget = NULL;
-	m_bOverrideKnockOut = false;
+    m_hTarget = NULL;
+    m_bOverrideKnockOut = false;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 // Output : float
 //-----------------------------------------------------------------------------
 float CAI_PoliceGoal::GetRadius( void )
 {
-	return m_flRadius;
+    return m_flRadius;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 // Output : CBaseEntity
 //-----------------------------------------------------------------------------
 CBaseEntity *CAI_PoliceGoal::GetTarget( void )
 {
-	if ( m_hTarget == NULL )
-	{
-		CBaseEntity *pTarget = gEntList.FindEntityByName( NULL, m_iszTarget );
+    if ( m_hTarget == NULL )
+    {
+        CBaseEntity *pTarget = gEntList.FindEntityByName( NULL, m_iszTarget );
 
-		if ( pTarget == NULL )
-		{
-			DevMsg( "Unable to find ai_goal_police target: %s\n", STRING(m_iszTarget) );
-			return NULL;
-		}
+        if ( pTarget == NULL )
+        {
+            DevMsg( "Unable to find ai_goal_police target: %s\n", STRING(m_iszTarget) );
+            return NULL;
+        }
 
-		m_hTarget = pTarget;
-	}
+        m_hTarget = pTarget;
+    }
 
-	return m_hTarget;
+    return m_hTarget;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : &targetPos - 
+// Purpose:
+// Input  : &targetPos -
 // Output : Returns true on success, false on failure.
 //-----------------------------------------------------------------------------
 bool CAI_PoliceGoal::ShouldKnockOutTarget( const Vector &targetPos, bool bTargetVisible )
 {
-	if ( m_bOverrideKnockOut )
-		return true;
+    if ( m_bOverrideKnockOut )
+        return true;
 
-	// Must be flagged to do it
-	if ( HasSpawnFlags( SF_POLICE_GOAL_KNOCKOUT_BEHIND ) == false )
-		return false;
+    // Must be flagged to do it
+    if ( HasSpawnFlags( SF_POLICE_GOAL_KNOCKOUT_BEHIND ) == false )
+        return false;
 
-	// If the target's not visible, we don't care about him
-	if ( !bTargetVisible )
-		return false;
+    // If the target's not visible, we don't care about him
+    if ( !bTargetVisible )
+        return false;
 
-	Vector targetDir = targetPos - GetAbsOrigin();
-	VectorNormalize( targetDir );
+    Vector targetDir = targetPos - GetAbsOrigin();
+    VectorNormalize( targetDir );
 
-	Vector	facingDir;
-	AngleVectors( GetAbsAngles(), &facingDir );
+    Vector  facingDir;
+    AngleVectors( GetAbsAngles(), &facingDir );
 
-	// See if it's behind us
-	if ( DotProduct( facingDir, targetDir ) < 0 )
-		return true;
+    // See if it's behind us
+    if ( DotProduct( facingDir, targetDir ) < 0 )
+        return true;
 
-	return false;
+    return false;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pTarget - 
+// Purpose:
+// Input  : *pTarget -
 //-----------------------------------------------------------------------------
 void CAI_PoliceGoal::KnockOutTarget( CBaseEntity *pTarget )
 {
-	m_OnKnockOut.FireOutput( pTarget, this );
+    m_OnKnockOut.FireOutput( pTarget, this );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 // Output : Returns true on success, false on failure.
 //-----------------------------------------------------------------------------
 bool CAI_PoliceGoal::ShouldRemainAtPost( void )
 {
-	return HasSpawnFlags( SF_POLICE_GOAL_DO_NOT_LEAVE_POST );
+    return HasSpawnFlags( SF_POLICE_GOAL_DO_NOT_LEAVE_POST );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : level - 
+// Purpose:
+// Input  : level -
 //-----------------------------------------------------------------------------
 void CAI_PoliceGoal::FireWarningLevelOutput( int level )
 {
-	switch( level )
-	{
-	case 1:
-		m_OnFirstWarning.FireOutput( this, this );
-		break;
+    switch( level )
+    {
+    case 1:
+        m_OnFirstWarning.FireOutput( this, this );
+        break;
 
-	case 2:
-		m_OnSecondWarning.FireOutput( this, this );
-		break;
+    case 2:
+        m_OnSecondWarning.FireOutput( this, this );
+        break;
 
-	case 3:
-		m_OnLastWarning.FireOutput( this, this );
-		break;
+    case 3:
+        m_OnLastWarning.FireOutput( this, this );
+        break;
 
-	default:
-		m_OnSupressingTarget.FireOutput( this, this );
-		break;
-	}
+    default:
+        m_OnSupressingTarget.FireOutput( this, this );
+        break;
+    }
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : &data - 
+// Purpose:
+// Input  : &data -
 //-----------------------------------------------------------------------------
 void CAI_PoliceGoal::InputEnableKnockOut( inputdata_t &data )
 {
-	m_bOverrideKnockOut = true;
+    m_bOverrideKnockOut = true;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : &data - 
+// Purpose:
+// Input  : &data -
 //-----------------------------------------------------------------------------
 void CAI_PoliceGoal::InputDisableKnockOut( inputdata_t &data )
 {
-	m_bOverrideKnockOut = false;
+    m_bOverrideKnockOut = false;
 }
 

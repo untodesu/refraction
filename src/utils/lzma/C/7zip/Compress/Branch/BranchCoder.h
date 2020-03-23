@@ -24,20 +24,20 @@ public:
 };
 
 #define MyClassEncoderA(Name) class C ## Name: public CBranchConverter \
-  { public: UInt32 SubFilter(Byte *data, UInt32 size); }; 
+  { public: UInt32 SubFilter(Byte *data, UInt32 size); };
 
 #define MyClassDecoderA(Name) class C ## Name: public CBranchConverter \
-  { public: UInt32 SubFilter(Byte *data, UInt32 size); }; 
+  { public: UInt32 SubFilter(Byte *data, UInt32 size); };
 
 #define MyClassEncoderB(Name, ADD_ITEMS, ADD_INIT) class C ## Name: public CBranchConverter, public ADD_ITEMS \
-  { public: UInt32 SubFilter(Byte *data, UInt32 size); ADD_INIT}; 
+  { public: UInt32 SubFilter(Byte *data, UInt32 size); ADD_INIT};
 
 #define MyClassDecoderB(Name, ADD_ITEMS, ADD_INIT) class C ## Name: public CBranchConverter, public ADD_ITEMS \
-  { public: UInt32 SubFilter(Byte *data, UInt32 size); ADD_INIT}; 
+  { public: UInt32 SubFilter(Byte *data, UInt32 size); ADD_INIT};
 
 #define MyClass2b(Name, id, subId, encodingId)  \
 DEFINE_GUID(CLSID_CCompressConvert ## Name,  \
-0x23170F69, 0x40C1, 0x278B, 0x03, 0x03, id, subId, 0x00, 0x00, encodingId, 0x00); 
+0x23170F69, 0x40C1, 0x278B, 0x03, 0x03, id, subId, 0x00, 0x00, encodingId, 0x00);
 
 #define MyClassA(Name, id, subId)  \
 MyClass2b(Name ## _Encoder, id, subId, 0x01) \

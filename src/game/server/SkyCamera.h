@@ -20,28 +20,28 @@ class CSkyCamera;
 //
 class CSkyCamera : public CLogicalEntity
 {
-	DECLARE_CLASS( CSkyCamera, CLogicalEntity );
+    DECLARE_CLASS( CSkyCamera, CLogicalEntity );
 
 public:
 
-	DECLARE_DATADESC();
-	CSkyCamera();
-	~CSkyCamera();
-	virtual void Spawn( void );
-	virtual void Activate();
+    DECLARE_DATADESC();
+    CSkyCamera();
+    ~CSkyCamera();
+    virtual void Spawn( void );
+    virtual void Activate();
 
 public:
-	sky3dparams_t	m_skyboxData;
-	bool			m_bUseAngles;
-	CSkyCamera		*m_pNext;
+    sky3dparams_t   m_skyboxData;
+    bool            m_bUseAngles;
+    CSkyCamera      *m_pNext;
 };
 
 
 //-----------------------------------------------------------------------------
 // Retrives the current skycamera
 //-----------------------------------------------------------------------------
-CSkyCamera*		GetCurrentSkyCamera();
-CSkyCamera*		GetSkyCameraList();
+CSkyCamera*     GetCurrentSkyCamera();
+CSkyCamera*     GetSkyCameraList();
 
 
 #endif // SKYCAMERA_H

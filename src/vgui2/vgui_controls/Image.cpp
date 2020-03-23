@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -22,9 +22,9 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 Image::Image()
 {
-	SetPos(0,0);
-	SetSize(0,0);
-	SetColor(Color(255,255,255,255));
+    SetPos(0,0);
+    SetSize(0,0);
+    SetColor(Color(255,255,255,255));
 }
 
 //-----------------------------------------------------------------------------
@@ -35,13 +35,13 @@ Image::~Image()
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: Set the position of the image, you need to reset this every time you 
+// Purpose: Set the position of the image, you need to reset this every time you
 // call Paint()
 //-----------------------------------------------------------------------------
 void Image::SetPos(int x,int y)
 {
-	_pos[0]=x;
-	_pos[1]=y;
+    _pos[0]=x;
+    _pos[1]=y;
 }
 
 //-----------------------------------------------------------------------------
@@ -49,8 +49,8 @@ void Image::SetPos(int x,int y)
 //-----------------------------------------------------------------------------
 void Image::GetPos(int& x,int& y)
 {
-	x=_pos[0];
-	y=_pos[1];
+    x=_pos[0];
+    y=_pos[1];
 }
 
 //-----------------------------------------------------------------------------
@@ -58,8 +58,8 @@ void Image::GetPos(int& x,int& y)
 //-----------------------------------------------------------------------------
 void Image::GetSize(int &wide, int &tall)
 {
-	wide = _size[0];
-	tall = _size[1];
+    wide = _size[0];
+    tall = _size[1];
 }
 
 //-----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ void Image::GetSize(int &wide, int &tall)
 //-----------------------------------------------------------------------------
 void Image::GetContentSize(int &wide, int &tall)
 {
-	GetSize(wide, tall);
+    GetSize(wide, tall);
 }
 
 //-----------------------------------------------------------------------------
@@ -75,8 +75,8 @@ void Image::GetContentSize(int &wide, int &tall)
 //-----------------------------------------------------------------------------
 void Image::SetSize(int wide, int tall)
 {
-	_size[0]=wide;
-	_size[1]=tall;
+    _size[0]=wide;
+    _size[1]=tall;
 }
 
 //-----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ void Image::SetSize(int wide, int tall)
 //-----------------------------------------------------------------------------
 void Image::DrawSetColor(Color col)
 {
-	surface()->DrawSetColor(col[0], col[1], col[2], col[3]);
+    surface()->DrawSetColor(col[0], col[1], col[2], col[3]);
 }
 
 //-----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ void Image::DrawSetColor(Color col)
 //-----------------------------------------------------------------------------
 void Image::DrawSetColor(int r,int g,int b,int a)
 {
-	surface()->DrawSetColor(r,g,b,a);
+    surface()->DrawSetColor(r,g,b,a);
 }
 
 //-----------------------------------------------------------------------------
@@ -100,11 +100,11 @@ void Image::DrawSetColor(int r,int g,int b,int a)
 //-----------------------------------------------------------------------------
 void Image::DrawFilledRect(int x0,int y0,int x1,int y1)
 {
-	x0+=_pos[0];
-	y0+=_pos[1];
-	x1+=_pos[0];
-	y1+=_pos[1];
-	surface()->DrawFilledRect(x0,y0,x1,y1);
+    x0+=_pos[0];
+    y0+=_pos[1];
+    x1+=_pos[0];
+    y1+=_pos[1];
+    surface()->DrawFilledRect(x0,y0,x1,y1);
 }
 
 //-----------------------------------------------------------------------------
@@ -112,11 +112,11 @@ void Image::DrawFilledRect(int x0,int y0,int x1,int y1)
 //-----------------------------------------------------------------------------
 void Image::DrawOutlinedRect(int x0,int y0,int x1,int y1)
 {
-	x0+=_pos[0];
-	y0+=_pos[1];
-	x1+=_pos[0];
-	y1+=_pos[1];
-	surface()->DrawOutlinedRect(x0,y0,x1,y1);
+    x0+=_pos[0];
+    y0+=_pos[1];
+    x1+=_pos[0];
+    y1+=_pos[1];
+    surface()->DrawOutlinedRect(x0,y0,x1,y1);
 }
 
 //-----------------------------------------------------------------------------
@@ -124,11 +124,11 @@ void Image::DrawOutlinedRect(int x0,int y0,int x1,int y1)
 //-----------------------------------------------------------------------------
 void Image::DrawLine(int x0,int y0,int x1,int y1)
 {
-	x0+=_pos[0];
-	y0+=_pos[1];
-	x1+=_pos[0];
-	y1+=_pos[1];
-	surface()->DrawLine(x0,y0,x1,y1);
+    x0+=_pos[0];
+    y0+=_pos[1];
+    x1+=_pos[0];
+    y1+=_pos[1];
+    surface()->DrawLine(x0,y0,x1,y1);
 }
 
 //-----------------------------------------------------------------------------
@@ -136,14 +136,14 @@ void Image::DrawLine(int x0,int y0,int x1,int y1)
 //-----------------------------------------------------------------------------
 void Image::DrawPolyLine(int *px, int *py, int numPoints)
 {
-	// update the positions to be relative to this panel
-	for(int i=0;i<numPoints;i++)
-	{
-		px[i] += _pos[0];
-		py[i] += _pos[1];
-	}
+    // update the positions to be relative to this panel
+    for(int i=0;i<numPoints;i++)
+    {
+        px[i] += _pos[0];
+        py[i] += _pos[1];
+    }
 
-	surface()->DrawPolyLine(px, py, numPoints);
+    surface()->DrawPolyLine(px, py, numPoints);
 }
 
 //-----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ void Image::DrawPolyLine(int *px, int *py, int numPoints)
 //-----------------------------------------------------------------------------
 void Image::DrawSetTextFont(HFont font)
 {
-	surface()->DrawSetTextFont(font);
+    surface()->DrawSetTextFont(font);
 }
 
 //-----------------------------------------------------------------------------
@@ -159,7 +159,7 @@ void Image::DrawSetTextFont(HFont font)
 //-----------------------------------------------------------------------------
 void Image::DrawSetTextColor(Color sc)
 {
-	surface()->DrawSetTextColor(sc[0], sc[1], sc[2], sc[3]);
+    surface()->DrawSetTextColor(sc[0], sc[1], sc[2], sc[3]);
 }
 
 //-----------------------------------------------------------------------------
@@ -167,17 +167,17 @@ void Image::DrawSetTextColor(Color sc)
 //-----------------------------------------------------------------------------
 void Image::DrawSetTextColor(int r,int g,int b,int a)
 {
-	surface()->DrawSetTextColor(r,g,b,a);
-}	
+    surface()->DrawSetTextColor(r,g,b,a);
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: Set the text position
 //-----------------------------------------------------------------------------
 void Image::DrawSetTextPos(int x,int y)
 {
-	x+=_pos[0];
-	y+=_pos[1];
-	surface()->DrawSetTextPos(x,y);
+    x+=_pos[0];
+    y+=_pos[1];
+    surface()->DrawSetTextPos(x,y);
 }
 
 //-----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ void Image::DrawSetTextPos(int x,int y)
 //-----------------------------------------------------------------------------
 void Image::DrawPrintText(const wchar_t *str,int strlen)
 {
-	surface()->DrawPrintText(str, strlen);
+    surface()->DrawPrintText(str, strlen);
 }
 
 //-----------------------------------------------------------------------------
@@ -193,11 +193,11 @@ void Image::DrawPrintText(const wchar_t *str,int strlen)
 //-----------------------------------------------------------------------------
 void Image::DrawPrintText(int x, int y, const wchar_t *str, int strlen)
 {
-	x += _pos[0];
-	y += _pos[1];
+    x += _pos[0];
+    y += _pos[1];
 
-	surface()->DrawSetTextPos(x, y);
-	surface()->DrawPrintText(str, strlen);
+    surface()->DrawSetTextPos(x, y);
+    surface()->DrawPrintText(str, strlen);
 }
 
 //-----------------------------------------------------------------------------
@@ -205,7 +205,7 @@ void Image::DrawPrintText(int x, int y, const wchar_t *str, int strlen)
 //-----------------------------------------------------------------------------
 void Image::DrawPrintChar(wchar_t ch)
 {
-	surface()->DrawUnicodeChar(ch);
+    surface()->DrawUnicodeChar(ch);
 }
 
 //-----------------------------------------------------------------------------
@@ -213,11 +213,11 @@ void Image::DrawPrintChar(wchar_t ch)
 //-----------------------------------------------------------------------------
 void Image::DrawPrintChar(int x, int y, wchar_t ch)
 {
-	x+=_pos[0];
-	y+=_pos[1];
+    x+=_pos[0];
+    y+=_pos[1];
 
-	surface()->DrawSetTextPos(x, y);
-	surface()->DrawUnicodeChar(ch);
+    surface()->DrawSetTextPos(x, y);
+    surface()->DrawUnicodeChar(ch);
 }
 
 //-----------------------------------------------------------------------------
@@ -225,7 +225,7 @@ void Image::DrawPrintChar(int x, int y, wchar_t ch)
 //-----------------------------------------------------------------------------
 void Image::DrawSetTexture(int id)
 {
-	surface()->DrawSetTexture(id);
+    surface()->DrawSetTexture(id);
 }
 
 //-----------------------------------------------------------------------------
@@ -233,7 +233,7 @@ void Image::DrawSetTexture(int id)
 //-----------------------------------------------------------------------------
 void Image::DrawTexturedRect(int x0,int y0,int x1,int y1)
 {
-	surface()->DrawTexturedRect(x0,y0,x1,y1);
+    surface()->DrawTexturedRect(x0,y0,x1,y1);
 }
 
 //-----------------------------------------------------------------------------
@@ -249,8 +249,8 @@ void Image::Paint()
 //-----------------------------------------------------------------------------
 void Image::SetColor(Color color)
 {
-	_color=color;
-	DrawSetTextColor(color); // now update the device context underneath us :)
+    _color=color;
+    DrawSetTextColor(color); // now update the device context underneath us :)
 }
 
 //-----------------------------------------------------------------------------
@@ -258,17 +258,17 @@ void Image::SetColor(Color color)
 //-----------------------------------------------------------------------------
 Color Image::GetColor()
 {
-	return _color;
+    return _color;
 }
 
 bool Image::Evict()
 {
-	return false;
+    return false;
 }
 
 int Image::GetNumFrames()
 {
-	return 0;
+    return 0;
 }
 
 void Image::SetFrame( int nFrame )
@@ -277,6 +277,6 @@ void Image::SetFrame( int nFrame )
 
 HTexture Image::GetID()
 {
-	return 0;
+    return 0;
 }
 

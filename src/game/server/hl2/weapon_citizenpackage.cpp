@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -19,19 +19,19 @@ END_DATADESC()
 LINK_ENTITY_TO_CLASS( weapon_citizenpackage, CWeaponCitizenPackage );
 PRECACHE_WEAPON_REGISTER(weapon_citizenpackage);
 
-acttable_t	CWeaponCitizenPackage::m_acttable[] = 
+acttable_t  CWeaponCitizenPackage::m_acttable[] =
 {
-	{ ACT_IDLE,						ACT_IDLE_PACKAGE,					false },
-	{ ACT_WALK,						ACT_WALK_PACKAGE,					false },
+    { ACT_IDLE,                     ACT_IDLE_PACKAGE,                   false },
+    { ACT_WALK,                     ACT_WALK_PACKAGE,                   false },
 };
 IMPLEMENT_ACTTABLE(CWeaponCitizenPackage);
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CWeaponCitizenPackage::ItemPostFrame( void )
 {
-	// Do nothing
+    // Do nothing
 }
 
 //-----------------------------------------------------------------------------
@@ -39,8 +39,8 @@ void CWeaponCitizenPackage::ItemPostFrame( void )
 //-----------------------------------------------------------------------------
 void CWeaponCitizenPackage::Drop( const Vector &vecVelocity )
 {
-	BaseClass::Drop( vecVelocity );
-	UTIL_Remove( this );
+    BaseClass::Drop( vecVelocity );
+    UTIL_Remove( this );
 }
 
 
@@ -50,11 +50,11 @@ void CWeaponCitizenPackage::Drop( const Vector &vecVelocity )
 //-----------------------------------------------------------------------------
 class CWeaponCitizenSuitcase : public CWeaponCitizenPackage
 {
-	DECLARE_CLASS( CWeaponCitizenSuitcase, CWeaponCitizenPackage );
+    DECLARE_CLASS( CWeaponCitizenSuitcase, CWeaponCitizenPackage );
 public:
-	DECLARE_SERVERCLASS();
-	DECLARE_DATADESC();	
-	DECLARE_ACTTABLE();
+    DECLARE_SERVERCLASS();
+    DECLARE_DATADESC();
+    DECLARE_ACTTABLE();
 };
 
 IMPLEMENT_SERVERCLASS_ST(CWeaponCitizenSuitcase, DT_WeaponCitizenSuitcase)
@@ -66,9 +66,9 @@ END_DATADESC()
 LINK_ENTITY_TO_CLASS( weapon_citizensuitcase, CWeaponCitizenSuitcase );
 PRECACHE_WEAPON_REGISTER(weapon_citizensuitcase);
 
-acttable_t	CWeaponCitizenSuitcase::m_acttable[] = 
+acttable_t  CWeaponCitizenSuitcase::m_acttable[] =
 {
-	{ ACT_IDLE,						ACT_IDLE_SUITCASE,					false },
-	{ ACT_WALK,						ACT_WALK_SUITCASE,					false },
+    { ACT_IDLE,                     ACT_IDLE_SUITCASE,                  false },
+    { ACT_WALK,                     ACT_WALK_SUITCASE,                  false },
 };
 IMPLEMENT_ACTTABLE(CWeaponCitizenSuitcase);

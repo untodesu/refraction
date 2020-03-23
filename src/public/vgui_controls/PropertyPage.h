@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -23,34 +23,34 @@ namespace vgui
 //-----------------------------------------------------------------------------
 class PropertyPage : public EditablePanel
 {
-	DECLARE_CLASS_SIMPLE( PropertyPage, EditablePanel );
+    DECLARE_CLASS_SIMPLE( PropertyPage, EditablePanel );
 
 public:
-	PropertyPage(Panel *parent, const char *panelName);
-	~PropertyPage();
+    PropertyPage(Panel *parent, const char *panelName);
+    ~PropertyPage();
 
-	// Called when page is loaded.  Data should be reloaded from document into controls.
-	MESSAGE_FUNC( OnResetData, "ResetData" );
+    // Called when page is loaded.  Data should be reloaded from document into controls.
+    MESSAGE_FUNC( OnResetData, "ResetData" );
 
-	// Called when the OK / Apply button is pressed.  Changed data should be written into document.
-	MESSAGE_FUNC( OnApplyChanges, "ApplyChanges" );
+    // Called when the OK / Apply button is pressed.  Changed data should be written into document.
+    MESSAGE_FUNC( OnApplyChanges, "ApplyChanges" );
 
-	// called when the page is shown/hidden
-	MESSAGE_FUNC( OnPageShow, "PageShow" );
-	MESSAGE_FUNC( OnPageHide, "PageHide" );
+    // called when the page is shown/hidden
+    MESSAGE_FUNC( OnPageShow, "PageShow" );
+    MESSAGE_FUNC( OnPageHide, "PageHide" );
 
-	virtual void OnKeyCodeTyped(KeyCode code);
-	virtual bool HasUserConfigSettings() { return true; }
+    virtual void OnKeyCodeTyped(KeyCode code);
+    virtual bool HasUserConfigSettings() { return true; }
 
-	virtual void SetVisible(bool state);
+    virtual void SetVisible(bool state);
 
 protected:
-	// called to be notified of the tab button used to Activate this page
-	// if overridden this must be chained back to
-	MESSAGE_FUNC_PTR( OnPageTabActivated, "PageTabActivated", panel );
+    // called to be notified of the tab button used to Activate this page
+    // if overridden this must be chained back to
+    MESSAGE_FUNC_PTR( OnPageTabActivated, "PageTabActivated", panel );
 
 private:
-	PHandle _pageTab;
+    PHandle _pageTab;
 };
 
 } // namespace vgui

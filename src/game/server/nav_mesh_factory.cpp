@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -30,16 +30,16 @@
 CNavMesh *NavMeshFactory( void )
 {
 #ifdef TERROR
-	return new TerrorNavMesh;
+    return new TerrorNavMesh;
 #endif
 
 #ifdef TF_DLL
-	return new CTFNavMesh;
+    return new CTFNavMesh;
 #endif
 
 #ifdef CSTRIKE_DLL
-	return new CSNavMesh;
+    return new CSNavMesh;
 #endif
 
-	return new CNavMesh;
+    return new CNavMesh;
 }

@@ -29,25 +29,25 @@
 //-----------------------------------------------------------------------------
 class CTier2SteamApp : public CSteamAppSystemGroup
 {
-	typedef CSteamAppSystemGroup BaseClass;
+    typedef CSteamAppSystemGroup BaseClass;
 
 public:
-	// Methods of IApplication
-	virtual bool PreInit()
-	{
-		CreateInterfaceFn factory = GetFactory();
-		ConnectTier1Libraries( &factory, 1 );
-		ConVar_Register( 0 );
-		ConnectTier2Libraries( &factory, 1 );
-		return true;			
-	}
+    // Methods of IApplication
+    virtual bool PreInit()
+    {
+        CreateInterfaceFn factory = GetFactory();
+        ConnectTier1Libraries( &factory, 1 );
+        ConVar_Register( 0 );
+        ConnectTier2Libraries( &factory, 1 );
+        return true;
+    }
 
-	virtual void PostShutdown()
-	{
-		DisconnectTier2Libraries();
-		ConVar_Unregister();
-		DisconnectTier1Libraries();
-	}
+    virtual void PostShutdown()
+    {
+        DisconnectTier2Libraries();
+        ConVar_Unregister();
+        DisconnectTier1Libraries();
+    }
 };
 
 
@@ -56,29 +56,29 @@ public:
 //-----------------------------------------------------------------------------
 class CTier2DmSteamApp : public CTier2SteamApp
 {
-	typedef CTier2SteamApp BaseClass;
+    typedef CTier2SteamApp BaseClass;
 
 public:
-	// Methods of IApplication
-	virtual bool PreInit()
-	{
-		if ( !BaseClass::PreInit() )
-			return false;
+    // Methods of IApplication
+    virtual bool PreInit()
+    {
+        if ( !BaseClass::PreInit() )
+            return false;
 
-		CreateInterfaceFn factory = GetFactory();
-		if ( !ConnectDataModel( factory ) )
-			return false;
+        CreateInterfaceFn factory = GetFactory();
+        if ( !ConnectDataModel( factory ) )
+            return false;
 
-		InitReturnVal_t nRetVal = InitDataModel();
-		return ( nRetVal == INIT_OK );
-	}
+        InitReturnVal_t nRetVal = InitDataModel();
+        return ( nRetVal == INIT_OK );
+    }
 
-	virtual void PostShutdown()
-	{
-		ShutdownDataModel();
-		DisconnectDataModel();
-		BaseClass::PostShutdown();
-	}
+    virtual void PostShutdown()
+    {
+        ShutdownDataModel();
+        DisconnectDataModel();
+        BaseClass::PostShutdown();
+    }
 };
 
 

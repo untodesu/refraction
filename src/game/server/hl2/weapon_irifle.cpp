@@ -1,11 +1,11 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
 //=============================================================================//
-//========= Copyright © 1996-2003, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2003, Valve LLC, All rights reserved. ============
 //
 // Purpose: This is the incendiary rifle.
 //
@@ -27,33 +27,33 @@
 #include "tier0/memdbgon.h"
 
 //###########################################################################
-//	>> CWeaponIRifle
+//  >> CWeaponIRifle
 //###########################################################################
 
 class CWeaponIRifle : public CBaseHLCombatWeapon
 {
 public:
 
-	CWeaponIRifle();
+    CWeaponIRifle();
 
-	DECLARE_SERVERCLASS();
-	DECLARE_CLASS( CWeaponIRifle, CBaseHLCombatWeapon );
+    DECLARE_SERVERCLASS();
+    DECLARE_CLASS( CWeaponIRifle, CBaseHLCombatWeapon );
 
-	void	Precache( void );
-	bool	Deploy( void );
+    void    Precache( void );
+    bool    Deploy( void );
 
-	void	PrimaryAttack( void );
-	virtual float GetFireRate( void ) { return 1; };
+    void    PrimaryAttack( void );
+    virtual float GetFireRate( void ) { return 1; };
 
-	int CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+    int CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
 
-	virtual const Vector& GetBulletSpread( void )
-	{
-		static Vector cone = VECTOR_CONE_3DEGREES;
-		return cone;
-	}
+    virtual const Vector& GetBulletSpread( void )
+    {
+        static Vector cone = VECTOR_CONE_3DEGREES;
+        return cone;
+    }
 
-	DECLARE_ACTTABLE();
+    DECLARE_ACTTABLE();
 };
 
 IMPLEMENT_SERVERCLASS_ST(CWeaponIRifle, DT_WeaponIRifle)
@@ -65,9 +65,9 @@ PRECACHE_WEAPON_REGISTER(weapon_irifle);
 //---------------------------------------------------------
 // Activity table
 //---------------------------------------------------------
-acttable_t	CWeaponIRifle::m_acttable[] = 
+acttable_t  CWeaponIRifle::m_acttable[] =
 {
-	{ ACT_RANGE_ATTACK1, ACT_RANGE_ATTACK_ML, true },
+    { ACT_RANGE_ATTACK1, ACT_RANGE_ATTACK_ML, true },
 };
 IMPLEMENT_ACTTABLE(CWeaponIRifle);
 
@@ -76,46 +76,46 @@ IMPLEMENT_ACTTABLE(CWeaponIRifle);
 //---------------------------------------------------------
 CWeaponIRifle::CWeaponIRifle()
 {
-	m_bReloadsSingly = true;
+    m_bReloadsSingly = true;
 
-	m_fMinRange1		= 65;
-	m_fMinRange2		= 65;
-	m_fMaxRange1		= 200;
-	m_fMaxRange2		= 200;
+    m_fMinRange1        = 65;
+    m_fMinRange2        = 65;
+    m_fMaxRange1        = 200;
+    m_fMaxRange2        = 200;
 }
 
 //---------------------------------------------------------
 //---------------------------------------------------------
 void CWeaponIRifle::Precache( void )
 {
-	BaseClass::Precache();
+    BaseClass::Precache();
 }
 
 //---------------------------------------------------------
 //---------------------------------------------------------
 void CWeaponIRifle::PrimaryAttack( void )
 {
-	CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
-	
-	if ( pOwner == NULL )
-		return;
+    CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
 
-	m_iClip1 = m_iClip1 - 1;
+    if ( pOwner == NULL )
+        return;
 
-	SendWeaponAnim( ACT_VM_PRIMARYATTACK );
-	pOwner->m_flNextAttack = gpGlobals->curtime + 1;
+    m_iClip1 = m_iClip1 - 1;
 
-	CFlare *pFlare = CFlare::Create( pOwner->Weapon_ShootPosition(), pOwner->EyeAngles(), pOwner, FLARE_DURATION );
+    SendWeaponAnim( ACT_VM_PRIMARYATTACK );
+    pOwner->m_flNextAttack = gpGlobals->curtime + 1;
 
-	if ( pFlare == NULL )
-		return;
+    CFlare *pFlare = CFlare::Create( pOwner->Weapon_ShootPosition(), pOwner->EyeAngles(), pOwner, FLARE_DURATION );
 
-	Vector forward;
-	pOwner->EyeVectors( &forward );
+    if ( pFlare == NULL )
+        return;
 
-	pFlare->SetAbsVelocity( forward * 1500 );
+    Vector forward;
+    pOwner->EyeVectors( &forward );
 
-	WeaponSound( SINGLE );
+    pFlare->SetAbsVelocity( forward * 1500 );
+
+    WeaponSound( SINGLE );
 }
 
 //---------------------------------------------------------
@@ -123,10 +123,10 @@ void CWeaponIRifle::PrimaryAttack( void )
 //---------------------------------------------------------
 bool CWeaponIRifle::Deploy( void )
 {
-	CBaseCombatCharacter *pOwner  = GetOwner();
-	if (pOwner)
-	{
-		pOwner->GiveAmmo( 90, m_iPrimaryAmmoType);
-	}
-	return BaseClass::Deploy();
+    CBaseCombatCharacter *pOwner  = GetOwner();
+    if (pOwner)
+    {
+        pOwner->GiveAmmo( 90, m_iPrimaryAmmoType);
+    }
+    return BaseClass::Deploy();
 }

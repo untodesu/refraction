@@ -117,15 +117,15 @@
 #define LITTLE_ENDIAN   1234
 #define BYTE_ORDER      BIG_ENDIAN
 #else
-	#ifndef _MSC_VER
-		// sys/param.h sets BYTE_ORDER on linux/osx
-		#include <sys/param.h>
-	#else
-		// All our known win32 platforms are little endian
-		#define BIG_ENDIAN      4321
-		#define LITTLE_ENDIAN   1234
-		#define BYTE_ORDER      LITTLE_ENDIAN
-	#endif // _MSC_VER
+    #ifndef _MSC_VER
+        // sys/param.h sets BYTE_ORDER on linux/osx
+        #include <sys/param.h>
+    #else
+        // All our known win32 platforms are little endian
+        #define BIG_ENDIAN      4321
+        #define LITTLE_ENDIAN   1234
+        #define BYTE_ORDER      LITTLE_ENDIAN
+    #endif // _MSC_VER
 #endif // _PS3
 
 #ifndef BYTE_ORDER

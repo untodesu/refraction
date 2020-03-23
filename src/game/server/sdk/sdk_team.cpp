@@ -23,7 +23,7 @@ LINK_ENTITY_TO_CLASS( sdk_team_manager, CSDKTeam );
 //-----------------------------------------------------------------------------
 CSDKTeam *GetGlobalSDKTeam( int iIndex )
 {
-	return (CSDKTeam*)GetGlobalTeam( iIndex );
+    return (CSDKTeam*)GetGlobalTeam( iIndex );
 }
 
 
@@ -32,9 +32,9 @@ CSDKTeam *GetGlobalSDKTeam( int iIndex )
 //-----------------------------------------------------------------------------
 void CSDKTeam::Init( const char *pName, int iNumber )
 {
-	BaseClass::Init( pName, iNumber );
+    BaseClass::Init( pName, iNumber );
 
-	// Only detect changes every half-second.
-	NetworkProp()->SetUpdateInterval( 0.75f );
+    // Only detect changes every half-second.
+    NetworkProp()->SetUpdateInterval( 0.75f );
 }
 

@@ -18,36 +18,36 @@
 //-----------------------------------------------------------------------------
 // Helper empty implementation of an IAppSystem for tier2 libraries
 //-----------------------------------------------------------------------------
-template< class IInterface, int ConVarFlag = 0 > 
+template< class IInterface, int ConVarFlag = 0 >
 class CTier3DmAppSystem : public CTier2DmAppSystem< IInterface, ConVarFlag >
 {
-	typedef CTier2DmAppSystem< IInterface, ConVarFlag > BaseClass;
+    typedef CTier2DmAppSystem< IInterface, ConVarFlag > BaseClass;
 
 public:
-	CTier3DmAppSystem( bool bIsPrimaryAppSystem = true ) : BaseClass(	bIsPrimaryAppSystem )
-	{
-	}
+    CTier3DmAppSystem( bool bIsPrimaryAppSystem = true ) : BaseClass(   bIsPrimaryAppSystem )
+    {
+    }
 
-	virtual bool Connect( CreateInterfaceFn factory ) 
-	{
-		if ( !BaseClass::Connect( factory ) )
-			return false;
+    virtual bool Connect( CreateInterfaceFn factory )
+    {
+        if ( !BaseClass::Connect( factory ) )
+            return false;
 
-		if ( IsPrimaryAppSystem() )
-		{
-			ConnectTier3Libraries( &factory, 1 );
-		}
-		return true;
-	}
+        if ( IsPrimaryAppSystem() )
+        {
+            ConnectTier3Libraries( &factory, 1 );
+        }
+        return true;
+    }
 
-	virtual void Disconnect() 
-	{
-		if ( IsPrimaryAppSystem() )
-		{
-			DisconnectTier3Libraries();
-		}
-		BaseClass::Disconnect();
-	}
+    virtual void Disconnect()
+    {
+        if ( IsPrimaryAppSystem() )
+        {
+            DisconnectTier3Libraries();
+        }
+        BaseClass::Disconnect();
+    }
 };
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -10,34 +10,34 @@
 #pragma once
 #endif
 
-class	Vector;
-struct	FXQuadData_t;
-struct	FXLineData_t;
+class   Vector;
+struct  FXQuadData_t;
+struct  FXLineData_t;
 //-----------------------------------------------------------------------------
 // Purpose: Base class for client side effects
 //-----------------------------------------------------------------------------
 abstract_class CClientSideEffect
 {
 public:
-	// Constructs the named effect
-						CClientSideEffect( const char *name );
-	virtual				~CClientSideEffect( void );
+    // Constructs the named effect
+                        CClientSideEffect( const char *name );
+    virtual             ~CClientSideEffect( void );
 
-	// Update/Draw the effect
-	// Derived classes must implement this method!
-	virtual void		Draw( double frametime ) = 0;
-	// Returns name of effect
-	virtual const char	*GetName( void );
-	// Retuns whether the effect is still active
-	virtual bool		IsActive( void );
-	// Sets the effect to inactive so it can be destroed
-	virtual void		Destroy( void );
-	
+    // Update/Draw the effect
+    // Derived classes must implement this method!
+    virtual void        Draw( double frametime ) = 0;
+    // Returns name of effect
+    virtual const char  *GetName( void );
+    // Retuns whether the effect is still active
+    virtual bool        IsActive( void );
+    // Sets the effect to inactive so it can be destroed
+    virtual void        Destroy( void );
+
 private:
-	// Name of effect ( static data )
-	const char			*m_pszName;
-	// Is the effect active
-	bool				m_bActive;
+    // Name of effect ( static data )
+    const char          *m_pszName;
+    // Is the effect active
+    bool                m_bActive;
 };
 
 //-----------------------------------------------------------------------------
@@ -46,14 +46,14 @@ private:
 abstract_class IEffectsList
 {
 public:
-	virtual			~IEffectsList( void ) {}
+    virtual         ~IEffectsList( void ) {}
 
-	// Add an effect to the list of effects
-	virtual void	AddEffect( CClientSideEffect *effect ) = 0;
-	// Simulate/Update/Draw effects on list
-	virtual void	DrawEffects( double frametime ) = 0;
-	// Flush out all effects fbrom the list
-	virtual void	Flush( void ) = 0;
+    // Add an effect to the list of effects
+    virtual void    AddEffect( CClientSideEffect *effect ) = 0;
+    // Simulate/Update/Draw effects on list
+    virtual void    DrawEffects( double frametime ) = 0;
+    // Flush out all effects fbrom the list
+    virtual void    Flush( void ) = 0;
 };
 
 extern IEffectsList *clienteffects;
@@ -71,20 +71,20 @@ void FX_AddLine( const FXLineData_t &data );
 
 void FX_AddQuad( const FXQuadData_t &data );
 
-void FX_AddQuad( const Vector &origin, 
-				 const Vector &normal, 
-				 float startSize, 
-				 float endSize, 
-				 float sizeBias,
-				 float startAlpha, 
-				 float endAlpha,
-				 float alphaBias,
-				 float yaw,
-				 float deltaYaw,
-				 const Vector &color, 
-				 float lifeTime, 
-				 const char *shader, 
-				 unsigned int flags );
+void FX_AddQuad( const Vector &origin,
+                 const Vector &normal,
+                 float startSize,
+                 float endSize,
+                 float sizeBias,
+                 float startAlpha,
+                 float endAlpha,
+                 float alphaBias,
+                 float yaw,
+                 float deltaYaw,
+                 const Vector &color,
+                 float lifeTime,
+                 const char *shader,
+                 unsigned int flags );
 
 // For safe addition of client effects
 void SetFXCreationAllowed( bool state );

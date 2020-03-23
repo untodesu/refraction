@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -43,14 +43,14 @@
 //--------------------------------------------------------------------------------------------------------
 BEGIN_DATADESC( CFuncNavCost )
 
-	// Inputs
-	DEFINE_INPUTFUNC( FIELD_VOID, "Enable", InputEnable ),
-	DEFINE_INPUTFUNC( FIELD_VOID, "Disable", InputDisable ),
-	DEFINE_KEYFIELD( m_iszTags, FIELD_STRING, "tags" ),
-	DEFINE_KEYFIELD( m_team, FIELD_INTEGER, "team" ),
-	DEFINE_KEYFIELD( m_isDisabled, FIELD_BOOLEAN, "start_disabled" ),
+    // Inputs
+    DEFINE_INPUTFUNC( FIELD_VOID, "Enable", InputEnable ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "Disable", InputDisable ),
+    DEFINE_KEYFIELD( m_iszTags, FIELD_STRING, "tags" ),
+    DEFINE_KEYFIELD( m_team, FIELD_INTEGER, "team" ),
+    DEFINE_KEYFIELD( m_isDisabled, FIELD_BOOLEAN, "start_disabled" ),
 
-	DEFINE_THINKFUNC( CostThink ),
+    DEFINE_THINKFUNC( CostThink ),
 
 END_DATADESC()
 
@@ -66,97 +66,97 @@ CountdownTimer CFuncNavCost::gm_dirtyTimer;
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavCost::Spawn( void )
 {
-	BaseClass::Spawn();
+    BaseClass::Spawn();
 
-	gm_masterCostVector.AddToTail( this );
-	gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
+    gm_masterCostVector.AddToTail( this );
+    gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
 
-	SetSolid( SOLID_BSP );	
-	AddSolidFlags( FSOLID_NOT_SOLID );
+    SetSolid( SOLID_BSP );
+    AddSolidFlags( FSOLID_NOT_SOLID );
 
-	SetMoveType( MOVETYPE_NONE );
-	SetModel( STRING( GetModelName() ) );
-	AddEffects( EF_NODRAW );
-	SetCollisionGroup( COLLISION_GROUP_NONE );
+    SetMoveType( MOVETYPE_NONE );
+    SetModel( STRING( GetModelName() ) );
+    AddEffects( EF_NODRAW );
+    SetCollisionGroup( COLLISION_GROUP_NONE );
 
-	VPhysicsInitShadow( false, false );
+    VPhysicsInitShadow( false, false );
 
-	SetThink( &CFuncNavCost::CostThink );
-	SetNextThink( gpGlobals->curtime + UPDATE_DIRTY_TIME );
+    SetThink( &CFuncNavCost::CostThink );
+    SetNextThink( gpGlobals->curtime + UPDATE_DIRTY_TIME );
 
-	m_tags.RemoveAll();
+    m_tags.RemoveAll();
 
-	const char *tags = STRING( m_iszTags );
+    const char *tags = STRING( m_iszTags );
 
-	// chop space-delimited string into individual tokens
-	if ( tags )
-	{
-		char *buffer = new char [ strlen( tags ) + 1 ];
-		Q_strcpy( buffer, tags );
+    // chop space-delimited string into individual tokens
+    if ( tags )
+    {
+        char *buffer = new char [ strlen( tags ) + 1 ];
+        Q_strcpy( buffer, tags );
 
-		for( char *token = strtok( buffer, " " ); token; token = strtok( NULL, " " ) )
-		{
-			m_tags.AddToTail( CFmtStr( "%s", token ) );
-		}
+        for( char *token = strtok( buffer, " " ); token; token = strtok( NULL, " " ) )
+        {
+            m_tags.AddToTail( CFmtStr( "%s", token ) );
+        }
 
-		delete [] buffer;
-	}
+        delete [] buffer;
+    }
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavCost::UpdateOnRemove( void )
 {
-	gm_masterCostVector.FindAndFastRemove( this );
-	BaseClass::UpdateOnRemove();
+    gm_masterCostVector.FindAndFastRemove( this );
+    BaseClass::UpdateOnRemove();
 
-	gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
+    gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavCost::InputEnable( inputdata_t &inputdata )
 {
-	m_isDisabled = false;
-	gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
+    m_isDisabled = false;
+    gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavCost::InputDisable( inputdata_t &inputdata )
 {
-	m_isDisabled = true;
-	gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
+    m_isDisabled = true;
+    gm_dirtyTimer.Start( UPDATE_DIRTY_TIME );
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavCost::CostThink( void )
 {
-	SetNextThink( gpGlobals->curtime + UPDATE_DIRTY_TIME );
+    SetNextThink( gpGlobals->curtime + UPDATE_DIRTY_TIME );
 
-	if ( gm_dirtyTimer.HasStarted() && gm_dirtyTimer.IsElapsed() )
-	{
-		// one or more avoid entities have changed - update nav decoration
-		gm_dirtyTimer.Invalidate();
+    if ( gm_dirtyTimer.HasStarted() && gm_dirtyTimer.IsElapsed() )
+    {
+        // one or more avoid entities have changed - update nav decoration
+        gm_dirtyTimer.Invalidate();
 
-		UpdateAllNavCostDecoration();
-	}
+        UpdateAllNavCostDecoration();
+    }
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 bool CFuncNavCost::HasTag( const char *groupname ) const
 {
-	for( int i=0; i<m_tags.Count(); ++i )
-	{
-		if ( FStrEq( m_tags[i], groupname ) )
-		{
-			return true;
-		}
-	}
+    for( int i=0; i<m_tags.Count(); ++i )
+    {
+        if ( FStrEq( m_tags[i], groupname ) )
+        {
+            return true;
+        }
+    }
 
-	return false;
+    return false;
 }
 
 
@@ -164,105 +164,105 @@ bool CFuncNavCost::HasTag( const char *groupname ) const
 // Return true if this cost applies to the given actor
 bool CFuncNavCost::IsApplicableTo( CBaseCombatCharacter *who ) const
 {
-	if ( !who )
-	{
-		return false;
-	}
+    if ( !who )
+    {
+        return false;
+    }
 
-	if ( m_team > 0 )
-	{
-		if ( who->GetTeamNumber() != m_team )
-		{
-			return false;
-		}
-	}
+    if ( m_team > 0 )
+    {
+        if ( who->GetTeamNumber() != m_team )
+        {
+            return false;
+        }
+    }
 
 #ifdef TF_DLL
-	// TODO: Make group comparison efficient and move to base combat character
-	CTFBot *bot = ToTFBot( who );
-	if ( bot )
-	{
-		if ( bot->HasTheFlag() )
-		{
-			if ( HasTag( "bomb_carrier" ) )
-			{
-				return true;
-			}
+    // TODO: Make group comparison efficient and move to base combat character
+    CTFBot *bot = ToTFBot( who );
+    if ( bot )
+    {
+        if ( bot->HasTheFlag() )
+        {
+            if ( HasTag( "bomb_carrier" ) )
+            {
+                return true;
+            }
 
-			// check custom bomb_carrier tags for this bot
-			for( int i=0; i<m_tags.Count(); ++i )
-			{
-				const char* pszTag = m_tags[i];
-				if ( V_stristr( pszTag, "bomb_carrier" ) )
-				{
-					if ( bot->HasTag( pszTag ) )
-					{
-						return true;
-					}
-				}
-			}
+            // check custom bomb_carrier tags for this bot
+            for( int i=0; i<m_tags.Count(); ++i )
+            {
+                const char* pszTag = m_tags[i];
+                if ( V_stristr( pszTag, "bomb_carrier" ) )
+                {
+                    if ( bot->HasTag( pszTag ) )
+                    {
+                        return true;
+                    }
+                }
+            }
 
-			// the bomb carrier only pays attention to bomb_carrier costs
-			return false;
-		}
+            // the bomb carrier only pays attention to bomb_carrier costs
+            return false;
+        }
 
-		if ( bot->HasMission( CTFBot::MISSION_DESTROY_SENTRIES ) )
-		{
-			if ( HasTag( "mission_sentry_buster" ) )
-			{
-				return true;
-			}
-		}
-		
-		if ( bot->HasMission( CTFBot::MISSION_SNIPER ) )
-		{
-			if ( HasTag( "mission_sniper" ) )
-			{
-				return true;
-			}
-		}
-		
-		if ( bot->HasMission( CTFBot::MISSION_SPY ) )
-		{
-			if ( HasTag( "mission_spy" ) )
-			{
-				return true;
-			}
-		}
+        if ( bot->HasMission( CTFBot::MISSION_DESTROY_SENTRIES ) )
+        {
+            if ( HasTag( "mission_sentry_buster" ) )
+            {
+                return true;
+            }
+        }
 
-		if ( bot->HasMission( CTFBot::MISSION_REPROGRAMMED ) )
-		{
-			return false;
-		}
+        if ( bot->HasMission( CTFBot::MISSION_SNIPER ) )
+        {
+            if ( HasTag( "mission_sniper" ) )
+            {
+                return true;
+            }
+        }
 
-		if ( !bot->IsOnAnyMission() )
-		{
-			if ( HasTag( "common" ) )
-			{
-				return true;
-			}
-		}
+        if ( bot->HasMission( CTFBot::MISSION_SPY ) )
+        {
+            if ( HasTag( "mission_spy" ) )
+            {
+                return true;
+            }
+        }
 
-		if ( HasTag( bot->GetPlayerClass()->GetName() ) )
-		{
-			return true;
-		}
+        if ( bot->HasMission( CTFBot::MISSION_REPROGRAMMED ) )
+        {
+            return false;
+        }
 
-		// check custom tags for this bot
-		for( int i=0; i<m_tags.Count(); ++i )
-		{
-			if ( bot->HasTag( m_tags[i] ) )
-			{
-				return true;
-			}
-		}
+        if ( !bot->IsOnAnyMission() )
+        {
+            if ( HasTag( "common" ) )
+            {
+                return true;
+            }
+        }
 
-		// this cost doesn't apply to me
-		return false;
-	}
+        if ( HasTag( bot->GetPlayerClass()->GetName() ) )
+        {
+            return true;
+        }
+
+        // check custom tags for this bot
+        for( int i=0; i<m_tags.Count(); ++i )
+        {
+            if ( bot->HasTag( m_tags[i] ) )
+            {
+                return true;
+            }
+        }
+
+        // this cost doesn't apply to me
+        return false;
+    }
 #endif
 
-	return false;
+    return false;
 }
 
 
@@ -271,46 +271,46 @@ bool CFuncNavCost::IsApplicableTo( CBaseCombatCharacter *who ) const
 // This is required to handle overlapping func_nav_cost entities.
 void CFuncNavCost::UpdateAllNavCostDecoration( void )
 {
-	int i, j;
+    int i, j;
 
-	// first, clear all avoid decoration from the mesh
-	for( i=0; i<TheNavAreas.Count(); ++i )
-	{
-		TheNavAreas[i]->ClearAllNavCostEntities();
-	}
+    // first, clear all avoid decoration from the mesh
+    for( i=0; i<TheNavAreas.Count(); ++i )
+    {
+        TheNavAreas[i]->ClearAllNavCostEntities();
+    }
 
-	// now, mark all areas with active cost entities overlapping them
-	for( i=0; i<gm_masterCostVector.Count(); ++i )
-	{
-		CFuncNavCost *cost = gm_masterCostVector[i];
+    // now, mark all areas with active cost entities overlapping them
+    for( i=0; i<gm_masterCostVector.Count(); ++i )
+    {
+        CFuncNavCost *cost = gm_masterCostVector[i];
 
-		if ( !cost || !cost->IsEnabled() )
-		{
-			continue;
-		}
+        if ( !cost || !cost->IsEnabled() )
+        {
+            continue;
+        }
 
-		Extent extent;
-		extent.Init( cost );
+        Extent extent;
+        extent.Init( cost );
 
-		CUtlVector< CNavArea * > overlapVector;
-		TheNavMesh->CollectAreasOverlappingExtent( extent, &overlapVector );
+        CUtlVector< CNavArea * > overlapVector;
+        TheNavMesh->CollectAreasOverlappingExtent( extent, &overlapVector );
 
-		Ray_t ray;
-		trace_t tr;
-		ICollideable *pCollide = cost->CollisionProp();
+        Ray_t ray;
+        trace_t tr;
+        ICollideable *pCollide = cost->CollisionProp();
 
-		for( j=0; j<overlapVector.Count(); ++j )
-		{
-			ray.Init( overlapVector[j]->GetCenter(), overlapVector[j]->GetCenter() );
+        for( j=0; j<overlapVector.Count(); ++j )
+        {
+            ray.Init( overlapVector[j]->GetCenter(), overlapVector[j]->GetCenter() );
 
-			enginetrace->ClipRayToCollideable( ray, MASK_ALL, pCollide, &tr );
-			
-			if ( tr.startsolid )
-			{
-				overlapVector[j]->AddFuncNavCostEntity( cost );
-			}
-		}
-	}
+            enginetrace->ClipRayToCollideable( ray, MASK_ALL, pCollide, &tr );
+
+            if ( tr.startsolid )
+            {
+                overlapVector[j]->AddFuncNavCostEntity( cost );
+            }
+        }
+    }
 }
 
 
@@ -319,12 +319,12 @@ void CFuncNavCost::UpdateAllNavCostDecoration( void )
 // Return pathfind cost multiplier for the given actor
 float CFuncNavAvoid::GetCostMultiplier( CBaseCombatCharacter *who ) const
 {
-	if ( IsApplicableTo( who ) )
-	{
-		return 25.0f;
-	}
+    if ( IsApplicableTo( who ) )
+    {
+        return 25.0f;
+    }
 
-	return 1.0f;
+    return 1.0f;
 }
 
 
@@ -333,12 +333,12 @@ float CFuncNavAvoid::GetCostMultiplier( CBaseCombatCharacter *who ) const
 // Return pathfind cost multiplier for the given actor
 float CFuncNavPrefer::GetCostMultiplier( CBaseCombatCharacter *who ) const
 {
-	if ( IsApplicableTo( who ) )
-	{
-		return 0.04f;	// 1/25th
-	}
+    if ( IsApplicableTo( who ) )
+    {
+        return 0.04f;   // 1/25th
+    }
 
-	return 1.0f;
+    return 1.0f;
 }
 
 
@@ -347,11 +347,11 @@ float CFuncNavPrefer::GetCostMultiplier( CBaseCombatCharacter *who ) const
 //--------------------------------------------------------------------------------------------------------
 BEGIN_DATADESC( CFuncNavBlocker )
 
-	// Inputs
-	DEFINE_INPUTFUNC( FIELD_VOID, "BlockNav", InputBlockNav ),
-	DEFINE_INPUTFUNC( FIELD_VOID, "UnblockNav", InputUnblockNav ),
-	DEFINE_KEYFIELD( m_blockedTeamNumber, FIELD_INTEGER, "teamToBlock" ),
-	DEFINE_KEYFIELD( m_bDisabled,	FIELD_BOOLEAN,	"StartDisabled" ),
+    // Inputs
+    DEFINE_INPUTFUNC( FIELD_VOID, "BlockNav", InputBlockNav ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "UnblockNav", InputUnblockNav ),
+    DEFINE_KEYFIELD( m_blockedTeamNumber, FIELD_INTEGER, "teamToBlock" ),
+    DEFINE_KEYFIELD( m_bDisabled,   FIELD_BOOLEAN,  "StartDisabled" ),
 
 END_DATADESC()
 
@@ -364,61 +364,61 @@ CUtlLinkedList<CFuncNavBlocker *> CFuncNavBlocker::gm_NavBlockers;
 //-----------------------------------------------------------------------------------------------------
 int CFuncNavBlocker::DrawDebugTextOverlays( void )
 {
-	int offset = BaseClass::DrawDebugTextOverlays();
+    int offset = BaseClass::DrawDebugTextOverlays();
 
-	if (m_debugOverlays & OVERLAY_TEXT_BIT) 
-	{
-		CFmtStr str;
+    if (m_debugOverlays & OVERLAY_TEXT_BIT)
+    {
+        CFmtStr str;
 
-		// FIRST_GAME_TEAM skips TEAM_SPECTATOR and TEAM_UNASSIGNED, so we can print
-		// useful team names in a non-game-specific fashion.
-		for ( int i=FIRST_GAME_TEAM; i<FIRST_GAME_TEAM + MAX_NAV_TEAMS; ++i )
-		{
-			if ( IsBlockingNav( i ) )
-			{
-				CTeam *team = GetGlobalTeam( i );
-				if ( team )
-				{
-					EntityText( offset++, str.sprintf( "blocking team %s", team->GetName() ), 0 );
-				}
-				else
-				{
-					EntityText( offset++, str.sprintf( "blocking team %d", i ), 0 );
-				}
-			}
-		}
+        // FIRST_GAME_TEAM skips TEAM_SPECTATOR and TEAM_UNASSIGNED, so we can print
+        // useful team names in a non-game-specific fashion.
+        for ( int i=FIRST_GAME_TEAM; i<FIRST_GAME_TEAM + MAX_NAV_TEAMS; ++i )
+        {
+            if ( IsBlockingNav( i ) )
+            {
+                CTeam *team = GetGlobalTeam( i );
+                if ( team )
+                {
+                    EntityText( offset++, str.sprintf( "blocking team %s", team->GetName() ), 0 );
+                }
+                else
+                {
+                    EntityText( offset++, str.sprintf( "blocking team %d", i ), 0 );
+                }
+            }
+        }
 
-		NavAreaCollector collector( true );
-		Extent extent;
-		extent.Init( this );
-		TheNavMesh->ForAllAreasOverlappingExtent( collector, extent );
+        NavAreaCollector collector( true );
+        Extent extent;
+        extent.Init( this );
+        TheNavMesh->ForAllAreasOverlappingExtent( collector, extent );
 
-		for ( int i=0; i<collector.m_area.Count(); ++i )
-		{
-			CNavArea *area = collector.m_area[i];
-			Extent areaExtent;
-			area->GetExtent( &areaExtent );
-			debugoverlay->AddBoxOverlay( vec3_origin, areaExtent.lo, areaExtent.hi, vec3_angle, 0, 255, 0, 10, NDEBUG_PERSIST_TILL_NEXT_SERVER );
-		}
-	}
+        for ( int i=0; i<collector.m_area.Count(); ++i )
+        {
+            CNavArea *area = collector.m_area[i];
+            Extent areaExtent;
+            area->GetExtent( &areaExtent );
+            debugoverlay->AddBoxOverlay( vec3_origin, areaExtent.lo, areaExtent.hi, vec3_angle, 0, 255, 0, 10, NDEBUG_PERSIST_TILL_NEXT_SERVER );
+        }
+    }
 
-	return offset;
+    return offset;
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavBlocker::UpdateBlocked()
 {
-	NavAreaCollector collector( true );
-	Extent extent;
-	extent.Init( this );
-	TheNavMesh->ForAllAreasOverlappingExtent( collector, extent );
+    NavAreaCollector collector( true );
+    Extent extent;
+    extent.Init( this );
+    TheNavMesh->ForAllAreasOverlappingExtent( collector, extent );
 
-	for ( int i=0; i<collector.m_area.Count(); ++i )
-	{
-		CNavArea *area = collector.m_area[i];
-		area->UpdateBlocked( true );
-	}
+    for ( int i=0; i<collector.m_area.Count(); ++i )
+    {
+        CNavArea *area = collector.m_area[i];
+        area->UpdateBlocked( true );
+    }
 
 }
 
@@ -427,94 +427,94 @@ void CFuncNavBlocker::UpdateBlocked()
 // Forces nav areas to unblock when the nav blocker is deleted (round restart) so flow can compute properly
 void CFuncNavBlocker::UpdateOnRemove( void )
 {
-	UnblockNav();
+    UnblockNav();
 
-	gm_NavBlockers.FindAndRemove( this );
+    gm_NavBlockers.FindAndRemove( this );
 
-	BaseClass::UpdateOnRemove();
+    BaseClass::UpdateOnRemove();
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavBlocker::Spawn( void )
 {
-	gm_NavBlockers.AddToTail( this );
+    gm_NavBlockers.AddToTail( this );
 
-	if ( !m_blockedTeamNumber )
-		m_blockedTeamNumber = TEAM_ANY;
+    if ( !m_blockedTeamNumber )
+        m_blockedTeamNumber = TEAM_ANY;
 
-	SetMoveType( MOVETYPE_NONE );
-	SetModel( STRING( GetModelName() ) );
-	AddEffects( EF_NODRAW );
-	SetCollisionGroup( COLLISION_GROUP_NONE );
-	SetSolid( SOLID_NONE );
-	AddSolidFlags( FSOLID_NOT_SOLID );
-	CollisionProp()->WorldSpaceAABB( &m_CachedMins, &m_CachedMaxs );
+    SetMoveType( MOVETYPE_NONE );
+    SetModel( STRING( GetModelName() ) );
+    AddEffects( EF_NODRAW );
+    SetCollisionGroup( COLLISION_GROUP_NONE );
+    SetSolid( SOLID_NONE );
+    AddSolidFlags( FSOLID_NOT_SOLID );
+    CollisionProp()->WorldSpaceAABB( &m_CachedMins, &m_CachedMaxs );
 
-	if ( m_bDisabled )
-	{
-		UnblockNav();
-	}
-	else
-	{
-		BlockNav();
-	}
+    if ( m_bDisabled )
+    {
+        UnblockNav();
+    }
+    else
+    {
+        BlockNav();
+    }
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavBlocker::InputBlockNav( inputdata_t &inputdata )
 {
-	BlockNav();
+    BlockNav();
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavBlocker::InputUnblockNav( inputdata_t &inputdata )
 {
-	UnblockNav();
+    UnblockNav();
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavBlocker::BlockNav( void )
 {
-	if ( m_blockedTeamNumber == TEAM_ANY )
-	{
-		for ( int i=0; i<MAX_NAV_TEAMS; ++i )
-		{
-			m_isBlockingNav[ i ] = true;
-		}
-	}
-	else
-	{
-		int teamNumber = m_blockedTeamNumber % MAX_NAV_TEAMS;
-		m_isBlockingNav[ teamNumber ] = true;
-	}
+    if ( m_blockedTeamNumber == TEAM_ANY )
+    {
+        for ( int i=0; i<MAX_NAV_TEAMS; ++i )
+        {
+            m_isBlockingNav[ i ] = true;
+        }
+    }
+    else
+    {
+        int teamNumber = m_blockedTeamNumber % MAX_NAV_TEAMS;
+        m_isBlockingNav[ teamNumber ] = true;
+    }
 
-	Extent extent;
-	extent.Init( this );
-	TheNavMesh->ForAllAreasOverlappingExtent( *this, extent );
+    Extent extent;
+    extent.Init( this );
+    TheNavMesh->ForAllAreasOverlappingExtent( *this, extent );
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavBlocker::UnblockNav( void )
 {
-	if ( m_blockedTeamNumber == TEAM_ANY )
-	{
-		for ( int i=0; i<MAX_NAV_TEAMS; ++i )
-		{
-			m_isBlockingNav[ i ] = false;
-		}
-	}
-	else
-	{
-		int teamNumber = m_blockedTeamNumber % MAX_NAV_TEAMS;
-		m_isBlockingNav[ teamNumber ] = false;
-	}
+    if ( m_blockedTeamNumber == TEAM_ANY )
+    {
+        for ( int i=0; i<MAX_NAV_TEAMS; ++i )
+        {
+            m_isBlockingNav[ i ] = false;
+        }
+    }
+    else
+    {
+        int teamNumber = m_blockedTeamNumber % MAX_NAV_TEAMS;
+        m_isBlockingNav[ teamNumber ] = false;
+    }
 
-	UpdateBlocked();
+    UpdateBlocked();
 }
 
 
@@ -522,53 +522,53 @@ void CFuncNavBlocker::UnblockNav( void )
 // functor that blocks areas in our extent
 bool CFuncNavBlocker::operator()( CNavArea *area )
 {
-	area->MarkAsBlocked( m_blockedTeamNumber, this );
-	return true;
+    area->MarkAsBlocked( m_blockedTeamNumber, this );
+    return true;
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 bool CFuncNavBlocker::CalculateBlocked( bool *pResultByTeam, const Vector &vecMins, const Vector &vecMaxs )
 {
-	int nTeamsBlocked = 0;
-	int i;
-	bool bBlocked = false;
-	for ( i=0; i<MAX_NAV_TEAMS; ++i )
-	{
-		pResultByTeam[i] = false;
-	}
+    int nTeamsBlocked = 0;
+    int i;
+    bool bBlocked = false;
+    for ( i=0; i<MAX_NAV_TEAMS; ++i )
+    {
+        pResultByTeam[i] = false;
+    }
 
-	FOR_EACH_LL( gm_NavBlockers, iBlocker )
-	{
-		CFuncNavBlocker *pBlocker = gm_NavBlockers[iBlocker];
-		bool bIsIntersecting = false;
+    FOR_EACH_LL( gm_NavBlockers, iBlocker )
+    {
+        CFuncNavBlocker *pBlocker = gm_NavBlockers[iBlocker];
+        bool bIsIntersecting = false;
 
-		for ( i=0; i<MAX_NAV_TEAMS; ++i )
-		{
-			if ( pBlocker->m_isBlockingNav[i] )
-			{
-				if ( !pResultByTeam[i] )
-				{
-					if ( bIsIntersecting || ( bIsIntersecting = IsBoxIntersectingBox( pBlocker->m_CachedMins, pBlocker->m_CachedMaxs, vecMins, vecMaxs ) ) != false )
-					{
-						bBlocked = true;
-						pResultByTeam[i] = true;
-						nTeamsBlocked++;
-					}
-					else
-					{
-						continue;
-					}
-				}
-			}
-		}
+        for ( i=0; i<MAX_NAV_TEAMS; ++i )
+        {
+            if ( pBlocker->m_isBlockingNav[i] )
+            {
+                if ( !pResultByTeam[i] )
+                {
+                    if ( bIsIntersecting || ( bIsIntersecting = IsBoxIntersectingBox( pBlocker->m_CachedMins, pBlocker->m_CachedMaxs, vecMins, vecMaxs ) ) != false )
+                    {
+                        bBlocked = true;
+                        pResultByTeam[i] = true;
+                        nTeamsBlocked++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
 
-		if ( nTeamsBlocked == MAX_NAV_TEAMS )
-		{
-			break;
-		}
- 	}
-	return bBlocked;
+        if ( nTeamsBlocked == MAX_NAV_TEAMS )
+        {
+            break;
+        }
+    }
+    return bBlocked;
 }
 
 
@@ -580,43 +580,43 @@ bool CFuncNavBlocker::CalculateBlocked( bool *pResultByTeam, const Vector &vecMi
   */
 class CFuncNavObstruction : public CBaseEntity, public INavAvoidanceObstacle
 {
-	DECLARE_DATADESC();
-	DECLARE_CLASS( CFuncNavObstruction, CBaseEntity );
+    DECLARE_DATADESC();
+    DECLARE_CLASS( CFuncNavObstruction, CBaseEntity );
 
 public:
-	void Spawn();
-	virtual void UpdateOnRemove( void );
+    void Spawn();
+    virtual void UpdateOnRemove( void );
 
-	void InputEnable( inputdata_t &inputdata );
-	void InputDisable( inputdata_t &inputdata );
+    void InputEnable( inputdata_t &inputdata );
+    void InputDisable( inputdata_t &inputdata );
 
-	virtual bool IsPotentiallyAbleToObstructNavAreas( void ) const { return true; }		// could we at some future time obstruct nav?
-	virtual float GetNavObstructionHeight( void ) const { return JumpCrouchHeight; }	// height at which to obstruct nav areas
-	virtual bool CanObstructNavAreas( void ) const { return !m_bDisabled; }				// can we obstruct nav right this instant?
-	virtual CBaseEntity *GetObstructingEntity( void ) { return this; }
-	virtual void OnNavMeshLoaded( void )
-	{
-		if ( !m_bDisabled )
-		{
-			ObstructNavAreas();
-		}
-	}
+    virtual bool IsPotentiallyAbleToObstructNavAreas( void ) const { return true; }     // could we at some future time obstruct nav?
+    virtual float GetNavObstructionHeight( void ) const { return JumpCrouchHeight; }    // height at which to obstruct nav areas
+    virtual bool CanObstructNavAreas( void ) const { return !m_bDisabled; }             // can we obstruct nav right this instant?
+    virtual CBaseEntity *GetObstructingEntity( void ) { return this; }
+    virtual void OnNavMeshLoaded( void )
+    {
+        if ( !m_bDisabled )
+        {
+            ObstructNavAreas();
+        }
+    }
 
-	int DrawDebugTextOverlays( void );
+    int DrawDebugTextOverlays( void );
 
-	bool operator()( CNavArea *area );	// functor that obstructs areas in our extent
+    bool operator()( CNavArea *area );  // functor that obstructs areas in our extent
 
 private:
 
-	void ObstructNavAreas( void );
-	bool m_bDisabled;
+    void ObstructNavAreas( void );
+    bool m_bDisabled;
 };
 
 
 
 //--------------------------------------------------------------------------------------------------------
 BEGIN_DATADESC( CFuncNavObstruction )
-	DEFINE_KEYFIELD( m_bDisabled,	FIELD_BOOLEAN,	"StartDisabled" ),
+    DEFINE_KEYFIELD( m_bDisabled,   FIELD_BOOLEAN,  "StartDisabled" ),
 END_DATADESC()
 
 
@@ -626,74 +626,74 @@ LINK_ENTITY_TO_CLASS( func_nav_avoidance_obstacle, CFuncNavObstruction );
 //-----------------------------------------------------------------------------------------------------
 int CFuncNavObstruction::DrawDebugTextOverlays( void )
 {
-	int offset = BaseClass::DrawDebugTextOverlays();
+    int offset = BaseClass::DrawDebugTextOverlays();
 
-	if (m_debugOverlays & OVERLAY_TEXT_BIT) 
-	{
-		if ( CanObstructNavAreas() )
-		{
-			EntityText( offset++, "Obstructing nav", NDEBUG_PERSIST_TILL_NEXT_SERVER );
-		}
-		else
-		{
-			EntityText( offset++, "Not obstructing nav", NDEBUG_PERSIST_TILL_NEXT_SERVER );
-		}
-	}
+    if (m_debugOverlays & OVERLAY_TEXT_BIT)
+    {
+        if ( CanObstructNavAreas() )
+        {
+            EntityText( offset++, "Obstructing nav", NDEBUG_PERSIST_TILL_NEXT_SERVER );
+        }
+        else
+        {
+            EntityText( offset++, "Not obstructing nav", NDEBUG_PERSIST_TILL_NEXT_SERVER );
+        }
+    }
 
-	return offset;
+    return offset;
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavObstruction::UpdateOnRemove( void )
 {
-	TheNavMesh->UnregisterAvoidanceObstacle( this );
+    TheNavMesh->UnregisterAvoidanceObstacle( this );
 
-	BaseClass::UpdateOnRemove();
+    BaseClass::UpdateOnRemove();
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavObstruction::Spawn( void )
 {
-	SetMoveType( MOVETYPE_NONE );
-	SetModel( STRING( GetModelName() ) );
-	AddEffects( EF_NODRAW );
-	SetCollisionGroup( COLLISION_GROUP_NONE );
-	SetSolid( SOLID_NONE );
-	AddSolidFlags( FSOLID_NOT_SOLID );
+    SetMoveType( MOVETYPE_NONE );
+    SetModel( STRING( GetModelName() ) );
+    AddEffects( EF_NODRAW );
+    SetCollisionGroup( COLLISION_GROUP_NONE );
+    SetSolid( SOLID_NONE );
+    AddSolidFlags( FSOLID_NOT_SOLID );
 
-	if ( !m_bDisabled )
-	{
-		ObstructNavAreas();
-		TheNavMesh->RegisterAvoidanceObstacle( this );
-	}
+    if ( !m_bDisabled )
+    {
+        ObstructNavAreas();
+        TheNavMesh->RegisterAvoidanceObstacle( this );
+    }
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavObstruction::InputEnable( inputdata_t &inputdata )
 {
-	m_bDisabled = false;
-	ObstructNavAreas();
-	TheNavMesh->RegisterAvoidanceObstacle( this );
+    m_bDisabled = false;
+    ObstructNavAreas();
+    TheNavMesh->RegisterAvoidanceObstacle( this );
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavObstruction::InputDisable( inputdata_t &inputdata )
 {
-	m_bDisabled = true;
-	TheNavMesh->UnregisterAvoidanceObstacle( this );
+    m_bDisabled = true;
+    TheNavMesh->UnregisterAvoidanceObstacle( this );
 }
 
 
 //--------------------------------------------------------------------------------------------------------
 void CFuncNavObstruction::ObstructNavAreas( void )
 {
-	Extent extent;
-	extent.Init( this );
-	TheNavMesh->ForAllAreasOverlappingExtent( *this, extent );
+    Extent extent;
+    extent.Init( this );
+    TheNavMesh->ForAllAreasOverlappingExtent( *this, extent );
 }
 
 
@@ -701,8 +701,8 @@ void CFuncNavObstruction::ObstructNavAreas( void )
 // functor that blocks areas in our extent
 bool CFuncNavObstruction::operator()( CNavArea *area )
 {
-	area->MarkObstacleToAvoid( GetNavObstructionHeight() );
-	return true;
+    area->MarkObstacleToAvoid( GetNavObstructionHeight() );
+    return true;
 }
 
 

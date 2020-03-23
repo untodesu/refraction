@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -25,18 +25,18 @@ using namespace vgui;
 
 class CHudTrain: public CHudElement, public vgui::Panel
 {
-	DECLARE_CLASS_SIMPLE( CHudTrain, vgui::Panel );
+    DECLARE_CLASS_SIMPLE( CHudTrain, vgui::Panel );
 public:
-	CHudTrain( const char *pElementName );
-	void Init( void );
-	void VidInit( void );
-	bool ShouldDraw( void );
-	virtual void	ApplySchemeSettings( vgui::IScheme *scheme );
-	virtual void	Paint( void );
-	void MsgFunc_Train(bf_read &msg);
+    CHudTrain( const char *pElementName );
+    void Init( void );
+    void VidInit( void );
+    bool ShouldDraw( void );
+    virtual void    ApplySchemeSettings( vgui::IScheme *scheme );
+    virtual void    Paint( void );
+    void MsgFunc_Train(bf_read &msg);
 
 private:
-	int m_iPos;
+    int m_iPos;
 
 };
 
@@ -48,66 +48,66 @@ DECLARE_HUDELEMENT( CHudTrain );
 DECLARE_HUD_MESSAGE( CHudTrain, Train )
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CHudTrain::CHudTrain( const char *pElementName ) :
-	CHudElement( pElementName ), BaseClass( NULL, "HudTrain" )
+    CHudElement( pElementName ), BaseClass( NULL, "HudTrain" )
 {
-	vgui::Panel *pParent = g_pClientMode->GetViewport();
-	SetParent( pParent );
-	
-	SetHiddenBits( HIDEHUD_MISCSTATUS );
+    vgui::Panel *pParent = g_pClientMode->GetViewport();
+    SetParent( pParent );
+
+    SetHiddenBits( HIDEHUD_MISCSTATUS );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *scheme - 
+// Purpose:
+// Input  : *scheme -
 //-----------------------------------------------------------------------------
 void CHudTrain::ApplySchemeSettings( IScheme *scheme )
 {
-	BaseClass::ApplySchemeSettings( scheme );
+    BaseClass::ApplySchemeSettings( scheme );
 
-	SetPaintBackgroundEnabled( false );
+    SetPaintBackgroundEnabled( false );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CHudTrain::Init(void)
 {
-	HOOK_HUD_MESSAGE( CHudTrain, Train );
+    HOOK_HUD_MESSAGE( CHudTrain, Train );
 
-	m_iPos = 0;
+    m_iPos = 0;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CHudTrain::VidInit(void)
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 bool CHudTrain::ShouldDraw( void )
 {
-	return ( CHudElement::ShouldDraw() && m_iPos );
+    return ( CHudElement::ShouldDraw() && m_iPos );
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CHudTrain::Paint()
 {
-	// FIXME:  Rewrite using vgui materials if we still do this type of train UI!!!
+    // FIXME:  Rewrite using vgui materials if we still do this type of train UI!!!
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CHudTrain::MsgFunc_Train( bf_read &msg )
 {
-	// update Train data
-	m_iPos = msg.ReadByte();
+    // update Train data
+    m_iPos = msg.ReadByte();
 }

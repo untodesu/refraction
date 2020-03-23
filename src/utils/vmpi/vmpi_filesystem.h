@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -25,14 +25,14 @@ class MessageBuffer;
 
 // When you hook the file system with VMPI and are a worker, it blocks on file reads
 // and uses MPI to communicate with the master to transfer files it needs over.
-// 
-// The filesystem, by default (and it maxFileSystemMemoryUsage is left at zero), 
-// keeps the contents of the files that get opened in memory. You can pass in a 
+//
+// The filesystem, by default (and it maxFileSystemMemoryUsage is left at zero),
+// keeps the contents of the files that get opened in memory. You can pass in a
 // value here to put a cap on it, in which case it'll unload the least-recently-used
 // files when it hits the limit.
 IFileSystem* VMPI_FileSystem_Init( int maxFileSystemMemoryUsage, IFileSystem *pPassThru );
 
-// On the master machine, this really should be called before the app shuts down and 
+// On the master machine, this really should be called before the app shuts down and
 // global destructors are called. If it isn't, it might lock up waiting for a thread to exit.
 //
 // This returns the original filesystem you passed into VMPI_FileSystem_Init so you can uninitialize it.

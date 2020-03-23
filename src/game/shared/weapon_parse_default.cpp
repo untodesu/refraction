@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -13,7 +13,7 @@
 // Default implementation for games that don't add custom data to the weapon scripts.
 FileWeaponInfo_t* CreateWeaponInfo()
 {
-	return new FileWeaponInfo_t;
+    return new FileWeaponInfo_t;
 }
 
 

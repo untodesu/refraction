@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -14,60 +14,60 @@
 class CBaseGrenadeTimed : public CBaseGrenade
 {
 public:
-	DECLARE_CLASS( CBaseGrenadeTimed, CBaseGrenade );
+    DECLARE_CLASS( CBaseGrenadeTimed, CBaseGrenade );
 
-	void	Spawn( void );
-	void	Precache( void );
+    void    Spawn( void );
+    void    Precache( void );
 };
 LINK_ENTITY_TO_CLASS( npc_handgrenade, CBaseGrenadeTimed );
 
 
 void CBaseGrenadeTimed::Spawn( void )
 {
-	SetMoveType( MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE );
-	SetSolid( SOLID_BBOX );
-	SetCollisionGroup( COLLISION_GROUP_PROJECTILE );
-	SetModel( "models/Weapons/w_grenade.mdl" ); 
+    SetMoveType( MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE );
+    SetSolid( SOLID_BBOX );
+    SetCollisionGroup( COLLISION_GROUP_PROJECTILE );
+    SetModel( "models/Weapons/w_grenade.mdl" );
 
-	UTIL_SetSize(this, Vector( -4, -4, -4), Vector(4, 4, 4));
+    UTIL_SetSize(this, Vector( -4, -4, -4), Vector(4, 4, 4));
 
-	QAngle angles;
-	Vector vel = GetAbsVelocity();
+    QAngle angles;
+    Vector vel = GetAbsVelocity();
 
-	VectorAngles( vel, angles );
-	SetLocalAngles( angles );
-	
-	SetTouch( &CBaseGrenadeTimed::BounceTouch );	// Bounce if touched
-	
-	// Take one second off of the desired detonation time and set the think to PreDetonate. PreDetonate
-	// will insert a DANGER sound into the world sound list and delay detonation for one second so that 
-	// the grenade explodes after the exact amount of time specified in the call to ShootTimed(). 
+    VectorAngles( vel, angles );
+    SetLocalAngles( angles );
 
-	SetThink( &CBaseGrenadeTimed::TumbleThink );
-	SetNextThink( gpGlobals->curtime + 0.1f );
+    SetTouch( &CBaseGrenadeTimed::BounceTouch );    // Bounce if touched
 
-	// if the delay is < 0.1 seconds, don't fly anywhere
-	if ((m_flDetonateTime - gpGlobals->curtime) < 0.1)
-	{
-		SetNextThink( gpGlobals->curtime );
-		SetAbsVelocity( vec3_origin );
-	}
+    // Take one second off of the desired detonation time and set the think to PreDetonate. PreDetonate
+    // will insert a DANGER sound into the world sound list and delay detonation for one second so that
+    // the grenade explodes after the exact amount of time specified in the call to ShootTimed().
 
-	// Tumble through the air
-	// pGrenade->m_vecAngVelocity.x = -400;
-	SetGravity(1.0);  // Don't change or throw calculations will be off!
-	SetFriction(0.8);
+    SetThink( &CBaseGrenadeTimed::TumbleThink );
+    SetNextThink( gpGlobals->curtime + 0.1f );
 
-	m_flDamage = 100;	// ????
+    // if the delay is < 0.1 seconds, don't fly anywhere
+    if ((m_flDetonateTime - gpGlobals->curtime) < 0.1)
+    {
+        SetNextThink( gpGlobals->curtime );
+        SetAbsVelocity( vec3_origin );
+    }
 
-	m_takedamage = DAMAGE_NO;
+    // Tumble through the air
+    // pGrenade->m_vecAngVelocity.x = -400;
+    SetGravity(1.0);  // Don't change or throw calculations will be off!
+    SetFriction(0.8);
+
+    m_flDamage = 100;   // ????
+
+    m_takedamage = DAMAGE_NO;
 }
 
 
 
 void CBaseGrenadeTimed::Precache( void )
 {
-	BaseClass::Precache( );
+    BaseClass::Precache( );
 
-	PrecacheModel("models/weapons/w_grenade.mdl");
+    PrecacheModel("models/weapons/w_grenade.mdl");
 }

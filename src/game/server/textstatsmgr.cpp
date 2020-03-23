@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -12,7 +12,7 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-CTextStatsMgr g_TextStatsMgr;	// The default text stats manager.
+CTextStatsMgr g_TextStatsMgr;   // The default text stats manager.
 
 
 // ------------------------------------------------------------------------------------------ //
@@ -20,49 +20,49 @@ CTextStatsMgr g_TextStatsMgr;	// The default text stats manager.
 // ------------------------------------------------------------------------------------------ //
 CTextStatsMgr::CTextStatsMgr( void )
 {
-	m_szStatFilename[0] = 0;
+    m_szStatFilename[0] = 0;
 }
 
 bool CTextStatsMgr::WriteFile( IFileSystem *pFileSys, const char *pFilename )
 {
-	// If no filename was specified, use out preset one
-	if ( !pFilename )
-	{
-		pFilename = m_szStatFilename;
-	}
+    // If no filename was specified, use out preset one
+    if ( !pFilename )
+    {
+        pFilename = m_szStatFilename;
+    }
 
-	FileHandle_t hFile = pFileSys->Open( pFilename, "wt", "LOGDIR" );
-	if ( hFile == FILESYSTEM_INVALID_HANDLE )
-		return false;
-	
-	CTextStat *pHead = CTextStat::GetTextStatsList();
-	for ( CTextStat *pCur=pHead->m_pNext; pCur != pHead; pCur=pCur->m_pNext )
-	{
-		if ( pCur->m_pMgr == this )
-			pCur->m_PrintFn( pFileSys, hFile, pCur->m_pUserData );
-	}
+    FileHandle_t hFile = pFileSys->Open( pFilename, "wt", "LOGDIR" );
+    if ( hFile == FILESYSTEM_INVALID_HANDLE )
+        return false;
 
-	pFileSys->Close( hFile );
+    CTextStat *pHead = CTextStat::GetTextStatsList();
+    for ( CTextStat *pCur=pHead->m_pNext; pCur != pHead; pCur=pCur->m_pNext )
+    {
+        if ( pCur->m_pMgr == this )
+            pCur->m_PrintFn( pFileSys, hFile, pCur->m_pUserData );
+    }
 
-	// Call each CTextStatFile..
-	for( CTextStatFile *pCurFile=CTextStatFile::s_pHead; pCurFile; pCurFile=pCurFile->m_pNext )
-	{
-		pCurFile->m_pFn();
-	}
+    pFileSys->Close( hFile );
 
-	return true;
+    // Call each CTextStatFile..
+    for( CTextStatFile *pCurFile=CTextStatFile::s_pHead; pCurFile; pCurFile=pCurFile->m_pNext )
+    {
+        pCurFile->m_pFn();
+    }
+
+    return true;
 }
 
 char *CTextStatsMgr::GetStatsFilename( void )
 {
-	return m_szStatFilename;
+    return m_szStatFilename;
 }
 
 void CTextStatsMgr::SetStatsFilename( char *sFilename )
 {
-	Assert( sFilename && sFilename[0] );
+    Assert( sFilename && sFilename[0] );
 
-	Q_strncpy( m_szStatFilename, sFilename, sizeof(m_szStatFilename) );
+    Q_strncpy( m_szStatFilename, sFilename, sizeof(m_szStatFilename) );
 }
 
 // ------------------------------------------------------------------------------------------ //
@@ -71,85 +71,85 @@ void CTextStatsMgr::SetStatsFilename( char *sFilename )
 
 CTextStat::CTextStat()
 {
-	m_pPrev = m_pNext = this;
-	m_pMgr = NULL;
+    m_pPrev = m_pNext = this;
+    m_pMgr = NULL;
 }
 
 
 CTextStat::CTextStat( TextStatPrintFn printFn, void *pUserData, CTextStatsMgr *pMgr )
 {
-	m_pPrev = m_pNext = this;
-	Init( printFn, pUserData, pMgr );
+    m_pPrev = m_pNext = this;
+    Init( printFn, pUserData, pMgr );
 }
 
 
 CTextStat::~CTextStat()
 {
-	Term();		
+    Term();
 }
 
 
 void CTextStat::Init( TextStatPrintFn printFn, void *pUserData, CTextStatsMgr *pMgr )
 {
-	Term();
+    Term();
 
-	m_pPrev = GetTextStatsList();
-	m_pNext = GetTextStatsList()->m_pNext;
-	m_pPrev->m_pNext = m_pNext->m_pPrev = this;
-	
-	m_PrintFn = printFn;
-	m_pUserData = pUserData;
-	m_pMgr = pMgr;
+    m_pPrev = GetTextStatsList();
+    m_pNext = GetTextStatsList()->m_pNext;
+    m_pPrev->m_pNext = m_pNext->m_pPrev = this;
+
+    m_PrintFn = printFn;
+    m_pUserData = pUserData;
+    m_pMgr = pMgr;
 }
 
 
 void CTextStat::Term()
 {
-	// Remove from the global list.
-	m_pPrev->m_pNext = m_pNext;
-	m_pNext->m_pPrev = m_pPrev;
-	m_pPrev = m_pNext = this;
-	m_pMgr = NULL;
+    // Remove from the global list.
+    m_pPrev->m_pNext = m_pNext;
+    m_pNext->m_pPrev = m_pPrev;
+    m_pPrev = m_pNext = this;
+    m_pMgr = NULL;
 }
 
 
 CTextStat::CTextStat( bool bGlobalListHead )
 {
-	Assert( bGlobalListHead );
-	m_pPrev = m_pNext = this;
+    Assert( bGlobalListHead );
+    m_pPrev = m_pNext = this;
 }
 
 
 CTextStat* CTextStat::GetTextStatsList()
 {
-	static CTextStat theList( true );
-	return &theList;
+    static CTextStat theList( true );
+    return &theList;
 }
 
 
 void CTextStat::RemoveFn( void *pUserData )
 {
-	CTextStat *pReg = (CTextStat*)pUserData;
-	pReg->Term();
+    CTextStat *pReg = (CTextStat*)pUserData;
+    pReg->Term();
 }
 
 
 // ------------------------------------------------------------------------------------------ //
 // CTextStatInt implementation.
 // ------------------------------------------------------------------------------------------ //
-				
+
 CTextStatInt::CTextStatInt( const char *pName, int initialValue, CTextStatsMgr *pMgr )
 {
-	m_pName = pName;
-	m_Value = initialValue;
-	m_Reg.Init( &CTextStatInt::PrintFn, this, pMgr );
+    m_pName = pName;
+    m_Value = initialValue;
+    m_Reg.Init( &CTextStatInt::PrintFn, this, pMgr );
 }
 
 
 void CTextStatInt::PrintFn( IFileSystem *pFileSys, FileHandle_t hFile, void *pUserData )
 {
-	CTextStatInt *pStat = (CTextStatInt*)pUserData;
-	pFileSys->FPrintf( hFile, "%s %d\n", pStat->m_pName, pStat->m_Value );
+    CTextStatInt *pStat = (CTextStatInt*)pUserData;
+    pFileSys->FPrintf( hFile, "%s %d\n", pStat->m_pName, pStat->m_Value );
 }
 
 
@@ -163,9 +163,9 @@ CTextStatFile *CTextStatFile::s_pHead = NULL;
 
 CTextStatFile::CTextStatFile( TextStatFileFn fn )
 {
-	m_pFn = fn;
-	m_pNext = CTextStatFile::s_pHead;
-	CTextStatFile::s_pHead = this;
+    m_pFn = fn;
+    m_pNext = CTextStatFile::s_pHead;
+    CTextStatFile::s_pHead = this;
 }
 
 

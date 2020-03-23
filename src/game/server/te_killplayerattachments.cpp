@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -22,52 +22,52 @@
 class CTEKillPlayerAttachments : public CBaseTempEntity
 {
 public:
-	DECLARE_CLASS( CTEKillPlayerAttachments, CBaseTempEntity );
+    DECLARE_CLASS( CTEKillPlayerAttachments, CBaseTempEntity );
 
-					CTEKillPlayerAttachments( const char *name );
-	virtual			~CTEKillPlayerAttachments( void );
+                    CTEKillPlayerAttachments( const char *name );
+    virtual         ~CTEKillPlayerAttachments( void );
 
-	virtual void	Test( const Vector& current_origin, const QAngle& current_angles );
-	
-	DECLARE_SERVERCLASS();
+    virtual void    Test( const Vector& current_origin, const QAngle& current_angles );
+
+    DECLARE_SERVERCLASS();
 
 public:
-	CNetworkVar( int, m_nPlayer );
+    CNetworkVar( int, m_nPlayer );
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *name - 
+// Purpose:
+// Input  : *name -
 //-----------------------------------------------------------------------------
 CTEKillPlayerAttachments::CTEKillPlayerAttachments( const char *name ) :
-	CBaseTempEntity( name )
+    CBaseTempEntity( name )
 {
-	m_nPlayer = 0;
+    m_nPlayer = 0;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CTEKillPlayerAttachments::~CTEKillPlayerAttachments( void )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *current_origin - 
-//			*current_angles - 
+// Purpose:
+// Input  : *current_origin -
+//          *current_angles -
 //-----------------------------------------------------------------------------
 void CTEKillPlayerAttachments::Test( const Vector& current_origin, const QAngle& current_angles )
 {
-	m_nPlayer = 1;
+    m_nPlayer = 1;
 
-	CBroadcastRecipientFilter filter;
-	Create( filter, 0.0 );
+    CBroadcastRecipientFilter filter;
+    Create( filter, 0.0 );
 }
 
 
 IMPLEMENT_SERVERCLASS_ST(CTEKillPlayerAttachments, DT_TEKillPlayerAttachments)
-	SendPropInt( SENDINFO(m_nPlayer), 5, SPROP_UNSIGNED ),
+    SendPropInt( SENDINFO(m_nPlayer), 5, SPROP_UNSIGNED ),
 END_SEND_TABLE()
 
 
@@ -75,18 +75,18 @@ END_SEND_TABLE()
 static CTEKillPlayerAttachments g_TEKillPlayerAttachments( "KillPlayerAttachments" );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : msg_dest - 
-//			delay - 
-//			*origin - 
-//			*recipient - 
-//			player - 
+// Purpose:
+// Input  : msg_dest -
+//          delay -
+//          *origin -
+//          *recipient -
+//          player -
 //-----------------------------------------------------------------------------
 void TE_KillPlayerAttachments( IRecipientFilter& filter, float delay,
-	int player )
+    int player )
 {
-	g_TEKillPlayerAttachments.m_nPlayer = player;
+    g_TEKillPlayerAttachments.m_nPlayer = player;
 
-	// Send it over the wire
-	g_TEKillPlayerAttachments.Create( filter, delay );
+    // Send it over the wire
+    g_TEKillPlayerAttachments.Create( filter, delay );
 }

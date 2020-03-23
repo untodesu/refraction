@@ -124,10 +124,10 @@ HRESULT CBCJ2_x86_Encoder::CodeReal(ISequentialInStream **inStreams,
       processedSize += processedSizeLoc;
     }
     UInt32 endPos = bufferPos + processedSize;
-    
+
     if (endPos < 5)
     {
-      // change it 
+      // change it
       for (bufferPos = 0; bufferPos < endPos; bufferPos++)
       {
         Byte b = _buffer[bufferPos];
@@ -157,7 +157,7 @@ HRESULT CBCJ2_x86_Encoder::CodeReal(ISequentialInStream **inStreams,
         continue;
       }
       Byte nextByte = _buffer[bufferPos + 4];
-      UInt32 src = 
+      UInt32 src =
         (UInt32(nextByte) << 24) |
         (UInt32(_buffer[bufferPos + 3]) << 16) |
         (UInt32(_buffer[bufferPos + 2]) << 8) |
@@ -175,14 +175,14 @@ HRESULT CBCJ2_x86_Encoder::CodeReal(ISequentialInStream **inStreams,
           if (result == S_OK)
           {
             subStreamStartPos = subStreamEndPos;
-            subStreamEndPos += subStreamSize;          
+            subStreamEndPos += subStreamSize;
             subStreamIndex++;
           }
           else if (result == S_FALSE || result == E_NOTIMPL)
           {
             getSubStreamSize.Release();
             subStreamStartPos = 0;
-            subStreamEndPos = subStreamStartPos - 1;          
+            subStreamEndPos = subStreamStartPos - 1;
           }
           else
             return result;
@@ -212,7 +212,7 @@ HRESULT CBCJ2_x86_Encoder::CodeReal(ISequentialInStream **inStreams,
           _statusE8Encoder[prevByte].Encode(&_rangeEncoder, 1);
         else if (b == 0xE9)
           _statusE9Encoder.Encode(&_rangeEncoder, 1);
-        else 
+        else
           _statusJccEncoder.Encode(&_rangeEncoder, 1);
 
         bufferPos += 5;
@@ -223,7 +223,7 @@ HRESULT CBCJ2_x86_Encoder::CodeReal(ISequentialInStream **inStreams,
           _callStream.WriteByte((Byte)(dest >> 8));
           _callStream.WriteByte((Byte)(dest));
         }
-        else 
+        else
         {
           _jumpStream.WriteByte((Byte)(dest >> 24));
           _jumpStream.WriteByte((Byte)(dest >> 16));
@@ -251,7 +251,7 @@ HRESULT CBCJ2_x86_Encoder::CodeReal(ISequentialInStream **inStreams,
     {
       RINOK(progress->SetRatioInfo(&nowPos64, NULL));
     }
- 
+
     UInt32 i = 0;
     while(bufferPos < endPos)
       _buffer[i++] = _buffer[bufferPos++];

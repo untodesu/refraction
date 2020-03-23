@@ -29,25 +29,25 @@
 //-----------------------------------------------------------------------------
 class CTier3SteamApp : public CTier2SteamApp
 {
-	typedef CTier2SteamApp BaseClass;
+    typedef CTier2SteamApp BaseClass;
 
 public:
-	// Methods of IApplication
-	virtual bool PreInit()
-	{
-		if ( !BaseClass::PreInit() )
-			return false;
+    // Methods of IApplication
+    virtual bool PreInit()
+    {
+        if ( !BaseClass::PreInit() )
+            return false;
 
-		CreateInterfaceFn factory = GetFactory();
-		ConnectTier3Libraries( &factory, 1 );
-		return true;			
-	}
+        CreateInterfaceFn factory = GetFactory();
+        ConnectTier3Libraries( &factory, 1 );
+        return true;
+    }
 
-	virtual void PostShutdown()
-	{
-		DisconnectTier3Libraries();
-		BaseClass::PostShutdown();
-	}
+    virtual void PostShutdown()
+    {
+        DisconnectTier3Libraries();
+        BaseClass::PostShutdown();
+    }
 };
 
 
@@ -56,25 +56,25 @@ public:
 //-----------------------------------------------------------------------------
 class CTier3DmSteamApp : public CTier2DmSteamApp
 {
-	typedef CTier2DmSteamApp BaseClass;
+    typedef CTier2DmSteamApp BaseClass;
 
 public:
-	// Methods of IApplication
-	virtual bool PreInit()
-	{
-		if ( !BaseClass::PreInit() )
-			return false;
+    // Methods of IApplication
+    virtual bool PreInit()
+    {
+        if ( !BaseClass::PreInit() )
+            return false;
 
-		CreateInterfaceFn factory = GetFactory();
-		ConnectTier3Libraries( &factory, 1 );
-		return true;			
-	}
+        CreateInterfaceFn factory = GetFactory();
+        ConnectTier3Libraries( &factory, 1 );
+        return true;
+    }
 
-	virtual void PostShutdown()
-	{
-		DisconnectTier3Libraries();
-		BaseClass::PostShutdown();
-	}
+    virtual void PostShutdown()
+    {
+        DisconnectTier3Libraries();
+        BaseClass::PostShutdown();
+    }
 };
 
 
@@ -83,18 +83,18 @@ public:
 //-----------------------------------------------------------------------------
 class CVguiSteamApp : public CTier3SteamApp
 {
-	typedef CTier3SteamApp BaseClass;
+    typedef CTier3SteamApp BaseClass;
 
 public:
-	// Methods of IApplication
-	virtual bool PreInit()
-	{
-		if ( !BaseClass::PreInit() )
-			return false;
+    // Methods of IApplication
+    virtual bool PreInit()
+    {
+        if ( !BaseClass::PreInit() )
+            return false;
 
-		CreateInterfaceFn factory = GetFactory();
-		return vgui::VGui_InitInterfacesList( "CVguiSteamApp", &factory, 1 );
-	}
+        CreateInterfaceFn factory = GetFactory();
+        return vgui::VGui_InitInterfacesList( "CVguiSteamApp", &factory, 1 );
+    }
 };
 
 
@@ -103,18 +103,18 @@ public:
 //-----------------------------------------------------------------------------
 class CVguiDmSteamApp : public CTier3DmSteamApp
 {
-	typedef CTier3DmSteamApp BaseClass;
+    typedef CTier3DmSteamApp BaseClass;
 
 public:
-	// Methods of IApplication
-	virtual bool PreInit()
-	{
-		if ( !BaseClass::PreInit() )
-			return false;
+    // Methods of IApplication
+    virtual bool PreInit()
+    {
+        if ( !BaseClass::PreInit() )
+            return false;
 
-		CreateInterfaceFn factory = GetFactory();
-		return vgui::VGui_InitInterfacesList( "CVguiSteamApp", &factory, 1 );
-	}
+        CreateInterfaceFn factory = GetFactory();
+        return vgui::VGui_InitInterfacesList( "CVguiSteamApp", &factory, 1 );
+    }
 };
 
 

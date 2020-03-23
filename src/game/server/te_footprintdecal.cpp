@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -25,27 +25,27 @@
 class CTEFootprintDecal : public CBaseTempEntity
 {
 public:
-	DECLARE_CLASS( CTEFootprintDecal, CBaseTempEntity );
+    DECLARE_CLASS( CTEFootprintDecal, CBaseTempEntity );
 
-					CTEFootprintDecal( const char *name );
-	virtual			~CTEFootprintDecal( void );
+                    CTEFootprintDecal( const char *name );
+    virtual         ~CTEFootprintDecal( void );
 
-	DECLARE_SERVERCLASS();
+    DECLARE_SERVERCLASS();
 
 public:
-	CNetworkVector( m_vecOrigin );
-	CNetworkVector( m_vecDirection );											
-	CNetworkVar( int, m_nEntity );
-	CNetworkVar( int, m_nIndex );
-	CNetworkVar( unsigned char, m_chMaterialType );
+    CNetworkVector( m_vecOrigin );
+    CNetworkVector( m_vecDirection );
+    CNetworkVar( int, m_nEntity );
+    CNetworkVar( int, m_nIndex );
+    CNetworkVar( unsigned char, m_chMaterialType );
 };
 
 IMPLEMENT_SERVERCLASS_ST(CTEFootprintDecal, DT_TEFootprintDecal)
-	SendPropVector( SENDINFO(m_vecOrigin),		-1, SPROP_COORD),
-	SendPropVector( SENDINFO(m_vecDirection),	-1, SPROP_COORD),
-	SendPropInt(  SENDINFO(m_nEntity),			11, SPROP_UNSIGNED ),
-	SendPropInt(  SENDINFO(m_nIndex),			8,	SPROP_UNSIGNED ),
-	SendPropInt(   SENDINFO(m_chMaterialType),	8,	SPROP_UNSIGNED ),
+    SendPropVector( SENDINFO(m_vecOrigin),      -1, SPROP_COORD),
+    SendPropVector( SENDINFO(m_vecDirection),   -1, SPROP_COORD),
+    SendPropInt(  SENDINFO(m_nEntity),          11, SPROP_UNSIGNED ),
+    SendPropInt(  SENDINFO(m_nIndex),           8,  SPROP_UNSIGNED ),
+    SendPropInt(   SENDINFO(m_chMaterialType),  8,  SPROP_UNSIGNED ),
 END_SEND_TABLE()
 
 
@@ -57,12 +57,12 @@ static CTEFootprintDecal g_TEFootprintDecal( "Footprint Decal" );
 //-----------------------------------------------------------------------------
 
 CTEFootprintDecal::CTEFootprintDecal( const char *name ) :
-	CBaseTempEntity( name )
+    CBaseTempEntity( name )
 {
-	m_vecOrigin.Init();
-	m_nEntity = 0;
-	m_nIndex = 0;
-	m_chMaterialType = 'C';
+    m_vecOrigin.Init();
+    m_nEntity = 0;
+    m_nIndex = 0;
+    m_chMaterialType = 'C';
 }
 
 CTEFootprintDecal::~CTEFootprintDecal( void )
@@ -70,22 +70,22 @@ CTEFootprintDecal::~CTEFootprintDecal( void )
 }
 
 //-----------------------------------------------------------------------------
-// places a footprint decal 
+// places a footprint decal
 //-----------------------------------------------------------------------------
-								    
-void TE_FootprintDecal( IRecipientFilter& filter, float delay, 
-					    const Vector *origin, const Vector *right, int entity, int index, 
-					    unsigned char materialType )
+
+void TE_FootprintDecal( IRecipientFilter& filter, float delay,
+                        const Vector *origin, const Vector *right, int entity, int index,
+                        unsigned char materialType )
 {
-	Assert( origin );
-	g_TEFootprintDecal.m_vecOrigin = *origin;
-	g_TEFootprintDecal.m_vecDirection	= *right;
-	g_TEFootprintDecal.m_nEntity		= entity;	
-	g_TEFootprintDecal.m_nIndex			= index;
-	g_TEFootprintDecal.m_chMaterialType	= materialType;
+    Assert( origin );
+    g_TEFootprintDecal.m_vecOrigin = *origin;
+    g_TEFootprintDecal.m_vecDirection   = *right;
+    g_TEFootprintDecal.m_nEntity        = entity;
+    g_TEFootprintDecal.m_nIndex         = index;
+    g_TEFootprintDecal.m_chMaterialType = materialType;
 
-	VectorNormalize(g_TEFootprintDecal.m_vecDirection.GetForModify());
+    VectorNormalize(g_TEFootprintDecal.m_vecDirection.GetForModify());
 
-	// Send it over the wire
-	g_TEFootprintDecal.Create( filter, delay );
+    // Send it over the wire
+    g_TEFootprintDecal.Create( filter, delay );
 }

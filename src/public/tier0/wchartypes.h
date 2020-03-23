@@ -1,7 +1,7 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose:	All of our code is completely Unicode.  Instead of char, you should
-//			use wchar, uint8, or char8, as explained below.
+// Purpose: All of our code is completely Unicode.  Instead of char, you should
+//          use wchar, uint8, or char8, as explained below.
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -68,7 +68,7 @@ typedef wchar_t wchar;
 #define _tcsrchr strrchr
 #define _tcslen strlen
 #define _tfopen fopen
-#define _stprintf sprintf 
+#define _stprintf sprintf
 #define _ftprintf fprintf
 #define _vsntprintf _vsnprintf
 #define _tprintf printf

@@ -1,9 +1,9 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: Define inline functions for the CParticleProperty class. The 
-//			definitions	exist in this include file to avoid cluttering up
-//			particle_property.h, but this file should not be included from any-
-//			where else.
+// Purpose: Define inline functions for the CParticleProperty class. The
+//          definitions exist in this include file to avoid cluttering up
+//          particle_property.h, but this file should not be included from any-
+//          where else.
 //
 //=============================================================================
 
@@ -24,13 +24,13 @@
 /// for uniformity of interface.
 void CParticleProperty::SetControlPointParent( CNewParticleEffect *pEffect, int whichControlPoint, int parentIdx )
 {
-	pEffect->SetControlPointParent(whichControlPoint, parentIdx);
+    pEffect->SetControlPointParent(whichControlPoint, parentIdx);
 }
 
 /// Given an index, return a pointer to the relevant particle effect structure. For convenience.
 CNewParticleEffect *CParticleProperty::GetParticleEffectFromIdx( int idx )
 {
-	return m_ParticleEffects[idx].pParticleEffect.GetObject();
+    return m_ParticleEffects[idx].pParticleEffect.GetObject();
 }
 
 

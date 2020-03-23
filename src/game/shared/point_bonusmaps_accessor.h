@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -18,4 +18,4 @@ void BonusMapChallengeNames( char *pchFileName, char *pchMapName, char *pchChall
 void BonusMapChallengeObjectives( int &iBronze, int &iSilver, int &iGold );
 
 
-#endif		// POINT_BONUSMAPS_ACCESSOR_H
+#endif      // POINT_BONUSMAPS_ACCESSOR_H

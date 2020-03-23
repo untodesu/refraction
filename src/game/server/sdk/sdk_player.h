@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose:		Player for SDK Game
+// Purpose:     Player for SDK Game
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -22,80 +22,80 @@
 class CSDKPlayer : public CBasePlayer, public ISDKPlayerAnimStateHelpers
 {
 public:
-	DECLARE_CLASS( CSDKPlayer, CBasePlayer );
-	DECLARE_SERVERCLASS();
-	DECLARE_PREDICTABLE();
-	DECLARE_DATADESC();
+    DECLARE_CLASS( CSDKPlayer, CBasePlayer );
+    DECLARE_SERVERCLASS();
+    DECLARE_PREDICTABLE();
+    DECLARE_DATADESC();
 
-	CSDKPlayer();
-	~CSDKPlayer();
+    CSDKPlayer();
+    ~CSDKPlayer();
 
-	static CSDKPlayer *CreatePlayer( const char *className, edict_t *ed );
-	static CSDKPlayer* Instance( int iEnt );
+    static CSDKPlayer *CreatePlayer( const char *className, edict_t *ed );
+    static CSDKPlayer* Instance( int iEnt );
 
-	// This passes the event to the client's and server's CPlayerAnimState.
-	void DoAnimationEvent( PlayerAnimEvent_t event, int nData = 0 );
+    // This passes the event to the client's and server's CPlayerAnimState.
+    void DoAnimationEvent( PlayerAnimEvent_t event, int nData = 0 );
 
-	virtual void FlashlightTurnOn( void );
-	virtual void FlashlightTurnOff( void );
-	virtual int FlashlightIsOn( void );
+    virtual void FlashlightTurnOn( void );
+    virtual void FlashlightTurnOff( void );
+    virtual int FlashlightIsOn( void );
 
-	virtual void PreThink();
-	virtual void PostThink();
-	virtual void Spawn();
-	virtual void InitialSpawn();
-	virtual void Precache();
-	virtual void Event_Killed( const CTakeDamageInfo &info );
-	virtual void LeaveVehicle( const Vector &vecExitPoint, const QAngle &vecExitAngles );
-	
-	CWeaponSDKBase* GetActiveSDKWeapon() const;
-	virtual void	CreateViewModel( int viewmodelindex = 0 );
+    virtual void PreThink();
+    virtual void PostThink();
+    virtual void Spawn();
+    virtual void InitialSpawn();
+    virtual void Precache();
+    virtual void Event_Killed( const CTakeDamageInfo &info );
+    virtual void LeaveVehicle( const Vector &vecExitPoint, const QAngle &vecExitAngles );
 
-	virtual void	CheatImpulseCommands( int iImpulse );
+    CWeaponSDKBase* GetActiveSDKWeapon() const;
+    virtual void    CreateViewModel( int viewmodelindex = 0 );
 
-	CNetworkVar( int, m_iThrowGrenadeCounter );	// used to trigger grenade throw animations.
-	CNetworkQAngle( m_angEyeAngles );	// Copied from EyeAngles() so we can send it to the client.
-	CNetworkVar( int, m_iShotsFired );	// number of shots fired recently
+    virtual void    CheatImpulseCommands( int iImpulse );
 
-	// Tracks our ragdoll entity.
-	CNetworkHandle( CBaseEntity, m_hRagdoll );	// networked entity handle 
+    CNetworkVar( int, m_iThrowGrenadeCounter ); // used to trigger grenade throw animations.
+    CNetworkQAngle( m_angEyeAngles );   // Copied from EyeAngles() so we can send it to the client.
+    CNetworkVar( int, m_iShotsFired );  // number of shots fired recently
+
+    // Tracks our ragdoll entity.
+    CNetworkHandle( CBaseEntity, m_hRagdoll );  // networked entity handle
 
 // In shared code.
 public:
-	// ISDKPlayerAnimState overrides.
-	virtual CWeaponSDKBase* SDKAnim_GetActiveWeapon();
-	virtual bool SDKAnim_CanMove();
-	
+    // ISDKPlayerAnimState overrides.
+    virtual CWeaponSDKBase* SDKAnim_GetActiveWeapon();
+    virtual bool SDKAnim_CanMove();
 
-	void FireBullet( 
-		Vector vecSrc, 
-		const QAngle &shootAngles, 
-		float vecSpread, 
-		int iDamage, 
-		int iBulletType,
-		CBaseEntity *pevAttacker,
-		bool bDoEffects,
-		float x,
-		float y );
+
+    void FireBullet(
+        Vector vecSrc,
+        const QAngle &shootAngles,
+        float vecSpread,
+        int iDamage,
+        int iBulletType,
+        CBaseEntity *pevAttacker,
+        bool bDoEffects,
+        float x,
+        float y );
 
 private:
 
-	void CreateRagdollEntity();
+    void CreateRagdollEntity();
 
-	ISDKPlayerAnimState *m_PlayerAnimState;
+    ISDKPlayerAnimState *m_PlayerAnimState;
 };
 
 
 inline CSDKPlayer *ToSDKPlayer( CBaseEntity *pEntity )
 {
-	if ( !pEntity || !pEntity->IsPlayer() )
-		return NULL;
+    if ( !pEntity || !pEntity->IsPlayer() )
+        return NULL;
 
 #ifdef _DEBUG
-	Assert( dynamic_cast<CSDKPlayer*>( pEntity ) != 0 );
+    Assert( dynamic_cast<CSDKPlayer*>( pEntity ) != 0 );
 #endif
-	return static_cast< CSDKPlayer* >( pEntity );
+    return static_cast< CSDKPlayer* >( pEntity );
 }
 
 
-#endif	// SDK_PLAYER_H
+#endif  // SDK_PLAYER_H

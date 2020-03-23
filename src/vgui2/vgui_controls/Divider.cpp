@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -21,7 +21,7 @@ DECLARE_BUILD_FACTORY( Divider );
 //-----------------------------------------------------------------------------
 Divider::Divider(Panel *parent, const char *name) : Panel(parent, name)
 {
-	SetSize(128, 2);
+    SetSize(128, 2);
 }
 
 //-----------------------------------------------------------------------------
@@ -36,6 +36,6 @@ Divider::~Divider()
 //-----------------------------------------------------------------------------
 void Divider::ApplySchemeSettings(IScheme *pScheme)
 {
-	SetBorder(pScheme->GetBorder("ButtonDepressedBorder"));
-	BaseClass::ApplySchemeSettings(pScheme);
+    SetBorder(pScheme->GetBorder("ButtonDepressedBorder"));
+    BaseClass::ApplySchemeSettings(pScheme);
 }

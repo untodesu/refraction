@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -24,89 +24,89 @@ class CTEEnergySplash : public CBaseTempEntity
 DECLARE_CLASS( CTEEnergySplash, CBaseTempEntity );
 
 public:
-					CTEEnergySplash( const char *name );
-	virtual			~CTEEnergySplash( void );
+                    CTEEnergySplash( const char *name );
+    virtual         ~CTEEnergySplash( void );
 
-	virtual void	Test( const Vector& current_origin, const QAngle& current_angles );
-	
-	DECLARE_SERVERCLASS();
+    virtual void    Test( const Vector& current_origin, const QAngle& current_angles );
+
+    DECLARE_SERVERCLASS();
 
 public:
-	CNetworkVector( m_vecPos );
-	CNetworkVector( m_vecDir );
-	CNetworkVar( bool, m_bExplosive );
+    CNetworkVector( m_vecPos );
+    CNetworkVector( m_vecDir );
+    CNetworkVar( bool, m_bExplosive );
 };
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *name - 
+// Purpose:
+// Input  : *name -
 //-----------------------------------------------------------------------------
 CTEEnergySplash::CTEEnergySplash( const char *name ) :
-	CBaseTempEntity( name )
+    CBaseTempEntity( name )
 {
-	m_vecPos.Init();
-	m_vecDir.Init();
-	m_bExplosive = false;
+    m_vecPos.Init();
+    m_vecDir.Init();
+    m_bExplosive = false;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CTEEnergySplash::~CTEEnergySplash( void )
 {
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *current_origin - 
-//			*current_angles - 
+// Purpose:
+// Input  : *current_origin -
+//          *current_angles -
 //-----------------------------------------------------------------------------
 void CTEEnergySplash::Test( const Vector& current_origin, const QAngle& current_angles )
 {
-	// Fill in data
-	m_vecPos = current_origin;
-	
-	AngleVectors( current_angles, &m_vecDir.GetForModify() );
-	
-	Vector forward;
+    // Fill in data
+    m_vecPos = current_origin;
 
-	m_vecPos.GetForModify()[2] += 24;
+    AngleVectors( current_angles, &m_vecDir.GetForModify() );
 
-	forward = m_vecDir;
-	forward[2] = 0.0;
-	VectorNormalize( forward );
+    Vector forward;
 
-	VectorMA( m_vecPos, 100.0, forward, m_vecPos.GetForModify() );
+    m_vecPos.GetForModify()[2] += 24;
 
-	CBroadcastRecipientFilter filter;
-	Create( filter, 0.0 );
+    forward = m_vecDir;
+    forward[2] = 0.0;
+    VectorNormalize( forward );
+
+    VectorMA( m_vecPos, 100.0, forward, m_vecPos.GetForModify() );
+
+    CBroadcastRecipientFilter filter;
+    Create( filter, 0.0 );
 }
 
 IMPLEMENT_SERVERCLASS_ST_NOBASE( CTEEnergySplash, DT_TEEnergySplash)
-	SendPropVector( SENDINFO(m_vecPos), -1, SPROP_COORD),
-	SendPropVector( SENDINFO(m_vecDir), -1, SPROP_COORD),
-	SendPropInt( SENDINFO(m_bExplosive), 1, SPROP_UNSIGNED),
+    SendPropVector( SENDINFO(m_vecPos), -1, SPROP_COORD),
+    SendPropVector( SENDINFO(m_vecDir), -1, SPROP_COORD),
+    SendPropInt( SENDINFO(m_bExplosive), 1, SPROP_UNSIGNED),
 END_SEND_TABLE()
 
 // Singleton to fire TEEnergySplash objects
 static CTEEnergySplash g_TEEnergySplash( "Energy Splash" );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : msg_dest - 
-//			delay - 
-//			*origin - 
-//			*recipient - 
-//			*pos - 
-//			scale - 
+// Purpose:
+// Input  : msg_dest -
+//          delay -
+//          *origin -
+//          *recipient -
+//          *pos -
+//          scale -
 //-----------------------------------------------------------------------------
 void TE_EnergySplash( IRecipientFilter& filter, float delay,
-	const Vector* pos, const Vector* dir, bool bExplosive )
+    const Vector* pos, const Vector* dir, bool bExplosive )
 {
-	g_TEEnergySplash.m_vecPos = *pos;
-	g_TEEnergySplash.m_vecDir = *dir;
-	g_TEEnergySplash.m_bExplosive = bExplosive;
+    g_TEEnergySplash.m_vecPos = *pos;
+    g_TEEnergySplash.m_vecDir = *dir;
+    g_TEEnergySplash.m_bExplosive = bExplosive;
 
-	// Send it over the wire
-	g_TEEnergySplash.Create( filter, delay );
+    // Send it over the wire
+    g_TEEnergySplash.Create( filter, delay );
 }

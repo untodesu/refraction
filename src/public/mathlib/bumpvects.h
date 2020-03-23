@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -24,14 +24,14 @@
 
 #define NUM_BUMP_VECTS 3
 
-const TableVector g_localBumpBasis[NUM_BUMP_VECTS] = 
+const TableVector g_localBumpBasis[NUM_BUMP_VECTS] =
 {
-	{	OO_SQRT_2_OVER_3, 0.0f, OO_SQRT_3 },
-	{  -OO_SQRT_6, OO_SQRT_2, OO_SQRT_3 },
-	{  -OO_SQRT_6, -OO_SQRT_2, OO_SQRT_3 }
+    {   OO_SQRT_2_OVER_3, 0.0f, OO_SQRT_3 },
+    {  -OO_SQRT_6, OO_SQRT_2, OO_SQRT_3 },
+    {  -OO_SQRT_6, -OO_SQRT_2, OO_SQRT_3 }
 };
 
-void GetBumpNormals( const Vector& sVect, const Vector& tVect, const Vector& flatNormal, 
-					 const Vector& phongNormal, Vector bumpNormals[NUM_BUMP_VECTS] );
+void GetBumpNormals( const Vector& sVect, const Vector& tVect, const Vector& flatNormal,
+                     const Vector& phongNormal, Vector bumpNormals[NUM_BUMP_VECTS] );
 
 #endif // BUMPVECTS_H

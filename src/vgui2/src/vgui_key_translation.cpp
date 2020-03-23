@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //===========================================================================//
 
@@ -26,17 +26,17 @@
 
 vgui::KeyCode KeyCode_VirtualKeyToVGUI( int key )
 {
-	// Some tools load vgui for localization and never use input
-	if ( !g_pInputSystem )
-		return KEY_NONE;
-	return g_pInputSystem->VirtualKeyToButtonCode( key );
+    // Some tools load vgui for localization and never use input
+    if ( !g_pInputSystem )
+        return KEY_NONE;
+    return g_pInputSystem->VirtualKeyToButtonCode( key );
 }
 
 int KeyCode_VGUIToVirtualKey( vgui::KeyCode code )
 {
-	// Some tools load vgui for localization and never use input
-	if ( !g_pInputSystem )
-		return VK_RETURN;
+    // Some tools load vgui for localization and never use input
+    if ( !g_pInputSystem )
+        return VK_RETURN;
 
-	return g_pInputSystem->ButtonCodeToVirtualKey( code );
+    return g_pInputSystem->ButtonCodeToVirtualKey( code );
 }

@@ -1,8 +1,8 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: This file loads a KeyValues file containing material name mappings.
-//			When the bsp is compiled, all materials listed in the file will
-//			be replaced by the second material in the pair.
+//          When the bsp is compiled, all materials listed in the file will
+//          be replaced by the second material in the pair.
 //
 //=============================================================================
 
@@ -11,54 +11,54 @@
 #include "KeyValues.h"
 #include "tier1/strtools.h"
 
-bool g_ReplaceMaterials	= false;
+bool g_ReplaceMaterials = false;
 
-static KeyValues *kv			= 0;
-static KeyValues *allMapKeys	= 0;
-static KeyValues *curMapKeys	= 0;
+static KeyValues *kv            = 0;
+static KeyValues *allMapKeys    = 0;
+static KeyValues *curMapKeys    = 0;
 
 //-----------------------------------------------------------------------------
 // Purpose: Loads the KeyValues file for materials replacements
 //-----------------------------------------------------------------------------
 void LoadMaterialReplacementKeys( const char *gamedir, const char *mapname )
 {
-	// Careful with static variables
-	if( kv )
-	{
-		kv->deleteThis();
-		kv = 0;
-	}
-	if( allMapKeys )
-		allMapKeys = 0;
-	if( curMapKeys )
-		curMapKeys = 0;
+    // Careful with static variables
+    if( kv )
+    {
+        kv->deleteThis();
+        kv = 0;
+    }
+    if( allMapKeys )
+        allMapKeys = 0;
+    if( curMapKeys )
+        curMapKeys = 0;
 
-	Msg( "Loading Replacement Keys\n" );
+    Msg( "Loading Replacement Keys\n" );
 
-	// Attach the path to the keyValues file
-	char path[1024];
-	Q_snprintf( path, sizeof( path ), "%scfg\\materialsub.cfg", gamedir );
-	
-	// Load the keyvalues file
-	kv = new KeyValues( "MaterialReplacements" );
+    // Attach the path to the keyValues file
+    char path[1024];
+    Q_snprintf( path, sizeof( path ), "%scfg\\materialsub.cfg", gamedir );
 
-	Msg( "File path: %s", path );
-	if( !kv->LoadFromFile( g_pFileSystem, path ) )
-	{
-		Msg( "Failed to load KeyValues file!\n" );
-		g_ReplaceMaterials = false;
-		kv->deleteThis();
-		kv = 0;
-		return;
-	}
+    // Load the keyvalues file
+    kv = new KeyValues( "MaterialReplacements" );
 
-	// Load global replace keys
-	allMapKeys = kv->FindKey( "AllMaps", true );
+    Msg( "File path: %s", path );
+    if( !kv->LoadFromFile( g_pFileSystem, path ) )
+    {
+        Msg( "Failed to load KeyValues file!\n" );
+        g_ReplaceMaterials = false;
+        kv->deleteThis();
+        kv = 0;
+        return;
+    }
 
-	// Load keys for the current map
-	curMapKeys = kv->FindKey( mapname );
+    // Load global replace keys
+    allMapKeys = kv->FindKey( "AllMaps", true );
 
-	allMapKeys->ChainKeyValue( curMapKeys );
+    // Load keys for the current map
+    curMapKeys = kv->FindKey( mapname );
+
+    allMapKeys->ChainKeyValue( curMapKeys );
 }
 
 //-----------------------------------------------------------------------------
@@ -66,11 +66,11 @@ void LoadMaterialReplacementKeys( const char *gamedir, const char *mapname )
 //-----------------------------------------------------------------------------
 void DeleteMaterialReplacementKeys( void )
 {
-	if( kv )
-	{
-		kv->deleteThis();
-		kv = 0;
-	}
+    if( kv )
+    {
+        kv->deleteThis();
+        kv = 0;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -78,13 +78,13 @@ void DeleteMaterialReplacementKeys( void )
 //-----------------------------------------------------------------------------
 const char* ReplaceMaterialName( const char *name )
 {
-	// Look for the material name in the global and map KeyValues
-	// If it's not there, just return the original name
+    // Look for the material name in the global and map KeyValues
+    // If it's not there, just return the original name
 
-	// HACK: This stinks - KeyValues won't take a string with '/' in it.
-	// If they did, this could be a simple pointer swap.
-	char newName[1024];
-	Q_strncpy( newName, name, sizeof( newName ) );
-	Q_FixSlashes( newName );
-	return allMapKeys->GetString( newName, name );
+    // HACK: This stinks - KeyValues won't take a string with '/' in it.
+    // If they did, this could be a simple pointer swap.
+    char newName[1024];
+    Q_strncpy( newName, name, sizeof( newName ) );
+    Q_FixSlashes( newName );
+    return allMapKeys->GetString( newName, name );
 }

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -19,24 +19,24 @@ class CActivityRemap
 {
 public:
 
-	CActivityRemap()
-	{
-		pExtraBlock = NULL;
-	}
+    CActivityRemap()
+    {
+        pExtraBlock = NULL;
+    }
 
-	void SetExtraKeyValueBlock ( KeyValues *pKVBlock )
-	{
-		pExtraBlock = pKVBlock;
-	}
+    void SetExtraKeyValueBlock ( KeyValues *pKVBlock )
+    {
+        pExtraBlock = pKVBlock;
+    }
 
-	KeyValues *GetExtraKeyValueBlock ( void ) { return pExtraBlock; }
+    KeyValues *GetExtraKeyValueBlock ( void ) { return pExtraBlock; }
 
-	Activity 		activity;
-	Activity		mappedActivity;
+    Activity        activity;
+    Activity        mappedActivity;
 
 private:
 
-	KeyValues		*pExtraBlock;
+    KeyValues       *pExtraBlock;
 };
 
 
@@ -44,34 +44,34 @@ class CActivityRemapCache
 {
 public:
 
-	CActivityRemapCache()
-	{
-	}
+    CActivityRemapCache()
+    {
+    }
 
-	CActivityRemapCache( const CActivityRemapCache& src )
-	{
-		int c = src.m_cachedActivityRemaps.Count();
-		for ( int i = 0; i < c; i++ )
-		{
-			m_cachedActivityRemaps.AddToTail( src.m_cachedActivityRemaps[ i ] );
-		}
-	}
+    CActivityRemapCache( const CActivityRemapCache& src )
+    {
+        int c = src.m_cachedActivityRemaps.Count();
+        for ( int i = 0; i < c; i++ )
+        {
+            m_cachedActivityRemaps.AddToTail( src.m_cachedActivityRemaps[ i ] );
+        }
+    }
 
-	CActivityRemapCache& operator = ( const CActivityRemapCache& src )
-	{
-		if ( this == &src )
-			return *this;
+    CActivityRemapCache& operator = ( const CActivityRemapCache& src )
+    {
+        if ( this == &src )
+            return *this;
 
-		int c = src.m_cachedActivityRemaps.Count();
-		for ( int i = 0; i < c; i++ )
-		{
-			m_cachedActivityRemaps.AddToTail( src.m_cachedActivityRemaps[ i ] );
-		}
+        int c = src.m_cachedActivityRemaps.Count();
+        for ( int i = 0; i < c; i++ )
+        {
+            m_cachedActivityRemaps.AddToTail( src.m_cachedActivityRemaps[ i ] );
+        }
 
-		return *this;
-	}
+        return *this;
+    }
 
-	CUtlVector< CActivityRemap > m_cachedActivityRemaps;
+    CUtlVector< CActivityRemap > m_cachedActivityRemaps;
 };
 
 void UTIL_LoadActivityRemapFile( const char *filename, const char *section, CUtlVector <CActivityRemap> &entries );

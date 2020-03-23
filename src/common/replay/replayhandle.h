@@ -18,7 +18,7 @@ typedef uint32 ReplayHandle_t;
 
 //----------------------------------------------------------------------------------------
 
-#define REPLAY_HANDLE_INVALID				( (ReplayHandle_t)-1 )
+#define REPLAY_HANDLE_INVALID               ( (ReplayHandle_t)-1 )
 
 //----------------------------------------------------------------------------------------
 

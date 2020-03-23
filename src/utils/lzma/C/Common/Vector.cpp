@@ -8,9 +8,9 @@
 
 CBaseRecordVector::~CBaseRecordVector()
   { delete []((unsigned char *)_items); }
-void CBaseRecordVector::Clear() 
+void CBaseRecordVector::Clear()
   { DeleteFrom(0); }
-void CBaseRecordVector::DeleteBack() 
+void CBaseRecordVector::DeleteBack()
   { Delete(_size - 1); }
 void CBaseRecordVector::DeleteFrom(int index)
   { Delete(index, _size - index); }
@@ -36,8 +36,8 @@ void CBaseRecordVector::Reserve(int newCapacity)
   /*
   #ifndef _DEBUG
   static const unsigned int kMaxVectorSize = 0xF0000000;
-  if(newCapacity < _size || 
-      ((unsigned int )newCapacity * (unsigned int )_itemSize) > kMaxVectorSize) 
+  if(newCapacity < _size ||
+      ((unsigned int )newCapacity * (unsigned int )_itemSize) > kMaxVectorSize)
     throw 1052354;
   #endif
   */
@@ -51,8 +51,8 @@ void CBaseRecordVector::Reserve(int newCapacity)
 
 void CBaseRecordVector::MoveItems(int destIndex, int srcIndex)
 {
-  memmove(((unsigned char *)_items) + destIndex * _itemSize, 
-    ((unsigned char  *)_items) + srcIndex * _itemSize, 
+  memmove(((unsigned char *)_items) + destIndex * _itemSize,
+    ((unsigned char  *)_items) + srcIndex * _itemSize,
     _itemSize * (_size - srcIndex));
 }
 

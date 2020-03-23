@@ -11,7 +11,7 @@
 #include "tier0/memdbgon.h"
 
 //------------------------------------------------------------------------------
-// FIXME: This really should inherit from something	more lightweight
+// FIXME: This really should inherit from something more lightweight
 //------------------------------------------------------------------------------
 
 
@@ -21,21 +21,21 @@
 class C_WaterLODControl : public C_BaseEntity
 {
 public:
-	DECLARE_CLASS( C_WaterLODControl, C_BaseEntity );
+    DECLARE_CLASS( C_WaterLODControl, C_BaseEntity );
 
-	DECLARE_CLIENTCLASS();
+    DECLARE_CLIENTCLASS();
 
-	void OnDataChanged(DataUpdateType_t updateType);
-	bool ShouldDraw();
+    void OnDataChanged(DataUpdateType_t updateType);
+    bool ShouldDraw();
 
 private:
-	float m_flCheapWaterStartDistance;
-	float m_flCheapWaterEndDistance;
+    float m_flCheapWaterStartDistance;
+    float m_flCheapWaterEndDistance;
 };
 
 IMPLEMENT_CLIENTCLASS_DT(C_WaterLODControl, DT_WaterLODControl, CWaterLODControl)
-	RecvPropFloat(RECVINFO(m_flCheapWaterStartDistance)),
-	RecvPropFloat(RECVINFO(m_flCheapWaterEndDistance)),
+    RecvPropFloat(RECVINFO(m_flCheapWaterStartDistance)),
+    RecvPropFloat(RECVINFO(m_flCheapWaterEndDistance)),
 END_RECV_TABLE()
 
 
@@ -46,8 +46,8 @@ END_RECV_TABLE()
 //------------------------------------------------------------------------------
 void C_WaterLODControl::OnDataChanged(DataUpdateType_t updateType)
 {
-	view->SetCheapWaterStartDistance( m_flCheapWaterStartDistance );
-	view->SetCheapWaterEndDistance( m_flCheapWaterEndDistance );
+    view->SetCheapWaterStartDistance( m_flCheapWaterStartDistance );
+    view->SetCheapWaterEndDistance( m_flCheapWaterEndDistance );
 }
 
 //------------------------------------------------------------------------------
@@ -55,6 +55,6 @@ void C_WaterLODControl::OnDataChanged(DataUpdateType_t updateType)
 //------------------------------------------------------------------------------
 bool C_WaterLODControl::ShouldDraw()
 {
-	return false;
+    return false;
 }
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -18,30 +18,30 @@ class IMaterialVar;
 class CBaseAnimatedTextureProxy : public IMaterialProxy
 {
 public:
-	CBaseAnimatedTextureProxy();
-	virtual ~CBaseAnimatedTextureProxy();
+    CBaseAnimatedTextureProxy();
+    virtual ~CBaseAnimatedTextureProxy();
 
-	virtual bool Init( IMaterial *pMaterial, KeyValues *pKeyValues );
-	virtual void OnBind( void *pC_BaseEntity );
-	virtual void Release( void ) { delete this; }
-	virtual IMaterial *GetMaterial();
-
-protected:
-	// derived classes must implement this; it returns the time
-	// that the animation began
-	virtual float  GetAnimationStartTime( void* pBaseEntity ) = 0;
-
-	// Derived classes may implement this if they choose;
-	// this method is called whenever the animation wraps...
-	virtual void   AnimationWrapped( void* pBaseEntity ) {}
+    virtual bool Init( IMaterial *pMaterial, KeyValues *pKeyValues );
+    virtual void OnBind( void *pC_BaseEntity );
+    virtual void Release( void ) { delete this; }
+    virtual IMaterial *GetMaterial();
 
 protected:
-	void Cleanup();
-	
-	IMaterialVar *m_AnimatedTextureVar;
-	IMaterialVar *m_AnimatedTextureFrameNumVar;
-	float m_FrameRate;
-	bool m_WrapAnimation;
+    // derived classes must implement this; it returns the time
+    // that the animation began
+    virtual float  GetAnimationStartTime( void* pBaseEntity ) = 0;
+
+    // Derived classes may implement this if they choose;
+    // this method is called whenever the animation wraps...
+    virtual void   AnimationWrapped( void* pBaseEntity ) {}
+
+protected:
+    void Cleanup();
+
+    IMaterialVar *m_AnimatedTextureVar;
+    IMaterialVar *m_AnimatedTextureFrameNumVar;
+    float m_FrameRate;
+    bool m_WrapAnimation;
 };
 
 #endif // BASEANIMATEDTEXTUREPROXY

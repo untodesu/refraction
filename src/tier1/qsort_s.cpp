@@ -47,7 +47,7 @@ static void swap_bytes(char *a, char *b, size_t nbytes)
 
 extern "C" void qsort_s(void *basep, size_t nelems, size_t size,
            int (*comp)(void *, const void *, const void *),
-	   void *ctx)
+       void *ctx)
 {
    char *stack[40], **sp;       /* stack and stack pointer        */
    char *i, *j, *limit;         /* scan and limit pointers        */

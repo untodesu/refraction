@@ -28,7 +28,7 @@ C_BaseTempEntity *C_BaseTempEntity::s_pDynamicEntities = NULL;
 //-----------------------------------------------------------------------------
 C_BaseTempEntity *C_BaseTempEntity::GetDynamicList( void )
 {
-	return s_pDynamicEntities;
+    return s_pDynamicEntities;
 }
 
 //-----------------------------------------------------------------------------
@@ -37,25 +37,25 @@ C_BaseTempEntity *C_BaseTempEntity::GetDynamicList( void )
 //-----------------------------------------------------------------------------
 C_BaseTempEntity *C_BaseTempEntity::GetList( void )
 {
-	return s_pTempEntities;
+    return s_pTempEntities;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Output : 
+// Purpose:
+// Output :
 //-----------------------------------------------------------------------------
 C_BaseTempEntity::C_BaseTempEntity( void )
 {
-	// Add to list
-	m_pNext			= s_pTempEntities;
-	s_pTempEntities = this;
-	
-	m_pNextDynamic = NULL;
+    // Add to list
+    m_pNext         = s_pTempEntities;
+    s_pTempEntities = this;
+
+    m_pNextDynamic = NULL;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Output : 
+// Purpose:
+// Output :
 //-----------------------------------------------------------------------------
 C_BaseTempEntity::~C_BaseTempEntity( void )
 {
@@ -67,7 +67,7 @@ C_BaseTempEntity::~C_BaseTempEntity( void )
 //-----------------------------------------------------------------------------
 C_BaseTempEntity *C_BaseTempEntity::GetNext( void )
 {
-	return m_pNext;
+    return m_pNext;
 }
 
 //-----------------------------------------------------------------------------
@@ -76,15 +76,15 @@ C_BaseTempEntity *C_BaseTempEntity::GetNext( void )
 //-----------------------------------------------------------------------------
 C_BaseTempEntity *C_BaseTempEntity::GetNextDynamic( void )
 {
-	return m_pNextDynamic;
+    return m_pNextDynamic;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void C_BaseTempEntity::Precache( void )
 {
-	// Nothing...
+    // Nothing...
 }
 
 //-----------------------------------------------------------------------------
@@ -92,12 +92,12 @@ void C_BaseTempEntity::Precache( void )
 //-----------------------------------------------------------------------------
 void C_BaseTempEntity::PrecacheTempEnts( void )
 {
-	C_BaseTempEntity *te = GetList();
-	while ( te )
-	{
-		te->Precache();
-		te = te->GetNext();
-	}
+    C_BaseTempEntity *te = GetList();
+    while ( te )
+    {
+        te->Precache();
+        te = te->GetNext();
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -105,16 +105,16 @@ void C_BaseTempEntity::PrecacheTempEnts( void )
 //-----------------------------------------------------------------------------
 void C_BaseTempEntity::ClearDynamicTempEnts( void )
 {
-	C_BaseTempEntity *next;
-	C_BaseTempEntity *te = s_pDynamicEntities;
-	while ( te )
-	{
-		next = te->GetNextDynamic();
-		delete te;
-		te = next;
-	}
+    C_BaseTempEntity *next;
+    C_BaseTempEntity *te = s_pDynamicEntities;
+    while ( te )
+    {
+        next = te->GetNextDynamic();
+        delete te;
+        te = next;
+    }
 
-	s_pDynamicEntities = NULL;
+    s_pDynamicEntities = NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -122,51 +122,51 @@ void C_BaseTempEntity::ClearDynamicTempEnts( void )
 //-----------------------------------------------------------------------------
 void C_BaseTempEntity::CheckDynamicTempEnts( void )
 {
-	C_BaseTempEntity *next, *newlist = NULL;
-	C_BaseTempEntity *te = s_pDynamicEntities;
-	while ( te )
-	{
-		next = te->GetNextDynamic();
-		if ( te->ShouldDestroy() )
-		{
-			delete te;
-		}
-		else
-		{
-			te->m_pNextDynamic = newlist;
-			newlist = te;
-		}
-		te = next;
-	}
+    C_BaseTempEntity *next, *newlist = NULL;
+    C_BaseTempEntity *te = s_pDynamicEntities;
+    while ( te )
+    {
+        next = te->GetNextDynamic();
+        if ( te->ShouldDestroy() )
+        {
+            delete te;
+        }
+        else
+        {
+            te->m_pNextDynamic = newlist;
+            newlist = te;
+        }
+        te = next;
+    }
 
-	s_pDynamicEntities = newlist;
+    s_pDynamicEntities = newlist;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Dynamic/non-singleton temp entities are initialized by
 //  calling into here.  They should be added to a list of C_BaseTempEntities so
 //  that their memory can be deallocated appropriately.
-// Input  : *pEnt - 
+// Input  : *pEnt -
 // Output : Returns true on success, false on failure.
 //-----------------------------------------------------------------------------
 bool C_BaseTempEntity::Init( int entnum, int iSerialNum )
 {
-	if ( entnum != -1 )
-	{
-		Assert( 0 );
-	}
+    if ( entnum != -1 )
+    {
+        Assert( 0 );
+    }
 
-	// Link into dynamic entity list
-	m_pNextDynamic = s_pDynamicEntities;
-	s_pDynamicEntities = this;
+    // Link into dynamic entity list
+    m_pNextDynamic = s_pDynamicEntities;
+    s_pDynamicEntities = this;
 
-	return true;
+    return true;
 }
 
 
 void C_BaseTempEntity::Release()
 {
-	Assert( !"C_BaseTempEntity::Release should never be called" );
+    Assert( !"C_BaseTempEntity::Release should never be called" );
 }
 
 
@@ -176,12 +176,12 @@ void C_BaseTempEntity::NotifyShouldTransmit( ShouldTransmitState_t state )
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : bool - 
+// Purpose:
+// Input  : bool -
 //-----------------------------------------------------------------------------
 void C_BaseTempEntity::PreDataUpdate( DataUpdateType_t updateType )
 {
-	// TE's may or may not implement this
+    // TE's may or may not implement this
 }
 
 
@@ -196,6 +196,6 @@ void C_BaseTempEntity::SetDestroyedOnRecreateEntities( void ) { Assert(0); }
 
 void* C_BaseTempEntity::GetDataTableBasePtr()
 {
-	return this;
+    return this;
 }
 

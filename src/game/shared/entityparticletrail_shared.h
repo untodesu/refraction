@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -27,16 +27,16 @@ EXTERN_SEND_TABLE( DT_EntityParticleTrailInfo );
 //-----------------------------------------------------------------------------
 struct EntityParticleTrailInfo_t
 {
-	EntityParticleTrailInfo_t();
+    EntityParticleTrailInfo_t();
 
-	DECLARE_CLASS_NOBASE( EntityParticleTrailInfo_t );
-	DECLARE_SIMPLE_DATADESC();
-	DECLARE_EMBEDDED_NETWORKVAR();
+    DECLARE_CLASS_NOBASE( EntityParticleTrailInfo_t );
+    DECLARE_SIMPLE_DATADESC();
+    DECLARE_EMBEDDED_NETWORKVAR();
 
-	string_t m_strMaterialName;
-	CNetworkVar( float, m_flLifetime );
-	CNetworkVar( float, m_flStartSize );
-	CNetworkVar( float, m_flEndSize );
+    string_t m_strMaterialName;
+    CNetworkVar( float, m_flLifetime );
+    CNetworkVar( float, m_flStartSize );
+    CNetworkVar( float, m_flEndSize );
 };
 
 

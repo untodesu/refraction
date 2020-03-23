@@ -18,10 +18,10 @@ class KeyValues;
 
 typedef unsigned short PLAYERCLASS_FILE_INFO_HANDLE;
 
-#define MAX_PLAYERCLASS_NAME_LENGTH		128
+#define MAX_PLAYERCLASS_NAME_LENGTH     128
 
 //-----------------------------------------------------------------------------
-// Purpose: Contains the data read from the player class script files. 
+// Purpose: Contains the data read from the player class script files.
 // It's cached so we only read each script file once.
 // Each game provides a CreatePlayerClassInfo function so it can have game-specific
 // data in the player class scripts.
@@ -30,29 +30,29 @@ class FilePlayerClassInfo_t
 {
 public:
 
-	FilePlayerClassInfo_t();
-	
-	// Each game can override this to get whatever values it wants from the script.
-	virtual void Parse( KeyValues *pKeyValuesData, const char *szClassName );
+    FilePlayerClassInfo_t();
 
-	
-public:	
-	bool		m_bParsedScript;
+    // Each game can override this to get whatever values it wants from the script.
+    virtual void Parse( KeyValues *pKeyValuesData, const char *szClassName );
+
 
 public:
-	// Class properties
+    bool        m_bParsedScript;
 
-	// todo : better lengths for these arrays ?
+public:
+    // Class properties
 
-	char		m_szPlayerClassName[MAX_PLAYERCLASS_NAME_LENGTH];
-	char		m_szPrintName[MAX_PLAYERCLASS_NAME_LENGTH];		// localization key for print name
-	char		m_szPlayerModel[MAX_PLAYERCLASS_NAME_LENGTH];
-	char		m_szSelectCmd[32];		//command the player can issue to switch to this class
+    // todo : better lengths for these arrays ?
+
+    char        m_szPlayerClassName[MAX_PLAYERCLASS_NAME_LENGTH];
+    char        m_szPrintName[MAX_PLAYERCLASS_NAME_LENGTH];     // localization key for print name
+    char        m_szPlayerModel[MAX_PLAYERCLASS_NAME_LENGTH];
+    char        m_szSelectCmd[32];      //command the player can issue to switch to this class
 };
 
 // The weapon parse function
-bool ReadPlayerClassDataFromFileForSlot( IFileSystem* filesystem, const char *szClassName, 
-	PLAYERCLASS_FILE_INFO_HANDLE *phandle, const unsigned char *pICEKey = NULL );
+bool ReadPlayerClassDataFromFileForSlot( IFileSystem* filesystem, const char *szClassName,
+    PLAYERCLASS_FILE_INFO_HANDLE *phandle, const unsigned char *pICEKey = NULL );
 
 // If player class info has been loaded for the specified class name, this returns it.
 PLAYERCLASS_FILE_INFO_HANDLE LookupPlayerClassInfoSlot( const char *name );
@@ -67,8 +67,8 @@ PLAYERCLASS_FILE_INFO_HANDLE GetInvalidPlayerClassInfoHandle( void );
 void ResetFilePlayerClassInfoDatabase( void );
 
 
-// 
-// Read a possibly-encrypted KeyValues file in. 
+//
+// Read a possibly-encrypted KeyValues file in.
 // If pICEKey is NULL, then it appends .txt to the filename and loads it as an unencrypted file.
 // If pICEKey is non-NULL, then it appends .ctx to the filename and loads it as an encrypted file.
 //

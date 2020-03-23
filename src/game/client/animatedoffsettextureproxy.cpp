@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -13,44 +13,44 @@
 class CAnimatedOffsetTextureProxy : public CBaseAnimatedTextureProxy
 {
 public:
-	CAnimatedOffsetTextureProxy() : m_flFrameOffset( 0.0f ) {}
+    CAnimatedOffsetTextureProxy() : m_flFrameOffset( 0.0f ) {}
 
-	virtual ~CAnimatedOffsetTextureProxy() {}
+    virtual ~CAnimatedOffsetTextureProxy() {}
 
-	virtual float GetAnimationStartTime( void* pBaseEntity );
-	virtual void OnBind( void *pBaseEntity );
+    virtual float GetAnimationStartTime( void* pBaseEntity );
+    virtual void OnBind( void *pBaseEntity );
 
 protected:
 
-	float	m_flFrameOffset;
+    float   m_flFrameOffset;
 };
 
 EXPOSE_INTERFACE( CAnimatedOffsetTextureProxy, IMaterialProxy, "AnimatedOffsetTexture" IMATERIAL_PROXY_INTERFACE_VERSION );
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : pArg - 
+// Purpose:
+// Input  : pArg -
 // Output : float
 //-----------------------------------------------------------------------------
 float CAnimatedOffsetTextureProxy::GetAnimationStartTime( void* pArg )
 {
-	return m_flFrameOffset;
+    return m_flFrameOffset;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pBaseEntity - 
+// Purpose:
+// Input  : *pBaseEntity -
 //-----------------------------------------------------------------------------
 void CAnimatedOffsetTextureProxy::OnBind( void *pBaseEntity )
 {
-	C_BaseEntity* pEntity = (C_BaseEntity*)pBaseEntity;
-	
-	if ( pEntity )
-	{
-		m_flFrameOffset = pEntity->GetTextureAnimationStartTime();
-	}
+    C_BaseEntity* pEntity = (C_BaseEntity*)pBaseEntity;
 
-	// Call into the base class
-	CBaseAnimatedTextureProxy::OnBind( pBaseEntity );
+    if ( pEntity )
+    {
+        m_flFrameOffset = pEntity->GetTextureAnimationStartTime();
+    }
+
+    // Call into the base class
+    CBaseAnimatedTextureProxy::OnBind( pBaseEntity );
 }
 

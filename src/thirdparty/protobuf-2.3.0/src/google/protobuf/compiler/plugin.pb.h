@@ -45,29 +45,29 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
  public:
   CodeGeneratorRequest();
   virtual ~CodeGeneratorRequest();
-  
+
   CodeGeneratorRequest(const CodeGeneratorRequest& from);
-  
+
   inline CodeGeneratorRequest& operator=(const CodeGeneratorRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  
+
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
     return _unknown_fields_;
   }
-  
+
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
     return &_unknown_fields_;
   }
-  
+
   static const ::google::protobuf::Descriptor* descriptor();
   static const CodeGeneratorRequest& default_instance();
-  
+
   void Swap(CodeGeneratorRequest* other);
-  
+
   // implements Message ----------------------------------------------
-  
+
   CodeGeneratorRequest* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
@@ -75,7 +75,7 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
   void MergeFrom(const CodeGeneratorRequest& from);
   void Clear();
   bool IsInitialized() const;
-  
+
   int ByteSize() const;
   bool MergePartialFromCodedStream(
       ::google::protobuf::io::CodedInputStream* input);
@@ -88,13 +88,13 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
   void SharedDtor();
   void SetCachedSize(int size) const;
   public:
-  
+
   ::google::protobuf::Metadata GetMetadata() const;
-  
+
   // nested types ----------------------------------------------------
-  
+
   // accessors -------------------------------------------------------
-  
+
   // repeated string file_to_generate = 1;
   inline int file_to_generate_size() const;
   inline void clear_file_to_generate();
@@ -110,7 +110,7 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
   inline void add_file_to_generate(const char* value, size_t size);
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& file_to_generate() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_file_to_generate();
-  
+
   // optional string parameter = 2;
   inline bool has_parameter() const;
   inline void clear_parameter();
@@ -120,7 +120,7 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
   inline void set_parameter(const char* value);
   inline void set_parameter(const char* value, size_t size);
   inline ::std::string* mutable_parameter();
-  
+
   // repeated .google.protobuf.FileDescriptorProto proto_file = 15;
   inline int proto_file_size() const;
   inline void clear_proto_file();
@@ -132,12 +132,12 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
       proto_file() const;
   inline ::google::protobuf::RepeatedPtrField< ::google::protobuf::FileDescriptorProto >*
       mutable_proto_file();
-  
+
   // @@protoc_insertion_point(class_scope:google.protobuf.compiler.CodeGeneratorRequest)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
-  
+
   ::google::protobuf::RepeatedPtrField< ::std::string> file_to_generate_;
   ::std::string* parameter_;
   static const ::std::string _default_parameter_;
@@ -145,9 +145,9 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
   friend void LIBPROTOC_EXPORT protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   friend void protobuf_AssignDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   friend void protobuf_ShutdownFile_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
-  
+
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
-  
+
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
     return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
@@ -158,7 +158,7 @@ class LIBPROTOC_EXPORT CodeGeneratorRequest : public ::google::protobuf::Message
   inline void _clear_bit(int index) {
     _has_bits_[index / 32] &= ~(1u << (index % 32));
   }
-  
+
   void InitAsDefaultInstance();
   static CodeGeneratorRequest* default_instance_;
 };
@@ -168,29 +168,29 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
  public:
   CodeGeneratorResponse_File();
   virtual ~CodeGeneratorResponse_File();
-  
+
   CodeGeneratorResponse_File(const CodeGeneratorResponse_File& from);
-  
+
   inline CodeGeneratorResponse_File& operator=(const CodeGeneratorResponse_File& from) {
     CopyFrom(from);
     return *this;
   }
-  
+
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
     return _unknown_fields_;
   }
-  
+
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
     return &_unknown_fields_;
   }
-  
+
   static const ::google::protobuf::Descriptor* descriptor();
   static const CodeGeneratorResponse_File& default_instance();
-  
+
   void Swap(CodeGeneratorResponse_File* other);
-  
+
   // implements Message ----------------------------------------------
-  
+
   CodeGeneratorResponse_File* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
@@ -198,7 +198,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   void MergeFrom(const CodeGeneratorResponse_File& from);
   void Clear();
   bool IsInitialized() const;
-  
+
   int ByteSize() const;
   bool MergePartialFromCodedStream(
       ::google::protobuf::io::CodedInputStream* input);
@@ -211,13 +211,13 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   void SharedDtor();
   void SetCachedSize(int size) const;
   public:
-  
+
   ::google::protobuf::Metadata GetMetadata() const;
-  
+
   // nested types ----------------------------------------------------
-  
+
   // accessors -------------------------------------------------------
-  
+
   // optional string name = 1;
   inline bool has_name() const;
   inline void clear_name();
@@ -227,7 +227,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   inline void set_name(const char* value);
   inline void set_name(const char* value, size_t size);
   inline ::std::string* mutable_name();
-  
+
   // optional string insertion_point = 2;
   inline bool has_insertion_point() const;
   inline void clear_insertion_point();
@@ -237,7 +237,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   inline void set_insertion_point(const char* value);
   inline void set_insertion_point(const char* value, size_t size);
   inline ::std::string* mutable_insertion_point();
-  
+
   // optional string content = 15;
   inline bool has_content() const;
   inline void clear_content();
@@ -247,12 +247,12 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   inline void set_content(const char* value);
   inline void set_content(const char* value, size_t size);
   inline ::std::string* mutable_content();
-  
+
   // @@protoc_insertion_point(class_scope:google.protobuf.compiler.CodeGeneratorResponse.File)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
-  
+
   ::std::string* name_;
   static const ::std::string _default_name_;
   ::std::string* insertion_point_;
@@ -262,9 +262,9 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   friend void LIBPROTOC_EXPORT protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   friend void protobuf_AssignDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   friend void protobuf_ShutdownFile_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
-  
+
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
-  
+
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
     return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
@@ -275,7 +275,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse_File : public ::google::protobuf::M
   inline void _clear_bit(int index) {
     _has_bits_[index / 32] &= ~(1u << (index % 32));
   }
-  
+
   void InitAsDefaultInstance();
   static CodeGeneratorResponse_File* default_instance_;
 };
@@ -285,29 +285,29 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse : public ::google::protobuf::Messag
  public:
   CodeGeneratorResponse();
   virtual ~CodeGeneratorResponse();
-  
+
   CodeGeneratorResponse(const CodeGeneratorResponse& from);
-  
+
   inline CodeGeneratorResponse& operator=(const CodeGeneratorResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  
+
   inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
     return _unknown_fields_;
   }
-  
+
   inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
     return &_unknown_fields_;
   }
-  
+
   static const ::google::protobuf::Descriptor* descriptor();
   static const CodeGeneratorResponse& default_instance();
-  
+
   void Swap(CodeGeneratorResponse* other);
-  
+
   // implements Message ----------------------------------------------
-  
+
   CodeGeneratorResponse* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
@@ -315,7 +315,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse : public ::google::protobuf::Messag
   void MergeFrom(const CodeGeneratorResponse& from);
   void Clear();
   bool IsInitialized() const;
-  
+
   int ByteSize() const;
   bool MergePartialFromCodedStream(
       ::google::protobuf::io::CodedInputStream* input);
@@ -328,15 +328,15 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse : public ::google::protobuf::Messag
   void SharedDtor();
   void SetCachedSize(int size) const;
   public:
-  
+
   ::google::protobuf::Metadata GetMetadata() const;
-  
+
   // nested types ----------------------------------------------------
-  
+
   typedef CodeGeneratorResponse_File File;
-  
+
   // accessors -------------------------------------------------------
-  
+
   // optional string error = 1;
   inline bool has_error() const;
   inline void clear_error();
@@ -346,7 +346,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse : public ::google::protobuf::Messag
   inline void set_error(const char* value);
   inline void set_error(const char* value, size_t size);
   inline ::std::string* mutable_error();
-  
+
   // repeated .google.protobuf.compiler.CodeGeneratorResponse.File file = 15;
   inline int file_size() const;
   inline void clear_file();
@@ -358,21 +358,21 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse : public ::google::protobuf::Messag
       file() const;
   inline ::google::protobuf::RepeatedPtrField< ::google::protobuf::compiler::CodeGeneratorResponse_File >*
       mutable_file();
-  
+
   // @@protoc_insertion_point(class_scope:google.protobuf.compiler.CodeGeneratorResponse)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
-  
+
   ::std::string* error_;
   static const ::std::string _default_error_;
   ::google::protobuf::RepeatedPtrField< ::google::protobuf::compiler::CodeGeneratorResponse_File > file_;
   friend void LIBPROTOC_EXPORT protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   friend void protobuf_AssignDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   friend void protobuf_ShutdownFile_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
-  
+
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
-  
+
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
     return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
@@ -383,7 +383,7 @@ class LIBPROTOC_EXPORT CodeGeneratorResponse : public ::google::protobuf::Messag
   inline void _clear_bit(int index) {
     _has_bits_[index / 32] &= ~(1u << (index % 32));
   }
-  
+
   void InitAsDefaultInstance();
   static CodeGeneratorResponse* default_instance_;
 };

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -29,7 +29,7 @@ class CUtlBuffer;
 //-----------------------------------------------------------------------------
 struct UniqueId_t
 {
-	unsigned char m_Value[16];
+    unsigned char m_Value[16];
 };
 
 
@@ -48,7 +48,7 @@ bool Unserialize( CUtlBuffer &buf, UniqueId_t &dest );
 
 inline bool operator ==( const UniqueId_t& lhs, const UniqueId_t& rhs )
 {
-	return !Q_memcmp( (void *)&lhs.m_Value[ 0 ], (void *)&rhs.m_Value[ 0 ], sizeof( lhs.m_Value ) );
+    return !Q_memcmp( (void *)&lhs.m_Value[ 0 ], (void *)&rhs.m_Value[ 0 ], sizeof( lhs.m_Value ) );
 }
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -25,43 +25,43 @@ class CExLabel;
 class CReplayDetailsPanel;
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class CReplayBrowserBasePage : public PropertyPage
 {
-	DECLARE_CLASS_SIMPLE( CReplayBrowserBasePage, PropertyPage );
+    DECLARE_CLASS_SIMPLE( CReplayBrowserBasePage, PropertyPage );
 public:
-	CReplayBrowserBasePage( Panel *pParent );
-	virtual ~CReplayBrowserBasePage();
+    CReplayBrowserBasePage( Panel *pParent );
+    virtual ~CReplayBrowserBasePage();
 
-	void DeleteDetailsPanelAndShowReplayList();
-	bool IsDetailsViewOpen();
-	void GoBack();
+    void DeleteDetailsPanelAndShowReplayList();
+    bool IsDetailsViewOpen();
+    void GoBack();
 
-	// Movie-only stuff
-	void FreeDetailsPanelMovieLock();
-	
-	virtual void ApplySchemeSettings( IScheme *pScheme );
-	virtual void OnCommand( const char *pCommand );
-	virtual void PerformLayout();
+    // Movie-only stuff
+    void FreeDetailsPanelMovieLock();
 
-	MESSAGE_FUNC( OnPageShow, "PageShow" );
-	MESSAGE_FUNC( OnSelectionStarted, "SelectionStarted" );
-	MESSAGE_FUNC( OnSelectionEnded, "SelectionEnded" );
-	MESSAGE_FUNC( OnCancelSelection, "CancelSelection" );
-	MESSAGE_FUNC_PARAMS( OnReplayItemDeleted, "ReplayItemDeleted", pParams );
-	MESSAGE_FUNC_PARAMS( OnTextChanged, "TextChanged", data );
+    virtual void ApplySchemeSettings( IScheme *pScheme );
+    virtual void OnCommand( const char *pCommand );
+    virtual void PerformLayout();
 
-	void AddReplay( ReplayHandle_t hReplay );
-	void DeleteReplay( ReplayHandle_t hReplay );
+    MESSAGE_FUNC( OnPageShow, "PageShow" );
+    MESSAGE_FUNC( OnSelectionStarted, "SelectionStarted" );
+    MESSAGE_FUNC( OnSelectionEnded, "SelectionEnded" );
+    MESSAGE_FUNC( OnCancelSelection, "CancelSelection" );
+    MESSAGE_FUNC_PARAMS( OnReplayItemDeleted, "ReplayItemDeleted", pParams );
+    MESSAGE_FUNC_PARAMS( OnTextChanged, "TextChanged", data );
 
-	void OnTick();
+    void AddReplay( ReplayHandle_t hReplay );
+    void DeleteReplay( ReplayHandle_t hReplay );
 
-	virtual void CleanupUIForReplayItem( ReplayItemHandle_t hReplayItem );
+    void OnTick();
 
-	vgui::TextEntry				*m_pSearchTextEntry;
-	CReplayListPanel			*m_pReplayList;
-	DHANDLE< CReplayDetailsPanel >		m_hReplayDetailsPanel;
+    virtual void CleanupUIForReplayItem( ReplayItemHandle_t hReplayItem );
+
+    vgui::TextEntry             *m_pSearchTextEntry;
+    CReplayListPanel            *m_pReplayList;
+    DHANDLE< CReplayDetailsPanel >      m_hReplayDetailsPanel;
 };
 
 #endif // REPLAYBROWSER_BASEPAGE_H

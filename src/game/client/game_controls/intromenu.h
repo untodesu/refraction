@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -19,39 +19,39 @@
 
 namespace vgui
 {
-	class TextEntry;
+    class TextEntry;
 }
 
 class CIntroMenu : public vgui::Frame, public IViewPortPanel
 {
 private:
-	DECLARE_CLASS_SIMPLE( CIntroMenu, vgui::Frame );
+    DECLARE_CLASS_SIMPLE( CIntroMenu, vgui::Frame );
 
 public:
-	CIntroMenu( IViewPort *pViewPort );
-	virtual ~CIntroMenu();
+    CIntroMenu( IViewPort *pViewPort );
+    virtual ~CIntroMenu();
 
-	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
+    virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
 
-	virtual const char *GetName( void ){ return PANEL_INTRO; }
-	virtual void SetData( KeyValues *data ){ return; }
-	virtual void Reset();
-	virtual void Update();
-	virtual bool NeedsUpdate( void ) { return false; }
-	virtual bool HasInputElements( void ) { return true; }
-	virtual void ShowPanel( bool bShow );
+    virtual const char *GetName( void ){ return PANEL_INTRO; }
+    virtual void SetData( KeyValues *data ){ return; }
+    virtual void Reset();
+    virtual void Update();
+    virtual bool NeedsUpdate( void ) { return false; }
+    virtual bool HasInputElements( void ) { return true; }
+    virtual void ShowPanel( bool bShow );
 
-	// both vgui::Frame and IViewPortPanel define these, so explicitly define them here as passthroughs to vgui
-	vgui::VPANEL GetVPanel( void ) { return BaseClass::GetVPanel(); }
-  	virtual bool IsVisible() { return BaseClass::IsVisible(); }
-  	virtual void SetParent( vgui::VPANEL parent ) { BaseClass::SetParent( parent ); }
+    // both vgui::Frame and IViewPortPanel define these, so explicitly define them here as passthroughs to vgui
+    vgui::VPANEL GetVPanel( void ) { return BaseClass::GetVPanel(); }
+    virtual bool IsVisible() { return BaseClass::IsVisible(); }
+    virtual void SetParent( vgui::VPANEL parent ) { BaseClass::SetParent( parent ); }
 
-protected:	
-	// vgui overrides
-	virtual void OnCommand( const char *command );
+protected:
+    // vgui overrides
+    virtual void OnCommand( const char *command );
 
-	IViewPort		*m_pViewPort;
-	vgui::Label		*m_pTitleLabel;
+    IViewPort       *m_pViewPort;
+    vgui::Label     *m_pTitleLabel;
 };
 
 #endif // INTROMENU_H

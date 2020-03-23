@@ -1,7 +1,7 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Combat behaviors for AIs in a relatively self-preservationist mode.
-//			Lots of cover taking and attempted shots out of cover.
+//          Lots of cover taking and attempted shots out of cover.
 //
 //=============================================================================//
 
@@ -23,208 +23,208 @@
 
 enum AI_HintChangeReaction_t
 {
-	AIHCR_DEFAULT_AI,
-	AIHCR_MOVE_ON_COVER,
-	AIHCR_MOVE_IMMEDIATE,
+    AIHCR_DEFAULT_AI,
+    AIHCR_MOVE_ON_COVER,
+    AIHCR_MOVE_IMMEDIATE,
 };
 
 struct AI_StandoffParams_t
 {
-	AI_HintChangeReaction_t hintChangeReaction;
-	bool					fCoverOnReload;
-	bool					fPlayerIsBattleline;
-	float 					minTimeShots;
-	float 					maxTimeShots;
-	int 					minShots;
-	int 					maxShots;
-	int 					oddsCover;
-	bool					fStayAtCover;
-	float					flAbandonTimeLimit;
-	
-	DECLARE_SIMPLE_DATADESC();
+    AI_HintChangeReaction_t hintChangeReaction;
+    bool                    fCoverOnReload;
+    bool                    fPlayerIsBattleline;
+    float                   minTimeShots;
+    float                   maxTimeShots;
+    int                     minShots;
+    int                     maxShots;
+    int                     oddsCover;
+    bool                    fStayAtCover;
+    float                   flAbandonTimeLimit;
+
+    DECLARE_SIMPLE_DATADESC();
 };
 
 //-------------------------------------
 
 enum AI_Posture_t
 {
-	AIP_INDIFFERENT,
-	AIP_STANDING,
-	AIP_CROUCHING,
-	AIP_PEEKING,
+    AIP_INDIFFERENT,
+    AIP_STANDING,
+    AIP_CROUCHING,
+    AIP_PEEKING,
 };
 
 enum
 {
-	STANDOFF_SENTENCE_BEGIN_STANDOFF = SENTENCE_BASE_BEHAVIOR_INDEX,
-	STANDOFF_SENTENCE_END_STANDOFF,
-	STANDOFF_SENTENCE_OUT_OF_AMMO,
-	STANDOFF_SENTENCE_FORCED_TAKE_COVER,
-	STANDOFF_SENTENCE_STAND_CHECK_TARGET,
+    STANDOFF_SENTENCE_BEGIN_STANDOFF = SENTENCE_BASE_BEHAVIOR_INDEX,
+    STANDOFF_SENTENCE_END_STANDOFF,
+    STANDOFF_SENTENCE_OUT_OF_AMMO,
+    STANDOFF_SENTENCE_FORCED_TAKE_COVER,
+    STANDOFF_SENTENCE_STAND_CHECK_TARGET,
 };
 
 class CAI_MappedActivityBehavior_Temporary : public CAI_SimpleBehavior
 {
-	DECLARE_CLASS( CAI_MappedActivityBehavior_Temporary, CAI_SimpleBehavior );
+    DECLARE_CLASS( CAI_MappedActivityBehavior_Temporary, CAI_SimpleBehavior );
 public:
-	CAI_MappedActivityBehavior_Temporary( CAI_BaseNPC *pOuter = NULL ) 
-	 :	CAI_SimpleBehavior(pOuter)
-	{
-		SetDefLessFunc( m_ActivityMap );
-	}
+    CAI_MappedActivityBehavior_Temporary( CAI_BaseNPC *pOuter = NULL )
+     :  CAI_SimpleBehavior(pOuter)
+    {
+        SetDefLessFunc( m_ActivityMap );
+    }
 
 protected:
-	Activity GetMappedActivity( AI_Posture_t posture, Activity activity );
-	void OnChangeActiveWeapon( CBaseCombatWeapon *pOldWeapon, CBaseCombatWeapon *pNewWeapon );
+    Activity GetMappedActivity( AI_Posture_t posture, Activity activity );
+    void OnChangeActiveWeapon( CBaseCombatWeapon *pOldWeapon, CBaseCombatWeapon *pNewWeapon );
 
-	virtual void UpdateTranslateActivityMap();
+    virtual void UpdateTranslateActivityMap();
 
 private:
-	CUtlMap<unsigned, Activity> m_ActivityMap;
+    CUtlMap<unsigned, Activity> m_ActivityMap;
 };
 
 class CAI_StandoffBehavior : public CAI_MappedActivityBehavior_Temporary
 {
-	DECLARE_CLASS( CAI_StandoffBehavior, CAI_MappedActivityBehavior_Temporary );
+    DECLARE_CLASS( CAI_StandoffBehavior, CAI_MappedActivityBehavior_Temporary );
 public:
-	CAI_StandoffBehavior( CAI_BaseNPC *pOuter = NULL );
+    CAI_StandoffBehavior( CAI_BaseNPC *pOuter = NULL );
 
-	virtual const char *GetName() {	return "Standoff"; }
+    virtual const char *GetName() { return "Standoff"; }
 
-	void		SetActive( bool fActive );
-	void		SetParameters( const AI_StandoffParams_t &params, CAI_GoalEntity *pGoalEntity = NULL );
+    void        SetActive( bool fActive );
+    void        SetParameters( const AI_StandoffParams_t &params, CAI_GoalEntity *pGoalEntity = NULL );
 
-	Vector		GetStandoffGoalPosition();
-	void		SetStandoffGoalPosition( const Vector &vecPos );
-	void		ClearStandoffGoalPosition();
+    Vector      GetStandoffGoalPosition();
+    void        SetStandoffGoalPosition( const Vector &vecPos );
+    void        ClearStandoffGoalPosition();
 
-	AI_Posture_t GetPosture();
+    AI_Posture_t GetPosture();
 
-	bool		IsActive( void ) { return m_fActive; }
-	void 		OnChangeTacticalConstraints();
+    bool        IsActive( void ) { return m_fActive; }
+    void        OnChangeTacticalConstraints();
 
-	bool 		CanSelectSchedule();
-	bool		IsBehindBattleLines( const Vector &point );
+    bool        CanSelectSchedule();
+    bool        IsBehindBattleLines( const Vector &point );
 
 protected:
-	void 		Spawn();
-	void 		BeginScheduleSelection();
-	void		EndScheduleSelection();
-	void		PrescheduleThink();
-	void		GatherConditions();
-	int 		SelectSchedule();
-	int			TranslateSchedule( int scheduleType );
-	void 		StartTask( const Task_t *pTask );
-	void		BuildScheduleTestBits();
-	virtual void OnUpdateShotRegulator();
+    void        Spawn();
+    void        BeginScheduleSelection();
+    void        EndScheduleSelection();
+    void        PrescheduleThink();
+    void        GatherConditions();
+    int         SelectSchedule();
+    int         TranslateSchedule( int scheduleType );
+    void        StartTask( const Task_t *pTask );
+    void        BuildScheduleTestBits();
+    virtual void OnUpdateShotRegulator();
 
-	Activity 	NPC_TranslateActivity( Activity eNewActivity );
-	
-	bool		IsValidCover( const Vector &vecCoverLocation, CAI_Hint const *pHint );
-	bool		IsValidShootPosition( const Vector &vecCoverLocation, CAI_Node *pNode, CAI_Hint const *pHint );
+    Activity    NPC_TranslateActivity( Activity eNewActivity );
 
-	void		SetPosture( AI_Posture_t posture );
-	
-	void		OnChangeHintGroup( string_t oldGroup, string_t newGroup );
+    bool        IsValidCover( const Vector &vecCoverLocation, CAI_Hint const *pHint );
+    bool        IsValidShootPosition( const Vector &vecCoverLocation, CAI_Node *pNode, CAI_Hint const *pHint );
 
-	virtual int SelectScheduleUpdateWeapon();
-	virtual int SelectScheduleCheckCover();
-	virtual int SelectScheduleEstablishAim();
-	virtual int SelectScheduleAttack();
-	
-	bool 		PlayerIsLeading();
-	CBaseEntity *GetPlayerLeader();
-	bool		GetDirectionOfStandoff( Vector *pDir );
-			
-	void UpdateBattleLines();
+    void        SetPosture( AI_Posture_t posture );
 
-	Hint_e GetHintType();
-	void SetReuseCurrentCover();
-	void UnlockHintNode();
-	Activity GetCoverActivity();
+    void        OnChangeHintGroup( string_t oldGroup, string_t newGroup );
 
-	void OnRestore();
+    virtual int SelectScheduleUpdateWeapon();
+    virtual int SelectScheduleCheckCover();
+    virtual int SelectScheduleEstablishAim();
+    virtual int SelectScheduleAttack();
 
-	void UpdateTranslateActivityMap();
+    bool        PlayerIsLeading();
+    CBaseEntity *GetPlayerLeader();
+    bool        GetDirectionOfStandoff( Vector *pDir );
 
-	// Standoff overrides base AI crouch handling
-	bool		IsCrouching( void ) { return false; }
-	
+    void UpdateBattleLines();
+
+    Hint_e GetHintType();
+    void SetReuseCurrentCover();
+    void UnlockHintNode();
+    Activity GetCoverActivity();
+
+    void OnRestore();
+
+    void UpdateTranslateActivityMap();
+
+    // Standoff overrides base AI crouch handling
+    bool        IsCrouching( void ) { return false; }
+
 private:
-	
-	//----------------------------
 
-	enum
-	{
-		NEXT_SCHEDULE = BaseClass::NEXT_SCHEDULE,
+    //----------------------------
 
-		NEXT_TASK = BaseClass::NEXT_TASK,
+    enum
+    {
+        NEXT_SCHEDULE = BaseClass::NEXT_SCHEDULE,
 
-		COND_ABANDON_TIME_EXPIRED = BaseClass::NEXT_CONDITION,
-		NEXT_CONDITION
-	};
+        NEXT_TASK = BaseClass::NEXT_TASK,
 
-	DEFINE_CUSTOM_SCHEDULE_PROVIDER;
-	
-	//---------------------------------
-	// @TODO (toml 07-30-03): replace all these booleans with a singe 32 bit unsigned & bit flags
+        COND_ABANDON_TIME_EXPIRED = BaseClass::NEXT_CONDITION,
+        NEXT_CONDITION
+    };
 
-	bool			m_fActive;
-	bool			m_fTestNoDamage;
+    DEFINE_CUSTOM_SCHEDULE_PROVIDER;
 
-	Vector			m_vecStandoffGoalPosition;
-	
-	AI_Posture_t	m_posture;
-	
-	AI_StandoffParams_t m_params;
-	EHANDLE			m_hStandoffGoal;
-	
-	bool 			m_fTakeCover;
-	float			m_SavedDistTooFar;
-	bool			m_fForceNewEnemy;
-	CAI_MoveMonitor m_PlayerMoveMonitor;
-	
-	CSimTimer		m_TimeForceCoverHint;
-	CSimTimer		m_TimePreventForceNewEnemy;
-	CRandSimTimer	m_RandomCoverChangeTimer;
+    //---------------------------------
+    // @TODO (toml 07-30-03): replace all these booleans with a singe 32 bit unsigned & bit flags
 
-	// FIXME: TEMPORARY! REMOVE
-	int m_nSavedMinShots, m_nSavedMaxShots;
-	float m_flSavedMinRest, m_flSavedMaxRest;
+    bool            m_fActive;
+    bool            m_fTestNoDamage;
 
-	//---------------------------------
-	
-	struct BattleLine_t
-	{
-		Vector point;
-		Vector normal;
-	};
+    Vector          m_vecStandoffGoalPosition;
 
-	CThinkOnceSemaphore		 m_UpdateBattleLinesSemaphore;
-	CUtlVector<BattleLine_t> m_BattleLines;
-	bool					 m_fIgnoreFronts;
+    AI_Posture_t    m_posture;
 
-	//---------------------------------
-	
-	bool						m_bHasLowCoverActivity;
+    AI_StandoffParams_t m_params;
+    EHANDLE         m_hStandoffGoal;
 
-	//---------------------------------
-	
-	DECLARE_DATADESC();
+    bool            m_fTakeCover;
+    float           m_SavedDistTooFar;
+    bool            m_fForceNewEnemy;
+    CAI_MoveMonitor m_PlayerMoveMonitor;
+
+    CSimTimer       m_TimeForceCoverHint;
+    CSimTimer       m_TimePreventForceNewEnemy;
+    CRandSimTimer   m_RandomCoverChangeTimer;
+
+    // FIXME: TEMPORARY! REMOVE
+    int m_nSavedMinShots, m_nSavedMaxShots;
+    float m_flSavedMinRest, m_flSavedMaxRest;
+
+    //---------------------------------
+
+    struct BattleLine_t
+    {
+        Vector point;
+        Vector normal;
+    };
+
+    CThinkOnceSemaphore      m_UpdateBattleLinesSemaphore;
+    CUtlVector<BattleLine_t> m_BattleLines;
+    bool                     m_fIgnoreFronts;
+
+    //---------------------------------
+
+    bool                        m_bHasLowCoverActivity;
+
+    //---------------------------------
+
+    DECLARE_DATADESC();
 };
 
 //-------------------------------------
 
 inline void CAI_StandoffBehavior::SetPosture( AI_Posture_t posture )
 {
-	m_posture = posture;
+    m_posture = posture;
 }
 
 //-------------------------------------
 
 inline AI_Posture_t CAI_StandoffBehavior::GetPosture()
 {
-	return m_posture;
+    return m_posture;
 }
 
 //-----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,12 +15,12 @@ class CPhysCollide;
 
 struct vcollide_t
 {
-	unsigned short solidCount : 15;
-	unsigned short isPacked : 1;
-	unsigned short descSize;
-	// VPhysicsSolids
-	CPhysCollide	**solids;
-	char			*pKeyValues;
+    unsigned short solidCount : 15;
+    unsigned short isPacked : 1;
+    unsigned short descSize;
+    // VPhysicsSolids
+    CPhysCollide    **solids;
+    char            *pKeyValues;
 };
 
 #endif // VCOLLIDE_H

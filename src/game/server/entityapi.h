@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -12,7 +12,7 @@
 class SendTable;
 
 extern void LoadMapEntities( const char *pMapEntities );
-extern void	DispatchObjectCollisionBox( edict_t *pent );
+extern void DispatchObjectCollisionBox( edict_t *pent );
 extern float DispatchObjectPhysicsVelocity( edict_t *pent, float moveTime );
 extern ServerClass* DispatchGetObjectServerClass(edict_t *pent);
 extern ServerClass* GetAllServerClasses();
@@ -30,4 +30,4 @@ class ISaveRestoreBlockHandler;
 ISaveRestoreBlockHandler *GetEntitySaveRestoreBlockHandler();
 
 
-#endif			// ENTITYAPI_H
+#endif          // ENTITYAPI_H

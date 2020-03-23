@@ -42,16 +42,16 @@ static int g_CurBotNumber = 1;
 class CSDKBot : public CSDKPlayer
 {
 public:
-	bool			m_bBackwards;
+    bool            m_bBackwards;
 
-	float			m_flNextTurnTime;
-	bool			m_bLastTurnToRight;
+    float           m_flNextTurnTime;
+    bool            m_bLastTurnToRight;
 
-	float			m_flNextStrafeTime;
-	float			m_flSideMove;
+    float           m_flNextStrafeTime;
+    float           m_flSideMove;
 
-	QAngle			m_ForwardAngle;
-	QAngle			m_LastAngles;
+    QAngle          m_ForwardAngle;
+    QAngle          m_LastAngles;
 };
 
 LINK_ENTITY_TO_CLASS( sdk_bot, CSDKBot );
@@ -59,19 +59,19 @@ LINK_ENTITY_TO_CLASS( sdk_bot, CSDKBot );
 class CBotManager
 {
 public:
-	static CBasePlayer* ClientPutInServerOverride_Bot( edict_t *pEdict, const char *playername )
-	{
-		// This tells it which edict to use rather than creating a new one.
-		CBasePlayer::s_PlayerEdict = pEdict;
+    static CBasePlayer* ClientPutInServerOverride_Bot( edict_t *pEdict, const char *playername )
+    {
+        // This tells it which edict to use rather than creating a new one.
+        CBasePlayer::s_PlayerEdict = pEdict;
 
-		CSDKBot *pPlayer = static_cast<CSDKBot *>( CreateEntityByName( "sdk_bot" ) );
-		if ( pPlayer )
-		{
-			pPlayer->SetPlayerName( playername );
-		}
+        CSDKBot *pPlayer = static_cast<CSDKBot *>( CreateEntityByName( "sdk_bot" ) );
+        if ( pPlayer )
+        {
+            pPlayer->SetPlayerName( playername );
+        }
 
-		return pPlayer;
-	}
+        return pPlayer;
+    }
 };
 
 
@@ -81,55 +81,55 @@ public:
 //-----------------------------------------------------------------------------
 CBasePlayer *BotPutInServer( bool bFrozen )
 {
-	char botname[ 64 ];
-	Q_snprintf( botname, sizeof( botname ), "Bot%02i", g_CurBotNumber );
+    char botname[ 64 ];
+    Q_snprintf( botname, sizeof( botname ), "Bot%02i", g_CurBotNumber );
 
-	
-	// This trick lets us create a CSDKBot for this client instead of the CSDKPlayer
-	// that we would normally get when ClientPutInServer is called.
-	ClientPutInServerOverride( &CBotManager::ClientPutInServerOverride_Bot );
-	edict_t *pEdict = engine->CreateFakeClient( botname );
-	ClientPutInServerOverride( NULL );
 
-	if (!pEdict)
-	{
-		Msg( "Failed to create Bot.\n");
-		return NULL;
-	}
+    // This trick lets us create a CSDKBot for this client instead of the CSDKPlayer
+    // that we would normally get when ClientPutInServer is called.
+    ClientPutInServerOverride( &CBotManager::ClientPutInServerOverride_Bot );
+    edict_t *pEdict = engine->CreateFakeClient( botname );
+    ClientPutInServerOverride( NULL );
 
-	// Allocate a player entity for the bot, and call spawn
-	CSDKBot *pPlayer = ((CSDKBot*)CBaseEntity::Instance( pEdict ));
+    if (!pEdict)
+    {
+        Msg( "Failed to create Bot.\n");
+        return NULL;
+    }
 
-	pPlayer->ClearFlags();
-	pPlayer->AddFlag( FL_CLIENT | FL_FAKECLIENT );
+    // Allocate a player entity for the bot, and call spawn
+    CSDKBot *pPlayer = ((CSDKBot*)CBaseEntity::Instance( pEdict ));
 
-	if ( bFrozen )
-		pPlayer->AddEFlags( EFL_BOT_FROZEN );
+    pPlayer->ClearFlags();
+    pPlayer->AddFlag( FL_CLIENT | FL_FAKECLIENT );
 
-	pPlayer->ChangeTeam( TEAM_UNASSIGNED );
-	pPlayer->RemoveAllItems( true );
-	pPlayer->Spawn();
+    if ( bFrozen )
+        pPlayer->AddEFlags( EFL_BOT_FROZEN );
 
-	g_CurBotNumber++;
+    pPlayer->ChangeTeam( TEAM_UNASSIGNED );
+    pPlayer->RemoveAllItems( true );
+    pPlayer->Spawn();
 
-	return pPlayer;
+    g_CurBotNumber++;
+
+    return pPlayer;
 }
 
 // Handler for the "bot" command.
 CON_COMMAND_F( "bot_add", "Add a bot.", FCVAR_CHEAT )
 {
-	// Look at -count.
-	int count = args.FindArgInt( "-count", 1 );
-	count = clamp( count, 1, 16 );
+    // Look at -count.
+    int count = args.FindArgInt( "-count", 1 );
+    count = clamp( count, 1, 16 );
 
-	// Look at -frozen.
-	bool bFrozen = !!args.FindArg( "-frozen" );
-		
-	// Ok, spawn all the bots.
-	while ( --count >= 0 )
-	{
-		BotPutInServer( bFrozen );
-	}
+    // Look at -frozen.
+    bool bFrozen = !!args.FindArg( "-frozen" );
+
+    // Ok, spawn all the bots.
+    while ( --count >= 0 )
+    {
+        BotPutInServer( bFrozen );
+    }
 }
 
 
@@ -138,285 +138,285 @@ CON_COMMAND_F( "bot_add", "Add a bot.", FCVAR_CHEAT )
 //-----------------------------------------------------------------------------
 void Bot_RunAll( void )
 {
-	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
-	{
-		CSDKPlayer *pPlayer = ToSDKPlayer( UTIL_PlayerByIndex( i ) );
+    for ( int i = 1; i <= gpGlobals->maxClients; i++ )
+    {
+        CSDKPlayer *pPlayer = ToSDKPlayer( UTIL_PlayerByIndex( i ) );
 
-		if ( pPlayer && (pPlayer->GetFlags() & FL_FAKECLIENT) )
-		{
-			CSDKBot *pBot = dynamic_cast< CSDKBot* >( pPlayer );
-			if ( pBot )
-				Bot_Think( pBot );
-		}
-	}
+        if ( pPlayer && (pPlayer->GetFlags() & FL_FAKECLIENT) )
+        {
+            CSDKBot *pBot = dynamic_cast< CSDKBot* >( pPlayer );
+            if ( pBot )
+                Bot_Think( pBot );
+        }
+    }
 }
 
 bool Bot_RunMimicCommand( CUserCmd& cmd )
 {
-	if ( bot_mimic.GetInt() <= 0 )
-		return false;
+    if ( bot_mimic.GetInt() <= 0 )
+        return false;
 
-	if ( bot_mimic.GetInt() > gpGlobals->maxClients )
-		return false;
+    if ( bot_mimic.GetInt() > gpGlobals->maxClients )
+        return false;
 
-	
-	CBasePlayer *pPlayer = UTIL_PlayerByIndex( bot_mimic.GetInt()  );
-	if ( !pPlayer )
-		return false;
 
-	if ( !pPlayer->GetLastUserCommand() )
-		return false;
+    CBasePlayer *pPlayer = UTIL_PlayerByIndex( bot_mimic.GetInt()  );
+    if ( !pPlayer )
+        return false;
 
-	cmd = *pPlayer->GetLastUserCommand();
-	cmd.viewangles[YAW] += bot_mimic_yaw_offset.GetFloat();
+    if ( !pPlayer->GetLastUserCommand() )
+        return false;
 
-	if( bot_crouch.GetInt() )
-		cmd.buttons |= IN_DUCK;
+    cmd = *pPlayer->GetLastUserCommand();
+    cmd.viewangles[YAW] += bot_mimic_yaw_offset.GetFloat();
 
-	return true;
+    if( bot_crouch.GetInt() )
+        cmd.buttons |= IN_DUCK;
+
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Simulates a single frame of movement for a player
-// Input  : *fakeclient - 
-//			*viewangles - 
-//			forwardmove - 
-//			m_flSideMove - 
-//			upmove - 
-//			buttons - 
-//			impulse - 
-//			msec - 
-// Output : 	virtual void
+// Input  : *fakeclient -
+//          *viewangles -
+//          forwardmove -
+//          m_flSideMove -
+//          upmove -
+//          buttons -
+//          impulse -
+//          msec -
+// Output :     virtual void
 //-----------------------------------------------------------------------------
 static void RunPlayerMove( CSDKPlayer *fakeclient, CUserCmd &cmd, float frametime )
 {
-	if ( !fakeclient )
-		return;
+    if ( !fakeclient )
+        return;
 
-	// Store off the globals.. they're gonna get whacked
-	float flOldFrametime = gpGlobals->frametime;
-	float flOldCurtime = gpGlobals->curtime;
+    // Store off the globals.. they're gonna get whacked
+    float flOldFrametime = gpGlobals->frametime;
+    float flOldCurtime = gpGlobals->curtime;
 
-	float flTimeBase = gpGlobals->curtime + gpGlobals->frametime - frametime;
-	fakeclient->SetTimeBase( flTimeBase );
+    float flTimeBase = gpGlobals->curtime + gpGlobals->frametime - frametime;
+    fakeclient->SetTimeBase( flTimeBase );
 
-	MoveHelperServer()->SetHost( fakeclient );
-	fakeclient->PlayerRunCommand( &cmd, MoveHelperServer() );
+    MoveHelperServer()->SetHost( fakeclient );
+    fakeclient->PlayerRunCommand( &cmd, MoveHelperServer() );
 
-	// save off the last good usercmd
-	fakeclient->SetLastUserCommand( cmd );
+    // save off the last good usercmd
+    fakeclient->SetLastUserCommand( cmd );
 
-	// Clear out any fixangle that has been set
-	fakeclient->pl.fixangle = FIXANGLE_NONE;
+    // Clear out any fixangle that has been set
+    fakeclient->pl.fixangle = FIXANGLE_NONE;
 
-	// Restore the globals..
-	gpGlobals->frametime = flOldFrametime;
-	gpGlobals->curtime = flOldCurtime;
+    // Restore the globals..
+    gpGlobals->frametime = flOldFrametime;
+    gpGlobals->curtime = flOldCurtime;
 }
 
 
 
 void Bot_UpdateStrafing( CSDKBot *pBot, CUserCmd &cmd )
 {
-	if ( gpGlobals->curtime >= pBot->m_flNextStrafeTime )
-	{
-		pBot->m_flNextStrafeTime = gpGlobals->curtime + 1.0f;
+    if ( gpGlobals->curtime >= pBot->m_flNextStrafeTime )
+    {
+        pBot->m_flNextStrafeTime = gpGlobals->curtime + 1.0f;
 
-		if ( random->RandomInt( 0, 5 ) == 0 )
-		{
-			pBot->m_flSideMove = -600.0f + 1200.0f * random->RandomFloat( 0, 2 );
-		}
-		else
-		{
-			pBot->m_flSideMove = 0;
-		}
-		cmd.sidemove = pBot->m_flSideMove;
+        if ( random->RandomInt( 0, 5 ) == 0 )
+        {
+            pBot->m_flSideMove = -600.0f + 1200.0f * random->RandomFloat( 0, 2 );
+        }
+        else
+        {
+            pBot->m_flSideMove = 0;
+        }
+        cmd.sidemove = pBot->m_flSideMove;
 
-		if ( random->RandomInt( 0, 20 ) == 0 )
-		{
-			pBot->m_bBackwards = true;
-		}
-		else
-		{
-			pBot->m_bBackwards = false;
-		}
-	}
+        if ( random->RandomInt( 0, 20 ) == 0 )
+        {
+            pBot->m_bBackwards = true;
+        }
+        else
+        {
+            pBot->m_bBackwards = false;
+        }
+    }
 }
 
 
 void Bot_UpdateDirection( CSDKBot *pBot )
 {
-	float angledelta = 15.0;
-	QAngle angle;
+    float angledelta = 15.0;
+    QAngle angle;
 
-	int maxtries = (int)360.0/angledelta;
+    int maxtries = (int)360.0/angledelta;
 
-	if ( pBot->m_bLastTurnToRight )
-	{
-		angledelta = -angledelta;
-	}
+    if ( pBot->m_bLastTurnToRight )
+    {
+        angledelta = -angledelta;
+    }
 
-	angle = pBot->GetLocalAngles();
+    angle = pBot->GetLocalAngles();
 
-	trace_t trace;
-	Vector vecSrc, vecEnd, forward;
-	while ( --maxtries >= 0 )
-	{
-		AngleVectors( angle, &forward );
+    trace_t trace;
+    Vector vecSrc, vecEnd, forward;
+    while ( --maxtries >= 0 )
+    {
+        AngleVectors( angle, &forward );
 
-		vecSrc = pBot->GetLocalOrigin() + Vector( 0, 0, 36 );
+        vecSrc = pBot->GetLocalOrigin() + Vector( 0, 0, 36 );
 
-		vecEnd = vecSrc + forward * 10;
+        vecEnd = vecSrc + forward * 10;
 
-		UTIL_TraceHull( vecSrc, vecEnd, VEC_HULL_MIN_SCALED( pBot ), VEC_HULL_MAX_SCALED( pBot ), 
-			MASK_PLAYERSOLID, pBot, COLLISION_GROUP_NONE, &trace );
+        UTIL_TraceHull( vecSrc, vecEnd, VEC_HULL_MIN_SCALED( pBot ), VEC_HULL_MAX_SCALED( pBot ),
+            MASK_PLAYERSOLID, pBot, COLLISION_GROUP_NONE, &trace );
 
-		if ( trace.fraction == 1.0 )
-		{
-			if ( gpGlobals->curtime < pBot->m_flNextTurnTime )
-			{
-				break;
-			}
-		}
+        if ( trace.fraction == 1.0 )
+        {
+            if ( gpGlobals->curtime < pBot->m_flNextTurnTime )
+            {
+                break;
+            }
+        }
 
-		angle.y += angledelta;
+        angle.y += angledelta;
 
-		if ( angle.y > 180 )
-			angle.y -= 360;
-		else if ( angle.y < -180 )
-			angle.y += 360;
+        if ( angle.y > 180 )
+            angle.y -= 360;
+        else if ( angle.y < -180 )
+            angle.y += 360;
 
-		pBot->m_flNextTurnTime = gpGlobals->curtime + 2.0;
-		pBot->m_bLastTurnToRight = random->RandomInt( 0, 1 ) == 0 ? true : false;
+        pBot->m_flNextTurnTime = gpGlobals->curtime + 2.0;
+        pBot->m_bLastTurnToRight = random->RandomInt( 0, 1 ) == 0 ? true : false;
 
-		pBot->m_ForwardAngle = angle;
-		pBot->m_LastAngles = angle;
-	}
-	
-	pBot->SetLocalAngles( angle );
+        pBot->m_ForwardAngle = angle;
+        pBot->m_LastAngles = angle;
+    }
+
+    pBot->SetLocalAngles( angle );
 }
 
 
 void Bot_FlipOut( CSDKBot *pBot, CUserCmd &cmd )
 {
-	if ( bot_flipout.GetInt() > 0 && pBot->IsAlive() )
-	{
-		if ( bot_forceattackon.GetBool() || (RandomFloat(0.0,1.0) > 0.5) )
-		{
-			cmd.buttons |= bot_forceattack2.GetBool() ? IN_ATTACK2 : IN_ATTACK;
-		}
+    if ( bot_flipout.GetInt() > 0 && pBot->IsAlive() )
+    {
+        if ( bot_forceattackon.GetBool() || (RandomFloat(0.0,1.0) > 0.5) )
+        {
+            cmd.buttons |= bot_forceattack2.GetBool() ? IN_ATTACK2 : IN_ATTACK;
+        }
 
-		if ( bot_flipout.GetInt() >= 2 )
-		{
-			QAngle angOffset = RandomAngle( -1, 1 );
+        if ( bot_flipout.GetInt() >= 2 )
+        {
+            QAngle angOffset = RandomAngle( -1, 1 );
 
-			pBot->m_LastAngles += angOffset;
+            pBot->m_LastAngles += angOffset;
 
-			for ( int i = 0 ; i < 2; i++ )
-			{
-				if ( fabs( pBot->m_LastAngles[ i ] - pBot->m_ForwardAngle[ i ] ) > 15.0f )
-				{
-					if ( pBot->m_LastAngles[ i ] > pBot->m_ForwardAngle[ i ] )
-					{
-						pBot->m_LastAngles[ i ] = pBot->m_ForwardAngle[ i ] + 15;
-					}
-					else
-					{
-						pBot->m_LastAngles[ i ] = pBot->m_ForwardAngle[ i ] - 15;
-					}
-				}
-			}
+            for ( int i = 0 ; i < 2; i++ )
+            {
+                if ( fabs( pBot->m_LastAngles[ i ] - pBot->m_ForwardAngle[ i ] ) > 15.0f )
+                {
+                    if ( pBot->m_LastAngles[ i ] > pBot->m_ForwardAngle[ i ] )
+                    {
+                        pBot->m_LastAngles[ i ] = pBot->m_ForwardAngle[ i ] + 15;
+                    }
+                    else
+                    {
+                        pBot->m_LastAngles[ i ] = pBot->m_ForwardAngle[ i ] - 15;
+                    }
+                }
+            }
 
-			pBot->m_LastAngles[ 2 ] = 0;
+            pBot->m_LastAngles[ 2 ] = 0;
 
-			pBot->SetLocalAngles( pBot->m_LastAngles );
-		}
-	}
+            pBot->SetLocalAngles( pBot->m_LastAngles );
+        }
+    }
 }
 
 
 void Bot_HandleSendCmd( CSDKBot *pBot )
 {
-	if ( strlen( bot_sendcmd.GetString() ) > 0 )
-	{
-		//send the cmd from this bot
-		pBot->ClientCommand( bot_sendcmd.GetString() );
+    if ( strlen( bot_sendcmd.GetString() ) > 0 )
+    {
+        //send the cmd from this bot
+        pBot->ClientCommand( bot_sendcmd.GetString() );
 
-		bot_sendcmd.SetValue("");
-	}
+        bot_sendcmd.SetValue("");
+    }
 }
 
 
 // If bots are being forced to fire a weapon, see if I have it
 void Bot_ForceFireWeapon( CSDKBot *pBot, CUserCmd &cmd )
 {
-	if ( bot_forcefireweapon.GetString() )
-	{
-		CBaseCombatWeapon *pWeapon = pBot->Weapon_OwnsThisType( bot_forcefireweapon.GetString() );
-		if ( pWeapon )
-		{
-			// Switch to it if we don't have it out
-			CBaseCombatWeapon *pActiveWeapon = pBot->GetActiveWeapon();
+    if ( bot_forcefireweapon.GetString() )
+    {
+        CBaseCombatWeapon *pWeapon = pBot->Weapon_OwnsThisType( bot_forcefireweapon.GetString() );
+        if ( pWeapon )
+        {
+            // Switch to it if we don't have it out
+            CBaseCombatWeapon *pActiveWeapon = pBot->GetActiveWeapon();
 
-			// Switch?
-			if ( pActiveWeapon != pWeapon )
-			{
-				pBot->Weapon_Switch( pWeapon );
-			}
-			else
-			{
-				// Start firing
-				// Some weapons require releases, so randomise firing
-				if ( bot_forceattackon.GetBool() || (RandomFloat(0.0,1.0) > 0.5) )
-				{
-					cmd.buttons |= bot_forceattack2.GetBool() ? IN_ATTACK2 : IN_ATTACK;
-				}
-			}
-		}
-	}
+            // Switch?
+            if ( pActiveWeapon != pWeapon )
+            {
+                pBot->Weapon_Switch( pWeapon );
+            }
+            else
+            {
+                // Start firing
+                // Some weapons require releases, so randomise firing
+                if ( bot_forceattackon.GetBool() || (RandomFloat(0.0,1.0) > 0.5) )
+                {
+                    cmd.buttons |= bot_forceattack2.GetBool() ? IN_ATTACK2 : IN_ATTACK;
+                }
+            }
+        }
+    }
 }
 
 
 void Bot_SetForwardMovement( CSDKBot *pBot, CUserCmd &cmd )
 {
-	if ( !pBot->IsEFlagSet(EFL_BOT_FROZEN) )
-	{
-		if ( pBot->m_iHealth == 100 )
-		{
-			cmd.forwardmove = 600 * ( pBot->m_bBackwards ? -1 : 1 );
-			if ( pBot->m_flSideMove != 0.0f )
-			{
-				cmd.forwardmove *= random->RandomFloat( 0.1, 1.0f );
-			}
-		}
-		else
-		{
-			// Stop when shot
-			cmd.forwardmove = 0;
-		}
-	}
+    if ( !pBot->IsEFlagSet(EFL_BOT_FROZEN) )
+    {
+        if ( pBot->m_iHealth == 100 )
+        {
+            cmd.forwardmove = 600 * ( pBot->m_bBackwards ? -1 : 1 );
+            if ( pBot->m_flSideMove != 0.0f )
+            {
+                cmd.forwardmove *= random->RandomFloat( 0.1, 1.0f );
+            }
+        }
+        else
+        {
+            // Stop when shot
+            cmd.forwardmove = 0;
+        }
+    }
 }
 
 
 void Bot_HandleRespawn( CSDKBot *pBot, CUserCmd &cmd )
 {
-	// Wait for Reinforcement wave
-	if ( !pBot->IsAlive() )
-	{
-		// Try hitting my buttons occasionally
-		if ( random->RandomInt( 0, 100 ) > 80 )
-		{
-			// Respawn the bot
-			if ( random->RandomInt( 0, 1 ) == 0 )
-			{
-				cmd.buttons |= IN_JUMP;
-			}
-			else
-			{
-				cmd.buttons = 0;
-			}
-		}
-	}
+    // Wait for Reinforcement wave
+    if ( !pBot->IsAlive() )
+    {
+        // Try hitting my buttons occasionally
+        if ( random->RandomInt( 0, 100 ) > 80 )
+        {
+            // Respawn the bot
+            if ( random->RandomInt( 0, 1 ) == 0 )
+            {
+                cmd.buttons |= IN_JUMP;
+            }
+            else
+            {
+                cmd.buttons = 0;
+            }
+        }
+    }
 }
 
 
@@ -425,48 +425,48 @@ void Bot_HandleRespawn( CSDKBot *pBot, CUserCmd &cmd )
 //-----------------------------------------------------------------------------
 void Bot_Think( CSDKBot *pBot )
 {
-	// Make sure we stay being a bot
-	pBot->AddFlag( FL_FAKECLIENT );
+    // Make sure we stay being a bot
+    pBot->AddFlag( FL_FAKECLIENT );
 
 
-	CUserCmd cmd;
-	Q_memset( &cmd, 0, sizeof( cmd ) );
-	
-	
-	// Finally, override all this stuff if the bot is being forced to mimic a player.
-	if ( !Bot_RunMimicCommand( cmd ) )
-	{
-		cmd.sidemove = pBot->m_flSideMove;
+    CUserCmd cmd;
+    Q_memset( &cmd, 0, sizeof( cmd ) );
 
-		if ( pBot->IsAlive() && (pBot->GetSolid() == SOLID_BBOX) )
-		{
-			Bot_SetForwardMovement( pBot, cmd );
 
-			// Only turn if I haven't been hurt
-			if ( !pBot->IsEFlagSet(EFL_BOT_FROZEN) && pBot->m_iHealth == 100 )
-			{
-				Bot_UpdateDirection( pBot );
-				Bot_UpdateStrafing( pBot, cmd );
-			}
+    // Finally, override all this stuff if the bot is being forced to mimic a player.
+    if ( !Bot_RunMimicCommand( cmd ) )
+    {
+        cmd.sidemove = pBot->m_flSideMove;
 
-			// Handle console settings.
-			Bot_ForceFireWeapon( pBot, cmd );
-			Bot_HandleSendCmd( pBot );
-		}
-		else
-		{
-			Bot_HandleRespawn( pBot, cmd );
-		}
+        if ( pBot->IsAlive() && (pBot->GetSolid() == SOLID_BBOX) )
+        {
+            Bot_SetForwardMovement( pBot, cmd );
 
-		Bot_FlipOut( pBot, cmd );
+            // Only turn if I haven't been hurt
+            if ( !pBot->IsEFlagSet(EFL_BOT_FROZEN) && pBot->m_iHealth == 100 )
+            {
+                Bot_UpdateDirection( pBot );
+                Bot_UpdateStrafing( pBot, cmd );
+            }
 
-		cmd.viewangles = pBot->GetLocalAngles();
-		cmd.upmove = 0;
-		cmd.impulse = 0;
-	}
+            // Handle console settings.
+            Bot_ForceFireWeapon( pBot, cmd );
+            Bot_HandleSendCmd( pBot );
+        }
+        else
+        {
+            Bot_HandleRespawn( pBot, cmd );
+        }
 
-	float frametime = gpGlobals->frametime;
-	RunPlayerMove( pBot, cmd, frametime );
+        Bot_FlipOut( pBot, cmd );
+
+        cmd.viewangles = pBot->GetLocalAngles();
+        cmd.upmove = 0;
+        cmd.impulse = 0;
+    }
+
+    float frametime = gpGlobals->frametime;
+    RunPlayerMove( pBot, cmd, frametime );
 }
 
 

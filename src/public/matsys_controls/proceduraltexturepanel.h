@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -30,62 +30,62 @@ struct BGRA8888_t;
 //-----------------------------------------------------------------------------
 class CProceduralTexturePanel : public vgui::EditablePanel, public ITextureRegenerator
 {
-	DECLARE_CLASS_SIMPLE( CProceduralTexturePanel, vgui::EditablePanel );
+    DECLARE_CLASS_SIMPLE( CProceduralTexturePanel, vgui::EditablePanel );
 
 public:
-	// constructor
-	CProceduralTexturePanel( vgui::Panel *pParent, const char *pName );
-	~CProceduralTexturePanel();
+    // constructor
+    CProceduralTexturePanel( vgui::Panel *pParent, const char *pName );
+    ~CProceduralTexturePanel();
 
-	// Methods of ITextureRegenerator
-	virtual void Release() {}
-	virtual void RegenerateTextureBits( ITexture *pTexture, IVTFTexture *pVTFTexture, Rect_t *pRect );
+    // Methods of ITextureRegenerator
+    virtual void Release() {}
+    virtual void RegenerateTextureBits( ITexture *pTexture, IVTFTexture *pVTFTexture, Rect_t *pRect );
 
-	// initialization, shutdown
-	virtual bool Init( int nWidth, int nHeight, bool bAllocateImageBuffer );
-	virtual void Shutdown();
+    // initialization, shutdown
+    virtual bool Init( int nWidth, int nHeight, bool bAllocateImageBuffer );
+    virtual void Shutdown();
 
-	// Returns the image buffer + dimensions
-	BGRA8888_t *GetImageBuffer();
-	int GetImageWidth() const;
-	int GetImageHeight() const;
+    // Returns the image buffer + dimensions
+    BGRA8888_t *GetImageBuffer();
+    int GetImageWidth() const;
+    int GetImageHeight() const;
 
-	// Redownloads the procedural texture
-	void DownloadTexture();
+    // Redownloads the procedural texture
+    void DownloadTexture();
 
-	// Sets the rectangle to paint. Use null to fill the entire panel
-	void SetPaintRect( const Rect_t *pPaintRect = NULL );
+    // Sets the rectangle to paint. Use null to fill the entire panel
+    void SetPaintRect( const Rect_t *pPaintRect = NULL );
 
-	// Sets the texcoords to use with the procedural texture
-	void SetTextureSubRect( const Rect_t &subRect );
+    // Sets the texcoords to use with the procedural texture
+    void SetTextureSubRect( const Rect_t &subRect );
 
-	// Maintain proportions when drawing
-	void MaintainProportions( bool bEnable );
+    // Maintain proportions when drawing
+    void MaintainProportions( bool bEnable );
 
-	virtual void Paint( void );
-	virtual void PaintBackground( void ) {}
+    virtual void Paint( void );
+    virtual void PaintBackground( void ) {}
 
 private:
-	void CleanUp();
+    void CleanUp();
 
 protected:
-	// Image buffer
-	BGRA8888_t *m_pImageBuffer;
-	int m_nWidth;
-	int m_nHeight;
+    // Image buffer
+    BGRA8888_t *m_pImageBuffer;
+    int m_nWidth;
+    int m_nHeight;
 
-	// Paint rectangle
-	Rect_t m_PaintRect;
+    // Paint rectangle
+    Rect_t m_PaintRect;
 
-	// Texture coordinate rectangle
-	Rect_t m_TextureSubRect;
+    // Texture coordinate rectangle
+    Rect_t m_TextureSubRect;
 
-	CTextureReference	m_ProceduralTexture;
-	CMaterialReference	m_ProceduralMaterial;
+    CTextureReference   m_ProceduralTexture;
+    CMaterialReference  m_ProceduralMaterial;
 
-	int m_nTextureID;
-	bool m_bMaintainProportions;
-	bool m_bUsePaintRect;
+    int m_nTextureID;
+    bool m_bMaintainProportions;
+    bool m_bUsePaintRect;
 };
 
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -16,8 +16,8 @@
 #include "const.h"
 
 
-#define VOICE_MAX_PLAYERS		MAX_PLAYERS
-#define VOICE_MAX_PLAYERS_DW	((VOICE_MAX_PLAYERS / 32) + !!(VOICE_MAX_PLAYERS & 31))
+#define VOICE_MAX_PLAYERS       MAX_PLAYERS
+#define VOICE_MAX_PLAYERS_DW    ((VOICE_MAX_PLAYERS / 32) + !!(VOICE_MAX_PLAYERS & 31))
 
 typedef CBitVec<VOICE_MAX_PLAYERS> CPlayerBitVec;
 

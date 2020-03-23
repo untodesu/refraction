@@ -1,17 +1,17 @@
 //-----------------------------------------------------------------------------
-//	tier0_exclude.vpc
+//  tier0_exclude.vpc
 //
-//	Project Script
+//  Project Script
 //-----------------------------------------------------------------------------
 
 $Project
 {
-	$Folder	"Link Libraries"
-	{
-		-$Lib "$LIBPUBLIC\tier0"
-	}
-	$Folder	"Source Files"
-	{
-		-$File	"$SRCDIR\public\tier0\memoverride.cpp"
-	}	
+    $Folder "Link Libraries"
+    {
+        -$Lib "$LIBPUBLIC\tier0"
+    }
+    $Folder "Source Files"
+    {
+        -$File  "$SRCDIR\public\tier0\memoverride.cpp"
+    }
 }

@@ -11,7 +11,7 @@
 #include "utlstring.h"
 
 void Replay_GetFirstAvailableFilename( char *pDst, int nDstLen, const char *pIdealFilename, const char *pExt,
-									   const char *pFilePath, int nStartIndex );
+                                       const char *pFilePath, int nStartIndex );
 
 void Replay_ConstructReplayFilenameString( CUtlString &strOut, const char *pReplaySubDir, const char *pFilename, const char *pGameDir );
 

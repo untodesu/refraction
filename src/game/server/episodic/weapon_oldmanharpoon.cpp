@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -12,11 +12,11 @@
 //-----------------------------------------------------------------------------
 class CWeaponOldManHarpoon : public CWeaponCitizenPackage
 {
-	DECLARE_CLASS( CWeaponOldManHarpoon, CWeaponCitizenPackage );
+    DECLARE_CLASS( CWeaponOldManHarpoon, CWeaponCitizenPackage );
 public:
-	DECLARE_SERVERCLASS();
-	DECLARE_DATADESC();	
-	DECLARE_ACTTABLE();
+    DECLARE_SERVERCLASS();
+    DECLARE_DATADESC();
+    DECLARE_ACTTABLE();
 };
 
 IMPLEMENT_SERVERCLASS_ST( CWeaponOldManHarpoon, DT_WeaponOldManHarpoon )
@@ -28,9 +28,9 @@ END_DATADESC()
 LINK_ENTITY_TO_CLASS( weapon_oldmanharpoon, CWeaponOldManHarpoon );
 PRECACHE_WEAPON_REGISTER( weapon_oldmanharpoon );
 
-acttable_t	CWeaponOldManHarpoon::m_acttable[] = 
+acttable_t  CWeaponOldManHarpoon::m_acttable[] =
 {
-	{ ACT_IDLE,						ACT_IDLE_SUITCASE,					false },
-	{ ACT_WALK,						ACT_WALK_SUITCASE,					false },
+    { ACT_IDLE,                     ACT_IDLE_SUITCASE,                  false },
+    { ACT_WALK,                     ACT_WALK_SUITCASE,                  false },
 };
 IMPLEMENT_ACTTABLE( CWeaponOldManHarpoon );

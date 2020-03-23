@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //=============================================================================//
 
 
@@ -29,20 +29,20 @@
 //-----------------------------------------------------------------------------
 void CHTMLBaseProtoBufMsg::SerializeCrossProc( CUtlBuffer *pBuffer ) const
 {
-	VPROF_BUDGET( "CUIProtoBufMsg::SerializeCrossProc", VPROF_BUDGETGROUP_OTHER_VGUI );
-	uint32 unSize = ((google::protobuf::MessageLite *)m_pMsg)->ByteSize();
+    VPROF_BUDGET( "CUIProtoBufMsg::SerializeCrossProc", VPROF_BUDGETGROUP_OTHER_VGUI );
+    uint32 unSize = ((google::protobuf::MessageLite *)m_pMsg)->ByteSize();
 
-	// Ensure enough for type, size, and serialized data
-	pBuffer->EnsureCapacity( pBuffer->TellPut() + sizeof(uint32) * 3 + unSize ); // bugbug cboyd - drop to * 2 whenpassthrough is removed below
+    // Ensure enough for type, size, and serialized data
+    pBuffer->EnsureCapacity( pBuffer->TellPut() + sizeof(uint32) * 3 + unSize ); // bugbug cboyd - drop to * 2 whenpassthrough is removed below
 
-	pBuffer->PutUnsignedInt( unSize );
+    pBuffer->PutUnsignedInt( unSize );
 
-	if ( unSize == 0 )
-		return;
+    if ( unSize == 0 )
+        return;
 
-	uint8 *pBody = (uint8*)pBuffer->Base()+pBuffer->TellPut();
-	((google::protobuf::MessageLite *)m_pMsg)->SerializeWithCachedSizesToArray( pBody );
-	pBuffer->SeekPut( CUtlBuffer::SEEK_CURRENT, unSize );
+    uint8 *pBody = (uint8*)pBuffer->Base()+pBuffer->TellPut();
+    ((google::protobuf::MessageLite *)m_pMsg)->SerializeWithCachedSizesToArray( pBody );
+    pBuffer->SeekPut( CUtlBuffer::SEEK_CURRENT, unSize );
 }
 
 
@@ -51,20 +51,20 @@ void CHTMLBaseProtoBufMsg::SerializeCrossProc( CUtlBuffer *pBuffer ) const
 //-----------------------------------------------------------------------------
 bool CHTMLBaseProtoBufMsg::BDeserializeCrossProc( CUtlBuffer *pBuffer )
 {
-	VPROF_BUDGET( "CUIProtoBufMsg::BDeserialize", VPROF_BUDGETGROUP_OTHER_VGUI );
-	if ( pBuffer->GetBytesRemaining() < (int)sizeof(uint32) )
-		return false;
-	uint32 unSize = pBuffer->GetUnsignedInt();
+    VPROF_BUDGET( "CUIProtoBufMsg::BDeserialize", VPROF_BUDGETGROUP_OTHER_VGUI );
+    if ( pBuffer->GetBytesRemaining() < (int)sizeof(uint32) )
+        return false;
+    uint32 unSize = pBuffer->GetUnsignedInt();
 
-	if ( unSize == 0 )
-		return true;
+    if ( unSize == 0 )
+        return true;
 
-	if ( pBuffer->GetBytesRemaining() < (int)unSize )
-		return false;
+    if ( pBuffer->GetBytesRemaining() < (int)unSize )
+        return false;
 
-	bool bSucccess = ((google::protobuf::MessageLite *)m_pMsg)->ParseFromArray( (uint8*)pBuffer->Base()+pBuffer->TellGet(), unSize );
-	pBuffer->SeekGet( CUtlBuffer::SEEK_CURRENT, unSize );
+    bool bSucccess = ((google::protobuf::MessageLite *)m_pMsg)->ParseFromArray( (uint8*)pBuffer->Base()+pBuffer->TellGet(), unSize );
+    pBuffer->SeekGet( CUtlBuffer::SEEK_CURRENT, unSize );
 
-	return bSucccess;
+    return bSucccess;
 }
 

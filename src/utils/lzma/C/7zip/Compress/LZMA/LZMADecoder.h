@@ -49,7 +49,7 @@ public:
       // UInt32 bit = _decoders[1 + matchBit][symbol].Decode(rangeDecoder);
       // symbol = (symbol << 1) | bit;
       UInt32 bit;
-      RC_GETBIT2(kNumMoveBits, _decoders[0x100 + (matchBit << 8) + symbol].Prob, symbol, 
+      RC_GETBIT2(kNumMoveBits, _decoders[0x100 + (matchBit << 8) + symbol].Prob, symbol,
           bit = 0, bit = 1)
       if (matchBit != bit)
       {
@@ -77,13 +77,13 @@ public:
   CLiteralDecoder(): _coders(0) {}
   ~CLiteralDecoder()  { Free(); }
   void Free()
-  { 
+  {
     MyFree(_coders);
     _coders = 0;
   }
   bool Create(int numPosBits, int numPrevBits)
   {
-    if (_coders == 0 || (numPosBits + numPrevBits) != 
+    if (_coders == 0 || (numPosBits + numPrevBits) !=
         (_numPrevBits + _numPosBits) )
     {
       Free();
@@ -117,7 +117,7 @@ class CDecoder
   CMyBitDecoder _choice2;
   NRangeCoder::CBitTreeDecoder<kNumMoveBits, kNumLowBits>  _lowCoder[kNumPosStatesMax];
   NRangeCoder::CBitTreeDecoder<kNumMoveBits, kNumMidBits>  _midCoder[kNumPosStatesMax];
-  NRangeCoder::CBitTreeDecoder<kNumMoveBits, kNumHighBits> _highCoder; 
+  NRangeCoder::CBitTreeDecoder<kNumMoveBits, kNumHighBits> _highCoder;
 public:
   void Init(UInt32 numPosStates)
   {
@@ -142,7 +142,7 @@ public:
 
 }
 
-class CDecoder: 
+class CDecoder:
   public ICompressCoder,
   public ICompressSetDecoderProperties2,
   public ICompressGetInStreamProcessedSize,
@@ -167,7 +167,7 @@ class CDecoder:
 
   CMyBitDecoder _posDecoders[kNumFullDistances - kEndPosModelIndex];
   NRangeCoder::CBitTreeDecoder<kNumMoveBits, kNumAlignBits> _posAlignDecoder;
-  
+
   NLength::CDecoder _lenDecoder;
   NLength::CDecoder _repMatchLenDecoder;
 
@@ -189,10 +189,10 @@ public:
 
   #ifdef _ST_MODE
   MY_UNKNOWN_IMP5(
-      ICompressSetDecoderProperties2, 
+      ICompressSetDecoderProperties2,
       ICompressGetInStreamProcessedSize,
-      ICompressSetInStream, 
-      ICompressSetOutStreamSize, 
+      ICompressSetInStream,
+      ICompressSetOutStreamSize,
       ISequentialInStream)
   #else
   MY_UNKNOWN_IMP2(
@@ -212,20 +212,20 @@ public:
   public:
     bool NeedFlush;
     CDecoderFlusher(CDecoder *decoder): _decoder(decoder), NeedFlush(true) {}
-    ~CDecoderFlusher() 
-    { 
+    ~CDecoderFlusher()
+    {
       if (NeedFlush)
         _decoder->Flush();
-      _decoder->ReleaseStreams(); 
+      _decoder->ReleaseStreams();
     }
   };
 
-  HRESULT Flush() {  return _outWindowStream.Flush(); }  
+  HRESULT Flush() {  return _outWindowStream.Flush(); }
 
   STDMETHOD(CodeReal)(ISequentialInStream *inStream,
       ISequentialOutStream *outStream, const UInt64 *inSize, const UInt64 *outSize,
       ICompressProgressInfo *progress);
-  
+
   STDMETHOD(Code)(ISequentialInStream *inStream,
       ISequentialOutStream *outStream, const UInt64 *inSize, const UInt64 *outSize,
       ICompressProgressInfo *progress);

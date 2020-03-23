@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -32,25 +32,25 @@ CBaseTempEntity *CBaseTempEntity::s_pTempEntities = NULL;
 //-----------------------------------------------------------------------------
 CBaseTempEntity *CBaseTempEntity::GetList( void )
 {
-	return s_pTempEntities;
+    return s_pTempEntities;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Creates temp entity, sets name, adds to global list
-// Input  : *name - 
+// Input  : *name -
 //-----------------------------------------------------------------------------
 CBaseTempEntity::CBaseTempEntity( const char *name )
 {
-	m_pszName = name;
-	Assert( m_pszName );
+    m_pszName = name;
+    Assert( m_pszName );
 
-	// Add to list
-	m_pNext			= s_pTempEntities;
-	s_pTempEntities = this;
+    // Add to list
+    m_pNext         = s_pTempEntities;
+    s_pTempEntities = this;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 CBaseTempEntity::~CBaseTempEntity( void )
 {
@@ -62,7 +62,7 @@ CBaseTempEntity::~CBaseTempEntity( void )
 //-----------------------------------------------------------------------------
 const char *CBaseTempEntity::GetName( void )
 {
-	return m_pszName ? m_pszName : "Unnamed";
+    return m_pszName ? m_pszName : "Unnamed";
 }
 
 //-----------------------------------------------------------------------------
@@ -71,34 +71,34 @@ const char *CBaseTempEntity::GetName( void )
 //-----------------------------------------------------------------------------
 CBaseTempEntity *CBaseTempEntity::GetNext( void )
 {
-	return m_pNext;
+    return m_pNext;
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 void CBaseTempEntity::Precache( void )
 {
-	// Nothing...
+    // Nothing...
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Default test implementation. Should only be called by derived classes
-// Input  : *current_origin - 
-//			*current_angles - 
+// Input  : *current_origin -
+//          *current_angles -
 //-----------------------------------------------------------------------------
 void CBaseTempEntity::Test( const Vector& current_origin, const QAngle& current_angles )
 {
-	Vector origin, forward;
+    Vector origin, forward;
 
-	Msg( "%s\n", m_pszName );
-	AngleVectors( current_angles, &forward );
+    Msg( "%s\n", m_pszName );
+    AngleVectors( current_angles, &forward );
 
-	VectorMA( current_origin, 20, forward, origin );
+    VectorMA( current_origin, 20, forward, origin );
 
-	CBroadcastRecipientFilter filter;
+    CBroadcastRecipientFilter filter;
 
-	Create( filter, 0.0 );
+    Create( filter, 0.0 );
 }
 
 //-----------------------------------------------------------------------------
@@ -106,21 +106,21 @@ void CBaseTempEntity::Test( const Vector& current_origin, const QAngle& current_
 //-----------------------------------------------------------------------------
 void CBaseTempEntity::PrecacheTempEnts( void )
 {
-	CBaseTempEntity *te = GetList();
-	while ( te )
-	{
-		te->Precache();
-		te = te->GetNext();
-	}
+    CBaseTempEntity *te = GetList();
+    while ( te )
+    {
+        te->Precache();
+        te = te->GetNext();
+    }
 }
 
 
 void CBaseTempEntity::Create( IRecipientFilter& filter, float delay )
 {
-	// temp entities can't be reliable or part of the signon message, use real entities instead
-	Assert( !filter.IsReliable() && !filter.IsInitMessage() );
-	Assert( delay >= -1 && delay <= 1); // 1 second max delay
+    // temp entities can't be reliable or part of the signon message, use real entities instead
+    Assert( !filter.IsReliable() && !filter.IsInitMessage() );
+    Assert( delay >= -1 && delay <= 1); // 1 second max delay
 
-	engine->PlaybackTempEntity( filter, delay, 
-		(void *)this, GetServerClass()->m_pTable, GetServerClass()->m_ClassID );
+    engine->PlaybackTempEntity( filter, delay,
+        (void *)this, GetServerClass()->m_pTable, GetServerClass()->m_ClassID );
 }

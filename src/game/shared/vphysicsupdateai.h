@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -15,9 +15,9 @@
 // for entities that typically ignore those updates.
 struct vphysicsupdateai_t
 {
-	float	startUpdateTime;
-	float	stopUpdateTime;
-	float	savedShadowControllerMaxSpeed;
+    float   startUpdateTime;
+    float   stopUpdateTime;
+    float   savedShadowControllerMaxSpeed;
 };
 
 

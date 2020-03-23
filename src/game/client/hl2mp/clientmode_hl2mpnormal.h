@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $Workfile:     $
 // $Date:         $
@@ -20,23 +20,23 @@ class CHudViewport;
 
 namespace vgui
 {
-	typedef unsigned long HScheme;
+    typedef unsigned long HScheme;
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 class ClientModeHL2MPNormal : public ClientModeShared
 {
 public:
-	DECLARE_CLASS( ClientModeHL2MPNormal, ClientModeShared );
+    DECLARE_CLASS( ClientModeHL2MPNormal, ClientModeShared );
 
-	ClientModeHL2MPNormal();
-	~ClientModeHL2MPNormal();
+    ClientModeHL2MPNormal();
+    ~ClientModeHL2MPNormal();
 
-	virtual void	Init();
-	virtual int		GetDeathMessageStartHeight( void );
+    virtual void    Init();
+    virtual int     GetDeathMessageStartHeight( void );
 };
 
 extern IClientMode *GetClientModeNormal();

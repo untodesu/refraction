@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -13,7 +13,7 @@
 
 float LinearToMonochrome ( float3 r )
 {
-	return dot( r, float3( 0.299f, 0.587f, 0.114f ) );
+    return dot( r, float3( 0.299f, 0.587f, 0.114f ) );
 }
 
 #endif //#ifndef COMMON_FXC2_H_

@@ -21,12 +21,12 @@ IPresence *presence = NULL;
 //-----------------------------------------------------------------------------
 bool CBasePresence::Init( void )
 {
-	if ( !presence )
-	{
-		// Mod didn't override, default to base implementation
-		presence = &s_basePresence;
-	}
-	return true;
+    if ( !presence )
+    {
+        // Mod didn't override, default to base implementation
+        presence = &s_basePresence;
+    }
+    return true;
 }
 
 
@@ -35,7 +35,7 @@ bool CBasePresence::Init( void )
 //-----------------------------------------------------------------------------
 void CBasePresence::Shutdown( void )
 {
-	// Do nothing
+    // Do nothing
 }
 
 
@@ -44,7 +44,7 @@ void CBasePresence::Shutdown( void )
 //-----------------------------------------------------------------------------
 void CBasePresence::Update( float frametime )
 {
-	// Do nothing
+    // Do nothing
 }
 
 
@@ -53,10 +53,10 @@ void CBasePresence::Update( float frametime )
 //-----------------------------------------------------------------------------
 void CBasePresence::UserSetContext( unsigned int nUserIndex, unsigned int nContextId, unsigned int nContextValue, bool bAsync )
 {
-	if ( !xboxsystem->UserSetContext( nUserIndex, nContextId, nContextValue, bAsync ) )
-	{
-		Warning( "CBasePresence: UserSetContext failed.\n" );
-	}
+    if ( !xboxsystem->UserSetContext( nUserIndex, nContextId, nContextValue, bAsync ) )
+    {
+        Warning( "CBasePresence: UserSetContext failed.\n" );
+    }
 }
 
 
@@ -65,10 +65,10 @@ void CBasePresence::UserSetContext( unsigned int nUserIndex, unsigned int nConte
 //-----------------------------------------------------------------------------
 void CBasePresence::UserSetProperty( unsigned int nUserIndex, unsigned int nPropertyId, unsigned int nBytes, const void *pvValue, bool bAsync )
 {
- 	if ( !xboxsystem->UserSetProperty( nUserIndex, nPropertyId, nBytes, pvValue, bAsync ) )
- 	{
- 		Warning( "CBasePresence: UserSetProperty failed.\n" );
- 	}
+    if ( !xboxsystem->UserSetProperty( nUserIndex, nPropertyId, nBytes, pvValue, bAsync ) )
+    {
+        Warning( "CBasePresence: UserSetProperty failed.\n" );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void CBasePresence::UserSetProperty( unsigned int nUserIndex, unsigned int nProp
 //-----------------------------------------------------------------------------
 void CBasePresence::SetupGameProperties( CUtlVector< XUSER_CONTEXT > &contexts, CUtlVector< XUSER_PROPERTY > &properties )
 {
-	Assert( 0 );
+    Assert( 0 );
 }
 
 //-----------------------------------------------------------------------------
@@ -84,8 +84,8 @@ void CBasePresence::SetupGameProperties( CUtlVector< XUSER_CONTEXT > &contexts, 
 //-----------------------------------------------------------------------------
 uint CBasePresence::GetPresenceID( const char *pIdName )
 {
-	Assert( 0 );
-	return 0;
+    Assert( 0 );
+    return 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -93,8 +93,8 @@ uint CBasePresence::GetPresenceID( const char *pIdName )
 //-----------------------------------------------------------------------------
 const char *CBasePresence::GetPropertyIdString( const uint id )
 {
-	Assert( 0 );
-	return NULL;
+    Assert( 0 );
+    return NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ const char *CBasePresence::GetPropertyIdString( const uint id )
 //-----------------------------------------------------------------------------
 void CBasePresence::GetPropertyDisplayString( uint id, uint value, char *pOutput, int nBytes )
 {
-	Assert( 0 );
+    Assert( 0 );
 }
 
 //-----------------------------------------------------------------------------
@@ -110,10 +110,10 @@ void CBasePresence::GetPropertyDisplayString( uint id, uint value, char *pOutput
 //-----------------------------------------------------------------------------
 void CBasePresence::StartStatsReporting( HANDLE handle, bool bArbitrated )
 {
-	m_bArbitrated = bArbitrated;
-	m_hSession = handle;
-	m_bReportingStats = true;
-	m_PlayerStats.RemoveAll();
+    m_bArbitrated = bArbitrated;
+    m_hSession = handle;
+    m_bReportingStats = true;
+    m_PlayerStats.RemoveAll();
 }
 
 //-----------------------------------------------------------------------------
@@ -121,14 +121,14 @@ void CBasePresence::StartStatsReporting( HANDLE handle, bool bArbitrated )
 //-----------------------------------------------------------------------------
 void CBasePresence::SetStat( uint iPropertyId, int iPropertyValue, int dataType )
 {
-	if ( m_bReportingStats )
-	{
-		XUSER_PROPERTY prop;
-		prop.dwPropertyId = iPropertyId;
-		prop.value.nData = iPropertyValue;
-		prop.value.type = dataType;
-		m_PlayerStats.AddToTail( prop );
-	}
+    if ( m_bReportingStats )
+    {
+        XUSER_PROPERTY prop;
+        prop.dwPropertyId = iPropertyId;
+        prop.value.nData = iPropertyValue;
+        prop.value.type = dataType;
+        m_PlayerStats.AddToTail( prop );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ void CBasePresence::SetStat( uint iPropertyId, int iPropertyValue, int dataType 
 //-----------------------------------------------------------------------------
 void CBasePresence::UploadStats()
 {
-	Assert( 0 );
+    Assert( 0 );
 }
 
 //---------------------------------------------------------
@@ -144,24 +144,24 @@ void CBasePresence::UploadStats()
 //---------------------------------------------------------
 void CBasePresence::DebugUserSetContext( const CCommand &args )
 {
-	if ( args.ArgC() == 3 )
-	{
-		UserSetContext( XBX_GetPrimaryUserId(), atoi( args.Arg( 1 ) ), atoi( args.Arg( 2 ) ) );
-	}
-	else
-	{
-		Warning( "user_context <context id> <context value>\n" );
-	}
+    if ( args.ArgC() == 3 )
+    {
+        UserSetContext( XBX_GetPrimaryUserId(), atoi( args.Arg( 1 ) ), atoi( args.Arg( 2 ) ) );
+    }
+    else
+    {
+        Warning( "user_context <context id> <context value>\n" );
+    }
 }
 void CBasePresence::DebugUserSetProperty( const CCommand &args )
 {
-	if ( args.ArgC() == 3 )
-	{
-		int value = atoi( args.Arg( 2 ) );
-		UserSetProperty( XBX_GetPrimaryUserId(), strtoul( args.Arg( 1 ), NULL, 0 ), sizeof(int), &value );
-	}
-	else
-	{
-		Warning( "user_property <property id> <property value>\n" );
-	}
+    if ( args.ArgC() == 3 )
+    {
+        int value = atoi( args.Arg( 2 ) );
+        UserSetProperty( XBX_GetPrimaryUserId(), strtoul( args.Arg( 1 ), NULL, 0 ), sizeof(int), &value );
+    }
+    else
+    {
+        Warning( "user_property <property id> <property value>\n" );
+    }
 }

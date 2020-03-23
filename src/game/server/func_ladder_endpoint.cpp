@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 #include "cbase.h"
@@ -16,53 +16,53 @@
 class CFuncLadderEndPoint : public CBaseEntity
 {
 public:
-	DECLARE_CLASS( CFuncLadderEndPoint, CBaseEntity );
+    DECLARE_CLASS( CFuncLadderEndPoint, CBaseEntity );
 
-	virtual void Activate();
+    virtual void Activate();
 
 private:
-	bool		Validate();
+    bool        Validate();
 };
 
 LINK_ENTITY_TO_CLASS( func_ladderendpoint, CFuncLadderEndPoint );
 
 void CFuncLadderEndPoint::Activate()
 {
-	BaseClass::Activate();
+    BaseClass::Activate();
 
-	if ( IsMarkedForDeletion() )
-		return;
+    if ( IsMarkedForDeletion() )
+        return;
 
-	Validate();
+    Validate();
 }
 
 bool CFuncLadderEndPoint::Validate()
 {
-	// Find the the other end
-	Vector startPos = GetAbsOrigin();
-	
-	CFuncLadderEndPoint *other = dynamic_cast< CFuncLadderEndPoint * >( GetNextTarget() );
-	if ( !other )
-	{
-		DevMsg( 1, "func_ladderendpoint(%s) without matching target\n", GetEntityName().ToCStr() );
-		return false;
-	}
+    // Find the the other end
+    Vector startPos = GetAbsOrigin();
 
-	Vector endPos = other->GetAbsOrigin();
+    CFuncLadderEndPoint *other = dynamic_cast< CFuncLadderEndPoint * >( GetNextTarget() );
+    if ( !other )
+    {
+        DevMsg( 1, "func_ladderendpoint(%s) without matching target\n", GetEntityName().ToCStr() );
+        return false;
+    }
 
-	CFuncLadder *ladder = ( CFuncLadder * )CreateEntityByName( "func_useableladder" );
-	if ( ladder )
-	{
-		ladder->SetEndPoints( startPos, endPos );
-		ladder->SetAbsOrigin( GetAbsOrigin() );
-		ladder->SetParent( GetParent() );
-		ladder->SetName( GetEntityName() );
-		ladder->Spawn();
-	}
+    Vector endPos = other->GetAbsOrigin();
 
-	// Delete both endpoints
-	UTIL_Remove( other );
-	UTIL_Remove( this );
+    CFuncLadder *ladder = ( CFuncLadder * )CreateEntityByName( "func_useableladder" );
+    if ( ladder )
+    {
+        ladder->SetEndPoints( startPos, endPos );
+        ladder->SetAbsOrigin( GetAbsOrigin() );
+        ladder->SetParent( GetParent() );
+        ladder->SetName( GetEntityName() );
+        ladder->Spawn();
+    }
 
-	return true;
+    // Delete both endpoints
+    UTIL_Remove( other );
+    UTIL_Remove( this );
+
+    return true;
 }

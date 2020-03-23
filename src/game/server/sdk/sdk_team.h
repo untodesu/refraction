@@ -22,13 +22,13 @@
 //-----------------------------------------------------------------------------
 class CSDKTeam : public CTeam
 {
-	DECLARE_CLASS( CSDKTeam, CTeam );
-	DECLARE_SERVERCLASS();
+    DECLARE_CLASS( CSDKTeam, CTeam );
+    DECLARE_SERVERCLASS();
 
 public:
 
-	// Initialization
-	virtual void Init( const char *pName, int iNumber );
+    // Initialization
+    virtual void Init( const char *pName, int iNumber );
 };
 
 

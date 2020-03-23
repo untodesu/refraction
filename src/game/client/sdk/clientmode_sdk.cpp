@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //
@@ -43,11 +43,11 @@ IClientMode *g_pClientMode = NULL;
 class CSDKModeManager : public IVModeManager
 {
 public:
-	virtual void	Init();
-	virtual void	SwitchMode( bool commander, bool force ) {}
-	virtual void	LevelInit( const char *newmap );
-	virtual void	LevelShutdown( void );
-	virtual void	ActivateMouse( bool isactive ) {}
+    virtual void    Init();
+    virtual void    SwitchMode( bool commander, bool force ) {}
+    virtual void    LevelInit( const char *newmap );
+    virtual void    LevelShutdown( void );
+    virtual void    ActivateMouse( bool isactive ) {}
 };
 
 static CSDKModeManager g_ModeManager;
@@ -57,27 +57,27 @@ IVModeManager *modemanager = ( IVModeManager * )&g_ModeManager;
 // CSDKModeManager implementation.
 // --------------------------------------------------------------------------------- //
 
-#define SCREEN_FILE		"scripts/vgui_screens.txt"
+#define SCREEN_FILE     "scripts/vgui_screens.txt"
 
 void CSDKModeManager::Init()
 {
-	g_pClientMode = GetClientModeNormal();
-	
-	PanelMetaClassMgr()->LoadMetaClassDefinitionFile( SCREEN_FILE );
+    g_pClientMode = GetClientModeNormal();
+
+    PanelMetaClassMgr()->LoadMetaClassDefinitionFile( SCREEN_FILE );
 }
 
 void CSDKModeManager::LevelInit( const char *newmap )
 {
-	g_pClientMode->LevelInit( newmap );
+    g_pClientMode->LevelInit( newmap );
 }
 
 void CSDKModeManager::LevelShutdown( void )
 {
-	g_pClientMode->LevelShutdown();
+    g_pClientMode->LevelShutdown();
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //-----------------------------------------------------------------------------
 ClientModeSDKNormal::ClientModeSDKNormal()
 {
@@ -93,33 +93,33 @@ ClientModeSDKNormal::~ClientModeSDKNormal()
 
 void ClientModeSDKNormal::InitViewport()
 {
-	m_pViewport = new SDKViewport();
-	m_pViewport->Start( gameuifuncs, gameeventmanager );
+    m_pViewport = new SDKViewport();
+    m_pViewport->Start( gameuifuncs, gameeventmanager );
 }
 
 ClientModeSDKNormal g_ClientModeNormal;
 
 IClientMode *GetClientModeNormal()
 {
-	return &g_ClientModeNormal;
+    return &g_ClientModeNormal;
 }
 
 
 ClientModeSDKNormal* GetClientModeSDKNormal()
 {
-	Assert( dynamic_cast< ClientModeSDKNormal* >( GetClientModeNormal() ) );
+    Assert( dynamic_cast< ClientModeSDKNormal* >( GetClientModeNormal() ) );
 
-	return static_cast< ClientModeSDKNormal* >( GetClientModeNormal() );
+    return static_cast< ClientModeSDKNormal* >( GetClientModeNormal() );
 }
 
 float ClientModeSDKNormal::GetViewModelFOV( void )
 {
-	return 74.0f;
+    return 74.0f;
 }
 
 int ClientModeSDKNormal::GetDeathMessageStartHeight( void )
 {
-	return m_pViewport->GetDeathMessageStartHeight();
+    return m_pViewport->GetDeathMessageStartHeight();
 }
 
 void ClientModeSDKNormal::PostRenderVGui()

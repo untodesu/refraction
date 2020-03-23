@@ -1,22 +1,22 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
-// This is a skeleton file for use when creating a new 
+// This is a skeleton file for use when creating a new
 // NPC. Copy and rename this file for the new
 // NPC and add the copy to the build.
 //
-// Leave this file in the build until we ship! Allowing 
+// Leave this file in the build until we ship! Allowing
 // this file to be rebuilt with the rest of the game ensures
 // that it stays up to date with the rest of the NPC code.
 //
 // Replace occurances of CNewNPC with the new NPC's
-// classname. Don't forget the lower-case occurance in 
+// classname. Don't forget the lower-case occurance in
 // LINK_ENTITY_TO_CLASS()
 //
 //
 // ASSUMPTIONS MADE:
 //
-// You're making a character based on CAI_BaseNPC. If this 
+// You're making a character based on CAI_BaseNPC. If this
 // is not true, make sure you replace all occurances
-// of 'CAI_BaseNPC' in this file with the appropriate 
+// of 'CAI_BaseNPC' in this file with the appropriate
 // parent class.
 //
 // You're making a human-sized NPC that walks.
@@ -41,31 +41,31 @@
 //=========================================================
 // Private activities
 //=========================================================
-int	ACT_MYCUSTOMACTIVITY = -1;
+int ACT_MYCUSTOMACTIVITY = -1;
 
 //=========================================================
 // Custom schedules
 //=========================================================
 enum
 {
-	SCHED_MYCUSTOMSCHEDULE = LAST_SHARED_SCHEDULE,
+    SCHED_MYCUSTOMSCHEDULE = LAST_SHARED_SCHEDULE,
 };
 
 //=========================================================
 // Custom tasks
 //=========================================================
-enum 
+enum
 {
-	TASK_MYCUSTOMTASK = LAST_SHARED_TASK,
+    TASK_MYCUSTOMTASK = LAST_SHARED_TASK,
 };
 
 
 //=========================================================
 // Custom Conditions
 //=========================================================
-enum 
+enum
 {
-	COND_MYCUSTOMCONDITION = LAST_SHARED_CONDITION,
+    COND_MYCUSTOMCONDITION = LAST_SHARED_CONDITION,
 };
 
 
@@ -73,23 +73,23 @@ enum
 //=========================================================
 class CNewNPC : public CAI_BaseNPC
 {
-	DECLARE_CLASS( CNewNPC, CAI_BaseNPC );
+    DECLARE_CLASS( CNewNPC, CAI_BaseNPC );
 
 public:
-	void	Precache( void );
-	void	Spawn( void );
-	Class_T Classify( void );
+    void    Precache( void );
+    void    Spawn( void );
+    Class_T Classify( void );
 
-	DECLARE_DATADESC();
+    DECLARE_DATADESC();
 
-	// This is a dummy field. In order to provide save/restore
-	// code in this file, we must have at least one field
-	// for the code to operate on. Delete this field when
-	// you are ready to do your own save/restore for this
-	// character.
-	int		m_iDeleteThisField;
+    // This is a dummy field. In order to provide save/restore
+    // code in this file, we must have at least one field
+    // for the code to operate on. Delete this field when
+    // you are ready to do your own save/restore for this
+    // character.
+    int     m_iDeleteThisField;
 
-	DEFINE_CUSTOM_AI;
+    DEFINE_CUSTOM_AI;
 };
 
 LINK_ENTITY_TO_CLASS( npc_newnpc, CNewNPC );
@@ -101,7 +101,7 @@ IMPLEMENT_CUSTOM_AI( npc_citizen,CNewNPC );
 //---------------------------------------------------------
 BEGIN_DATADESC( CNewNPC )
 
-	DEFINE_FIELD( m_iDeleteThisField, FIELD_INTEGER ),
+    DEFINE_FIELD( m_iDeleteThisField, FIELD_INTEGER ),
 
 END_DATADESC()
 
@@ -110,67 +110,67 @@ END_DATADESC()
 // Input  :
 // Output :
 //-----------------------------------------------------------------------------
-void CNewNPC::InitCustomSchedules(void) 
+void CNewNPC::InitCustomSchedules(void)
 {
-	INIT_CUSTOM_AI(CNewNPC);
+    INIT_CUSTOM_AI(CNewNPC);
 
-	ADD_CUSTOM_TASK(CNewNPC,		TASK_MYCUSTOMTASK);
+    ADD_CUSTOM_TASK(CNewNPC,        TASK_MYCUSTOMTASK);
 
-	ADD_CUSTOM_SCHEDULE(CNewNPC,	SCHED_MYCUSTOMSCHEDULE);
+    ADD_CUSTOM_SCHEDULE(CNewNPC,    SCHED_MYCUSTOMSCHEDULE);
 
-	ADD_CUSTOM_ACTIVITY(CNewNPC,	ACT_MYCUSTOMACTIVITY);
+    ADD_CUSTOM_ACTIVITY(CNewNPC,    ACT_MYCUSTOMACTIVITY);
 
-	ADD_CUSTOM_CONDITION(CNewNPC,	COND_MYCUSTOMCONDITION);
+    ADD_CUSTOM_CONDITION(CNewNPC,   COND_MYCUSTOMCONDITION);
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //
 //
 //-----------------------------------------------------------------------------
 void CNewNPC::Precache( void )
 {
-	PrecacheModel( "models/mymodel.mdl" );
+    PrecacheModel( "models/mymodel.mdl" );
 
-	BaseClass::Precache();
+    BaseClass::Precache();
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //
 //
 //-----------------------------------------------------------------------------
 void CNewNPC::Spawn( void )
 {
-	Precache();
+    Precache();
 
-	SetModel( "models/mymodel.mdl" );
-	SetHullType(HULL_HUMAN);
-	SetHullSizeNormal();
+    SetModel( "models/mymodel.mdl" );
+    SetHullType(HULL_HUMAN);
+    SetHullSizeNormal();
 
-	SetSolid( SOLID_BBOX );
-	AddSolidFlags( FSOLID_NOT_STANDABLE );
-	SetMoveType( MOVETYPE_STEP );
-	SetBloodColor( BLOOD_COLOR_RED );
-	m_iHealth			= 20;
-	m_flFieldOfView		= 0.5;
-	m_NPCState			= NPC_STATE_NONE;
+    SetSolid( SOLID_BBOX );
+    AddSolidFlags( FSOLID_NOT_STANDABLE );
+    SetMoveType( MOVETYPE_STEP );
+    SetBloodColor( BLOOD_COLOR_RED );
+    m_iHealth           = 20;
+    m_flFieldOfView     = 0.5;
+    m_NPCState          = NPC_STATE_NONE;
 
-	CapabilitiesClear();
-	//CapabilitiesAdd( bits_CAP_NONE );
+    CapabilitiesClear();
+    //CapabilitiesAdd( bits_CAP_NONE );
 
-	NPCInit();
+    NPCInit();
 }
 
 
 //-----------------------------------------------------------------------------
-// Purpose: 
+// Purpose:
 //
 //
-// Output : 
+// Output :
 //-----------------------------------------------------------------------------
-Class_T	CNewNPC::Classify( void )
+Class_T CNewNPC::Classify( void )
 {
-	return	CLASS_NONE;
+    return  CLASS_NONE;
 }

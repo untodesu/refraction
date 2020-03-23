@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -21,6 +21,6 @@ END_NETWORK_TABLE()
 CBaseProjectile::CBaseProjectile()
 {
 #ifdef GAME_DLL
-	m_iDestroyableHitCount = 0;
+    m_iDestroyableHitCount = 0;
 #endif
 }

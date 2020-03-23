@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================
 
@@ -13,12 +13,12 @@
 class CBaseEntity;
 
 //-----------------------------------------------------------------------------
-// Purpose: Allows an entity to access its owner regardless of entity type 
+// Purpose: Allows an entity to access its owner regardless of entity type
 //-----------------------------------------------------------------------------
 class IHasOwner
 {
 public:
-	virtual CBaseEntity			*GetOwnerViaInterface( void ) = 0;
+    virtual CBaseEntity         *GetOwnerViaInterface( void ) = 0;
 };
 
 #endif // IHASOWNER_H

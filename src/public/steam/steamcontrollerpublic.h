@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2013, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2013, Valve LLC, All rights reserved. ============
 //
 // Purpose: Controller related public types/constants
 //
@@ -27,8 +27,8 @@ typedef uint64_t uint64;
 
 #pragma pack(1)
 
-// Safe to add new bitfields at the end of this list for new buttons/actions, 
-// but never re-use or re-number an existing flag as old client code will be 
+// Safe to add new bitfields at the end of this list for new buttons/actions,
+// but never re-use or re-number an existing flag as old client code will be
 // confused.
 #define STEAM_RIGHT_TRIGGER_MASK            0x0000000000000001l
 #define STEAM_LEFT_TRIGGER_MASK             0x0000000000000002l
@@ -54,24 +54,24 @@ typedef uint64_t uint64;
 
 // Only add fields to the end of this struct, or if you need to change it in a larger
 // way add a new message id and new struct completely so as to not break old clients.
-typedef struct 
+typedef struct
 {
-	// If packet num matches that on your prior call, then the controller state hasn't been changed since 
-	// your last call and there is no need to process it
-	uint32 unPacketNum;
+    // If packet num matches that on your prior call, then the controller state hasn't been changed since
+    // your last call and there is no need to process it
+    uint32 unPacketNum;
 
-	// bit flags for each of the buttons
-	uint64 ulButtons;
+    // bit flags for each of the buttons
+    uint64 ulButtons;
 
-	// Left pad coordinates
-	short sLeftPadX;
-	short sLeftPadY;
+    // Left pad coordinates
+    short sLeftPadX;
+    short sLeftPadY;
 
-	// Right pad coordinates
-	short sRightPadX;
-	short sRightPadY;
+    // Right pad coordinates
+    short sRightPadX;
+    short sRightPadY;
 
-} SteamControllerState_t; 
+} SteamControllerState_t;
 
 #pragma pack()
 

@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 //=============================================================================//
 
@@ -20,7 +20,7 @@ void PrintBrushContents( int contents );
 void FixupAreaportalWaterBrushes( bspbrush_t *pList );
 
 bspbrush_t *MakeBspBrushList (int startbrush, int endbrush,
-		const Vector& clipmins, const Vector& clipmaxs, int detailScreen);
+        const Vector& clipmins, const Vector& clipmaxs, int detailScreen);
 bspbrush_t *MakeBspBrushList (mapbrush_t **pBrushes, int nBrushCount, const Vector& clipmins, const Vector& clipmaxs);
 
 void WriteBrushMap (char *name, bspbrush_t *list);

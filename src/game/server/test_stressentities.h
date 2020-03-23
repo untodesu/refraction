@@ -1,6 +1,6 @@
 //========= Copyright Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose:
 //
 // $NoKeywords: $
 //=============================================================================//
@@ -15,7 +15,7 @@
 class CBaseEntity;
 
 
-typedef CBaseEntity* (*StressEntityFn)();	// Function to create an entity for the stress test.
+typedef CBaseEntity* (*StressEntityFn)();   // Function to create an entity for the stress test.
 
 
 // Each game DLL can instantiate these to register types of entities it can create
@@ -24,22 +24,22 @@ class CStressEntityReg
 {
 public:
 
-							CStressEntityReg( StressEntityFn fn )
-							{
-								m_pFn = fn;
-								m_pNext = s_pHead;
-								s_pHead = this;
-							}
+                            CStressEntityReg( StressEntityFn fn )
+                            {
+                                m_pFn = fn;
+                                m_pNext = s_pHead;
+                                s_pHead = this;
+                            }
 
-	static CStressEntityReg*GetListHead()	{ return s_pHead; }
-	CStressEntityReg*		GetNext()		{ return m_pNext; }
-	StressEntityFn			GetFn()			{ return m_pFn; }
+    static CStressEntityReg*GetListHead()   { return s_pHead; }
+    CStressEntityReg*       GetNext()       { return m_pNext; }
+    StressEntityFn          GetFn()         { return m_pFn; }
 
 
 private:
-	static CStressEntityReg	*s_pHead;	// List of all CStressEntityReg's.
-	CStressEntityReg		*m_pNext;
-	StressEntityFn			m_pFn;
+    static CStressEntityReg *s_pHead;   // List of all CStressEntityReg's.
+    CStressEntityReg        *m_pNext;
+    StressEntityFn          m_pFn;
 };
 
 
@@ -49,8 +49,8 @@ private:
 
 // Helper function for the functions that create the stress entities.
 // Moves the entity to a random place in the level and returns the entity.
-CBaseEntity*	MoveToRandomSpot( CBaseEntity *pEnt );
-Vector			GetRandomSpot();
+CBaseEntity*    MoveToRandomSpot( CBaseEntity *pEnt );
+Vector          GetRandomSpot();
 
 
 #endif // TEST_STRESSENTITIES_H
