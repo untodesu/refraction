@@ -50,10 +50,15 @@ ConVar xc_uncrouch_on_jump( "xc_uncrouch_on_jump", "1", FCVAR_ARCHIVE, "Uncrouch
 ConVar player_limit_jump_speed( "player_limit_jump_speed", "1", FCVAR_REPLICATED );
 #endif
 
+// Accelerated back hopping (un-)fix
+// If enabled, standard backjumping behaviour will be enabled.
+// If disabled, player will save his speed by bunnyjumping (its hard but possible) but will be disallowed to boost
+ConVar sv_abh( "sv_abh", "0", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Accelerated back hopping (1 - on, 0 - off)" );
+
 // option_duck_method is a carrier convar. Its sole purpose is to serve an easy-to-flip
 // convar which is ONLY set by the X360 controller menu to tell us which way to bind the
 // duck controls. Its value is meaningless anytime we don't have the options window open.
-ConVar option_duck_method("option_duck_method", "1", FCVAR_REPLICATED|FCVAR_ARCHIVE );// 0 = HOLD to duck, 1 = Duck is a toggle
+ConVar option_duck_method("option_duck_method", "1", FCVAR_REPLICATED | FCVAR_ARCHIVE ); // 0 = HOLD to duck, 1 = Duck is a toggle
 
 #ifdef STAGING_ONLY
 #ifdef CLIENT_DLL
@@ -1415,8 +1420,7 @@ void CGameMovement::WaterMove( void )
     wishspeed = VectorNormalize(wishdir);
 
     // Cap speed.
-    if (wishspeed > mv->m_flMaxSpeed)
-    {
+    if (wishspeed > mv->m_flMaxSpeed) {
         VectorScale (wishvel, mv->m_flMaxSpeed/wishspeed, wishvel);
         wishspeed = mv->m_flMaxSpeed;
     }
@@ -2464,11 +2468,10 @@ bool CGameMovement::CheckJumpButton( void )
         mv->m_vecVelocity[2] += flGroundFactor * flMul;  // 2 * gravity * height
     }
 
-    // Add a little forward velocity based on your current forward velocity - if you are not sprinting.
-#if defined( HL2_DLL ) || defined( HL2_CLIENT_DLL )
-    if ( gpGlobals->maxClients == 1 )
-    {
-        CHLMoveData *pMoveData = ( CHLMoveData* )mv;
+    // ABH
+    if( sv_abh.GetBool() ) {
+        // Add a little forward velocity based on your current forward velocity - if you are not sprinting.
+        CHLMoveData *pMoveData = (CHLMoveData*)mv;
         Vector vecForward;
         AngleVectors( mv->m_vecViewAngles, &vecForward );
         vecForward.z = 0;
@@ -2476,24 +2479,34 @@ bool CGameMovement::CheckJumpButton( void )
 
         // We give a certain percentage of the current forward movement as a bonus to the jump speed.  That bonus is clipped
         // to not accumulate over time.
-        float flSpeedBoostPerc = ( !pMoveData->m_bIsSprinting && !player->m_Local.m_bDucked ) ? 0.5f : 0.1f;
+        float flSpeedBoostPerc = ( !pMoveData->m_bIsSprinting && !player->m_Local.m_bDucked) ? 0.5f : 0.1f;
         float flSpeedAddition = fabs( mv->m_flForwardMove * flSpeedBoostPerc );
-        float flMaxSpeed = mv->m_flMaxSpeed + ( mv->m_flMaxSpeed * flSpeedBoostPerc );
-        float flNewSpeed = ( flSpeedAddition + mv->m_vecVelocity.Length2D() );
+        float flMaxSpeed = mv->m_flMaxSpeed + (mv->m_flMaxSpeed * flSpeedBoostPerc);
+        float flNewSpeed = (flSpeedAddition + mv->m_vecVelocity.Length2D());
 
         // If we're over the maximum, we want to only boost as much as will get us to the goal speed
-        if ( flNewSpeed > flMaxSpeed )
-        {
+        if( flNewSpeed > flMaxSpeed ) {
             flSpeedAddition -= flNewSpeed - flMaxSpeed;
         }
 
-        if ( mv->m_flForwardMove < 0.0f )
-            flSpeedAddition *= -1.0f;
+        if( mv->m_flForwardMove < 0.0 ) {
+            flSpeedAddition *= -1.0;
+        }
 
         // Add it on
-        VectorAdd( (vecForward*flSpeedAddition), mv->m_vecVelocity, mv->m_vecVelocity );
+        VectorAdd( (vecForward * flSpeedAddition), mv->m_vecVelocity, mv->m_vecVelocity );
     }
-#endif
+    else {
+        // Cap velocity...
+        Vector velocity = mv->m_vecVelocity;
+        float zspeed = velocity.z;
+        velocity.z = 0;
+
+        if( velocity.Length() > mv->m_flMaxSpeed ) {
+            mv->m_vecVelocity = velocity.Normalized() * mv->m_flMaxSpeed;
+            mv->m_vecVelocity.z = zspeed;
+        }
+    }
 
     FinishGravity();
 
