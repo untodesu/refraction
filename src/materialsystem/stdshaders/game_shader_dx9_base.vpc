@@ -75,8 +75,7 @@ $Project
         $Lib    shaderlib
     }
 
-    $File   "buildsdkshaders.bat"
-    $File   "buildshaders.bat"
+    $File   "build_shaders.bat"
 
     $Shaders    "stdshader_dx9_20b.txt"
     $Shaders    "stdshader_dx9_30.txt"

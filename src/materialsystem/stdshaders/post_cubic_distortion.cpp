@@ -7,7 +7,7 @@
 #include "screenspaceeffect_vs30.inc"
 #include "post_cubic_distortion_ps30.inc"
 
-BEGIN_SHADER( Post_CubicDistortion, "Adds lens effect..." )
+BEGIN_SHADER( post_cubic_distortion, "Adds lens effect..." )
     BEGIN_SHADER_PARAMS
         SHADER_PARAM( FBTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_FullFrameFB", "Framebuffer texture." )
         SHADER_PARAM( DISTAMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.15", "Amount of displacement." )

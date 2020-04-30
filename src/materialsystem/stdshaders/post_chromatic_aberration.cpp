@@ -7,7 +7,7 @@
 #include "screenspaceeffect_vs30.inc"
 #include "post_chromatic_aberration_ps30.inc"
 
-BEGIN_SHADER( Post_ChromaticAberration, "Adds a little color displacement at the screen borders" )
+BEGIN_SHADER( post_chromatic_aberration, "Adds a little color displacement at the screen borders" )
     BEGIN_SHADER_PARAMS
         SHADER_PARAM( FBTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_FullFrameFB", "Framebuffer texture." )
         SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.4", "Amount of color displacement." )
