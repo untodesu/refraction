@@ -1498,10 +1498,12 @@ static ConVar mat_postprocess_y         ( "mat_postprocess_y", "1" );
 
 // Post-processing effects' convars
 static ConVar mat_post_chromatic_aberration ( "mat_post_chromatic_aberration", "1", FCVAR_ARCHIVE, "Chromatic aberration post-effect" );
+static ConVar mat_post_cubic_distortion     ( "mat_post_cubic_distortion", "1", FCVAR_ARCHIVE, "Cubic distortion post-effect" );
 
 // Post-processing effects' materials precache
 CLIENTEFFECT_REGISTER_BEGIN( RefractionPostEffects )
     CLIENTEFFECT_MATERIAL( "shaders/post_chromatic_aberration" )
+    CLIENTEFFECT_MATERIAL( "shaders/post_cubic_distortion" )
 CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
 
 // Draw post-processing effects
@@ -1514,6 +1516,14 @@ void DoRefractionPostProcessing( int x, int y, int w, int h )
         IMaterial *post_chromatic_aberration = materials->FindMaterial( "shaders/post_chromatic_aberration", TEXTURE_GROUP_CLIENT_EFFECTS );
         if( post_chromatic_aberration ) {
             DrawScreenEffectMaterial( post_chromatic_aberration, x, y, w, h );
+        }
+    }
+
+    // Cubic distortion
+    if( mat_post_cubic_distortion.GetBool() ) {
+        IMaterial *post_cubic_distortion = materials->FindMaterial( "shaders/post_cubic_distortion", TEXTURE_GROUP_CLIENT_EFFECTS );
+        if( post_cubic_distortion ) {
+            DrawScreenEffectMaterial( post_cubic_distortion, x, y, w, h );
         }
     }
 }
