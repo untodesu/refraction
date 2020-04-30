@@ -1,6 +1,5 @@
-"Post_CubicDistortion"
+"post_cubic_distortion"
 {
-	"$FBTEXTURE"		"_rt_FullFrameFB"
-	"$DISTAMOUNT"		"0.15"
-	// anyway unity shader system is better.
+	"$fbtexture"	"_rt_FullFrameFB"
+	"$distamount"	"0.15"
 }
