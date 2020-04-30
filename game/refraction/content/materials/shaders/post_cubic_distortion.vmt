@@ -1,6 +1,6 @@
-"Post_ChromaticAberration"
+"Post_CubicDistortion"
 {
 	"$FBTEXTURE"		"_rt_FullFrameFB"
-	"$AMOUNT"		"0.4"
+	"$DISTAMOUNT"		"0.15"
 	// anyway unity shader system is better.
 }

@@ -1,16 +1,16 @@
 // ----------------------------------------------------------------------------
-// CHROMATICABERRATION.CPP
+// POST_CUBICDISTORTION.CPP
 //
-// This file defines the C++ component of the chromatic aberration post processing shader.
+// This file defines the C++ component of the cubic distortion post processing shader.
 // ----------------------------------------------------------------------------
 #include "BaseVSShader.h"
 #include "screenspaceeffect_vs30.inc"
-#include "post_chromatic_aberration_ps30.inc"
+#include "post_cubic_distortion_ps30.inc"
 
-BEGIN_SHADER( Post_ChromaticAberration, "Adds a little color displacement at the screen borders" )
+BEGIN_SHADER( Post_CubicDistortion, "Adds lens effect..." )
     BEGIN_SHADER_PARAMS
         SHADER_PARAM( FBTEXTURE, SHADER_PARAM_TYPE_TEXTURE, "_rt_FullFrameFB", "Framebuffer texture." )
-        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.4", "Amount of color displacement." )
+        SHADER_PARAM( DISTAMOUNT, SHADER_PARAM_TYPE_FLOAT, "0.15", "Amount of displacement." )
     END_SHADER_PARAMS
 
     SHADER_INIT
@@ -19,8 +19,8 @@ BEGIN_SHADER( Post_ChromaticAberration, "Adds a little color displacement at the
             LoadTexture( FBTEXTURE );
         }
 
-        if( !params[AMOUNT]->IsDefined() ) {
-            params[AMOUNT]->SetFloatValue( 0.4 );
+        if( !params[DISTAMOUNT]->IsDefined() ) {
+            params[DISTAMOUNT]->SetFloatValue( 0.15 );
         }
 
     }
@@ -55,8 +55,8 @@ BEGIN_SHADER( Post_ChromaticAberration, "Adds a little color displacement at the
             SET_STATIC_VERTEX_SHADER( screenspaceeffect_vs30 );
 
             if( g_pHardwareConfig->SupportsShaderModel_3_0() ) {
-                DECLARE_STATIC_PIXEL_SHADER( post_chromatic_aberration_ps30 );
-                SET_STATIC_PIXEL_SHADER( post_chromatic_aberration_ps30 );
+                DECLARE_STATIC_PIXEL_SHADER( post_cubic_distortion_ps30 );
+                SET_STATIC_PIXEL_SHADER( post_cubic_distortion_ps30 );
             }
         }
 
@@ -66,15 +66,15 @@ BEGIN_SHADER( Post_ChromaticAberration, "Adds a little color displacement at the
             BindTexture( SHADER_SAMPLER0, FBTEXTURE, -1 );
 
             // $AMOUNT
-            float c0 = params[AMOUNT]->GetFloatValue();
+            float c0 = params[DISTAMOUNT]->GetFloatValue();
             pShaderAPI->SetPixelShaderConstant( 0, &c0, 1 );
 
             DECLARE_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs30 );
             SET_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs30 );
 
             if( g_pHardwareConfig->SupportsShaderModel_3_0() ) {
-                DECLARE_DYNAMIC_PIXEL_SHADER( post_chromatic_aberration_ps30 );
-                SET_DYNAMIC_PIXEL_SHADER( post_chromatic_aberration_ps30 );
+                DECLARE_DYNAMIC_PIXEL_SHADER( post_cubic_distortion_ps30 );
+                SET_DYNAMIC_PIXEL_SHADER( post_cubic_distortion_ps30 );
             }
         }
 
