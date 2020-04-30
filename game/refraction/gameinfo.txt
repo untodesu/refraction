@@ -13,6 +13,7 @@
 			// Refraction data
 			game+mod+mod_write+default_write_path		|gameinfo_path|.
 			gamebin						|gameinfo_path|bin
+            game+mod					|gameinfo_path|content/.
 //			game+mod					|gameinfo_path|shadereditor/.
 //			game+mod					|gameinfo_path|refraction_unpack/.
 
