@@ -2497,13 +2497,17 @@ bool CGameMovement::CheckJumpButton( void )
         VectorAdd( (vecForward * flSpeedAddition), mv->m_vecVelocity, mv->m_vecVelocity );
     }
     else {
+        CHLMoveData *pMoveData = (CHLMoveData*)mv;
+        float flSpeedBoostPerc = ( !pMoveData->m_bIsSprinting && !player->m_Local.m_bDucked ) ? 0.5f : 0.1f;
+        float flMaxSpeed = mv->m_flMaxSpeed + ( mv->m_flMaxSpeed * flSpeedBoostPerc );
+
         // Cap velocity...
         Vector velocity = mv->m_vecVelocity;
         float zspeed = velocity.z;
         velocity.z = 0;
 
-        if( velocity.Length() > mv->m_flMaxSpeed ) {
-            mv->m_vecVelocity = velocity.Normalized() * mv->m_flMaxSpeed;
+        if( velocity.Length() > flMaxSpeed ) {
+            mv->m_vecVelocity = velocity.Normalized() * flMaxSpeed;
             mv->m_vecVelocity.z = zspeed;
         }
     }
