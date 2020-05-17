@@ -2964,7 +2964,7 @@ epair_t *ParseEpair (void)
 ParseEntity
 ================
 */
-qboolean    ParseEntity (void)
+bool    ParseEntity (void)
 {
     epair_t     *e;
     entity_t    *mapent;

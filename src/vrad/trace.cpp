@@ -28,7 +28,7 @@ public:
 
     texinfo_t   *surface;
 
-    qboolean    ispoint;
+    bool    ispoint;
 
 private:
      CToolTrace( const CToolTrace& );

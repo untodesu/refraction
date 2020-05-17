@@ -816,7 +816,7 @@ WindingOnPlaneSide
 */
 int WindingOnPlaneSide (winding_t *w, const Vector &normal, vec_t dist)
 {
-    qboolean    front, back;
+    bool    front, back;
     int         i;
     vec_t       d;
 

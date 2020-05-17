@@ -427,7 +427,7 @@ inline float VectorLength(const float *v)
 
 void CrossProduct (const float *v1, const float *v2, float *cross);
 
-qboolean VectorsEqual( const float *v1, const float *v2 );
+bool VectorsEqual( const float *v1, const float *v2 );
 
 inline vec_t RoundInt (vec_t in)
 {

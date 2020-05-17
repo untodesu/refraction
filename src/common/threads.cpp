@@ -35,9 +35,9 @@ CRunThreadsData g_RunThreadsData[MAX_THREADS];
 
 int     dispatch;
 int     workcount;
-qboolean        pacifier;
+bool        pacifier;
 
-qboolean    threaded;
+bool    threaded;
 bool g_bLowPriorityThreads = false;
 
 HANDLE g_ThreadHandles[MAX_THREADS];
@@ -88,7 +88,7 @@ void ThreadWorkerFunction( int iThread, void *pUserData )
     }
 }
 
-void RunThreadsOnIndividual (int workcnt, qboolean showpacifier, ThreadWorkerFn func)
+void RunThreadsOnIndividual (int workcnt, bool showpacifier, ThreadWorkerFn func)
 {
     if (numthreads == -1)
         ThreadSetDefault ();
@@ -225,7 +225,7 @@ void RunThreads_End()
 RunThreadsOn
 =============
 */
-void RunThreadsOn( int workcnt, qboolean showpacifier, RunThreadsFn fn, void *pUserData )
+void RunThreadsOn( int workcnt, bool showpacifier, RunThreadsFn fn, void *pUserData )
 {
     int     start, end;
 

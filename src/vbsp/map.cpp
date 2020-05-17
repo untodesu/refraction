@@ -44,7 +44,7 @@ struct LoadSide_t
 };
 
 
-extern qboolean onlyents;
+extern bool onlyents;
 
 
 CUtlVector< CMapFile * >    g_Maps;
@@ -165,7 +165,7 @@ int PlaneTypeForNormal (Vector& normal)
 PlaneEqual
 ================
 */
-qboolean    PlaneEqual (plane_t *p, Vector& normal, vec_t dist, float normalEpsilon, float distEpsilon)
+bool    PlaneEqual (plane_t *p, Vector& normal, vec_t dist, float normalEpsilon, float distEpsilon)
 {
 #if 1
     if (
@@ -617,7 +617,7 @@ MakeBrushWindings
 makes basewindigs for sides and mins / maxs for the brush
 ================
 */
-qboolean CMapFile::MakeBrushWindings (mapbrush_t *ob)
+bool CMapFile::MakeBrushWindings (mapbrush_t *ob)
 {
     int         i, j;
     winding_t   *w;

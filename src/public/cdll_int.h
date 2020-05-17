@@ -675,7 +675,7 @@ public:
     // entindex is -1 to represent the local client talking (before the data comes back from the server).
     // entindex is -2 to represent the local client's voice being acked by the server.
     // entindex is GetPlayer() when the server acknowledges that the local client is talking.
-    virtual void            VoiceStatus( int entindex, qboolean bTalking ) = 0;
+    virtual void            VoiceStatus( int entindex, bool bTalking ) = 0;
 
     // Networked string table definitions have arrived, allow client .dll to
     //  hook string changes with a callback function ( see INetworkStringTableClient.h )

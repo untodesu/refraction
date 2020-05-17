@@ -71,9 +71,9 @@ struct side_t
     side_t          *original;      // bspbrush_t sides will reference the mapbrush_t sides
     int             contents;       // from miptex
     int             surf;           // from miptex
-    qboolean        visible;        // choose visble planes first
-    qboolean        tested;         // this plane allready checked as a split
-    qboolean        bevel;          // don't ever use for bsp splitting
+    bool        visible;        // choose visble planes first
+    bool        tested;         // this plane allready checked as a split
+    bool        bevel;          // don't ever use for bsp splitting
 
     side_t          *next;
     int             origIndex;
@@ -125,7 +125,7 @@ struct face_t
     int             outputnumber;
     winding_t       *w;
     int             numpoints;
-    qboolean        badstartvert;           // tjunctions cannot be fixed without a midpoint vertex
+    bool        badstartvert;           // tjunctions cannot be fixed without a midpoint vertex
     int             vertexnums[MAXEDGES];
     side_t          *originalface;          // save the "side" this face came from
     int             firstPrimID;
@@ -133,7 +133,7 @@ struct face_t
     unsigned int    smoothingGroups;
 };
 
-void EmitFace( face_t *f, qboolean onNode );
+void EmitFace( face_t *f, bool onNode );
 
 struct mapdispinfo_t
 {
@@ -230,7 +230,7 @@ struct portal_t
     node_t          *nodes[2];      // [0] = front side of plane
     portal_t        *next[2];
     winding_t       *winding;
-    qboolean        sidefound;      // false if ->side hasn't been checked
+    bool        sidefound;      // false if ->side hasn't been checked
     side_t          *side;          // NULL = non-visible
     face_t          *face[2];       // output face in bsp file
 };
@@ -263,7 +263,7 @@ public:
     int                 FindFloatPlane (Vector& normal, vec_t dist);
     int                 PlaneFromPoints(const Vector &p0, const Vector &p1, const Vector &p2);
     void                AddBrushBevels (mapbrush_t *b);
-    qboolean            MakeBrushWindings (mapbrush_t *ob);
+    bool            MakeBrushWindings (mapbrush_t *ob);
     void                MoveBrushesToWorld( entity_t *mapent );
     void                MoveBrushesToWorldGeneral( entity_t *mapent );
     void                RemoveContentsDetailFromEntity( entity_t *mapent );
@@ -343,22 +343,22 @@ extern CUtlVector< CMapFile * > g_Maps;
 
 extern  int         g_nMapFileVersion;
 
-extern  qboolean    noprune;
-extern  qboolean    nodetail;
-extern  qboolean    fulldetail;
-extern  qboolean    nomerge;
-extern  qboolean    nomergewater;
-extern  qboolean    nosubdiv;
-extern  qboolean    nowater;
-extern  qboolean    noweld;
-extern  qboolean    noshare;
-extern  qboolean    notjunc;
-extern  qboolean    nocsg;
-extern  qboolean    noopt;
-extern  qboolean    dumpcollide;
-extern  qboolean    nodetailcuts;
-extern  qboolean    g_DumpStaticProps;
-extern  qboolean    g_bSkyVis;
+extern  bool    noprune;
+extern  bool    nodetail;
+extern  bool    fulldetail;
+extern  bool    nomerge;
+extern  bool    nomergewater;
+extern  bool    nosubdiv;
+extern  bool    nowater;
+extern  bool    noweld;
+extern  bool    noshare;
+extern  bool    notjunc;
+extern  bool    nocsg;
+extern  bool    noopt;
+extern  bool    dumpcollide;
+extern  bool    nodetailcuts;
+extern  bool    g_DumpStaticProps;
+extern  bool    g_bSkyVis;
 extern  vec_t       microvolume;
 extern  bool        g_snapAxialPlanes;
 extern  bool        g_NodrawTriggers;
@@ -405,7 +405,7 @@ void FindGCD (int *v);
 
 mapbrush_t *Brush_LoadEntity (entity_t *ent);
 int PlaneTypeForNormal (Vector& normal);
-qboolean MakeBrushPlanes (mapbrush_t *b);
+bool MakeBrushPlanes (mapbrush_t *b);
 int     FindIntPlane (int *inormal, int *iorigin);
 void    CreateBrush (int brushnum);
 
@@ -462,7 +462,7 @@ enum detailscreen_e
 
 // brushbsp
 
-void WriteBrushList (char *name, bspbrush_t *brush, qboolean onlyvis);
+void WriteBrushList (char *name, bspbrush_t *brush, bool onlyvis);
 
 bspbrush_t *CopyBrush (bspbrush_t *brush);
 
@@ -488,7 +488,7 @@ tree_t *BrushBSP (bspbrush_t *brushlist, Vector& mins, Vector& maxs);
 #define PSIDE_BOTH          (PSIDE_FRONT|PSIDE_BACK)
 #define PSIDE_FACING        4
 int BrushBspBoxOnPlaneSide (const Vector& mins, const Vector& maxs, dplane_t *plane);
-extern qboolean WindingIsTiny (winding_t *w);
+extern bool WindingIsTiny (winding_t *w);
 
 //=============================================================================
 
@@ -500,9 +500,9 @@ void MakeHeadnodePortals (tree_t *tree);
 void MakeNodePortal (node_t *node);
 void SplitNodePortals (node_t *node);
 
-qboolean    Portal_VisFlood (portal_t *p);
+bool    Portal_VisFlood (portal_t *p);
 
-qboolean FloodEntities (tree_t *tree);
+bool FloodEntities (tree_t *tree);
 void FillOutside (node_t *headnode);
 void FloodAreas (tree_t *tree);
 void MarkVisibleSides (tree_t *tree, int start, int end, int detailScreen);

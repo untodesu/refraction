@@ -645,7 +645,7 @@ public:
 
     virtual int                     GetSpriteSize( void ) const;
 
-    virtual void                    VoiceStatus( int entindex, qboolean bTalking );
+    virtual void                    VoiceStatus( int entindex, bool bTalking );
 
     virtual void                    InstallStringTableCallback( const char *tableName );
 
@@ -1792,7 +1792,7 @@ int CHLClient::GetSpriteSize( void ) const
 // Input  : entindex -
 //          bTalking -
 //-----------------------------------------------------------------------------
-void CHLClient::VoiceStatus( int entindex, qboolean bTalking )
+void CHLClient::VoiceStatus( int entindex, bool bTalking )
 {
     GetClientVoiceMgr()->UpdateSpeakerStatus( entindex, !!bTalking );
 }
