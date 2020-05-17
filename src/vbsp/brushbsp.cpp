@@ -70,7 +70,7 @@ void DrawBrushList (bspbrush_t *brush, node_t *node)
 WriteBrushList
 ================
 */
-void WriteBrushList (char *name, bspbrush_t *brush, qboolean onlyvis)
+void WriteBrushList (char *name, bspbrush_t *brush, bool onlyvis)
 {
     int     i;
     side_t  *s;
@@ -542,7 +542,7 @@ TestBrushToPlanenum
 ============
 */
 int TestBrushToPlanenum (bspbrush_t *brush, int planenum,
-                         int *numsplits, qboolean *hintsplit, int *epsilonbrush)
+                         int *numsplits, bool *hintsplit, int *epsilonbrush)
 {
     int         i, j, num;
     plane_t     *plane;
@@ -644,7 +644,7 @@ existance by the vertex snapping.
 ================
 */
 #define EDGE_LENGTH 0.2
-qboolean WindingIsTiny (winding_t *w)
+bool WindingIsTiny (winding_t *w)
 {
     int     i, j;
     vec_t   len;
@@ -673,7 +673,7 @@ qboolean WindingIsTiny (winding_t *w)
 // desired in this case.
 // UNDONE: Test & use this instead.
 #if 0
-qboolean WindingIsTiny2 (winding_t *w)
+bool WindingIsTiny2 (winding_t *w)
 {
     int     i, j;
     vec_t   len;
@@ -732,7 +732,7 @@ Returns true if the winding still has one of the points
 from basewinding for plane
 ================
 */
-qboolean WindingIsHuge (winding_t *w)
+bool WindingIsHuge (winding_t *w)
 {
     int     i, j;
 
@@ -822,10 +822,10 @@ void CheckPlaneAgainstParents (int pnum, node_t *node)
     }
 }
 
-qboolean CheckPlaneAgainstVolume (int pnum, node_t *node)
+bool CheckPlaneAgainstVolume (int pnum, node_t *node)
 {
     bspbrush_t  *front, *back;
-    qboolean    good;
+    bool    good;
 
     SplitBrush (node->volume, pnum, &front, &back);
 
@@ -861,7 +861,7 @@ side_t *SelectSplitSide (bspbrush_t *brushes, node_t *node)
     int         bsplits;
     int         bestsplits;
     int         epsilonbrush;
-    qboolean    hintsplit = false;
+    bool    hintsplit = false;
 
     bestside = NULL;
     bestvalue = -99999;

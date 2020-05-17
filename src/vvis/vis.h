@@ -30,7 +30,7 @@ struct plane_t
 
 struct winding_t
 {
-    qboolean    original;           // don't free, it's part of the portal
+    bool    original;           // don't free, it's part of the portal
     int     numpoints;
     Vector  points[MAX_POINTS_ON_FIXED_WINDING];            // variable sized
 };

@@ -24,7 +24,7 @@ textureref_t    textureref[MAX_MAP_TEXTURES];
 
 bool g_bHasWater = false;
 
-extern qboolean onlyents;
+extern bool onlyents;
 
 dtexdata_t *GetTexData( int index )
 {
@@ -34,7 +34,7 @@ dtexdata_t *GetTexData( int index )
     return &dtexdata[ index ];
 }
 
-static qboolean StringIsTrue( const char *str )
+static bool StringIsTrue( const char *str )
 {
     if( Q_strcasecmp( str, "true" ) == 0 )
     {

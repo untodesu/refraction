@@ -48,7 +48,7 @@ char **myargv;
 
 char        com_token[1024];
 
-qboolean        archive;
+bool        archive;
 char            archivedir[1024];
 
 FileHandle_t g_pLogFile = 0;
@@ -481,7 +481,7 @@ void ExpandWildcards (int *argc, char ***argv)
 
 
 // only printf if in verbose mode
-qboolean verbose = false;
+bool verbose = false;
 void qprintf (const char *format, ...)
 {
     if (!verbose)
@@ -825,7 +825,7 @@ void SafeWrite ( FileHandle_t f, void *buffer, int count)
 FileExists
 ==============
 */
-qboolean    FileExists ( const char *filename )
+bool    FileExists ( const char *filename )
 {
     FileHandle_t hFile = g_pFileSystem->Open( filename, "rb" );
     if ( hFile == FILESYSTEM_INVALID_HANDLE )

@@ -27,6 +27,6 @@ void WriteBrushMap (char *name, bspbrush_t *list);
 
 bspbrush_t *ChopBrushes (bspbrush_t *head);
 bspbrush_t *IntersectBrush (bspbrush_t *a, bspbrush_t *b);
-qboolean BrushesDisjoint (bspbrush_t *a, bspbrush_t *b);
+bool BrushesDisjoint (bspbrush_t *a, bspbrush_t *b);
 
 #endif // CSG_H

@@ -45,9 +45,9 @@ void SetLowPriority();
 void ThreadSetDefault (void);
 int GetThreadWork (void);
 
-void RunThreadsOnIndividual ( int workcnt, qboolean showpacifier, ThreadWorkerFn fn );
+void RunThreadsOnIndividual ( int workcnt, bool showpacifier, ThreadWorkerFn fn );
 
-void RunThreadsOn ( int workcnt, qboolean showpacifier, RunThreadsFn fn, void *pUserData=NULL );
+void RunThreadsOn ( int workcnt, bool showpacifier, RunThreadsFn fn, void *pUserData=NULL );
 
 // This version doesn't track work items - it just runs your function and waits for it to finish.
 void RunThreads_Start( RunThreadsFn fn, void *pUserData, ERunThreadsPriority ePriority=k_eRunThreadsPriority_UseGlobalState );

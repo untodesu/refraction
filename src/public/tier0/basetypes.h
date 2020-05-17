@@ -136,7 +136,6 @@ T Max( T const &val1, T const &val2 )
 typedef int BOOL;
 #endif
 
-typedef int qboolean;
 typedef unsigned long ULONG;
 typedef unsigned char BYTE;
 typedef unsigned char byte;

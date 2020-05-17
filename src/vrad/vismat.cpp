@@ -18,7 +18,7 @@ static MessageBuffer mb;
 extern char     source[MAX_PATH];
 extern char     vismatfile[_MAX_PATH];
 extern char     incrementfile[_MAX_PATH];
-extern qboolean incremental;
+extern bool incremental;
 
 /*
 ===================================================================

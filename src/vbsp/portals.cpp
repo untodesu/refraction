@@ -110,7 +110,7 @@ The nodes on either side of the portal may actually be clusters,
 not leafs, so all contents should be ored together
 =============
 */
-qboolean Portal_VisFlood (portal_t *p)
+bool Portal_VisFlood (portal_t *p)
 {
     int     c1, c2;
 
@@ -149,7 +149,7 @@ The entity flood determines which areas are
 Flowing from side s to side !s
 ===============
 */
-qboolean Portal_EntityFlood (portal_t *p, int s)
+bool Portal_EntityFlood (portal_t *p, int s)
 {
     if (p->nodes[0]->planenum != PLANENUM_LEAF
         || p->nodes[1]->planenum != PLANENUM_LEAF)
@@ -164,7 +164,7 @@ qboolean Portal_EntityFlood (portal_t *p, int s)
     return true;
 }
 
-qboolean Portal_AreaLeakFlood (portal_t *p, int s)
+bool Portal_AreaLeakFlood (portal_t *p, int s)
 {
     if ( !Portal_EntityFlood( p, s ) )
         return false;
@@ -705,7 +705,7 @@ void FloodAreaLeak( node_t *headnode, node_t *pFirstSide )
 //          occupant -
 // Output : Returns false if the entity is in solid, true if it is not.
 //-----------------------------------------------------------------------------
-qboolean PlaceOccupant (node_t *headnode, Vector& origin, entity_t *occupant)
+bool PlaceOccupant (node_t *headnode, Vector& origin, entity_t *occupant)
 {
     node_t  *node;
     vec_t   d;
@@ -741,12 +741,12 @@ FloodEntities
 Marks all nodes that can be reached by entites
 =============
 */
-qboolean FloodEntities (tree_t *tree)
+bool FloodEntities (tree_t *tree)
 {
     int     i;
     Vector  origin;
     char    *cl;
-    qboolean    inside;
+    bool    inside;
     node_t *headnode;
 
     headnode = tree->headnode;
@@ -804,7 +804,7 @@ gotit: ;
         qprintf ("entity reached from outside -- no filling\n" );
     }
 
-    return (qboolean)(inside && !tree->outside_node.occupied);
+    return (bool)(inside && !tree->outside_node.occupied);
 }
 
 
@@ -1628,7 +1628,7 @@ void MarkVisibleSides (tree_t *tree, int startbrush, int endbrush, int detailScr
     int     i, j;
     mapbrush_t  *mb;
     int     numsides;
-    qboolean detail;
+    bool detail;
 
     qprintf ("--- MarkVisibleSides ---\n");
 
@@ -1639,7 +1639,7 @@ void MarkVisibleSides (tree_t *tree, int startbrush, int endbrush, int detailScr
 
         if ( detailScreen != FULL_DETAIL )
         {
-            qboolean onlyDetail = (detailScreen==ONLY_DETAIL)?true:false;
+            bool onlyDetail = (detailScreen==ONLY_DETAIL)?true:false;
             // true for detail brushes
             detail = (mb->contents & CONTENTS_DETAIL) ? true : false;
             if ( onlyDetail ^ detail )

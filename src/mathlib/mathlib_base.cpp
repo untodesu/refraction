@@ -124,7 +124,7 @@ void InitSinCosTable()
     }
 }
 
-qboolean VectorsEqual( const float *v1, const float *v2 )
+bool VectorsEqual( const float *v1, const float *v2 )
 {
     Assert( s_bMathlibInitialized );
     return ( ( v1[0] == v2[0] ) &&

@@ -103,7 +103,7 @@ void            SafeWrite( FileHandle_t f, void *buffer, int count);
 
 int     LoadFile ( const char *filename, void **bufferptr );
 void    SaveFile ( const char *filename, void *buffer, int count );
-qboolean    FileExists ( const char *filename );
+bool    FileExists ( const char *filename );
 
 int     ParseNum (char *str);
 
@@ -149,10 +149,10 @@ void    CreatePath( char *path );
 void    QCopyFile( char *from, char *to );
 void    SafeCreatePath( char *path );
 
-extern  qboolean        archive;
+extern  bool        archive;
 extern  char            archivedir[1024];
 
-extern  qboolean verbose;
+extern  bool verbose;
 
 void qprintf( PRINTF_FORMAT_STRING const char *format, ... );
 

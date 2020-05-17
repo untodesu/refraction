@@ -30,7 +30,7 @@ extern  char    token[MAXTOKEN];
 extern  char    *scriptbuffer,*script_p,*scriptend_p;
 extern  int     grabbed;
 extern  int     scriptline;
-extern  qboolean    endofscript;
+extern  bool    endofscript;
 
 
 // If pathMode is SCRIPT_USE_ABSOLUTE_PATH, then it uses ExpandPath() on the filename before
@@ -39,11 +39,11 @@ extern  qboolean    endofscript;
 void LoadScriptFile (char *filename, ScriptPathMode_t pathMode=SCRIPT_USE_ABSOLUTE_PATH);
 void ParseFromMemory (char *buffer, int size);
 
-qboolean GetToken (qboolean crossline);
-qboolean GetExprToken (qboolean crossline);
+bool GetToken (bool crossline);
+bool GetExprToken (bool crossline);
 void UnGetToken (void);
-qboolean TokenAvailable (void);
-qboolean GetTokenizerStatus( char **pFilename, int *pLine );
+bool TokenAvailable (void);
+bool GetTokenizerStatus( char **pFilename, int *pLine );
 bool SetCheckSingleCharTokens( bool bCheck );
 
 // SCRIPT_LOADED_CALLBACK:

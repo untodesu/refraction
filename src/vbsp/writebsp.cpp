@@ -411,7 +411,7 @@ int FindOrCreateOrigFace( face_t *f )
 EmitFace
 ==================
 */
-void EmitFace( face_t *f, qboolean onNode )
+void EmitFace( face_t *f, bool onNode )
 {
     dface_t *df;
     int     i;

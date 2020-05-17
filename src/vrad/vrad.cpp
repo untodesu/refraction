@@ -54,7 +54,7 @@ float       maxchop = 4; // coarsest allowed number of luxel widths for a patch
 float       minchop = 4; // "-chop" tightest number of luxel widths for a patch, used on edges
 float       dispchop = 8.0f;    // number of luxel widths for a patch
 float       g_MaxDispPatchRadius = 1500.0f;         // Maximum radius allowed for displacement patches
-qboolean    g_bDumpPatches;
+bool    g_bDumpPatches;
 bool        bDumpNormals = false;
 bool        g_bDumpRtEnv = false;
 bool        bRed2Black = true;
@@ -96,22 +96,22 @@ bool g_bShowStaticPropNormals = false;
 float       gamma_value = 0.5;
 float       indirect_sun = 1.0;
 float       reflectivityScale = 1.0;
-qboolean    do_extra = true;
+bool    do_extra = true;
 bool        debug_extra = false;
-qboolean    do_fast = false;
-qboolean    do_centersamples = false;
+bool    do_fast = false;
+bool    do_centersamples = false;
 int         extrapasses = 4;
 float       smoothing_threshold = 0.7071067; // cos(45.0*(M_PI/180))
 // Cosine of smoothing angle(in radians)
 float       coring = 1.0;   // Light threshold to force to blackness(minimizes lightmaps)
-qboolean    texscale = true;
+bool    texscale = true;
 int         dlight_map = 0; // Setting to 1 forces direct lighting into different lightmap than radiosity
 
 float       luxeldensity = 1.0;
 unsigned    num_degenerate_faces;
 
-qboolean    g_bLowPriority = false;
-qboolean    g_bLogHashData = false;
+bool    g_bLowPriority = false;
+bool    g_bLogHashData = false;
 bool        g_bNoDetailLighting = false;
 double      g_flStartTime;
 bool        g_bStaticPropLighting = false;
@@ -421,7 +421,7 @@ void BaseLightForFace( dface_t *f, Vector& light, float *parea, Vector& reflecti
     }
 }
 
-qboolean IsSky (dface_t *f)
+bool IsSky (dface_t *f)
 {
     texinfo_t   *tx;
 
@@ -435,7 +435,7 @@ qboolean IsSky (dface_t *f)
 /*=============
 IsFog
 =============*/
-qboolean IsFog( dface_t *f )
+bool IsFog( dface_t *f )
 {
     texinfo_t   *tx;
 
@@ -1654,7 +1654,7 @@ void BounceLight (void)
     unsigned i;
     Vector  added;
     char        name[64];
-    qboolean    bouncing = numbounce > 0;
+    bool    bouncing = numbounce > 0;
 
     unsigned int uiPatchCount = g_Patches.Size();
     for (i=0 ; i<uiPatchCount; i++)

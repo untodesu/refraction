@@ -22,7 +22,7 @@ typedef struct
 {
     dface_t     *faces[2];
     Vector      interface_normal;
-    qboolean    coplanar;
+    bool    coplanar;
 } edgeshare_t;
 
 extern edgeshare_t  edgeshare[MAX_MAP_EDGES];
