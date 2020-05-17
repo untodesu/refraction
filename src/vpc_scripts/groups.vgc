@@ -8,59 +8,31 @@
 // Group definitions //
 ///////////////////////
 
-$Group "gamedlls"
-{
-    "client"
-    "server"
-}
 
 $Group "game"
 {
     "client"
-    "mathlib"
-    "raytrace"
     "server"
+    
+    "mathlib"
     "tier1"
     "vgui_controls"
+}
+
+$Group "compilers"
+{
+    "vbsp"
+    "vrad_dll"
+    "vrad_launcher"
+    "vvis_dll"
+    "vvis_launcher"
+    
+    "fgdlib"
+    "mathlib"
+    "raytrace"
 }
 
 $Group "shaders"
 {
     "game_shader_dx9"
 }
-
-$Group "everything"
-{
-    "captioncompiler"
-    "client"
-    "fgdlib"
-    "game_shader_dx9"
-    "glview"
-    "height2normal"
-    "mathlib"
-    "motionmapper"
-    "phonemeextractor"
-    "qc_eyes"
-    "raytrace"
-    "server"
-    "serverplugin_empty"
-    "tgadiff"
-    "tier1"
-    "vbsp"
-    "vgui_controls"
-    "vice"
-    "vrad_dll"
-    "vrad_launcher"
-    "vtf2tga"
-    "vtfdiff"
-    "vvis_dll"
-    "vvis_launcher"
-}
-
-$Group "dedicated"
-{
-    "mathlib"
-    "server"
-    "tier1"
-}
-
