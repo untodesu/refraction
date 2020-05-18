@@ -2258,7 +2258,7 @@ void CFuncTankGun::Fire( int bulletCount, const Vector &barrelEnd, const Vector 
 
     //Well fuck, episodic SDK cannot deal with HL2's func_tank compiled
     //So we have a stub for that
-    int ammoType = (m_iAmmoType == -1) ? GetAmmoDef()->Index( "AR2" ) : m_iAmmoType;
+    int ammoType = ( m_iAmmoType == -1 ) ? GetAmmoDef()->Index( "AR2" ) : m_iAmmoType;
     if( ammoType != -1 ) {
         info.m_iAmmoType = ammoType;
         for( i = 0; i < bulletCount; i++ ) {
