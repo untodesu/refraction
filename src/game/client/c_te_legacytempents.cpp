@@ -2839,8 +2839,7 @@ void CTempEnts::MuzzleFlash_SMG1_Player( ClientEntityHandle_t hEntity, int attac
     {
         offset = (forward * (i*8.0f*flScale));
 
-        pParticle = (SimpleParticle *) pSimple->AddParticle( sizeof( SimpleParticle ), m_Material_MuzzleFlash_Player[random->RandomInt(0,3)], offset );
-
+        pParticle = (SimpleParticle *)pSimple->AddParticle( sizeof( SimpleParticle ), m_Material_MuzzleFlash_Player[random->RandomInt( 0, 3 )], offset );
         if ( pParticle == NULL )
             return;
 
