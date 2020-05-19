@@ -1537,7 +1537,7 @@ void CWeaponRPG::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatChara
 
             pOperator->DoMuzzleFlash();
 
-            WeaponSound( SINGLE_NPC );
+            WeaponSound( WPS_PRIMARY_NPC );
 
             // Make sure our laserdot is off
             m_bGuiding = false;
@@ -1629,7 +1629,7 @@ void CWeaponRPG::PrimaryAttack( void )
     pOwner->SetMuzzleFlashTime( gpGlobals->curtime + 0.5 );
 
     SendWeaponAnim( ACT_VM_PRIMARYATTACK );
-    WeaponSound( SINGLE );
+    WeaponSound( WPS_PRIMARY );
 
     pOwner->RumbleEffect( RUMBLE_SHOTGUN_SINGLE, 0, RUMBLE_FLAG_RESTART );
 
@@ -1858,7 +1858,7 @@ void CWeaponRPG::StartGuiding( void )
 
     m_bGuiding = true;
 
-    WeaponSound(SPECIAL1);
+    WeaponSound( WPS_SPECIAL1 );
 
     CreateLaserPointer();
     StartLaserEffects();
@@ -1871,7 +1871,7 @@ void CWeaponRPG::StopGuiding( void )
 {
     m_bGuiding = false;
 
-    WeaponSound( SPECIAL2 );
+    WeaponSound( WPS_SPECIAL2 );
 
     StopLaserEffects();
 
@@ -2012,7 +2012,7 @@ bool CWeaponRPG::Reload( void )
     if ( pOwner->GetAmmoCount(m_iPrimaryAmmoType) <= 0 )
         return false;
 
-    WeaponSound( RELOAD );
+    WeaponSound( WPS_RELOAD );
 
     SendWeaponAnim( ACT_VM_RELOAD );
 

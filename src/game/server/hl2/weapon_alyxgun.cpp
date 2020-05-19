@@ -222,7 +222,7 @@ void CWeaponAlyxGun::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool
         vecShootDir = npc->GetActualShootTrajectory( vecShootOrigin );
     }
 
-    WeaponSound( SINGLE_NPC );
+    WeaponSound( WPS_PRIMARY_NPC );
 
     if( hl2_episodic.GetBool() )
     {

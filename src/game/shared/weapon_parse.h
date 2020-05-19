@@ -15,45 +15,44 @@
 
 class IFileSystem;
 
-typedef unsigned short WEAPON_FILE_INFO_HANDLE;
+typedef unsigned short WeaponFileInfoHandle_t;
 
 // -----------------------------------------------------------
 // Weapon sound types
 // Used to play sounds defined in the weapon's classname.txt file
 // This needs to match pWeaponSoundCategories in weapon_parse.cpp
 // ------------------------------------------------------------
-typedef enum {
-    EMPTY,
-    SINGLE,
-    SINGLE_NPC,
-    WPN_DOUBLE, // Can't be "DOUBLE" because windows.h uses it.
-    DOUBLE_NPC,
-    BURST,
-    RELOAD,
-    RELOAD_NPC,
-    MELEE_MISS,
-    MELEE_HIT,
-    MELEE_HIT_WORLD,
-    SPECIAL1,
-    SPECIAL2,
-    SPECIAL3,
-    TAUNT,
-    DEPLOY,
+enum WeaponSound_t {
+    WPS_INVALID = -1,
+    WPS_FIRST_DONTUSE = 0,
 
-    // Add new shoot sound types here
+    WPS_EMPTY = WPS_FIRST_DONTUSE,
+    WPS_PRIMARY,
+    WPS_PRIMARY_NPC,
+    WPS_SECONDARY,
+    WPS_SECONDARY_NPC,
+    WPS_BURST,  // what the fuck is this?
+    WPS_RELOAD,
+    WPS_RELOAD_NPC,
+    WPS_MELEE_SWING,
+    WPS_MELEE_HIT,
+    WPS_MELEE_HIT_WORLD,
+    WPS_SPECIAL1,
+    WPS_SPECIAL2,
+    WPS_SPECIAL3,
+    WPS_TAUNT,  // what the fuck?
+    WPS_DEPLOY,
 
-    NUM_SHOOT_SOUND_TYPES,
-} WeaponSound_t;
+    WPS_NUM_TYPES,
+};
 
-int GetWeaponSoundFromString( const char *pszString );
+const WeaponSound_t GetWeaponSound( const char *pszString );
 
-#define MAX_SHOOT_SOUNDS    16          // Maximum number of shoot sounds per shoot type
-
-#define MAX_WEAPON_STRING   80
-#define MAX_WEAPON_PREFIX   16
+#define MAX_SHOOT_SOUNDS            16  // Maximum number of shoot sounds per shoot type
+#define MAX_WEAPON_STRING           80
+#define MAX_WEAPON_PREFIX           16
 #define MAX_WEAPON_AMMO_NAME        32
-
-#define WEAPON_PRINTNAME_MISSING "!!! Missing printname on weapon"
+#define WEAPON_PRINTNAME_MISSING    "!!! Missing printname on weapon"
 
 class CHudTexture;
 class KeyValues;
@@ -64,85 +63,66 @@ class KeyValues;
 // Each game provides a CreateWeaponInfo function so it can have game-specific
 // data (like CS move speeds) in the weapon script.
 //-----------------------------------------------------------------------------
-class FileWeaponInfo_t
-{
+class FileWeaponInfo_t {
 public:
-
     FileWeaponInfo_t();
-
-    // Each game can override this to get whatever values it wants from the script.
-    virtual void Parse( KeyValues *pKeyValuesData, const char *szWeaponName );
-
+    virtual void Parse( KeyValues *pKeyValuesData, const char *pszWeaponName );
 
 public:
-    bool                    bParsedScript;
-    bool                    bLoadedHudElements;
+    bool    bWasTryingToParse = false;
+    bool    bLoadedHudElements = false;
 
 // SHARED
-    char                    szClassName[MAX_WEAPON_STRING];
-    char                    szPrintName[MAX_WEAPON_STRING];         // Name for showing in HUD, etc.
+    char    szClassName[MAX_WEAPON_STRING];
+    char    szPrintName[MAX_WEAPON_STRING];                 // Name for showing in HUD, etc.
 
-    char                    szViewModel[MAX_WEAPON_STRING];         // View model of this weapon
-    char                    szWorldModel[MAX_WEAPON_STRING];        // Model of this weapon seen carried by the player
-    char                    szAnimationPrefix[MAX_WEAPON_PREFIX];   // Prefix of the animations that should be used by the player carrying this weapon
-    int                     iSlot;                                  // inventory slot.
-    int                     iPosition;                              // position in the inventory slot.
-    int                     iMaxClip1;                              // max primary clip size (-1 if no clip)
-    int                     iMaxClip2;                              // max secondary clip size (-1 if no clip)
-    int                     iDefaultClip1;                          // amount of primary ammo in the gun when it's created
-    int                     iDefaultClip2;                          // amount of secondary ammo in the gun when it's created
-    int                     iWeight;                                // this value used to determine this weapon's importance in autoselection.
-    int                     iRumbleEffect;                          // Which rumble effect to use when fired? (xbox)
-    bool                    bAutoSwitchTo;                          // whether this weapon should be considered for autoswitching to
-    bool                    bAutoSwitchFrom;                        // whether this weapon can be autoswitched away from when picking up another weapon or ammo
-    int                     iFlags;                                 // miscellaneous weapon flags
-    char                    szAmmo1[MAX_WEAPON_AMMO_NAME];          // "primary" ammo type
-    char                    szAmmo2[MAX_WEAPON_AMMO_NAME];          // "secondary" ammo type
-
-    // Sound blocks
-    char                    aShootSounds[NUM_SHOOT_SOUND_TYPES][MAX_WEAPON_STRING];
-
-    int                     iAmmoType;
-    int                     iAmmo2Type;
-    bool                    m_bMeleeWeapon;     // Melee weapons can always "fire" regardless of ammo.
+    char    szViewModel[MAX_WEAPON_STRING];                 // View model of this weapon
+    char    szWorldModel[MAX_WEAPON_STRING];                // Model of this weapon seen carried by the player
+    char    szAnimationPrefix[MAX_WEAPON_PREFIX];           // Prefix of the animations that should be used by the player carrying this weapon
+    int     iSlot = 0;                                      // inventory slot.
+    int     iPosition = 0;                                  // position in the inventory slot.
+    int     iMaxClip1 = 0;                                  // max primary clip size (-1 if no clip)
+    int     iMaxClip2 = 0;                                  // max secondary clip size (-1 if no clip)
+    int     iDefaultClip1 = 0;                              // amount of primary ammo in the gun when it's created
+    int     iDefaultClip2 = 0;                              // amount of secondary ammo in the gun when it's created
+    int     iWeight = 0;                                    // this value used to determine this weapon's importance in autoselection.
+    int     iRumbleEffect = 0;                              // Which rumble effect to use when fired? (xbox)
+    bool    bAutoSwitchTo = false;                          // whether this weapon should be considered for autoswitching to
+    bool    bAutoSwitchFrom = false;                        // whether this weapon can be autoswitched away from when picking up another weapon or ammo
+    int     iFlags = 0;                                     // miscellaneous weapon flags
+    char    szAmmo1[MAX_WEAPON_AMMO_NAME];                  // "primary" ammo type
+    char    szAmmo2[MAX_WEAPON_AMMO_NAME];                  // "secondary" ammo type
+    int     iAmmoType = 0;
+    int     iAmmo2Type = 0;
+    bool    m_bMeleeWeapon = false;                         // Melee weapons can always "fire" regardless of ammo.
 
     // This tells if the weapon was built right-handed (defaults to true).
     // This helps cl_righthand make the decision about whether to flip the model or not.
-    bool                    m_bBuiltRightHanded;
-    bool                    m_bAllowFlipping;   // False to disallow flipping the model, regardless of whether
-                                                // it is built left or right handed.
+    bool    m_bBuiltRightHanded = false;
+    bool    m_bAllowFlipping = false;                       // False to disallow flipping the model, regardless of whether
+                                                            // it is built left or right handed.
 
-// CLIENT DLL
+    char    m_weaponSounds[WPS_NUM_TYPES][MAX_WEAPON_STRING];
+
+    // CLIENT DLL
     // Sprite data, read from the data file
-    int                     iSpriteCount;
-    CHudTexture                     *iconActive;
-    CHudTexture                     *iconInactive;
-    CHudTexture                     *iconAmmo;
-    CHudTexture                     *iconAmmo2;
-    CHudTexture                     *iconCrosshair;
-    CHudTexture                     *iconAutoaim;
-    CHudTexture                     *iconZoomedCrosshair;
-    CHudTexture                     *iconZoomedAutoaim;
-    CHudTexture                     *iconSmall;
-
-// TF2 specific
-    bool                    bShowUsageHint;                         // if true, then when you receive the weapon, show a hint about it
-
-// SERVER DLL
-
+    int             iSpriteCount;
+    CHudTexture *   iconActive;
+    CHudTexture *   iconInactive;
+    CHudTexture *   iconAmmo;
+    CHudTexture *   iconAmmo2;
+    CHudTexture *   iconCrosshair;
+    CHudTexture *   iconAutoaim;
+    CHudTexture *   iconZoomedCrosshair;
+    CHudTexture *   iconZoomedAutoaim;
+    CHudTexture *   iconSmall;
 };
 
-// The weapon parse function
-bool ReadWeaponDataFromFileForSlot( IFileSystem* filesystem, const char *szWeaponName,
-    WEAPON_FILE_INFO_HANDLE *phandle, const unsigned char *pICEKey = NULL );
-
-// If weapon info has been loaded for the specified class name, this returns it.
-WEAPON_FILE_INFO_HANDLE LookupWeaponInfoSlot( const char *name );
-
-FileWeaponInfo_t *GetFileWeaponInfoFromHandle( WEAPON_FILE_INFO_HANDLE handle );
-WEAPON_FILE_INFO_HANDLE GetInvalidWeaponInfoHandle( void );
-void PrecacheFileWeaponInfoDatabase( IFileSystem *filesystem, const unsigned char *pICEKey );
-
+WeaponFileInfoHandle_t  LookupWeaponInfoSlot( const char *pszName );
+FileWeaponInfo_t *      GetWeaponInfoFromHandle( WeaponFileInfoHandle_t handle );
+WeaponFileInfoHandle_t  GetInvalidWeaponInfoHandle();
+void                    PrecacheFileWeaponInfoDatabase( IFileSystem *pFilesystem, const unsigned char *pICEKey );
+bool                    ReadWeaponDataFromFileForSlot( IFileSystem *pFilesystem, const char *pszWpnName, WeaponFileInfoHandle_t &handle, const unsigned char *pICEKey = NULL );
 
 //
 // Read a possibly-encrypted KeyValues file in.

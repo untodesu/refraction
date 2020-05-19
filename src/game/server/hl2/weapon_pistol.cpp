@@ -195,7 +195,7 @@ void CWeaponPistol::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCh
 
             CSoundEnt::InsertSound( SOUND_COMBAT|SOUND_CONTEXT_GUNFIRE, pOperator->GetAbsOrigin(), SOUNDENT_VOLUME_PISTOL, 0.2, pOperator, SOUNDENT_CHANNEL_WEAPON, pOperator->GetEnemy() );
 
-            WeaponSound( SINGLE_NPC );
+            WeaponSound( WPS_PRIMARY_NPC );
             pOperator->FireBullets( 1, vecShootOrigin, vecShootDir, VECTOR_CONE_PRECALCULATED, MAX_TRACE_LENGTH, m_iPrimaryAmmoType, 2 );
             pOperator->DoMuzzleFlash();
             m_iClip1 = m_iClip1 - 1;
@@ -212,7 +212,7 @@ void CWeaponPistol::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCh
 //-----------------------------------------------------------------------------
 void CWeaponPistol::DryFire( void )
 {
-    WeaponSound( EMPTY );
+    WeaponSound( WPS_EMPTY );
     SendWeaponAnim( ACT_VM_DRYFIRE );
 
     m_flSoonestPrimaryAttack    = gpGlobals->curtime + PISTOL_FASTEST_DRY_REFIRE_TIME;
@@ -346,7 +346,7 @@ bool CWeaponPistol::Reload( void )
     bool fRet = DefaultReload( GetMaxClip1(), GetMaxClip2(), ACT_VM_RELOAD );
     if ( fRet )
     {
-        WeaponSound( RELOAD );
+        WeaponSound( WPS_RELOAD );
         m_flAccuracyPenalty = 0.0f;
     }
     return fRet;

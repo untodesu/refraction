@@ -55,7 +55,7 @@ void CHLMachineGun::PrimaryAttack( void )
         return;
 
     // Abort here to handle burst and auto fire modes
-    if ( (UsesClipsForAmmo1() && m_iClip1 == 0) || ( !UsesClipsForAmmo1() && !pPlayer->GetAmmoCount(m_iPrimaryAmmoType) ) )
+    if( ( UsesClipsForAmmo1() && m_iClip1 == 0 ) || ( !UsesClipsForAmmo1() && !pPlayer->GetAmmoCount(m_iPrimaryAmmoType) ) )
         return;
 
     m_nShotsFired++;
@@ -70,7 +70,7 @@ void CHLMachineGun::PrimaryAttack( void )
     // MUST call sound before removing a round from the clip of a CHLMachineGun
     while ( m_flNextPrimaryAttack <= gpGlobals->curtime )
     {
-        WeaponSound(SINGLE, m_flNextPrimaryAttack);
+        WeaponSound(WPS_PRIMARY, m_flNextPrimaryAttack);
         m_flNextPrimaryAttack = m_flNextPrimaryAttack + fireRate;
         iBulletsToFire++;
     }
@@ -210,8 +210,6 @@ bool CHLMachineGun::Deploy( void )
     return BaseClass::Deploy();
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Purpose: Make enough sound events to fill the estimated think interval
 // returns: number of shots needed
@@ -230,13 +228,13 @@ int CHLMachineGun::WeaponSoundRealtime( WeaponSound_t shoot_type )
     float dt = clamp( m_flAnimTime - m_flPrevAnimTime, 0, 0.2 );
     if (m_flNextSoundTime < gpGlobals->curtime + dt)
     {
-        WeaponSound( SINGLE_NPC, m_flNextSoundTime );
+        WeaponSound( WPS_PRIMARY_NPC, m_flNextSoundTime );
         m_flNextSoundTime += GetFireRate();
         numBullets++;
     }
     if (m_flNextSoundTime < gpGlobals->curtime + dt)
     {
-        WeaponSound( SINGLE_NPC, m_flNextSoundTime );
+        WeaponSound( WPS_PRIMARY_NPC, m_flNextSoundTime );
         m_flNextSoundTime += GetFireRate();
         numBullets++;
     }
@@ -375,13 +373,13 @@ void CHLSelectFireMachineGun::SecondaryAttack( void )
     case FIREMODE_FULLAUTO:
         //Msg( "Burst\n" );
         m_iFireMode = FIREMODE_3RNDBURST;
-        WeaponSound(SPECIAL2);
+        WeaponSound(WPS_SPECIAL2);
         break;
 
     case FIREMODE_3RNDBURST:
         //Msg( "Auto\n" );
         m_iFireMode = FIREMODE_FULLAUTO;
-        WeaponSound(SPECIAL1);
+        WeaponSound(WPS_SPECIAL1);
         break;
     }
 
@@ -428,25 +426,25 @@ void CHLSelectFireMachineGun::BurstThink( void )
 //-----------------------------------------------------------------------------
 void CHLSelectFireMachineGun::WeaponSound( WeaponSound_t shoot_type, float soundtime /*= 0.0f*/ )
 {
-    if (shoot_type == SINGLE)
+    if (shoot_type == WPS_PRIMARY)
     {
         switch( m_iFireMode )
         {
         case FIREMODE_FULLAUTO:
-            BaseClass::WeaponSound( SINGLE, soundtime );
+            BaseClass::WeaponSound( WPS_PRIMARY, soundtime );
             break;
 
         case FIREMODE_3RNDBURST:
             if( m_iBurstSize == GetBurstSize() && m_iClip1 >= m_iBurstSize )
             {
                 // First round of a burst, and enough bullets remaining in the clip to fire the whole burst
-                BaseClass::WeaponSound( BURST, soundtime );
+                BaseClass::WeaponSound( WPS_BURST, soundtime );
             }
             else if( m_iClip1 < m_iBurstSize )
             {
                 // Not enough rounds remaining in the magazine to fire a burst, so play the gunshot
                 // sounds individually as each round is fired.
-                BaseClass::WeaponSound( SINGLE, soundtime );
+                BaseClass::WeaponSound( WPS_PRIMARY, soundtime );
             }
 
             break;

@@ -217,7 +217,7 @@ void CWeaponStunStick::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseComba
             if ( pHurt )
             {
                 // play sound
-                WeaponSound( MELEE_HIT );
+                WeaponSound( WPS_MELEE_HIT );
 
                 CBasePlayer *pPlayer = ToBasePlayer( pHurt );
 
@@ -291,7 +291,7 @@ void CWeaponStunStick::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseComba
             }
             else
             {
-                WeaponSound( MELEE_MISS );
+                WeaponSound( WPS_MELEE_SWING );
             }
         }
         break;

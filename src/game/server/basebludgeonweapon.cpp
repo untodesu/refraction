@@ -380,5 +380,5 @@ void CBaseHLBludgeonWeapon::Swing( int bIsSecondary )
     m_flNextSecondaryAttack = gpGlobals->curtime + SequenceDuration();
 
     //Play swing sound
-    WeaponSound( SINGLE );
+    WeaponSound( WPS_PRIMARY );
 }

@@ -402,7 +402,7 @@ void CWeaponFrag::ThrowGrenade( CBasePlayer *pPlayer )
 
     m_bRedraw = true;
 
-    WeaponSound( SINGLE );
+    WeaponSound( WPS_PRIMARY );
 
     m_iPrimaryAttacks++;
     gamestats->Event_WeaponFired( pPlayer, true, GetClassname() );
@@ -426,7 +426,7 @@ void CWeaponFrag::LobGrenade( CBasePlayer *pPlayer )
     vecThrow += vForward * 350 + Vector( 0, 0, 50 );
     Fraggrenade_Create( vecSrc, vec3_angle, vecThrow, AngularImpulse(200,random->RandomInt(-600,600),0), pPlayer, GRENADE_TIMER, false );
 
-    WeaponSound( WPN_DOUBLE );
+    WeaponSound( WPS_SECONDARY );
 
     m_bRedraw = true;
 
@@ -470,7 +470,7 @@ void CWeaponFrag::RollGrenade( CBasePlayer *pPlayer )
     AngularImpulse rotSpeed(0,0,720);
     Fraggrenade_Create( vecSrc, orientation, vecThrow, rotSpeed, pPlayer, GRENADE_TIMER, false );
 
-    WeaponSound( SPECIAL1 );
+    WeaponSound( WPS_SPECIAL1 );
 
     m_bRedraw = true;
 

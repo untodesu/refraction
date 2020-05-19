@@ -177,7 +177,7 @@ void CWeaponSMG1::Equip( CBaseCombatCharacter *pOwner )
 void CWeaponSMG1::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, Vector &vecShootOrigin, Vector &vecShootDir )
 {
     // FIXME: use the returned number of bullets to account for >10hz firerate
-    WeaponSoundRealtime( SINGLE_NPC );
+    WeaponSoundRealtime( WPS_PRIMARY_NPC );
 
     CSoundEnt::InsertSound( SOUND_COMBAT|SOUND_CONTEXT_GUNFIRE, pOperator->GetAbsOrigin(), SOUNDENT_VOLUME_MACHINEGUN, 0.2, pOperator, SOUNDENT_CHANNEL_WEAPON, pOperator->GetEnemy() );
     pOperator->FireBullets( 1, vecShootOrigin, vecShootDir, VECTOR_CONE_PRECALCULATED,
@@ -294,7 +294,7 @@ bool CWeaponSMG1::Reload( void )
         // a grenade.
         m_flNextSecondaryAttack = GetOwner()->m_flNextAttack = fCacheTime;
 
-        WeaponSound( RELOAD );
+        WeaponSound( WPS_RELOAD );
     }
 
     return fRet;
@@ -333,7 +333,7 @@ void CWeaponSMG1::SecondaryAttack( void )
     if ( ( pPlayer->GetAmmoCount( m_iSecondaryAmmoType ) <= 0 ) || ( pPlayer->GetWaterLevel() == 3 ) )
     {
         SendWeaponAnim( ACT_VM_DRYFIRE );
-        BaseClass::WeaponSound( EMPTY );
+        BaseClass::WeaponSound( WPS_EMPTY );
         m_flNextSecondaryAttack = gpGlobals->curtime + 0.5f;
         return;
     }
@@ -342,7 +342,7 @@ void CWeaponSMG1::SecondaryAttack( void )
         m_bInReload = false;
 
     // MUST call sound before removing a round from the clip of a CMachineGun
-    BaseClass::WeaponSound( WPN_DOUBLE );
+    BaseClass::WeaponSound( WPS_SECONDARY );
 
     pPlayer->RumbleEffect( RUMBLE_357, 0, RUMBLE_FLAGS_NONE );
 
