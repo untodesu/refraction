@@ -28,6 +28,9 @@ $Project "Refraction Client DLL"
 
         $Folder "HL2 DLL"
         {
+            $File   "$SRCDIR\game\shared\ustdlib_random.h"
+            $File   "$SRCDIR\game\shared\ustdlib_random.cpp"
+
             $File   "$SRCDIR\game\shared\hl2\basehlcombatweapon_shared.cpp"
             $File   "$SRCDIR\game\shared\episodic\achievements_ep1.cpp"
             $File   "$SRCDIR\game\shared\episodic\achievements_ep2.cpp"

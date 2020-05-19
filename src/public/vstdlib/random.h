@@ -51,16 +51,18 @@ public:
     virtual int     RandomInt( int iMinVal, int iMaxVal );
     virtual float   RandomFloatExp( float flMinVal = 0.0f, float flMaxVal = 1.0f, float flExponent = 1.0f );
 
-private:
-    int     GenerateRandomNumber();
-
+public:
+    // @und:    made it public to get initial seed for MT19937.
+    //          At the game DLLs loading stage it shouldn't change!
     int m_idum;
+
+private:
+    int GenerateRandomNumber();
     int m_iy;
     int m_iv[NTAB];
 
     CThreadFastMutex m_mutex;
 };
-
 
 //-----------------------------------------------------------------------------
 // A generator of gaussian distributed random numbers

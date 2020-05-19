@@ -201,8 +201,6 @@ static void CreditsDone_f( void )
 
 static ConCommand creditsdone("creditsdone", CreditsDone_f );
 
-extern ConVar sv_unlockedchapters;
-
 void CCredits::OnRestore()
 {
     BaseClass::OnRestore();
@@ -217,8 +215,6 @@ void CCredits::OnRestore()
 
 void CCredits::RollOutroCredits()
 {
-    sv_unlockedchapters.SetValue( "15" );
-
     CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 
     CSingleUserRecipientFilter user( pPlayer );
