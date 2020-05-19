@@ -1449,7 +1449,7 @@ void CNPC_PlayerCompanion::HandleAnimEvent( animevent_t *pEvent )
     case EVENT_WEAPON_RELOAD:
         if ( GetActiveWeapon() )
         {
-            GetActiveWeapon()->WeaponSound( RELOAD_NPC );
+            GetActiveWeapon()->WeaponSound( WPS_RELOAD_NPC );
             GetActiveWeapon()->m_iClip1 = GetActiveWeapon()->GetMaxClip1();
             ClearCondition(COND_LOW_PRIMARY_AMMO);
             ClearCondition(COND_NO_PRIMARY_AMMO);

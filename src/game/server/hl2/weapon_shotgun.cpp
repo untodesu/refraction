@@ -167,7 +167,7 @@ void CWeaponShotgun::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool
     Vector vecShootOrigin, vecShootDir;
     CAI_BaseNPC *npc = pOperator->MyNPCPointer();
     ASSERT( npc != NULL );
-    WeaponSound( SINGLE_NPC );
+    WeaponSound( WPS_PRIMARY_NPC );
     pOperator->DoMuzzleFlash();
     m_iClip1 = m_iClip1 - 1;
 
@@ -343,7 +343,7 @@ bool CWeaponShotgun::Reload( void )
 
     FillClip();
     // Play reload on different channel as otherwise steals channel away from fire sound
-    WeaponSound(RELOAD);
+    WeaponSound(WPS_RELOAD);
     SendWeaponAnim( ACT_VM_RELOAD );
 
     pOwner->m_flNextAttack = gpGlobals->curtime;
@@ -413,7 +413,7 @@ void CWeaponShotgun::Pump( void )
 
     m_bNeedPump = false;
 
-    WeaponSound( SPECIAL1 );
+    WeaponSound( WPS_SPECIAL1 );
 
     // Finish reload animation
     SendWeaponAnim( ACT_SHOTGUN_PUMP );
@@ -429,7 +429,7 @@ void CWeaponShotgun::Pump( void )
 //-----------------------------------------------------------------------------
 void CWeaponShotgun::DryFire( void )
 {
-    WeaponSound(EMPTY);
+    WeaponSound(WPS_EMPTY);
     SendWeaponAnim( ACT_VM_DRYFIRE );
 
     m_flNextPrimaryAttack = gpGlobals->curtime + SequenceDuration();
@@ -451,7 +451,7 @@ void CWeaponShotgun::PrimaryAttack( void )
     }
 
     // MUST call sound before removing a round from the clip of a CMachineGun
-    WeaponSound(SINGLE);
+    WeaponSound(WPS_PRIMARY);
 
     pPlayer->DoMuzzleFlash();
 
@@ -509,7 +509,7 @@ void CWeaponShotgun::SecondaryAttack( void )
 
     pPlayer->m_nButtons &= ~IN_ATTACK2;
     // MUST call sound before removing a round from the clip of a CMachineGun
-    WeaponSound(WPN_DOUBLE);
+    WeaponSound(WPS_SECONDARY);
 
     pPlayer->DoMuzzleFlash();
 
@@ -635,7 +635,7 @@ void CWeaponShotgun::ItemPostFrame( void )
         // Fire underwater?
         else if (GetOwner()->GetWaterLevel() == 3 && m_bFiresUnderwater == false)
         {
-            WeaponSound(EMPTY);
+            WeaponSound(WPS_EMPTY);
             m_flNextPrimaryAttack = gpGlobals->curtime + 0.2;
             return;
         }
@@ -666,7 +666,7 @@ void CWeaponShotgun::ItemPostFrame( void )
         // Fire underwater?
         else if (pOwner->GetWaterLevel() == 3 && m_bFiresUnderwater == false)
         {
-            WeaponSound(EMPTY);
+            WeaponSound(WPS_EMPTY);
             m_flNextPrimaryAttack = gpGlobals->curtime + 0.2;
             return;
         }

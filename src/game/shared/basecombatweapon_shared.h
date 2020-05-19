@@ -495,7 +495,7 @@ public:
     virtual void            GetViewmodelBoneControllers(C_BaseViewModel *pViewModel, float controllers[MAXSTUDIOBONECTRLS]) { return; }
 
     virtual void            NotifyShouldTransmit( ShouldTransmitState_t state );
-    WEAPON_FILE_INFO_HANDLE GetWeaponFileInfoHandle() { return m_hWeaponFileInfo; }
+    WeaponFileInfoHandle_t  GetWeaponFileInfoHandle() { return m_hWeaponFileInfo; }
 
     virtual int             GetWorldModelIndex( void );
 
@@ -603,7 +603,7 @@ public:
     IPhysicsConstraint      *GetConstraint() { return m_pConstraint; }
 
 private:
-    WEAPON_FILE_INFO_HANDLE m_hWeaponFileInfo;
+    WeaponFileInfoHandle_t  m_hWeaponFileInfo;
     IPhysicsConstraint      *m_pConstraint;
 
     int                     m_iAltFireHudHintCount;     // How many times has this weapon displayed its alt-fire HUD hint?

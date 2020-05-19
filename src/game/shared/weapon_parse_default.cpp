@@ -15,6 +15,3 @@ FileWeaponInfo_t* CreateWeaponInfo()
 {
     return new FileWeaponInfo_t;
 }
-
-
-

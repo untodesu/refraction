@@ -120,7 +120,7 @@ void CWeaponAnnabelle::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseComba
             vecShootOrigin = pOperator->Weapon_ShootPosition();
             CAI_BaseNPC *npc = pOperator->MyNPCPointer();
             ASSERT( npc != NULL );
-            WeaponSound( SINGLE_NPC );
+            WeaponSound( WPS_PRIMARY_NPC );
             pOperator->DoMuzzleFlash();
             m_iClip1 = m_iClip1 - 1;
 
@@ -207,7 +207,7 @@ bool CWeaponAnnabelle::Reload( void )
 
     FillClip();
     // Play reload on different channel as otherwise steals channel away from fire sound
-    WeaponSound(RELOAD);
+    WeaponSound(WPS_RELOAD);
     SendWeaponAnim( ACT_VM_RELOAD );
 
     pOwner->m_flNextAttack = gpGlobals->curtime;
@@ -277,7 +277,7 @@ void CWeaponAnnabelle::Pump( void )
 
     m_bNeedPump = false;
 
-    WeaponSound( SPECIAL1 );
+    WeaponSound( WPS_SPECIAL1 );
 
     // Finish reload animation
     SendWeaponAnim( ACT_SHOTGUN_PUMP );
@@ -293,7 +293,7 @@ void CWeaponAnnabelle::Pump( void )
 //-----------------------------------------------------------------------------
 void CWeaponAnnabelle::DryFire( void )
 {
-    WeaponSound(EMPTY);
+    WeaponSound(WPS_EMPTY);
     SendWeaponAnim( ACT_VM_DRYFIRE );
 
     m_flNextPrimaryAttack = gpGlobals->curtime + SequenceDuration();

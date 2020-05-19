@@ -81,10 +81,10 @@ void WeaponsResource::LoadAllWeaponSprites( void )
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-void WeaponsResource::LoadWeaponSprites( WEAPON_FILE_INFO_HANDLE hWeaponFileInfo )
+void WeaponsResource::LoadWeaponSprites( WeaponFileInfoHandle_t hWeaponFileInfo )
 {
     // WeaponsResource is a friend of C_BaseCombatWeapon
-    FileWeaponInfo_t *pWeaponInfo = GetFileWeaponInfoFromHandle( hWeaponFileInfo );
+    FileWeaponInfo_t *pWeaponInfo = GetWeaponInfoFromHandle( hWeaponFileInfo );
 
     if ( !pWeaponInfo )
         return;

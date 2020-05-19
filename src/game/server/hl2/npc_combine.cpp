@@ -2367,7 +2367,7 @@ void CNPC_Combine::HandleAnimEvent( animevent_t *pEvent )
             // We never actually run out of ammo, just need to refill the clip
             if (GetActiveWeapon())
             {
-                GetActiveWeapon()->WeaponSound( RELOAD_NPC );
+                GetActiveWeapon()->WeaponSound( WPS_RELOAD_NPC );
                 GetActiveWeapon()->m_iClip1 = GetActiveWeapon()->GetMaxClip1();
                 GetActiveWeapon()->m_iClip2 = GetActiveWeapon()->GetMaxClip2();
             }

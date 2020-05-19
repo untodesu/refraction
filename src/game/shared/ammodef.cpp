@@ -31,15 +31,14 @@ Ammo_t *CAmmoDef::GetAmmoOfIndex(int nAmmoIndex)
 //-----------------------------------------------------------------------------
 int CAmmoDef::Index(const char *psz)
 {
-    int i;
-
-    if (!psz)
+    if( !psz ) {
         return -1;
+    }
 
-    for (i = 1; i < m_nAmmoIndex; i++)
-    {
-        if (stricmp( psz, m_AmmoType[i].pName ) == 0)
+    for( int i = 1; i < m_nAmmoIndex; i++ ) {
+        if( !Q_stricmp( psz, m_AmmoType[i].pName ) ) {
             return i;
+        }
     }
 
     return -1;

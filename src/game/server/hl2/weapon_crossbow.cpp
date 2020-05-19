@@ -628,7 +628,7 @@ void CWeaponCrossbow::FireBolt( void )
         }
         else
         {
-            WeaponSound( EMPTY );
+            WeaponSound( WPS_EMPTY );
             m_flNextPrimaryAttack = 0.15;
         }
 
@@ -680,8 +680,8 @@ void CWeaponCrossbow::FireBolt( void )
 
     pOwner->ViewPunch( QAngle( -2, 0, 0 ) );
 
-    WeaponSound( SINGLE );
-    WeaponSound( SPECIAL2 );
+    WeaponSound( WPS_PRIMARY );
+    WeaponSound( WPS_SPECIAL2 );
 
     CSoundEnt::InsertSound( SOUND_COMBAT, GetAbsOrigin(), 200, 0.2 );
 
@@ -850,7 +850,7 @@ void CWeaponCrossbow::SetChargerState( ChargerState_t state )
     {
     case CHARGER_STATE_START_LOAD:
 
-        WeaponSound( SPECIAL1 );
+        WeaponSound( WPS_SPECIAL1 );
 
         // Shoot some sparks and draw a beam between the two outer points
         DoLoadEffect();

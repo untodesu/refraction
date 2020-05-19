@@ -216,7 +216,7 @@ void CWeaponAR2::DelayedAttack( void )
     pOwner->DoMuzzleFlash();
     pOwner->SetMuzzleFlashTime( gpGlobals->curtime + 0.5 );
 
-    WeaponSound( WPN_DOUBLE );
+    WeaponSound( WPS_SECONDARY );
 
     pOwner->RumbleEffect(RUMBLE_SHOTGUN_DOUBLE, 0, RUMBLE_FLAG_RESTART );
 
@@ -273,7 +273,7 @@ void CWeaponAR2::SecondaryAttack( void )
     if ( GetOwner() && GetOwner()->GetWaterLevel() == 3 )
     {
         SendWeaponAnim( ACT_VM_DRYFIRE );
-        BaseClass::WeaponSound( EMPTY );
+        BaseClass::WeaponSound( WPS_EMPTY );
         m_flNextSecondaryAttack = gpGlobals->curtime + 0.5f;
         return;
     }
@@ -288,7 +288,7 @@ void CWeaponAR2::SecondaryAttack( void )
     }
 
     SendWeaponAnim( ACT_VM_FIDGET );
-    WeaponSound( SPECIAL1 );
+    WeaponSound( WPS_SPECIAL1 );
 
     m_iSecondaryAttacks++;
     gamestats->Event_WeaponFired( pPlayer, false, GetClassname() );
@@ -340,7 +340,7 @@ void CWeaponAR2::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUs
         vecShootDir = npc->GetActualShootTrajectory( vecShootOrigin );
     }
 
-    WeaponSoundRealtime( SINGLE_NPC );
+    WeaponSoundRealtime( WPS_PRIMARY_NPC );
 
     CSoundEnt::InsertSound( SOUND_COMBAT|SOUND_CONTEXT_GUNFIRE, pOperator->GetAbsOrigin(), SOUNDENT_VOLUME_MACHINEGUN, 0.2, pOperator, SOUNDENT_CHANNEL_WEAPON, pOperator->GetEnemy() );
 
@@ -357,7 +357,7 @@ void CWeaponAR2::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUs
 //-----------------------------------------------------------------------------
 void CWeaponAR2::FireNPCSecondaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles )
 {
-    WeaponSound( WPN_DOUBLE );
+    WeaponSound( WPS_SECONDARY );
 
     if ( !GetOwner() )
         return;

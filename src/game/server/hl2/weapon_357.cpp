@@ -111,7 +111,7 @@ void CWeapon357::PrimaryAttack( void )
         }
         else
         {
-            WeaponSound( EMPTY );
+            WeaponSound( WPS_EMPTY );
             m_flNextPrimaryAttack = 0.15;
         }
 
@@ -121,7 +121,7 @@ void CWeapon357::PrimaryAttack( void )
     m_iPrimaryAttacks++;
     gamestats->Event_WeaponFired( pPlayer, true, GetClassname() );
 
-    WeaponSound( SINGLE );
+    WeaponSound( WPS_PRIMARY );
     pPlayer->DoMuzzleFlash();
 
     SendWeaponAnim( ACT_VM_PRIMARYATTACK );

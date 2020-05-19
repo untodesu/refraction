@@ -220,7 +220,7 @@ void CBaseCombatWeapon::Spawn( void )
 // Purpose: get this game's encryption key for decoding weapon kv files
 // Output : virtual const unsigned char
 //-----------------------------------------------------------------------------
-const unsigned char *CBaseCombatWeapon::GetEncryptionKey( void )
+const unsigned char * CBaseCombatWeapon::GetEncryptionKey( void )
 {
     return g_pGameRules->GetEncryptionKey();
 }
@@ -238,35 +238,23 @@ void CBaseCombatWeapon::Precache( void )
 
     // Add this weapon to the weapon registry, and get our index into it
     // Get weapon data from script file
-    if ( ReadWeaponDataFromFileForSlot( filesystem, GetClassname(), &m_hWeaponFileInfo, GetEncryptionKey() ) )
+    if ( ReadWeaponDataFromFileForSlot( filesystem, GetClassname(), m_hWeaponFileInfo, GetEncryptionKey() ) )
     {
         // Get the ammo indexes for the ammo's specified in the data file
-        if ( GetWpnData().szAmmo1[0] )
-        {
+        if ( GetWpnData().szAmmo1[0] ) {
             m_iPrimaryAmmoType = GetAmmoDef()->Index( GetWpnData().szAmmo1 );
-            if (m_iPrimaryAmmoType == -1)
-            {
-                Msg("ERROR: Weapon (%s) using undefined primary ammo type (%s)\n",GetClassname(), GetWpnData().szAmmo1);
+            if (m_iPrimaryAmmoType == -1) {
+                Msg("ERROR: Weapon (%s) using undefined primary ammo type (%s)\n", GetClassname(), GetWpnData().szAmmo1);
             }
- #if defined ( TF_DLL ) || defined ( TF_CLIENT_DLL )
-            // Ammo override
-            int iModUseMetalOverride = 0;
-            CALL_ATTRIB_HOOK_INT( iModUseMetalOverride, mod_use_metal_ammo_type );
-            if ( iModUseMetalOverride )
-            {
-                m_iPrimaryAmmoType = (int)TF_AMMO_METAL;
-            }
-#endif
         }
-        if ( GetWpnData().szAmmo2[0] )
-        {
-            m_iSecondaryAmmoType = GetAmmoDef()->Index( GetWpnData().szAmmo2 );
-            if (m_iSecondaryAmmoType == -1)
-            {
-                Msg("ERROR: Weapon (%s) using undefined secondary ammo type (%s)\n",GetClassname(),GetWpnData().szAmmo2);
-            }
 
+        if ( GetWpnData().szAmmo2[0] ) {
+            m_iSecondaryAmmoType = GetAmmoDef()->Index( GetWpnData().szAmmo2 );
+            if (m_iSecondaryAmmoType == -1) {
+                Msg("ERROR: Weapon (%s) using undefined secondary ammo type (%s)\n", GetClassname(),GetWpnData().szAmmo2);
+            }
         }
+
 #if defined( CLIENT_DLL )
         gWR.LoadWeaponSprites( GetWeaponFileInfoHandle() );
 #endif
@@ -283,7 +271,7 @@ void CBaseCombatWeapon::Precache( void )
         }
 
         // Precache sounds, too
-        for ( int i = 0; i < NUM_SHOOT_SOUND_TYPES; ++i )
+        for ( int i = WPS_FIRST_DONTUSE; i < WPS_NUM_TYPES; ++i )
         {
             const char *shootsound = GetShootSound( i );
             if ( shootsound && shootsound[0] )
@@ -305,13 +293,13 @@ void CBaseCombatWeapon::Precache( void )
 //-----------------------------------------------------------------------------
 const FileWeaponInfo_t &CBaseCombatWeapon::GetWpnData( void ) const
 {
-    return *GetFileWeaponInfoFromHandle( m_hWeaponFileInfo );
+    return *::GetWeaponInfoFromHandle( m_hWeaponFileInfo );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-const char *CBaseCombatWeapon::GetViewModel( int /*viewmodelindex = 0 -- this is ignored in the base class here*/ ) const
+const char * CBaseCombatWeapon::GetViewModel( int /*viewmodelindex = 0 -- this is ignored in the base class here*/ ) const
 {
     return GetWpnData().szViewModel;
 }
@@ -319,7 +307,7 @@ const char *CBaseCombatWeapon::GetViewModel( int /*viewmodelindex = 0 -- this is
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-const char *CBaseCombatWeapon::GetWorldModel( void ) const
+const char * CBaseCombatWeapon::GetWorldModel( void ) const
 {
     return GetWpnData().szWorldModel;
 }
@@ -327,7 +315,7 @@ const char *CBaseCombatWeapon::GetWorldModel( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-const char *CBaseCombatWeapon::GetAnimPrefix( void ) const
+const char * CBaseCombatWeapon::GetAnimPrefix( void ) const
 {
     return GetWpnData().szAnimationPrefix;
 }
@@ -336,7 +324,7 @@ const char *CBaseCombatWeapon::GetAnimPrefix( void ) const
 // Purpose:
 // Output : char const
 //-----------------------------------------------------------------------------
-const char *CBaseCombatWeapon::GetPrintName( void ) const
+const char * CBaseCombatWeapon::GetPrintName( void ) const
 {
     return GetWpnData().szPrintName;
 }
@@ -454,7 +442,7 @@ int CBaseCombatWeapon::GetPosition( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-const char *CBaseCombatWeapon::GetName( void ) const
+const char * CBaseCombatWeapon::GetName( void ) const
 {
     return GetWpnData().szClassName;
 }
@@ -462,7 +450,7 @@ const char *CBaseCombatWeapon::GetName( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteActive( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteActive( void ) const
 {
     return GetWpnData().iconActive;
 }
@@ -470,7 +458,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteActive( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteInactive( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteInactive( void ) const
 {
     return GetWpnData().iconInactive;
 }
@@ -478,7 +466,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteInactive( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteAmmo( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteAmmo( void ) const
 {
     return GetWpnData().iconAmmo;
 }
@@ -486,7 +474,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteAmmo( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteAmmo2( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteAmmo2( void ) const
 {
     return GetWpnData().iconAmmo2;
 }
@@ -494,7 +482,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteAmmo2( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteCrosshair( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteCrosshair( void ) const
 {
     return GetWpnData().iconCrosshair;
 }
@@ -502,7 +490,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteCrosshair( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteAutoaim( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteAutoaim( void ) const
 {
     return GetWpnData().iconAutoaim;
 }
@@ -510,7 +498,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteAutoaim( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteZoomedCrosshair( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteZoomedCrosshair( void ) const
 {
     return GetWpnData().iconZoomedCrosshair;
 }
@@ -518,7 +506,7 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteZoomedCrosshair( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CHudTexture const *CBaseCombatWeapon::GetSpriteZoomedAutoaim( void ) const
+CHudTexture const * CBaseCombatWeapon::GetSpriteZoomedAutoaim( void ) const
 {
     return GetWpnData().iconZoomedAutoaim;
 }
@@ -526,9 +514,9 @@ CHudTexture const *CBaseCombatWeapon::GetSpriteZoomedAutoaim( void ) const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-const char *CBaseCombatWeapon::GetShootSound( int iIndex ) const
+const char * CBaseCombatWeapon::GetShootSound( int iIndex ) const
 {
-    return GetWpnData().aShootSounds[ iIndex ];
+    return GetWpnData().m_weaponSounds[ iIndex ];
 }
 
 //-----------------------------------------------------------------------------
@@ -542,7 +530,7 @@ int CBaseCombatWeapon::GetRumbleEffect() const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-CBaseCombatCharacter    *CBaseCombatWeapon::GetOwner() const
+CBaseCombatCharacter    * CBaseCombatWeapon::GetOwner() const
 {
     return ToBaseCombatCharacter( m_hOwner.Get() );
 }
@@ -1416,7 +1404,7 @@ bool CBaseCombatWeapon::DefaultDeploy( char *szViewModel, char *szWeaponModel, i
     m_bReloadHudHintDisplayed = false;
     m_flHudHintPollTime = gpGlobals->curtime + 5.0f;
 
-    WeaponSound( DEPLOY );
+    WeaponSound( WPS_DEPLOY );
 
     SetWeaponVisible( true );
 
@@ -1673,14 +1661,14 @@ void CBaseCombatWeapon::ItemPostFrame( void )
         {
             if (m_flNextEmptySoundTime < gpGlobals->curtime)
             {
-                WeaponSound(EMPTY);
+                WeaponSound(WPS_EMPTY);
                 m_flNextSecondaryAttack = m_flNextEmptySoundTime = gpGlobals->curtime + 0.5;
             }
         }
         else if (pOwner->GetWaterLevel() == 3 && m_bAltFiresUnderwater == false)
         {
             // This weapon doesn't fire underwater
-            WeaponSound(EMPTY);
+            WeaponSound(WPS_EMPTY);
             m_flNextPrimaryAttack = gpGlobals->curtime + 0.2;
             return;
         }
@@ -1723,7 +1711,7 @@ void CBaseCombatWeapon::ItemPostFrame( void )
         else if (pOwner->GetWaterLevel() == 3 && m_bFiresUnderwater == false)
         {
             // This weapon doesn't fire underwater
-            WeaponSound(EMPTY);
+            WeaponSound(WPS_EMPTY);
             m_flNextPrimaryAttack = gpGlobals->curtime + 0.2;
             return;
         }
@@ -1789,7 +1777,7 @@ void CBaseCombatWeapon::HandleFireOnEmpty()
     {
         if (m_flNextEmptySoundTime < gpGlobals->curtime)
         {
-            WeaponSound(EMPTY);
+            WeaponSound(WPS_EMPTY);
             m_flNextEmptySoundTime = gpGlobals->curtime + 0.5;
         }
         m_bFireOnEmpty = true;
@@ -1826,7 +1814,7 @@ const Vector& CBaseCombatWeapon::GetBulletSpread( void )
 }
 
 //-----------------------------------------------------------------------------
-const WeaponProficiencyInfo_t *CBaseCombatWeapon::GetProficiencyValues()
+const WeaponProficiencyInfo_t * CBaseCombatWeapon::GetProficiencyValues()
 {
     static WeaponProficiencyInfo_t defaultWeaponProficiencyTable[] =
     {
@@ -1894,7 +1882,7 @@ void CBaseCombatWeapon::WeaponSound( WeaponSound_t sound_type, float soundtime /
             EmitSound( filter, GetOwner()->entindex(), shootsound, NULL, soundtime );
 
 #if !defined( CLIENT_DLL )
-            if( sound_type == EMPTY )
+            if( sound_type == WPS_EMPTY )
             {
                 CSoundEnt::InsertSound( SOUND_COMBAT, GetOwner()->GetAbsOrigin(), SOUNDENT_VOLUME_EMPTY, 0.2, GetOwner() );
             }
@@ -1994,7 +1982,7 @@ bool CBaseCombatWeapon::DefaultReload( int iClipSize1, int iClipSize2, int iActi
 
 #ifdef CLIENT_DLL
     // Play reload
-    WeaponSound( RELOAD );
+    WeaponSound( WPS_RELOAD );
 #endif
     SendWeaponAnim( iActivity );
 
@@ -2077,7 +2065,7 @@ void CBaseCombatWeapon::AddViewKick( void )
 //-----------------------------------------------------------------------------
 // Purpose: Get the string to print death notices with
 //-----------------------------------------------------------------------------
-char *CBaseCombatWeapon::GetDeathNoticeName( void )
+char * CBaseCombatWeapon::GetDeathNoticeName( void )
 {
 #if !defined( CLIENT_DLL )
     return (char*)STRING( m_iszName );
@@ -2181,7 +2169,7 @@ void CBaseCombatWeapon::FinishReload( void )
 void CBaseCombatWeapon::AbortReload( void )
 {
 #ifdef CLIENT_DLL
-    StopWeaponSound( RELOAD );
+    StopWeaponSound( WPS_RELOAD );
 #endif
     m_bInReload = false;
 }
@@ -2274,7 +2262,7 @@ void CBaseCombatWeapon::PrimaryAttack( void )
     while ( m_flNextPrimaryAttack <= gpGlobals->curtime )
     {
         // MUST call sound before removing a round from the clip of a CMachineGun
-        WeaponSound(SINGLE, m_flNextPrimaryAttack);
+        WeaponSound(WPS_PRIMARY, m_flNextPrimaryAttack);
         m_flNextPrimaryAttack = m_flNextPrimaryAttack + fireRate;
         info.m_iShots++;
         if ( !fireRate )

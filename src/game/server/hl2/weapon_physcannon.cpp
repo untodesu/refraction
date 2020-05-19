@@ -1711,7 +1711,7 @@ bool CWeaponPhysCannon::Holster( CBaseCombatWeapon *pSwitchingTo )
 void CWeaponPhysCannon::DryFire( void )
 {
     SendWeaponAnim( ACT_VM_PRIMARYATTACK );
-    WeaponSound( EMPTY );
+    WeaponSound( WPS_EMPTY );
 
     CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
     if ( pOwner )
@@ -1735,7 +1735,7 @@ void CWeaponPhysCannon::PrimaryFireEffect( void )
     color32 white = { 245, 245, 255, 32 };
     UTIL_ScreenFade( pOwner, white, 0.1f, 0.0f, FFADE_IN );
 
-    WeaponSound( SINGLE );
+    WeaponSound( WPS_PRIMARY );
 }
 
 #define MAX_KNOCKBACK_FORCE 128
@@ -2311,7 +2311,7 @@ void CWeaponPhysCannon::SecondaryAttack( void )
         switch ( result )
         {
         case OBJECT_FOUND:
-            WeaponSound( SPECIAL1 );
+            WeaponSound( WPS_SPECIAL1 );
             SendWeaponAnim( ACT_VM_PRIMARYATTACK );
             m_flNextSecondaryAttack = gpGlobals->curtime + 0.5f;
 
@@ -2573,7 +2573,7 @@ CWeaponPhysCannon::FindObjectResult_t CWeaponPhysCannon::FindObject( void )
             if ( !m_flLastDenySoundPlayed )
             {
                 m_flLastDenySoundPlayed = true;
-                WeaponSound( SPECIAL3 );
+                WeaponSound( WPS_SPECIAL3 );
             }
 
             return OBJECT_NOT_FOUND;
@@ -2908,7 +2908,7 @@ void CWeaponPhysCannon::DetachObject( bool playSound, bool wasLaunched )
     if ( playSound )
     {
         //Play the detach sound
-        WeaponSound( MELEE_MISS );
+        WeaponSound( WPS_MELEE_SWING );
     }
 
     RecordThrownObject( pObject );
@@ -3483,7 +3483,7 @@ void CWeaponPhysCannon::OpenElements( void )
     if ( m_bOpen )
         return;
 
-    WeaponSound( SPECIAL2 );
+    WeaponSound( WPS_SPECIAL2 );
 
     CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
 
@@ -3522,7 +3522,7 @@ void CWeaponPhysCannon::CloseElements( void )
     if ( m_bOpen == false )
         return;
 
-    WeaponSound( MELEE_HIT );
+    WeaponSound( WPS_MELEE_HIT );
 
     CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
 
@@ -4365,19 +4365,19 @@ const char *CWeaponPhysCannon::GetShootSound( int iIndex ) const
     // We override this if we're the charged up version
     switch( iIndex )
     {
-    case EMPTY:
+    case WPS_EMPTY:
         return "Weapon_MegaPhysCannon.DryFire";
         break;
 
-    case SINGLE:
+    case WPS_PRIMARY:
         return "Weapon_MegaPhysCannon.Launch";
         break;
 
-    case SPECIAL1:
+    case WPS_SPECIAL1:
         return "Weapon_MegaPhysCannon.Pickup";
         break;
 
-    case MELEE_MISS:
+    case WPS_MELEE_SWING:
         return "Weapon_MegaPhysCannon.Drop";
         break;
 

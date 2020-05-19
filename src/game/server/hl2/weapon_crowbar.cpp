@@ -171,7 +171,7 @@ void CWeaponCrowbar::HandleAnimEventMeleeHit( animevent_t *pEvent, CBaseCombatCh
     if ( pHurt )
     {
         // play sound
-        WeaponSound( MELEE_HIT );
+        WeaponSound( WPS_MELEE_HIT );
 
         // Fake a trace impact, so the effects work out like a player's crowbaw
         trace_t traceHit;
@@ -180,7 +180,7 @@ void CWeaponCrowbar::HandleAnimEventMeleeHit( animevent_t *pEvent, CBaseCombatCh
     }
     else
     {
-        WeaponSound( MELEE_MISS );
+        WeaponSound( WPS_MELEE_SWING );
     }
 }
 
