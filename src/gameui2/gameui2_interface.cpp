@@ -31,6 +31,11 @@ bool GameUI2_InitInterfaces( CreateInterfaceFn appFactory )
     return ( g_pEngine && g_pEngineSound && g_pEngineVGui && g_pSoundEmitterSystem && g_pRenderView && g_pMaterialSystem && g_pMatSystemSurface && g_pFileSystem );
 }
 
+CON_COMMAND( ui_reload, "Updates panel layout (probably)" )
+{
+    g_GameUI2.VidInit();
+}
+
 void CGameUI2::Initialize( CreateInterfaceFn appFactory )
 {
     MEM_ALLOC_CREDIT();
