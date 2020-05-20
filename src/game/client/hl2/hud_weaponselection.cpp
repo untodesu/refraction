@@ -905,7 +905,7 @@ void CHudWeaponSelection::DrawLargeWeaponBox( C_BaseCombatWeapon *pWeapon, bool 
 
     // draw text
     col = m_TextColor;
-    const FileWeaponInfo_t &weaponInfo = pWeapon->GetWpnData();
+    const WeaponInfo_t &weaponInfo = pWeapon->GetWpnData();
 
     if ( bSelected )
     {

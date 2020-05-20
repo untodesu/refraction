@@ -11,7 +11,7 @@
 #include "tier0/memdbgon.h"
 
 // Default implementation for games that don't add custom data to the weapon scripts.
-FileWeaponInfo_t* CreateWeaponInfo()
+WeaponInfo_t* CreateWeaponInfo()
 {
-    return new FileWeaponInfo_t;
+    return new WeaponInfo_t;
 }

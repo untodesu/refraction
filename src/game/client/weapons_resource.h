@@ -31,12 +31,12 @@ public:
     void Reset( void );
 
     // Sprite handling
-    void LoadWeaponSprites( WeaponFileInfoHandle_t hWeaponFileInfo );
+    void LoadWeaponSprites( WeaponInfoHandle_t hWeaponFileInfo );
     void LoadAllWeaponSprites( void );
 
     // Ammo Handling
     CHudTexture                 *GetAmmoIconFromWeapon( int iAmmoId );
-    const FileWeaponInfo_t      *GetWeaponFromAmmo( int iAmmoId );
+    const WeaponInfo_t      *GetWeaponFromAmmo( int iAmmoId );
 };
 
 extern WeaponsResource gWR;

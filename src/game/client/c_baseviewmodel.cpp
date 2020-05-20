@@ -199,7 +199,7 @@ inline bool C_BaseViewModel::ShouldFlipViewModel()
     CBaseCombatWeapon *pWeapon = m_hWeapon.Get();
     if ( pWeapon )
     {
-        const FileWeaponInfo_t *pInfo = &pWeapon->GetWpnData();
+        const WeaponInfo_t *pInfo = &pWeapon->GetWpnData();
         return pInfo->m_bAllowFlipping && pInfo->m_bBuiltRightHanded != cl_righthand.GetBool();
     }
 #endif

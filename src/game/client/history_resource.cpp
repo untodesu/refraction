@@ -119,7 +119,7 @@ void CHudHistoryResource::AddToHistory( int iType, int iId, int iCount )
 
 #if defined( CSTRIKE_DLL )
         // don't leave blank gaps for ammo we're not going to display
-        const FileWeaponInfo_t *pWpnInfo = gWR.GetWeaponFromAmmo( iId );
+        const WeaponInfo_t *pWpnInfo = gWR.GetWeaponFromAmmo( iId );
         if ( pWpnInfo && ( pWpnInfo->iMaxClip1 >= 0 || pWpnInfo->iMaxClip2 >= 0 ) )
         {
             if ( !pWpnInfo->iconSmall )
@@ -338,7 +338,7 @@ void CHudHistoryResource::Paint( void )
                 {
                     // Get the weapon we belong to
 #ifndef HL2MP
-                    const FileWeaponInfo_t *pWpnInfo = gWR.GetWeaponFromAmmo( m_PickupHistory[i].iId );
+                    const WeaponInfo_t *pWpnInfo = gWR.GetWeaponFromAmmo( m_PickupHistory[i].iId );
                     if ( pWpnInfo && ( pWpnInfo->iMaxClip1 >= 0 || pWpnInfo->iMaxClip2 >= 0 ) )
                     {
                         // The weapon will be the main icon, and the ammo the smaller

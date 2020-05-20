@@ -81,10 +81,10 @@ void WeaponsResource::LoadAllWeaponSprites( void )
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-void WeaponsResource::LoadWeaponSprites( WeaponFileInfoHandle_t hWeaponFileInfo )
+void WeaponsResource::LoadWeaponSprites( WeaponInfoHandle_t hWeaponFileInfo )
 {
     // WeaponsResource is a friend of C_BaseCombatWeapon
-    FileWeaponInfo_t *pWeaponInfo = GetWeaponInfoFromHandle( hWeaponFileInfo );
+    WeaponInfo_t *pWeaponInfo = WeaponParse::GetWeaponInfo( hWeaponFileInfo );
 
     if ( !pWeaponInfo )
         return;
@@ -243,7 +243,7 @@ CHudTexture *WeaponsResource::GetAmmoIconFromWeapon( int iAmmoId )
 //-----------------------------------------------------------------------------
 // Purpose: Get a pointer to a weapon using this ammo
 //-----------------------------------------------------------------------------
-const FileWeaponInfo_t *WeaponsResource::GetWeaponFromAmmo( int iAmmoId )
+const WeaponInfo_t *WeaponsResource::GetWeaponFromAmmo( int iAmmoId )
 {
     C_BasePlayer *player = C_BasePlayer::GetLocalPlayer();
     if ( !player )
