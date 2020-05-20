@@ -58,7 +58,7 @@ extern ConVar ai_debug_shoot_positions;
 //-----------------------------------------------------------------------------
 void W_Precache(void)
 {
-    PrecacheFileWeaponInfoDatabase( filesystem, g_pGameRules->GetEncryptionKey() );
+    WeaponParse::Initialize( filesystem, g_pGameRules->GetEncryptionKey() );
 
 
 
@@ -168,10 +168,9 @@ void CBaseCombatWeapon::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseComb
         }
         else if ( pEvent->event == AE_WPN_PLAYWPNSOUND )
         {
-            int iSnd = GetWeaponSound(pEvent->options);
-            if ( iSnd != -1 )
-            {
-                WeaponSound( (WeaponSound_t)iSnd );
+            WeaponSound_t snd = WeaponParse::FindWeaponSound( pEvent->options );
+            if( snd != WPS_INVALID ) {
+                WeaponSound( snd );
             }
         }
     }

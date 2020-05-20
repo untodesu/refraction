@@ -1,8 +1,0 @@
-
-event Logo.FadeIn {
-    animate GameLogo xpos 48    linear 1.0 1.0
-    animate GameLogo ypos 168   linear 1.0 1.0
-    animate GameLogo wide 640   linear 1.0 1.0
-    animate GameLogo tall 72    linear 1.0 1.0
-    animate GameLogo alpha 1.0  linear 1.0 1.0
-}

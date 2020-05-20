@@ -12,10 +12,11 @@
 #endif
 
 #include "shareddefs.h"
+#include "utldict.h"
 
 class IFileSystem;
 
-typedef unsigned short WeaponFileInfoHandle_t;
+typedef unsigned short WeaponInfoHandle_t;
 
 // -----------------------------------------------------------
 // Weapon sound types
@@ -46,8 +47,6 @@ enum WeaponSound_t {
     WPS_NUM_TYPES,
 };
 
-const WeaponSound_t GetWeaponSound( const char *pszString );
-
 #define MAX_SHOOT_SOUNDS            16  // Maximum number of shoot sounds per shoot type
 #define MAX_WEAPON_STRING           80
 #define MAX_WEAPON_PREFIX           16
@@ -63,13 +62,12 @@ class KeyValues;
 // Each game provides a CreateWeaponInfo function so it can have game-specific
 // data (like CS move speeds) in the weapon script.
 //-----------------------------------------------------------------------------
-class FileWeaponInfo_t {
+class WeaponInfo_t {
 public:
-    FileWeaponInfo_t();
+    WeaponInfo_t();
     virtual void Parse( KeyValues *pKeyValuesData, const char *pszWeaponName );
 
 public:
-    bool    bWasTryingToParse = false;
     bool    bLoadedHudElements = false;
 
 // SHARED
@@ -118,11 +116,26 @@ public:
     CHudTexture *   iconSmall;
 };
 
-WeaponFileInfoHandle_t  LookupWeaponInfoSlot( const char *pszName );
-FileWeaponInfo_t *      GetWeaponInfoFromHandle( WeaponFileInfoHandle_t handle );
-WeaponFileInfoHandle_t  GetInvalidWeaponInfoHandle();
-void                    PrecacheFileWeaponInfoDatabase( IFileSystem *pFilesystem, const unsigned char *pICEKey );
-bool                    ReadWeaponDataFromFileForSlot( IFileSystem *pFilesystem, const char *pszWpnName, WeaponFileInfoHandle_t &handle, const unsigned char *pICEKey = NULL );
+class WeaponParse {
+private:
+    static CUtlDict<WeaponInfo_t *, WeaponInfoHandle_t> m_WeaponInfoDatabase;
+    static const char * m_aszWeaponSoundTable[WPS_NUM_TYPES];
+
+private:
+    static WeaponInfoHandle_t   FindWeaponInfo( const char *pszName );
+
+public:
+    static const char **        GetWeaponSoundTable();
+    static const WeaponSound_t  FindWeaponSound( const char *pszName );
+    
+    static WeaponInfoHandle_t   LookupWeaponInfo( const char *pszName );
+    static WeaponInfoHandle_t   GetInvalidWeaponInfo();
+    
+    static WeaponInfo_t *       GetWeaponInfo( WeaponInfoHandle_t hWpnInfo );
+    static bool                 GetWeaponInfo( const char *pszName, WeaponInfoHandle_t &hWpnInfo );
+    
+    static void                 Initialize( IFileSystem *pFilesystem, const unsigned char *pICEKey );
+};
 
 //
 // Read a possibly-encrypted KeyValues file in.
@@ -133,9 +146,8 @@ bool                    ReadWeaponDataFromFileForSlot( IFileSystem *pFilesystem,
 //
 KeyValues* ReadEncryptedKVFile( IFileSystem *filesystem, const char *szFilenameWithoutExtension, const unsigned char *pICEKey, bool bForceReadEncryptedFile = false );
 
-
 // Each game implements this. It can return a derived class and override Parse() if it wants.
-extern FileWeaponInfo_t* CreateWeaponInfo();
+extern WeaponInfo_t* CreateWeaponInfo();
 
 
 #endif // WEAPON_PARSE_H

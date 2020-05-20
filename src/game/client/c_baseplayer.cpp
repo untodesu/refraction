@@ -980,7 +980,7 @@ void C_BasePlayer::OnDataChanged( DataUpdateType_t updateType )
             if ( GetAmmoCount(i) > m_iOldAmmo[i] )
             {
                 // Don't add to ammo pickup if the ammo doesn't do it
-                const FileWeaponInfo_t *pWeaponData = gWR.GetWeaponFromAmmo(i);
+                const WeaponInfo_t *pWeaponData = gWR.GetWeaponFromAmmo(i);
 
                 if ( !pWeaponData || !( pWeaponData->iFlags & ITEM_FLAG_NOAMMOPICKUPS ) )
                 {

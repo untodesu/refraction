@@ -337,7 +337,7 @@ public:
 public:
 
     // Weapon info accessors for data in the weapon's data file
-    const FileWeaponInfo_t  &GetWpnData( void ) const;
+    const WeaponInfo_t  &GetWpnData( void ) const;
     virtual const char      *GetViewModel( int viewmodelindex = 0 ) const;
     virtual const char      *GetWorldModel( void ) const;
     virtual const char      *GetAnimPrefix( void ) const;
@@ -495,7 +495,7 @@ public:
     virtual void            GetViewmodelBoneControllers(C_BaseViewModel *pViewModel, float controllers[MAXSTUDIOBONECTRLS]) { return; }
 
     virtual void            NotifyShouldTransmit( ShouldTransmitState_t state );
-    WeaponFileInfoHandle_t  GetWeaponFileInfoHandle() { return m_hWeaponFileInfo; }
+    WeaponInfoHandle_t  GetWeaponFileInfoHandle() { return m_hWeaponFileInfo; }
 
     virtual int             GetWorldModelIndex( void );
 
@@ -603,7 +603,7 @@ public:
     IPhysicsConstraint      *GetConstraint() { return m_pConstraint; }
 
 private:
-    WeaponFileInfoHandle_t  m_hWeaponFileInfo;
+    WeaponInfoHandle_t  m_hWeaponFileInfo;
     IPhysicsConstraint      *m_pConstraint;
 
     int                     m_iAltFireHudHintCount;     // How many times has this weapon displayed its alt-fire HUD hint?

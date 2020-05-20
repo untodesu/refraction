@@ -91,7 +91,7 @@ CBaseCombatWeapon::CBaseCombatWeapon()
     OnBaseCombatWeaponCreated( this );
 #endif
 
-    m_hWeaponFileInfo = GetInvalidWeaponInfoHandle();
+    m_hWeaponFileInfo = WeaponParse::GetInvalidWeaponInfo();
 
 #if defined( TF_DLL )
     UseClientSideAnimation();
@@ -238,7 +238,7 @@ void CBaseCombatWeapon::Precache( void )
 
     // Add this weapon to the weapon registry, and get our index into it
     // Get weapon data from script file
-    if ( ReadWeaponDataFromFileForSlot( filesystem, GetClassname(), m_hWeaponFileInfo, GetEncryptionKey() ) )
+    if ( WeaponParse::GetWeaponInfo( GetClassname(), m_hWeaponFileInfo ) )
     {
         // Get the ammo indexes for the ammo's specified in the data file
         if ( GetWpnData().szAmmo1[0] ) {
@@ -284,16 +284,15 @@ void CBaseCombatWeapon::Precache( void )
     {
         // Couldn't read data file, remove myself
         Warning( "Error reading weapon data file for: %s\n", GetClassname() );
-    //  Remove( );  //don't remove, this gets released soon!
     }
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Get my data in the file weapon info array
 //-----------------------------------------------------------------------------
-const FileWeaponInfo_t &CBaseCombatWeapon::GetWpnData( void ) const
+const WeaponInfo_t &CBaseCombatWeapon::GetWpnData( void ) const
 {
-    return *::GetWeaponInfoFromHandle( m_hWeaponFileInfo );
+    return *( WeaponParse::GetWeaponInfo( m_hWeaponFileInfo ) );
 }
 
 //-----------------------------------------------------------------------------
