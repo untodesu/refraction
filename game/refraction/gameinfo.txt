@@ -1,40 +1,40 @@
 "GameInfo"
 {
-	game								"Refraction vREF-0.1.01-DEV [Unified Shader Model 3.0]"
-	title								"REFRACTION"
-	type								singleplayer_only
-	supportsvr							1
+    game                                "Refraction vREF-0.1.01-DEV [Unified Shader Model 3.0]"
+    gameui2_title                       "REFRACTION git"
+    type                                singleplayer_only
+    supportsvr                          1
 
-	FileSystem
-	{
-		SteamAppId						243730		// This sets the app ID in Steam
-		SearchPaths
-		{
-			// Refraction data
-			game+mod+mod_write+default_write_path		|gameinfo_path|.
-			gamebin						|gameinfo_path|bin
-            game+mod					|gameinfo_path|content/.
-//			game+mod					|gameinfo_path|shadereditor/.
-//			game+mod					|gameinfo_path|refraction_unpack/.
+    FileSystem
+    {
+        SteamAppId                      243730      // This sets the app ID in Steam
+        SearchPaths
+        {
+            // Refraction data
+            game+mod+mod_write+default_write_path       |gameinfo_path|.
+            gamebin                     |gameinfo_path|bin
+            game+mod                    |gameinfo_path|content/.
+//          game+mod                    |gameinfo_path|shadereditor/.
+//          game+mod                    |gameinfo_path|refraction_unpack/.
 
-			game_lv						|all_source_engine_paths|hl2/hl2_lv.vpk
-//			game+mod					|all_source_engine_paths|ep2/ep2_english.vpk
-//			game+mod					|all_source_engine_paths|ep2/ep2_pak.vpk
-//			game+mod					|all_source_engine_paths|episodic/ep1_english.vpk
-//			game+mod					|all_source_engine_paths|episodic/ep1_pak.vpk
-			game						|all_source_engine_paths|hl2/hl2_english.vpk
-			game						|all_source_engine_paths|hl2/hl2_pak.vpk
-			game						|all_source_engine_paths|hl2/hl2_textures.vpk
-			game						|all_source_engine_paths|hl2/hl2_sound_vo_english.vpk
-			game						|all_source_engine_paths|hl2/hl2_sound_misc.vpk
-			game						|all_source_engine_paths|hl2/hl2_misc.vpk			
-			
-			platform					|all_source_engine_paths|platform/platform_misc.vpk
+            game_lv                     |all_source_engine_paths|hl2/hl2_lv.vpk
+//          game+mod                    |all_source_engine_paths|ep2/ep2_english.vpk
+//          game+mod                    |all_source_engine_paths|ep2/ep2_pak.vpk
+//          game+mod                    |all_source_engine_paths|episodic/ep1_english.vpk
+//          game+mod                    |all_source_engine_paths|episodic/ep1_pak.vpk
+            game                        |all_source_engine_paths|hl2/hl2_english.vpk
+            game                        |all_source_engine_paths|hl2/hl2_pak.vpk
+            game                        |all_source_engine_paths|hl2/hl2_textures.vpk
+            game                        |all_source_engine_paths|hl2/hl2_sound_vo_english.vpk
+            game                        |all_source_engine_paths|hl2/hl2_sound_misc.vpk
+            game                        |all_source_engine_paths|hl2/hl2_misc.vpk           
+            
+            platform                    |all_source_engine_paths|platform/platform_misc.vpk
 
-//			game						|all_source_engine_paths|ep2
-//			game						|all_source_engine_paths|episodic
-			game						|all_source_engine_paths|hl2
-			platform					|all_source_engine_paths|platform
-		}
-	}
+//          game                        |all_source_engine_paths|ep2
+//          game                        |all_source_engine_paths|episodic
+            game                        |all_source_engine_paths|hl2
+            platform                    |all_source_engine_paths|platform
+        }
+    }
 }

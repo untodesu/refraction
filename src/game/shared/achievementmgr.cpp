@@ -40,7 +40,6 @@
 #ifdef _X360
 #include "ixboxsystem.h"
 #endif  // _X360
-#include "engine/imatchmaking.h"
 #include "tier0/vprof.h"
 
 #if defined(TF_DLL) || defined(TF_CLIENT_DLL)
@@ -1150,8 +1149,6 @@ bool CalcPlayersOnFriendsList( int iMinFriends )
 
     // determine local player team
     int iLocalPlayerIndex =  GetLocalPlayerIndex();
-    uint64 XPlayerUid = 0;
-
     if ( IsPC() )
     {
 #ifndef NO_STEAM
@@ -1159,13 +1156,6 @@ bool CalcPlayersOnFriendsList( int iMinFriends )
 #endif
             return false;
 
-    }
-    else if ( IsX360() )
-    {
-        if ( !matchmaking )
-            return false;
-
-        XPlayerUid = XBX_GetPrimaryUserId();
     }
     else
     {
@@ -1192,17 +1182,6 @@ bool CalcPlayersOnFriendsList( int iMinFriends )
                 if ( !steamapicontext->SteamFriends()->HasFriend( steamID, /*k_EFriendFlagImmediate*/ 0x04 ) )
                     continue;
 #endif
-            }
-            else if ( IsX360() )
-            {
-                uint64 XUid[1];
-                XUid[0] = matchmaking->PlayerIdToXuid( iPlayerIndex );
-                BOOL bFriend;
-#ifdef _X360
-                XUserAreUsersFriends( XPlayerUid, XUid, 1, &bFriend, NULL );
-#endif // _X360
-                if ( !bFriend )
-                    continue;
             }
 
             iTotalFriends++;

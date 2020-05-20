@@ -104,6 +104,8 @@
 #include "client_virtualreality.h"
 #include "mumble.h"
 
+#include "GameUI/IGameUI2.h"
+
 // NVNT includes
 #include "hud_macros.h"
 #include "haptics/ihaptics.h"
@@ -154,6 +156,9 @@ ISceneFileCache *               scenefilecache = NULL;
 IUploadGameStats *              gamestatsuploader = NULL;
 IClientReplayContext *          g_pClientReplayContext = NULL;
 IHaptics *                      haptics = NULL; // NVNT haptics system interface singleton
+#ifdef GAMEUI2_CLIENT
+IGameUI2 *                      g_pGameUI2 = NULL;
+#endif
 
 IUniformRandomStream *          random = g_pMt19937;
 static CGaussianRandomStream s_GaussianRandomStream;
@@ -952,6 +957,49 @@ bool CHLClient::ReplayPostInit()
     return false;
 }
 
+static void GameUI2_Initialize()
+{
+#ifdef GAMEUI2_CLIENT
+    if( CommandLine()->FindParm( "-nogameui2" ) ) {
+        GameUI2_Warning( "GameUI2: Disabled due to nogameui2.\n" );
+        return;
+    }
+
+    // GameUI2.dll path
+    char gameui2DllPath[2048] = { 0 };
+    Q_snprintf( gameui2DllPath, sizeof( gameui2DllPath ), "%s/bin/gameui2" DLL_EXT_STRING, engine->GetGameDirectory() );
+    V_FixSlashes( gameui2DllPath );
+    GameUI2_Message( "GameUI2: Dll path - %s\n", gameui2DllPath );
+
+    // Load DLL
+    CSysModule *pModule = Sys_LoadModule( gameui2DllPath );
+    if( !pModule ) {
+        GameUI2_Warning( "GameUI2: No gameui2.dll found!\n" );
+        return;
+    }
+
+    // Get factory
+    CreateInterfaceFn factory = Sys_GetFactory( pModule );
+    if( !factory ) {
+        GameUI2_Warning( "GameUI2: DLL is present, but have no tier1-compatible interface!\n" );
+        return;
+    }
+
+    // Make GameUI2
+    g_pGameUI2 = (IGameUI2 *)factory( GAMEUI2_INTERFACE_VERSION, NULL );
+    if( !g_pGameUI2 ) {
+        GameUI2_Warning( "GameUI2: DLL is present & tier1-compatible, but no exposed IGameUI2 (%s) found!", GAMEUI2_INTERFACE_VERSION );
+        return;
+    }
+
+    factorylist_t factories;
+    FactoryList_Retrieve( factories );
+
+    g_pGameUI2->Initialize(factories.appSystemFactory);
+    g_pGameUI2->PostInit();
+#endif
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: Called after client & server DLL are loaded and all systems initialized
 //-----------------------------------------------------------------------------
@@ -959,6 +1007,7 @@ void CHLClient::PostInit()
 {
     IGameSystem::PostInitAllSystems();
     g_ClientVirtualReality.StartupComplete();
+    GameUI2_Initialize();
 }
 
 //-----------------------------------------------------------------------------
@@ -992,6 +1041,13 @@ void CHLClient::Shutdown( void )
     UncacheAllMaterials();
 
     IGameSystem::ShutdownAllSystems();
+
+#ifdef GAMEUI2_CLIENT
+    if( g_pGameUI2 ) {
+        g_pGameUI2->PreShutdown();
+        g_pGameUI2->Shutdown();
+    }
+#endif
 
     gHUD.Shutdown();
     VGui_Shutdown();
@@ -1030,6 +1086,10 @@ int CHLClient::HudVidInit( void )
 {
     gHUD.VidInit();
     GetClientVoiceMgr()->VidInit();
+
+#ifdef GAMEUI2_CLIENT
+    g_pGameUI2->VidInit();
+#endif
     return 1;
 }
 
@@ -1064,6 +1124,12 @@ void CHLClient::HudUpdate( bool bActive )
     // I don't think this is necessary any longer, but I will leave it until
     // I can check into this further.
     C_BaseTempEntity::CheckDynamicTempEnts();
+
+#ifdef GAMEUI2_CLIENT
+    if( g_pGameUI2 ) {
+        g_pGameUI2->OnUpdate();
+    }
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -1318,7 +1384,7 @@ void CHLClient::View_Fade( ScreenFade_t *pSF )
 //-----------------------------------------------------------------------------
 // Purpose: Per level init
 //-----------------------------------------------------------------------------
-void CHLClient::LevelInitPreEntity( char const* pMapName )
+void CHLClient::LevelInitPreEntity( char const *pMapName )
 {
     // HACK: Bogus, but the logic is too complicated in the engine
     if( g_bLevelInitialized ) {
@@ -1366,6 +1432,12 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
     // Check low violence settings for this map
     g_RagdollLVManager.SetLowViolence( pMapName );
     gHUD.LevelInit();
+
+#ifdef GAMEUI2_CLIENT
+    if( g_pGameUI2 ) {
+        g_pGameUI2->LevelInitPreEntity( pMapName );
+    }
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -1376,6 +1448,12 @@ void CHLClient::LevelInitPostEntity()
     IGameSystem::LevelInitPostEntityAllSystems();
     C_PhysPropClientside::RecreateAll();
     internalCenterPrint->Clear();
+
+#ifdef GAMEUI2_CLIENT
+    if( g_pGameUI2 ) {
+        g_pGameUI2->LevelInitPostEntity();
+    }
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -1432,6 +1510,12 @@ void CHLClient::LevelShutdown( void )
     beams->ClearBeams();
     ParticleMgr()->RemoveAllEffects();
     StopAllRumbleEffects();
+
+#ifdef GAMEUI2_CLIENT
+    if( g_pGameUI2 ) {
+        g_pGameUI2->LevelShutdown();
+    }
+#endif
 
     gHUD.LevelShutdown();
     internalCenterPrint->Clear();

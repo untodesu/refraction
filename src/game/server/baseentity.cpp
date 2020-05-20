@@ -1307,17 +1307,6 @@ void CBaseEntity::FireNamedOutput( const char *pszOutput, variant_t variant, CBa
 
 void CBaseEntity::Activate( void )
 {
-#ifdef DEBUG
-    extern bool g_bCheckForChainedActivate;
-    extern bool g_bReceivedChainedActivate;
-
-    if ( g_bCheckForChainedActivate && g_bReceivedChainedActivate )
-    {
-        Assert( !"Multiple calls to base class Activate()\n" );
-    }
-    g_bReceivedChainedActivate = true;
-#endif
-
     // NOTE: This forces a team change so that stuff in the level
     // that starts out on a team correctly changes team
     if (m_iInitialTeamNum)

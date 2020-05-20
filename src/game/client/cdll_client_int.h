@@ -16,7 +16,6 @@
 #include "cdll_int.h"
 #include "eiface.h"
 
-
 class IVModelRender;
 class IVEngineClient;
 class IVModelRender;
@@ -60,6 +59,10 @@ class IEngineClientReplay;
 class IReplayScreenshotManager;
 class CSteamID;
 
+#ifdef GAMEUI2_CLIENT
+class IGameUI2;
+#endif
+
 //=============================================================================
 // HPE_BEGIN
 // [dwenger] Necessary for stats display
@@ -71,45 +74,48 @@ class AchievementsAndStatsInterface;
 // HPE_END
 //=============================================================================
 
-extern IVModelRender *modelrender;
-extern IVEngineClient   *engine;
-extern IVModelRender *modelrender;
-extern IVEfx *effects;
-extern IVRenderView *render;
-extern IVDebugOverlay *debugoverlay;
-extern IMaterialSystem *materials;
-extern IMaterialSystemStub *materials_stub;
-extern IMaterialSystemHardwareConfig *g_pMaterialSystemHardwareConfig;
-extern IDataCache *datacache;
-extern IMDLCache *mdlcache;
-extern IVModelInfoClient *modelinfo;
-extern IEngineVGui *enginevgui;
-extern ISpatialPartition* partition;
-extern IBaseClientDLL *clientdll;
-extern IFileSystem *filesystem;
-extern IStaticPropMgrClient *staticpropmgr;
-extern IShadowMgr *shadowmgr;
-extern IEngineSound *enginesound;
-extern IMatSystemSurface *g_pMatSystemSurface;
-extern IEngineTrace *enginetrace;
-extern IGameUIFuncs *gameuifuncs;
-extern IGameEventManager2 *gameeventmanager;
-extern IPhysicsGameTrace *physgametrace;
-extern CGlobalVarsBase *gpGlobals;
-extern IClientTools *clienttools;
-extern IInputSystem *inputsystem;
-extern ISceneFileCache *scenefilecache;
-extern IXboxSystem *xboxsystem; // Xbox 360 only
-extern IMatchmaking *matchmaking;
-extern IVideoServices *g_pVideo;
-extern IUploadGameStats *gamestatsuploader;
-extern CSteamAPIContext *steamapicontext;
-extern IReplaySystem *g_pReplay;
-extern IClientReplayContext *g_pClientReplayContext;
-extern IReplayManager *g_pReplayManager;
-extern IReplayScreenshotManager *g_pReplayScreenshotManager;
-extern IEngineReplay *g_pEngineReplay;
-extern IEngineClientReplay *g_pEngineClientReplay;
+extern IVModelRender *                  modelrender;
+extern IVEngineClient   *               engine;
+extern IVModelRender *                  modelrender;
+extern IVEfx *                          effects;
+extern IVRenderView *                   render;
+extern IVDebugOverlay *                 debugoverlay;
+extern IMaterialSystem *                materials;
+extern IMaterialSystemStub *            materials_stub;
+extern IMaterialSystemHardwareConfig *  g_pMaterialSystemHardwareConfig;
+extern IDataCache *                     datacache;
+extern IMDLCache *                      mdlcache;
+extern IVModelInfoClient *              modelinfo;
+extern IEngineVGui *                    enginevgui;
+extern ISpatialPartition *              partition;
+extern IBaseClientDLL *                 clientdll;
+extern IFileSystem *                    filesystem;
+extern IStaticPropMgrClient *           staticpropmgr;
+extern IShadowMgr *                     shadowmgr;
+extern IEngineSound *                   enginesound;
+extern IMatSystemSurface *              g_pMatSystemSurface;
+extern IEngineTrace *                   enginetrace;
+extern IGameUIFuncs *                   gameuifuncs;
+extern IGameEventManager2 *             gameeventmanager;
+extern IPhysicsGameTrace *              physgametrace;
+extern CGlobalVarsBase *                gpGlobals;
+extern IClientTools *                   clienttools;
+extern IInputSystem *                   inputsystem;
+extern ISceneFileCache *                scenefilecache;
+extern IXboxSystem *                    xboxsystem; // Xbox 360 only
+extern IMatchmaking *                   matchmaking;
+extern IVideoServices *                 g_pVideo;
+extern IUploadGameStats *               gamestatsuploader;
+extern CSteamAPIContext *               steamapicontext;
+extern IReplaySystem *                  g_pReplay;
+extern IClientReplayContext *           g_pClientReplayContext;
+extern IReplayManager *                 g_pReplayManager;
+extern IReplayScreenshotManager *       g_pReplayScreenshotManager;
+extern IEngineReplay *                  g_pEngineReplay;
+extern IEngineClientReplay *            g_pEngineClientReplay;
+#ifdef GAMEUI2_CLIENT
+extern IGameUI2 *                       g_pGameUI2;
+#endif
 
 //=============================================================================
 // HPE_BEGIN
