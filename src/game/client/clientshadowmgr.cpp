@@ -1290,8 +1290,8 @@ bool CClientShadowMgr::Init()
 
     SetShadowBlobbyCutoffArea( 0.005 );
 
-    bool bTools = CommandLine()->CheckParm( "-tools" ) != NULL;
-    m_nMaxDepthTextureShadows = bTools ? 4 : 1; // Just one shadow depth texture in games, more in tools
+    //bool bTools = CommandLine()->CheckParm( "-tools" ) != NULL;
+    m_nMaxDepthTextureShadows = 8;
 
     bool bLowEnd = ( g_pMaterialSystemHardwareConfig->GetDXSupportLevel() < 80 );
 
@@ -1336,6 +1336,7 @@ void CClientShadowMgr::InitDepthTextureShadows()
 {
     VPROF_BUDGET( "CClientShadowMgr::InitDepthTextureShadows", VPROF_BUDGETGROUP_SHADOW_DEPTH_TEXTURING );
 
+    m_nDepthTextureResolution = r_flashlightdepthres.GetInt();
     if( !m_bDepthTextureActive )
     {
         m_bDepthTextureActive = true;
@@ -1374,6 +1375,7 @@ void CClientShadowMgr::InitDepthTextureShadows()
 #else
             depthTex.InitRenderTarget( m_nDepthTextureResolution, m_nDepthTextureResolution, RT_SIZE_OFFSCREEN, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName );
 #endif
+            AssertMsg( depthTex->GetActualWidth() == m_nDepthTextureResolution, "Depth texture resolution differs!" );
 
             if ( i == 0 )
             {
@@ -2623,6 +2625,14 @@ void CClientShadowMgr::BuildFlashlight( ClientShadowHandle_t handle )
 
     VPROF_BUDGET( "CClientShadowMgr::BuildFlashlight", VPROF_BUDGETGROUP_SHADOW_DEPTH_TEXTURING );
 
+    // Don't project the flashlight if the frustum AABB is not in our view
+    Vector mins, maxs;
+    CalculateAABBFromProjectionMatrix( shadow.m_WorldToShadow, &mins, &maxs );
+
+    if( engine->CullBox( mins, maxs ) ) {
+        return;
+    }
+
     bool bLightModels = r_flashlightmodels.GetBool();
     bool bLightSpecificEntity = shadow.m_hTargetEntity.Get() != NULL;
     bool bLightWorld = ( shadow.m_Flags & SHADOW_FLAGS_LIGHT_WORLD ) != 0;
@@ -3845,21 +3855,7 @@ int CClientShadowMgr::BuildActiveShadowDepthList( const CViewSetup &viewSetup, i
         const FlashlightState_t& flashlightState = shadowmgr->GetFlashlightState( shadow.m_ShadowHandle );
 
         // Bail if this flashlight doesn't want shadows
-        if ( !flashlightState.m_bEnableShadows )
-            continue;
-
-        // Calculate an AABB around the shadow frustum
-        Vector vecAbsMins, vecAbsMaxs;
-        CalculateAABBFromProjectionMatrix( shadow.m_WorldToShadow, &vecAbsMins, &vecAbsMaxs );
-
-        Frustum_t viewFrustum;
-        GeneratePerspectiveFrustum( viewSetup.origin, viewSetup.angles, viewSetup.zNear, viewSetup.zFar, viewSetup.fov, viewSetup.m_flAspectRatio, viewFrustum );
-
-        // FIXME: Could do other sorts of culling here, such as frustum-frustum test, distance etc.
-        // If it's not in the view frustum, move on
-        if ( R_CullBox( vecAbsMins, vecAbsMaxs, viewFrustum ) )
-        {
-            shadowmgr->SetFlashlightDepthTexture( shadow.m_ShadowHandle, NULL, 0 );
+        if( !flashlightState.m_bEnableShadows ) {
             continue;
         }
 

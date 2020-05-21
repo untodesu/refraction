@@ -153,21 +153,17 @@ void C_EnvProjectedTexture::UpdateLight( bool bForceUpdate )
         }
         else
         {
-            vForward = m_hTargetEntity->GetAbsOrigin() - GetAbsOrigin();
-            VectorNormalize( vForward );
-
-            // JasonM - unimplemented
-            Assert (0);
-
-            //Quaternion q = DirectionToOrientation( dir );
-
-
-            //
-            // JasonM - set up vRight, vUp
-            //
-
-//          VectorNormalize( vRight );
-//          VectorNormalize( vUp );
+            // VXP: Fixing targeting
+            Vector vecToTarget;
+            QAngle vecAngles;
+            if( m_hTargetEntity == NULL ) {
+                vecAngles = GetAbsAngles();
+            }
+            else {
+                vecToTarget = m_hTargetEntity->GetAbsOrigin() - GetAbsOrigin();
+                VectorAngles( vecToTarget, vecAngles );
+            }
+            AngleVectors( vecAngles, &vForward, &vRight, &vUp );
         }
     }
     else
@@ -220,16 +216,12 @@ void C_EnvProjectedTexture::UpdateLight( bool bForceUpdate )
     }
 
     g_pClientShadowMgr->SetFlashlightLightWorld( m_LightHandle, m_bLightWorld );
-
-    if ( bForceUpdate == false )
-    {
-        g_pClientShadowMgr->UpdateProjectedTexture( m_LightHandle, true );
-    }
+    g_pClientShadowMgr->UpdateProjectedTexture( m_LightHandle, true );
 }
 
 void C_EnvProjectedTexture::Simulate( void )
 {
-    UpdateLight( false );
+    UpdateLight( !!GetMoveParent() );
 
     BaseClass::Simulate();
 }

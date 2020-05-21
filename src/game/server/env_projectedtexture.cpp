@@ -239,7 +239,20 @@ void CEnvProjectedTexture::Activate( void )
 
 void CEnvProjectedTexture::InitialThink( void )
 {
-    m_hTargetEntity = gEntList.FindEntityByName( NULL, m_target );
+    if( !m_hTargetEntity && m_target != NULL_STRING ) {
+        m_hTargetEntity = gEntList.FindEntityByName( NULL, m_target );
+    }
+    
+    if( !m_hTargetEntity ) {
+        return;
+    }
+
+    Vector vecToTarget = ( m_hTargetEntity->GetAbsOrigin() - GetAbsOrigin() );
+    QAngle vecAngles;
+    VectorAngles( vecToTarget, vecAngles );
+    SetAbsAngles( vecAngles );
+
+    SetNextThink( gpGlobals->curtime + 0.1 );
 }
 
 int CEnvProjectedTexture::UpdateTransmitState()
