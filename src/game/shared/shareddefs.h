@@ -520,13 +520,26 @@ typedef enum
 } USE_TYPE;
 
 // basic team colors
-#define COLOR_RED       Color(255, 64, 64, 255)
-#define COLOR_BLUE      Color(153, 204, 255, 255)
-#define COLOR_YELLOW    Color(255, 178, 0, 255)
-#define COLOR_GREEN     Color(153, 255, 153, 255)
-#define COLOR_GREY      Color(204, 204, 204, 255)
-#define COLOR_WHITE     Color(255, 255, 255, 255)
-#define COLOR_BLACK     Color(0, 0, 0, 255)
+#define COLOR_RED           Color( 0xFF, 0x40, 0x40, 0xFF )
+#define COLOR_BLUE          Color( 0x99, 0xCC, 0xFF, 0xFF )
+#define COLOR_YELLOW        Color( 0xFF, 0xB2, 0x00, 0xFF )
+#define COLOR_GREEN         Color( 0x99, 0xFF, 0x99, 0xFF )
+#define COLOR_GREY          Color( 0xCC, 0xCC, 0xCC, 0xFF )
+#define COLOR_WHITE         Color( 0xFF, 0xFF, 0xFF, 0xFF )
+#define COLOR_BLACK         Color( 0x00, 0x00, 0x00, 0xFF )
+
+// Log colors
+#define LOG_COLOR_RED       Color( 0xCC, 0x00, 0x00, 0xFF )
+#define LOG_COLOR_GREEN     Color( 0x00, 0xCC, 0x00, 0xFF )
+#define LOG_COLOR_BLUE      Color( 0x00, 0x00, 0xCC, 0xFF )
+#define LOG_COLOR_WHITE     Color( 0xFF, 0xFF, 0xFF, 0xFF )
+#define LOG_COLOR_BLACK     Color( 0x00, 0x00, 0x00, 0xFF ) // why?
+#define LOG_COLOR_YELLOW    Color( 0xFF, 0xFF, 0x00, 0xFF )
+#define LOG_COLOR_ORANGE    Color( 0xFF, 0x80, 0x00, 0xFF )
+#define LOG_COLOR_PURPLE    Color( 0x80, 0x00, 0x80, 0xFF )
+#define LOG_COLOR_MAGENTA   Color( 0xFF, 0x00, 0xFF, 0xFF )
+#define LOG_COLOR_CYAN      Color( 0x00, 0xFF, 0xFF, 0xFF )
+#define LOG_COLOR_GREY      Color( 0xCC, 0xCC, 0xCC, 0xFF )
 
 // All NPCs need this data
 enum
