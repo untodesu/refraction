@@ -139,10 +139,11 @@ void WeaponParse::Initialize( IFileSystem *pFilesystem, const unsigned char *pIC
             gWR.LoadWeaponSprites( hWpnInfo );
         #endif
 
+            ConColorMsg( LOG_COLOR_ORANGE, "WeaponParse: Found entry - %s\n", pszWpnName );
             found++;
         }
 
-        ConColorMsg( LOG_COLOR_YELLOW, "WeaponParse: Loaded %d weapons\n", found );
+        ConColorMsg( LOG_COLOR_ORANGE, "WeaponParse: Loaded %d weapons\n", found );
     }
 }
 
