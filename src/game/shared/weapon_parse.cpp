@@ -16,12 +16,6 @@
 
 CUtlDict<WeaponInfo_t *, WeaponInfoHandle_t> WeaponParse::m_WeaponInfoDatabase;
 
-#if defined(CLIENT_DLL)
-#define LOGPREFIX "CLIENT"
-#else
-#define LOGPREFIX "SERVER"
-#endif
-
 const char * WeaponParse::m_aszWeaponSoundTable[WPS_NUM_TYPES] = {
     "empty",
     "primary",
@@ -148,7 +142,7 @@ void WeaponParse::Initialize( IFileSystem *pFilesystem, const unsigned char *pIC
             found++;
         }
 
-        ConColorMsg( Color( 255, 255, 0, 255 ), "WeaponParse/%s: Loaded %d weapons\n", LOGPREFIX, found );
+        ConColorMsg( LOG_COLOR_YELLOW, "WeaponParse: Loaded %d weapons\n", found );
     }
 }
 

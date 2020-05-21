@@ -32,7 +32,7 @@ public:
 #define GAMEUI2_INTERFACE_VERSION   "GameUI2v001"
 
 // Some macros...
-#define GameUI2_Message(fmt, ...)   ConColorMsg(Color(0x00, 0xFF, 0xFF, 0xFF), fmt, __VA_ARGS__)
-#define GameUI2_Warning(fmt, ...)   ConColorMsg(Color(0xFF, 0xFF, 0x00, 0xFF), fmt, __VA_ARGS__)
+#define GameUI2_Message(fmt, ...)   ConColorMsg( Color(0x00, 0xFF, 0xFF, 0xFF), fmt, __VA_ARGS__ )
+#define GameUI2_Warning(fmt, ...)   ConColorMsg( Color(0xFF, 0xFF, 0x00, 0xFF), fmt, __VA_ARGS__ )
 
 #endif
