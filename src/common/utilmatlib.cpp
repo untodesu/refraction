@@ -8,7 +8,7 @@
 //=============================================================================//
 
 // C callable material system interface for the utils.
-// @und: fuck ton of winapi? or why there was a windows.h?
+// und: fuck ton of winapi? or why there was a windows.h?
 
 #include "materialsystem/imaterialsystem.h"
 #include "materialsystem/imaterial.h"

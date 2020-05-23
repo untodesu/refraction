@@ -196,7 +196,7 @@ extern ConVar hud_fastswitch;
 //-----------------------------------------------------------------------------
 void WeaponInfo_t::Parse( KeyValues *pKeyValuesData, const char *pszWeaponName )
 {
-    // @und: I prefer not to touch this code -- this is incredibly good for valve code.
+    // und: I prefer not to touch this code -- this is incredibly good for valve code.
     Q_strncpy( szClassName,         pszWeaponName, MAX_WEAPON_STRING );
     Q_strncpy( szPrintName,         pKeyValuesData->GetString( "printname", WEAPON_PRINTNAME_MISSING ), MAX_WEAPON_STRING );
     Q_strncpy( szViewModel,         pKeyValuesData->GetString( "viewmodel" ),   MAX_WEAPON_STRING );

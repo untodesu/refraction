@@ -262,7 +262,7 @@ protected:
 };
 
 static ConVar mat_fullbright( "mat_fullbright", "0", FCVAR_CHEAT ); // hook into engine's cvars..
-extern ConVar r_DrawDetailProps;
+extern ConVar r_drawdetailprops;
 
 
 //-----------------------------------------------------------------------------
@@ -2243,7 +2243,7 @@ void CDetailObjectSystem::RenderFastSprites( const Vector &viewOrigin, const Vec
     int nQuadCount = CountFastSpritesInLeafList( nLeafCount, pLeafList, &nMaxInLeaf );
     if ( nQuadCount == 0 )
         return;
-    if  ( r_DrawDetailProps.GetInt() == 0 )
+    if  ( r_drawdetailprops.GetInt() == 0 )
         return;
 
 
@@ -2253,7 +2253,7 @@ void CDetailObjectSystem::RenderFastSprites( const Vector &viewOrigin, const Vec
     pRenderContext->LoadIdentity();
 
     IMaterial *pMaterial = m_DetailSpriteMaterial;
-    if ( ShouldDrawInWireFrameMode() || r_DrawDetailProps.GetInt() == 2 )
+    if ( ShouldDrawInWireFrameMode() || r_drawdetailprops.GetInt() == 2 )
     {
         pMaterial = m_DetailWireframeMaterial;
     }
@@ -2391,7 +2391,7 @@ void CDetailObjectSystem::RenderTranslucentDetailObjects( const Vector &viewOrig
     pRenderContext->LoadIdentity();
 
     IMaterial *pMaterial = m_DetailSpriteMaterial;
-    if ( ShouldDrawInWireFrameMode() || r_DrawDetailProps.GetInt() == 2 )
+    if ( ShouldDrawInWireFrameMode() || r_drawdetailprops.GetInt() == 2 )
     {
         pMaterial = m_DetailWireframeMaterial;
     }
@@ -2494,7 +2494,7 @@ void CDetailObjectSystem::RenderFastTranslucentDetailObjectsInLeaf( const Vector
 
     int nCount = pData->m_nNumPendingSprites;
 
-    if  ( r_DrawDetailProps.GetInt() == 0 )
+    if  ( r_drawdetailprops.GetInt() == 0 )
         return;
 
 
@@ -2504,7 +2504,7 @@ void CDetailObjectSystem::RenderFastTranslucentDetailObjectsInLeaf( const Vector
     pRenderContext->LoadIdentity();
 
     IMaterial *pMaterial = m_DetailSpriteMaterial;
-    if ( ShouldDrawInWireFrameMode() || r_DrawDetailProps.GetInt() == 2 )
+    if ( ShouldDrawInWireFrameMode() || r_drawdetailprops.GetInt() == 2 )
     {
         pMaterial = m_DetailWireframeMaterial;
     }
@@ -2642,7 +2642,7 @@ void CDetailObjectSystem::RenderTranslucentDetailObjectsInLeaf( const Vector &vi
     pRenderContext->LoadIdentity();
 
     IMaterial *pMaterial = m_DetailSpriteMaterial;
-    if ( ShouldDrawInWireFrameMode() || r_DrawDetailProps.GetInt() == 2 )
+    if ( ShouldDrawInWireFrameMode() || r_drawdetailprops.GetInt() == 2 )
     {
         pMaterial = m_DetailWireframeMaterial;
     }
@@ -2758,7 +2758,7 @@ void CDetailObjectSystem::BuildDetailObjectRenderLists( const Vector &vViewOrigi
 {
     VPROF_BUDGET( "CDetailObjectSystem::BuildDetailObjectRenderLists", VPROF_BUDGETGROUP_DETAILPROP_RENDERING );
 
-    if (!g_pClientMode->ShouldDrawDetailObjects() || (r_DrawDetailProps.GetInt() == 0))
+    if (!g_pClientMode->ShouldDrawDetailObjects() || (r_drawdetailprops.GetInt() == 0))
         return;
 
     // Don't bother doing any of this if the level doesn't have detail props.
