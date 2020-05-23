@@ -15,9 +15,9 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-void ReleaseRenderTargets( void );
+void ReleaseRenderTargets();
 
-void AddReleaseFunc( void )
+void AddReleaseFunc()
 {
     static bool bAdded = false;
     if( !bAdded )
@@ -31,7 +31,7 @@ void AddReleaseFunc( void )
 // Power of Two Frame Buffer Texture
 //=============================================================================
 static CTextureReference s_pPowerOfTwoFrameBufferTexture;
-ITexture *GetPowerOfTwoFrameBufferTexture( void )
+ITexture *GetPowerOfTwoFrameBufferTexture()
 {
     if ( IsX360() )
     {
@@ -52,7 +52,7 @@ ITexture *GetPowerOfTwoFrameBufferTexture( void )
 // Fullscreen Texture
 //=============================================================================
 static CTextureReference s_pFullscreenTexture;
-ITexture *GetFullscreenTexture( void )
+ITexture *GetFullscreenTexture()
 {
     if ( !s_pFullscreenTexture )
     {
@@ -68,7 +68,7 @@ ITexture *GetFullscreenTexture( void )
 // Camera Texture
 //=============================================================================
 static CTextureReference s_pCameraTexture;
-ITexture *GetCameraTexture( void )
+ITexture *GetCameraTexture()
 {
     if ( !s_pCameraTexture )
     {
@@ -84,7 +84,7 @@ ITexture *GetCameraTexture( void )
 // Full Frame Depth Texture
 //=============================================================================
 static CTextureReference s_pFullFrameDepthTexture;
-ITexture *GetFullFrameDepthTexture( void )
+ITexture *GetFullFrameDepthTexture()
 {
     if ( !s_pFullFrameDepthTexture )
     {
@@ -126,7 +126,7 @@ ITexture *GetFullFrameFrameBufferTexture( int textureIndex )
 // Water reflection
 //=============================================================================
 static CTextureReference s_pWaterReflectionTexture;
-ITexture *GetWaterReflectionTexture( void )
+ITexture *GetWaterReflectionTexture()
 {
     if ( !s_pWaterReflectionTexture )
     {
@@ -142,7 +142,7 @@ ITexture *GetWaterReflectionTexture( void )
 // Water refraction
 //=============================================================================
 static CTextureReference s_pWaterRefractionTexture;
-ITexture *GetWaterRefractionTexture( void )
+ITexture *GetWaterRefractionTexture()
 {
     if ( !s_pWaterRefractionTexture )
     {
@@ -158,7 +158,7 @@ ITexture *GetWaterRefractionTexture( void )
 // Small Buffer HDR0
 //=============================================================================
 static CTextureReference s_pSmallBufferHDR0;
-ITexture *GetSmallBufferHDR0( void )
+ITexture *GetSmallBufferHDR0()
 {
     if ( !s_pSmallBufferHDR0 )
     {
@@ -174,7 +174,7 @@ ITexture *GetSmallBufferHDR0( void )
 // Small Buffer HDR1
 //=============================================================================
 static CTextureReference s_pSmallBufferHDR1;
-ITexture *GetSmallBufferHDR1( void )
+ITexture *GetSmallBufferHDR1()
 {
     if ( !s_pSmallBufferHDR1 )
     {
@@ -190,7 +190,7 @@ ITexture *GetSmallBufferHDR1( void )
 // Quarter Sized FB0
 //=============================================================================
 static CTextureReference s_pQuarterSizedFB0;
-ITexture *GetSmallBuffer0( void )
+ITexture *GetSmallBuffer0()
 {
     if ( !s_pQuarterSizedFB0 )
     {
@@ -206,7 +206,7 @@ ITexture *GetSmallBuffer0( void )
 // Quarter Sized FB1
 //=============================================================================
 static CTextureReference s_pQuarterSizedFB1;
-ITexture *GetSmallBuffer1( void )
+ITexture *GetSmallBuffer1()
 {
     if ( !s_pQuarterSizedFB1 )
     {
@@ -243,7 +243,7 @@ ITexture *GetTeenyTexture( int which )
     return s_TeenyTextures[which];
 }
 
-void ReleaseRenderTargets( void )
+void ReleaseRenderTargets()
 {
     s_pPowerOfTwoFrameBufferTexture.Shutdown();
     s_pCameraTexture.Shutdown();

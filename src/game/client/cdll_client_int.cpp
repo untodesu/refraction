@@ -844,7 +844,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
         return false;
     }
 
-    // @und: At the moment I understood that random is always random-ish on each
+    // und: At the moment I understood that random is always random-ish on each
     // side of the client-server things, project were already built with changed vstdlib/random.h
     // so this is here for better times...
 #if 0

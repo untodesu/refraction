@@ -15,7 +15,7 @@
 
 // This is an ugly hack to link client classes to weapons for now
 // these will be removed once we predict all weapons, especially TF2 weapons.
-// @und: why, valve, why? HL2MP has much better shit than this.
+// und: why, valve, why? HL2MP has much better shit than this.
 #define STUB_WEAPON_CLASS_IMPLEMENT( entityName, className )                \
     BEGIN_PREDICTION_DATA( className )                                      \
     END_PREDICTION_DATA()                                                   \

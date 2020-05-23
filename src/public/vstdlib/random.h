@@ -52,8 +52,8 @@ public:
     virtual float   RandomFloatExp( float flMinVal = 0.0f, float flMaxVal = 1.0f, float flExponent = 1.0f );
 
 public:
-    // @und:    made it public to get initial seed for MT19937.
-    //          At the game DLLs loading stage it shouldn't change!
+    // und: made it public to get initial seed for MT19937.
+    //      At the game DLLs loading stage it shouldn't change!
     int m_idum;
 
 private:
