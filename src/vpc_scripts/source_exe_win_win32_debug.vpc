@@ -186,7 +186,7 @@ $Configuration "Debug"
         $HeapCommitSize
         $StackReserveSize
         $StackCommitSize
-        $EnableLargeAddresses
+        $EnableLargeAddresses                   "Yes (/LARGEADDRESSAWARE)"
         $TerminalServer
         $SwapRunFromCD
         $SwapRunFromNetwork
