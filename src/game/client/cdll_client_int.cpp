@@ -773,6 +773,10 @@ ISourceVirtualReality *g_pSourceVR = NULL;
 //-----------------------------------------------------------------------------
 int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physicsFactory, CGlobalVarsBase *pGlobals )
 {
+    // Force lightmaps to ignore Hunk_Alloc due to crash issues (Engine Hunk Overflow!)
+    // Because sorse is stoooooopid...
+    CommandLine()->AppendParm( "+r_hunkalloclightmaps", "0" );
+
     InitCRTMemDebug();
     MathLib_Init( 2.2f, 2.2f, 0.0f, 2.0f );
 
