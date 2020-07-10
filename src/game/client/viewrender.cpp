@@ -680,34 +680,11 @@ static void SetClearColorToFogColor()
     pRenderContext->ClearColor4ub( ucFogColor[0], ucFogColor[1], ucFogColor[2], 255 );
 }
 
-//-----------------------------------------------------------------------------
-// Precache of necessary materials
-//-----------------------------------------------------------------------------
-
-#ifdef HL2_CLIENT_DLL
+// Precache materials
 CLIENTEFFECT_REGISTER_BEGIN( PrecacheViewRender )
     CLIENTEFFECT_MATERIAL( "scripted/intro_screenspaceeffect" )
-CLIENTEFFECT_REGISTER_END();
-#endif
-
-CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
-    CLIENTEFFECT_MATERIAL( "dev/blurfiltery_and_add_nohdr" )
-    CLIENTEFFECT_MATERIAL( "dev/blurfilterx" )
-    CLIENTEFFECT_MATERIAL( "dev/blurfilterx_nohdr" )
-    CLIENTEFFECT_MATERIAL( "dev/blurfiltery" )
-    CLIENTEFFECT_MATERIAL( "dev/blurfiltery_nohdr" )
-    CLIENTEFFECT_MATERIAL( "dev/bloomadd" )
-    CLIENTEFFECT_MATERIAL( "dev/downsample" )
-    CLIENTEFFECT_MATERIAL( "dev/downsample_non_hdr" )
-    CLIENTEFFECT_MATERIAL( "dev/no_pixel_write" )
-    CLIENTEFFECT_MATERIAL( "dev/lumcompare" )
-    CLIENTEFFECT_MATERIAL( "dev/floattoscreen_combine" )
-    CLIENTEFFECT_MATERIAL( "dev/copyfullframefb_vanilla" )
-    CLIENTEFFECT_MATERIAL( "dev/copyfullframefb" )
-    CLIENTEFFECT_MATERIAL( "dev/engine_post" )
-    CLIENTEFFECT_MATERIAL( "dev/motion_blur" )
     CLIENTEFFECT_MATERIAL( "dev/upscale" )
-CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
+CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 );
 
 //-----------------------------------------------------------------------------
 // Accessors to return the current view being rendered

@@ -20,6 +20,22 @@
 #include "tier0/vprof.h"
 #include "proxyentity.h"
 
+enum PP_Condition {
+    PPC_ALWAYS,
+    PPC_IF_CVAR,
+    PPC_IF_NOT_CVAR,
+};
+
+struct PP_Pass_t {
+    PP_Condition cond;
+    const char *mat_name;
+    ConVar const *cvar;
+    CMaterialReference mat;
+};
+#define PPP_PROCESS( mat_name )                         { PPC_ALWAYS, (mat_name), NULL }
+#define PPP_PROCESS_IF_CVAR( mat_name, cvar_ptr )       { PPC_IF_CVAR, (mat_name), (cvar_ptr) }
+#define PPP_PROCESS_IF_NOT_CVAR( mat_name, cvar_ptr )   { PPC_IF_NOT_CVAR, (mat_name), (cvar_ptr) }
+
 // mapmaker controlled autoexposure
 bool    g_bUseCustomAutoExposureMin = false;
 bool    g_bUseCustomAutoExposureMax = false;
@@ -55,195 +71,56 @@ ConVar          mat_tonemap_min_avglum                  ( "mat_tonemap_min_avglu
 ConVar          mat_fullbright                          ( "mat_fullbright",                             "0",    FCVAR_CHEAT     );
 extern ConVar   localplayer_visionflags;
 
-enum PostProcessingCondition {
-    PPP_ALWAYS,
-    PPP_IF_COND_VAR,
-    PPP_IF_NOT_COND_VAR
+// Refraction postproc cvars
+static ConVar mat_post_chromatic_aberration( "mat_post_chromatic_aberration", "1", FCVAR_ARCHIVE, "Chromatic aberration post-effect" );
+static ConVar mat_post_cubic_distortion( "mat_post_cubic_distortion", "1", FCVAR_ARCHIVE, "Cubic distortion post-effect" );
+
+// Post processing materials precache
+CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
+    CLIENTEFFECT_MATERIAL( "dev/bloomadd" )
+    CLIENTEFFECT_MATERIAL( "dev/no_pixel_write" )
+    CLIENTEFFECT_MATERIAL( "dev/lumcompare" )
+    CLIENTEFFECT_MATERIAL( "dev/copyfullframefb_vanilla" )
+    CLIENTEFFECT_MATERIAL( "dev/copyfullframefb" )
+    CLIENTEFFECT_MATERIAL( "dev/engine_post" )
+    CLIENTEFFECT_MATERIAL( "dev/motion_blur" )
+
+    // TODO: Precache your post-processing effects here.
+    CLIENTEFFECT_MATERIAL( "shaders/post_chromatic_aberration" )
+    CLIENTEFFECT_MATERIAL( "shaders/post_cubic_distortion" )
+CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
+
+// TODO: Place your post-processing effects here.
+// To make them controllable by cvar, use PPP_PROCESS_IF[_NOT]_CVAR()
+// To make them permanently enabled, use PPP_PROCESS()
+PP_Pass_t PP_Final[] = {
+    PPP_PROCESS_IF_CVAR( "shaders/post_chromatic_aberration", &mat_post_chromatic_aberration ),
+    PPP_PROCESS_IF_CVAR( "shaders/post_cubic_distortion", &mat_post_cubic_distortion ),
 };
 
-struct PostProcessingPass {
-    PostProcessingCondition ppp_test;
-    ConVar const *cvar_to_test;
-    const char *material_name;
-    const char *dest_rt;
-    const char *src_rt;
-    int xds, yds;
-    int xss, yss;
-    CMaterialReference material;
-};
-#define PPP_PROCESS_PARTIAL_SRC(srcmatname, dest_rt_name, src_tname, scale)                             { PPP_ALWAYS, 0, srcmatname, dest_rt_name, src_tname, 1, 1, scale, scale }
-#define PPP_PROCESS_PARTIAL_DEST(srcmatname, dest_rt_name, src_tname, scale)                            { PPP_ALWAYS, 0, srcmatname, dest_rt_name, src_tname, scale, scale, 1, 1 }
-#define PPP_PROCESS_PARTIAL_SRC_PARTIAL_DEST(srcmatname, dest_rt_name, src_tname, srcscale, destscale)  { PPP_ALWAYS, 0, srcmatname, dest_rt_name, src_tname, destscale, destscale, srcscale, srcscale }
-#define PPP_END                                                                                         { PPP_ALWAYS, 0, NULL, NULL, 0, 0, 0, 0, 0 }
-#define PPP_PROCESS(srcmatname, dest_rt_name)                                                           { PPP_ALWAYS, 0, srcmatname, dest_rt_name, 0, 1, 1, 1, 1 }
-#define PPP_PROCESS_IF_CVAR(cvarptr, srcmatname, dest_rt_name)                                          { PPP_IF_COND_VAR, cvarptr, srcmatname, dest_rt_name, 0, 1, 1, 1, 1 }
-#define PPP_PROCESS_IF_NOT_CVAR(cvarptr, srcmatname, dest_rt_name)                                      { PPP_IF_NOT_COND_VAR, cvarptr, srcmatname, dest_rt_name, 0, 1, 1, 1, 1 }
-#define PPP_PROCESS_IF_NOT_CVAR_SRCTEXTURE(cvarptr, srcmatname, src_tname, dest_rt_name)                { PPP_IF_NOT_COND_VAR, cvarptr, srcmatname, dest_rt_name, src_tname, 1, 1, 1, 1 }
-#define PPP_PROCESS_IF_CVAR_SRCTEXTURE(cvarptr, srcmatname, src_txtrname, dest_rt_name)                 { PPP_IF_COND_VAR, cvarptr, srcmatname, dest_rt_name, src_txtrname, 1, 1, 1, 1 }
-#define PPP_PROCESS_SRCTEXTURE(srcmatname, src_tname, dest_rt_name)                                     { PPP_ALWAYS, 0, srcmatname, dest_rt_name, src_tname, 1, 1, 1, 1 }
-
-struct ClipBox {
-    int m_minx, m_miny;
-    int m_maxx, m_maxy;
-};
-
-// src_texture_x0, src_texture_y0          -- which texel you want to appear at
-// src_texture_x1, src_texture_y1          -- which texel you want to appear at
-// src_texture_width,  src_texture_height  -- needed for fixup
-static void DrawClippedScreenSpaceRectangle( IMaterial *pMaterial, int destx, int desty, int width, int height, float src_texture_x0, float src_texture_y0, float src_texture_x1, float src_texture_y1, int src_texture_width, int src_texture_height, ClipBox const *clipbox, void *pClientRenderable = NULL )
+void DrawPostEffects( PP_Pass_t *pl, int count, int x, int y, int w, int h ) _NOEXCEPT
 {
-    if( clipbox ) {
-        if( ( destx > clipbox->m_maxx ) || ( desty > clipbox->m_maxy ) ) return;
-        if( ( destx + width - 1 < clipbox->m_minx ) || ( desty + height - 1 < clipbox->m_miny ) ) return;
-
-        // left clip
-        if( destx < clipbox->m_minx ) {
-            src_texture_x0 = FLerp( src_texture_x0, src_texture_x1, destx, destx + width - 1, clipbox->m_minx );
-            width -= ( clipbox->m_minx - destx );
-            destx = clipbox->m_minx;
+    // Loop through the pl
+    for( int i = 0; i < count; i++ ) {
+        bool cond = true; // PPC_ALWAYS
+        switch( pl[i].cond ) {
+            case PPC_IF_CVAR:       cond = pl[i].cvar->GetBool();   break;
+            case PPC_IF_NOT_CVAR:   cond = !pl[i].cvar->GetBool();  break;
         }
 
-        // top clip
-        if( desty < clipbox->m_miny ) {
-            src_texture_y0 = FLerp( src_texture_y0, src_texture_y1, desty, desty + height - 1, clipbox->m_miny );
-            height -= ( clipbox->m_miny - desty );
-            desty = clipbox->m_miny;
-        }
-
-        // right clip
-        if( destx + width - 1 > clipbox->m_maxx ) {
-            src_texture_x1 = FLerp( src_texture_x0, src_texture_x1, destx, destx + width - 1, clipbox->m_maxx );
-            width = clipbox->m_maxx - destx;
-        }
-
-        // bottom clip
-        if( desty + height - 1 > clipbox->m_maxy ) {
-            src_texture_y1 = FLerp( src_texture_y0, src_texture_y1, desty, desty + height - 1, clipbox->m_maxy );
-            height = clipbox->m_maxy - desty;
-        }
-    }
-
-    CMatRenderContextPtr pRenderContext( materials );
-    pRenderContext->DrawScreenSpaceRectangle( pMaterial, destx, desty, width, height, src_texture_x0, src_texture_y0, src_texture_x1, src_texture_y1, src_texture_width, src_texture_height, pClientRenderable );
-}
-
-// pass_list       -- table of effects to apply
-// clipbox         -- clipping box for these effects
-// dest_coords_out -- receives dest coords of last blit
-void ApplyPostProcessingPasses( PostProcessingPass *pass_list, ClipBox const *clipbox = 0, ClipBox *dest_coords_out = 0 )
-{
-    CMatRenderContextPtr pRenderContext( materials );
-    ITexture *pSaveRenderTarget = pRenderContext->GetRenderTarget();
-    int pcount = 0;
-    if( debug_postproc.GetInt() == 1 ) {
-        pRenderContext->SetRenderTarget( NULL );
-        int dest_width, dest_height;
-        pRenderContext->GetRenderTargetDimensions( dest_width, dest_height );
-        pRenderContext->Viewport( 0, 0, dest_width, dest_height );
-        pRenderContext->ClearColor3ub( 255, 0, 0 );
-    }
-
-    while( pass_list->material_name ) {
-        bool do_it = true;
-        switch( pass_list->ppp_test ) {
-            case PPP_IF_COND_VAR:       do_it = pass_list->cvar_to_test->GetBool();     break;
-            case PPP_IF_NOT_COND_VAR:   do_it = !pass_list->cvar_to_test->GetBool();    break;
-        }
-
-        if( ( pass_list->dest_rt == 0 ) && ( debug_postproc.GetInt() == 1 ) ) {
-            do_it = false;
-        }
-
-        if( do_it ) {
-            const ClipBox *cb = NULL;
-            if( pass_list->dest_rt == 0 ) {
-                cb = clipbox;
-            }
-
-            IMaterial *src_mat = pass_list->material;
+        if( cond ) {
+            // Setup the material to draw
+            IMaterial *src_mat = pl[i].mat;
             if( !src_mat ) {
-                src_mat = materials->FindMaterial( pass_list->material_name, TEXTURE_GROUP_OTHER, true );
+                src_mat = materials->FindMaterial( pl[i].mat_name, TEXTURE_GROUP_OTHER, true );
                 if( src_mat )
-                    pass_list->material.Init( src_mat );
+                    pl[i].mat.Init( src_mat );
             }
 
-            if( pass_list->dest_rt ) {
-                ITexture *dest_rt = materials->FindTexture( pass_list->dest_rt, TEXTURE_GROUP_RENDER_TARGET );
-                pRenderContext->SetRenderTarget( dest_rt );
-            }
-            else {
-                pRenderContext->SetRenderTarget( NULL );
-            }
-
-            int dest_width, dest_height;
-            pRenderContext->GetRenderTargetDimensions( dest_width, dest_height );
-            pRenderContext->Viewport( 0, 0, dest_width, dest_height );
-            dest_width /= pass_list->xds;
-            dest_height /= pass_list->yds;
-
-            if( pass_list->src_rt ) {
-                ITexture *src_rt = materials->FindTexture( pass_list->src_rt, TEXTURE_GROUP_RENDER_TARGET );
-                int src_width = src_rt->GetActualWidth();
-                int src_height = src_rt->GetActualHeight();
-                int ssrc_width = ( src_width - 1 ) / pass_list->xss;
-                int ssrc_height = ( src_height - 1 ) / pass_list->yss;
-                DrawClippedScreenSpaceRectangle( src_mat, 0, 0, dest_width, dest_height, 0, 0, ssrc_width, ssrc_height, src_width, src_height, cb );
-                if( ( pass_list->dest_rt ) && ( debug_postproc.GetInt() == 1 ) ) {
-                    pRenderContext->SetRenderTarget( NULL );
-                    int row = pcount / 2;
-                    int col = pcount % 2;
-                    int vdest_width, vdest_height;
-                    pRenderContext->GetRenderTargetDimensions( vdest_width, vdest_height );
-                    pRenderContext->Viewport( 0, 0, vdest_width, vdest_height );
-                    pRenderContext->DrawScreenSpaceRectangle( src_mat, col * 400, 200 + row * 300, dest_width, dest_height, 0, 0, ssrc_width, ssrc_height, src_width, src_height );
-                }
-            }
-            else {
-                // just draw the whole source
-                if( ( pass_list->dest_rt == 0 ) && split_postproc.GetInt() ) {
-                    DrawClippedScreenSpaceRectangle( src_mat, 0, 0, dest_width / 2, dest_height, 0, 0, .5, 1, 1, 1, cb );
-                }
-                else {
-                    DrawClippedScreenSpaceRectangle( src_mat, 0, 0, dest_width, dest_height, 0, 0, 1, 1, 1, 1, cb );
-                }
-
-                if( ( pass_list->dest_rt ) && ( debug_postproc.GetInt() == 1 ) ) {
-                    pRenderContext->SetRenderTarget( NULL );
-                    int row = pcount / 4;
-                    int col = pcount % 4;
-                    int dest_width, dest_height;
-                    pRenderContext->GetRenderTargetDimensions( dest_width, dest_height );
-                    pRenderContext->Viewport( 0, 0, dest_width, dest_height );
-                    DrawClippedScreenSpaceRectangle( src_mat, 10 + col * 220, 10 + row * 220, 200, 200, 0, 0, 1, 1, 1, 1, cb );
-                }
-            }
-
-            if( dest_coords_out ) {
-                dest_coords_out->m_minx = 0;
-                dest_coords_out->m_maxx = dest_width - 1;
-                dest_coords_out->m_miny = 0;
-                dest_coords_out->m_maxy = dest_height - 1;
-            }
+            DrawScreenEffectMaterial( src_mat, x, y, w, h );
         }
-
-        pass_list++;
-        pcount++;
     }
-
-    pRenderContext->SetRenderTarget( pSaveRenderTarget );
 }
-
-PostProcessingPass HDRFinal_Float[] =
-{
-    PPP_PROCESS_SRCTEXTURE( "dev/copyfullframefb", "_rt_FullFrameFB", NULL ),
-    PPP_END
-};
-
-PostProcessingPass HDRSimulate_NonHDR[] =
-{
-    PPP_PROCESS( "dev/copyfullframefb_vanilla", NULL ),
-    PPP_END
-};
 
 static void SetRenderTargetAndViewPort( ITexture *rt )
 {
@@ -1065,38 +942,6 @@ static ConVar r_queued_post_processing( "r_queued_post_processing", "0" );
 static ConVar mat_postprocess_x( "mat_postprocess_x", "4" );
 static ConVar mat_postprocess_y( "mat_postprocess_y", "1" );
 
-// Post-processing effects' convars
-static ConVar mat_post_chromatic_aberration( "mat_post_chromatic_aberration", "1", FCVAR_ARCHIVE, "Chromatic aberration post-effect" );
-static ConVar mat_post_cubic_distortion( "mat_post_cubic_distortion", "1", FCVAR_ARCHIVE, "Cubic distortion post-effect" );
-
-// Post-processing effects' materials precache
-CLIENTEFFECT_REGISTER_BEGIN( RefractionPostEffects )
-CLIENTEFFECT_MATERIAL( "shaders/post_chromatic_aberration" )
-CLIENTEFFECT_MATERIAL( "shaders/post_cubic_distortion" )
-CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
-
-// Draw post-processing effects
-void DoRefractionPostProcessing( int x, int y, int w, int h )
-{
-    CMatRenderContextPtr pRenderContext( materials );
-
-    // Chromatic aberration
-    if( mat_post_chromatic_aberration.GetBool() ) {
-        IMaterial *post_chromatic_aberration = materials->FindMaterial( "shaders/post_chromatic_aberration", TEXTURE_GROUP_CLIENT_EFFECTS );
-        if( post_chromatic_aberration ) {
-            DrawScreenEffectMaterial( post_chromatic_aberration, x, y, w, h );
-        }
-    }
-
-    // Cubic distortion
-    if( mat_post_cubic_distortion.GetBool() ) {
-        IMaterial *post_cubic_distortion = materials->FindMaterial( "shaders/post_cubic_distortion", TEXTURE_GROUP_CLIENT_EFFECTS );
-        if( post_cubic_distortion ) {
-            DrawScreenEffectMaterial( post_cubic_distortion, x, y, w, h );
-        }
-    }
-}
-
 void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, bool bPostVGui )
 {
     tmZone( TELEMETRY_LEVEL0, TMZF_NONE, "%s", __FUNCTION__ );
@@ -1250,6 +1095,8 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
             }
         } break;
 
+// Seems that the mat_hdr_level 3 is broken so float backbuffer is unused.
+#if 0
         case HDR_TYPE_FLOAT:
         {
             int dest_width, dest_height;
@@ -1264,27 +1111,7 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
                 }
             }
 
-            if( mat_show_ab_hdr.GetInt() ) {
-                ClipBox splitScreenClip;
-
-                splitScreenClip.m_minx = splitScreenClip.m_miny = 0;
-
-                // Left half
-                splitScreenClip.m_maxx = dest_width / 2;
-                splitScreenClip.m_maxy = dest_height - 1;
-
-                ApplyPostProcessingPasses( HDRSimulate_NonHDR, &splitScreenClip );
-
-                // Right half
-                splitScreenClip.m_minx = splitScreenClip.m_maxx;
-                splitScreenClip.m_maxx = dest_width - 1;
-
-                ApplyPostProcessingPasses( HDRFinal_Float, &splitScreenClip );
-
-            }
-            else {
-                ApplyPostProcessingPasses( HDRFinal_Float );
-            }
+            //DrawPostEffects( HDR_Final_F, x, y, dest_width, dest_height );
 
             pRenderContext->SetRenderTarget( NULL );
             if( mat_show_histogram.GetInt() && ( engine->GetDXSupportLevel() >= 90 ) ) {
@@ -1298,8 +1125,11 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
             }
             pRenderContext->SetRenderTarget( NULL );
         } break;
+#endif
     }
-    DoRefractionPostProcessing( x, y, w, h );
+
+    // Draw refraction post effects
+    DrawPostEffects( PP_Final, ARRAYSIZE(PP_Final), x, y, w, h );
 }
 
 // Motion Blur Material Proxy =========================================================================================
