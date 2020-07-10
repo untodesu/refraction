@@ -388,8 +388,6 @@ void CNPC_CombineDropship::PopulatePoseParameters( void )
         m_poseBody_Sway         = LookupPoseParameter( "body_sway" );
         m_poseCargo_Body_Accel  = LookupPoseParameter( "cargo_body_accel" );
         m_poseCargo_Body_Sway   = LookupPoseParameter( "cargo_body_sway" );
-        m_poseWeapon_Pitch      = m_hContainer->LookupPoseParameter( "weapon_pitch" );
-        m_poseWeapon_Yaw        = m_hContainer->LookupPoseParameter( "weapon_yaw" );
 
         m_sbStaticPoseParamsLoaded = true;
     }
@@ -869,8 +867,7 @@ void CNPC_CombineDropship::Spawn( void )
 
     case CRATE_SOLDIER:
         m_hContainer = (CBaseAnimating*)CreateEntityByName( "prop_dropship_container" );
-        if ( m_hContainer )
-        {
+        if ( m_hContainer ) {
             m_hContainer->SetName( AllocPooledString("dropship_container") );
             m_hContainer->SetAbsOrigin( GetAbsOrigin() );
             m_hContainer->SetAbsAngles( GetAbsAngles() );
@@ -895,6 +892,9 @@ void CNPC_CombineDropship::Spawn( void )
             m_iMachineGunBaseAttachment = m_hContainer->LookupAttachment( "gun_base" );
             // NOTE: gun_ref must have the same position as gun_base, but rotates with the gun
             m_iMachineGunRefAttachment = m_hContainer->LookupAttachment( "gun_ref" );
+
+            m_poseWeapon_Pitch = m_hContainer->LookupPoseParameter( "weapon_pitch" );
+            m_poseWeapon_Yaw = m_hContainer->LookupPoseParameter( "weapon_yaw" );
         }
         break;
 
