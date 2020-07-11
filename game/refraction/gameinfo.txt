@@ -1,20 +1,21 @@
 "GameInfo"
 {
-    game                                "HL2/Refraction"
-    gameui2_title                       "REFRACTION 1.0"
-    type                                singleplayer_only
+    game            "HL2/Refraction"
+    gameui2_title   "REFRACTION 1.0"
+    type            singleplayer_only
 
     FileSystem
     {
-        SteamAppId                      243730      // This sets the app ID in Steam
+        SteamAppId 243730      // This sets the app ID in Steam
         SearchPaths
         {
-            // Refraction data
-            // NOTE+TODO:   Pack content/ to VPK when started making HL2WSI(Refraction)/Leakbase/.
+            // HL2/Refraction content
             game+mod+mod_write+default_write_path   |gameinfo_path|.
             gamebin                                 |gameinfo_path|bin
             game+mod                                |gameinfo_path|content/.
+//          game+mod                                |gameinfo_path|re_content.vpk
 
+            // HL2/Retail content
             game                                    |all_source_engine_paths|hl2/hl2_english.vpk
             game                                    |all_source_engine_paths|hl2/hl2_pak.vpk
             game                                    |all_source_engine_paths|hl2/hl2_textures.vpk
@@ -22,8 +23,8 @@
             game                                    |all_source_engine_paths|hl2/hl2_sound_misc.vpk
             game                                    |all_source_engine_paths|hl2/hl2_misc.vpk           
             
+            // Misc content
             platform                                |all_source_engine_paths|platform/platform_misc.vpk
-
             game                                    |all_source_engine_paths|hl2
             platform                                |all_source_engine_paths|platform
         }
