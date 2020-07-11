@@ -1,7 +1,7 @@
 "GameInfo"
 {
-    game                                "Refraction"
-    gameui2_title                       "REFRACTION alpha"
+    game                                "HL2/Refraction"
+    gameui2_title                       "REFRACTION 1.0"
     type                                singleplayer_only
 
     FileSystem
