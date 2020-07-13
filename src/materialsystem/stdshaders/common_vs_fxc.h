@@ -619,9 +619,9 @@ void SkinPosition( bool bSkinning, const float4 modelPos,
                    out float3 worldPos )
 {
 #if !defined( _X360 )
-    int3 boneIndices = D3DCOLORtoUBYTE4( fBoneIndices );
+    int4 boneIndices = D3DCOLORtoUBYTE4( fBoneIndices );
 #else
-    int3 boneIndices = fBoneIndices;
+    int4 boneIndices = fBoneIndices;
 #endif
 
     // Needed for invariance issues caused by multipass rendering
@@ -659,9 +659,9 @@ void SkinPositionAndNormal( bool bSkinning, const float4 modelPos, const float3 
     {
 
 #if !defined( _X360 )
-        int3 boneIndices = D3DCOLORtoUBYTE4( fBoneIndices );
+        int4 boneIndices = D3DCOLORtoUBYTE4( fBoneIndices );
 #else
-        int3 boneIndices = fBoneIndices;
+        int4 boneIndices = fBoneIndices;
 #endif
 
         if ( !bSkinning )
@@ -697,9 +697,9 @@ void SkinPositionNormalAndTangentSpace(
                             out float3 worldTangentS, out float3 worldTangentT )
 {
 #if !defined( _X360 )
-    int3 boneIndices = D3DCOLORtoUBYTE4( fBoneIndices );
+    int4 boneIndices = D3DCOLORtoUBYTE4( fBoneIndices );
 #else
-    int3 boneIndices = fBoneIndices;
+    int4 boneIndices = fBoneIndices;
 #endif
 
     // Needed for invariance issues caused by multipass rendering
@@ -754,7 +754,7 @@ float VertexAttenInternal( const float3 worldPos, int lightNum )
     float result = 0.0f;
 
     // Get light direction
-    float3 lightDir = cLightInfo[lightNum].pos - worldPos;
+    float3 lightDir = (cLightInfo[lightNum].pos.xyz - worldPos);
 
     // Get light distance squared.
     float lightDistSquared = dot( lightDir, lightDir );
@@ -776,7 +776,7 @@ float VertexAttenInternal( const float3 worldPos, int lightNum )
     }
 #   else
     {
-        vDist = dst( lightDistSquared, ooLightDist );
+        vDist = dst( lightDistSquared, ooLightDist ).xyz;
     }
 #   endif
 
@@ -801,10 +801,10 @@ float VertexAttenInternal( const float3 worldPos, int lightNum )
 float CosineTermInternal( const float3 worldPos, const float3 worldNormal, int lightNum, bool bHalfLambert )
 {
     // Calculate light direction assuming this is a point or spot
-    float3 lightDir = normalize( cLightInfo[lightNum].pos - worldPos );
+    float3 lightDir = normalize( cLightInfo[lightNum].pos.xyz - worldPos );
 
     // Select the above direction or the one in the structure, based upon light type
-    lightDir = lerp( lightDir, -cLightInfo[lightNum].dir, cLightInfo[lightNum].color.w );
+    lightDir = lerp( lightDir, -cLightInfo[lightNum].dir.xyz, cLightInfo[lightNum].color.w );
 
     // compute N dot L
     float NDotL = dot( worldNormal, lightDir );
@@ -844,7 +844,7 @@ float GetVertexAttenForLight( const float3 worldPos, int lightNum, bool bUseStat
 
 float3 DoLightInternal( const float3 worldPos, const float3 worldNormal, int lightNum, bool bHalfLambert )
 {
-    return cLightInfo[lightNum].color *
+    return cLightInfo[lightNum].color.rgb *
         CosineTermInternal( worldPos, worldNormal, lightNum, bHalfLambert ) *
         VertexAttenInternal( worldPos, lightNum );
 }

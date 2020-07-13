@@ -135,8 +135,6 @@ BEGIN_VS_SHADER_FLAGS( sdk_screenspace_general_dx9, "Common screen space shader.
 
             // Pre-cache shaders
             DECLARE_STATIC_VERTEX_SHADER( screenspaceeffect_vs30 );
-            SET_STATIC_VERTEX_SHADER_COMBO( X360APPCHOOSER, IS_PARAM_DEFINED( X360APPCHOOSER ) ? params[X360APPCHOOSER]->GetIntValue() : 0 );
-            vsh_forgot_to_set_static_X360APPCHOOSER = 0; // This is a dirty workaround to the shortcut [= 0] in the fxc
             SET_STATIC_VERTEX_SHADER( screenspaceeffect_vs30 );
 
             if (params[DISABLE_COLOR_WRITES]->GetIntValue())

@@ -8,7 +8,7 @@ struct PS_INPUT {
 };
 
 float2 barrelDistortion(float2 uv, float amt) {
-    float cc = (uv - 0.5);
+    float2 cc = (uv - 0.5);
     float dist = dot(cc, cc) * 0.015;
     return (uv + cc * dist * amt);
 }
