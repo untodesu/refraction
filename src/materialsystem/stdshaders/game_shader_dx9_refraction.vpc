@@ -15,6 +15,7 @@ $Project "Refraction Shader DLL (DX9)"
     {
         $File "post_chromatic_aberration.cpp"
         $File "post_cubic_distortion.cpp"
+        $File "pbr.cpp"
     }
 
     $Folder "Shader Source"
@@ -22,11 +23,13 @@ $Project "Refraction Shader DLL (DX9)"
         $File "screenspaceeffect_vs30.fxc"
         $File "post_chromatic_aberration_ps30.fxc"
         $File "post_cubic_distortion_ps30.fxc"
+        $File "pbr_vs30.fxc"
+        $File "pbr_ps30.fxc"
     }
 
     $Folder "Header Files"
     {
-
+        $File "pbr_common_ps30.h"
     }
 
     $File   "build_refraction_shaders.bat"
