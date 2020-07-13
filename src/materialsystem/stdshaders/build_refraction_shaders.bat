@@ -8,6 +8,6 @@ set SOURCEDIR=..\..
 call "%VS120COMNTOOLS%\vsvars32.bat"
 
 call build_shaders.bat stdshader_dx9_20b    -game %GAMEDIR% -source %SOURCEDIR%
-call build_shaders.bat stdshader_dx9_30     -game %GAMEDIR% -source %SOURCEDIR% -dx9_30 -force30 
+call build_shaders.bat stdshader_dx9_30     -game %GAMEDIR% -source %SOURCEDIR% -force30 
 
 @pause
