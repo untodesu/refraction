@@ -104,6 +104,7 @@
 #include "client_virtualreality.h"
 #include "mumble.h"
 
+#include "discord_rpc_client.h"
 #include "GameUI/IGameUI2.h"
 
 // NVNT includes
@@ -175,20 +176,20 @@ AchievementsAndStatsInterface* g_pAchievementsAndStatsInterface = NULL;
 // HPE_END
 //=============================================================================
 
-IGameSystem *SoundEmitterSystem();
-IGameSystem *ToolFrameworkClientSystem();
+IGameSystem * SoundEmitterSystem();
+IGameSystem * ToolFrameworkClientSystem();
 
 // Engine player info, no game related infos here
 BEGIN_BYTESWAP_DATADESC( player_info_s )
-DEFINE_ARRAY( name, FIELD_CHARACTER, MAX_PLAYER_NAME_LENGTH ),
-DEFINE_FIELD( userID, FIELD_INTEGER ),
-DEFINE_ARRAY( guid, FIELD_CHARACTER, SIGNED_GUID_LEN + 1 ),
-DEFINE_FIELD( friendsID, FIELD_INTEGER ),
-DEFINE_ARRAY( friendsName, FIELD_CHARACTER, MAX_PLAYER_NAME_LENGTH ),
-DEFINE_FIELD( fakeplayer, FIELD_BOOLEAN ),
-DEFINE_FIELD( ishltv, FIELD_BOOLEAN ),
-DEFINE_ARRAY( customFiles, FIELD_INTEGER, MAX_CUSTOM_FILES ),
-DEFINE_FIELD( filesDownloaded, FIELD_INTEGER ),
+    DEFINE_ARRAY( name, FIELD_CHARACTER, MAX_PLAYER_NAME_LENGTH ),
+    DEFINE_FIELD( userID, FIELD_INTEGER ),
+    DEFINE_ARRAY( guid, FIELD_CHARACTER, SIGNED_GUID_LEN + 1 ),
+    DEFINE_FIELD( friendsID, FIELD_INTEGER ),
+    DEFINE_ARRAY( friendsName, FIELD_CHARACTER, MAX_PLAYER_NAME_LENGTH ),
+    DEFINE_FIELD( fakeplayer, FIELD_BOOLEAN ),
+    DEFINE_FIELD( ishltv, FIELD_BOOLEAN ),
+    DEFINE_ARRAY( customFiles, FIELD_INTEGER, MAX_CUSTOM_FILES ),
+    DEFINE_FIELD( filesDownloaded, FIELD_INTEGER ),
 END_BYTESWAP_DATADESC()
 
 static bool g_bRequestCacheUsedMaterials = false;
@@ -899,6 +900,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
     IGameSystem::Add( ClientSoundscapeSystem() );
     IGameSystem::Add( PerfVisualBenchmark() );
     IGameSystem::Add( MumbleSystem() );
+    IGameSystem::Add( g_pDiscordRPC );
 
     modemanager->Init();
     g_pClientMode->InitViewport();
