@@ -20,16 +20,23 @@ $Configuration
 
 $Project "Refraction Client DLL"
 {
+    $Folder "Link Libraries"
+    {
+        $Lib "$LIBPUBLIC\discord-rpc"
+    }
+
     $Folder "Source Files"
     {
         $File   "hud_chat.cpp"
         $File   "c_team_objectiveresource.cpp"
-        $File   "c_team_objectiveresource.h"
+        $File   "c_team_objectiveresource.h"          
+        $File   "$SRCDIR\game\shared\ustdlib_random.h"
+        $File   "$SRCDIR\game\shared\ustdlib_random.cpp"
+        $File   "$SRCDIR\game\client\discord_rpc_client.h"
+        $File   "$SRCDIR\game\client\discord_rpc_client.cpp"
 
         $Folder "HL2 DLL"
         {
-            $File   "$SRCDIR\game\shared\ustdlib_random.h"
-            $File   "$SRCDIR\game\shared\ustdlib_random.cpp"
 
             $File   "$SRCDIR\game\shared\hl2\basehlcombatweapon_shared.cpp"
             $File   "$SRCDIR\game\shared\episodic\achievements_ep1.cpp"
