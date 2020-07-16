@@ -737,18 +737,14 @@ int CNPC_PoisonZombie::RandomThrowCrab( void )
 {
     // FIXME: this could take a long time, theoretically
     int nCrab = -1;
-    do
-    {
+    do {
         int nTest = random->RandomInt( 0, 2 );
-        if ( m_bCrabs[nTest] )
-        {
+        if ( m_bCrabs[nTest] ) {
             nCrab = nTest;
         }
     } while ( nCrab == -1 );
-
     return nCrab;
 }
-
 
 //-----------------------------------------------------------------------------
 // Purpose: The nest is dead! Evacuate the nest!

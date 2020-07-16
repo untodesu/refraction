@@ -86,7 +86,7 @@ namespace ustd
         y ^= ( y << 17 ) & 0x71D67FFFEDA60000;
         y ^= ( y << 37 ) & 0xFFF7EEE000000000;
         y ^= ( y >> 43 );
-
+        
         // Phew, FINALLY it yields same results as
         // std::mt19937_64. And also this is more readable
         // than most of this algorithm implementations.
@@ -141,7 +141,10 @@ void CMT19937UniformRandomStream::SetSeed( int iSeed )
 int CMT19937UniformRandomStream::RandomInt( int iLow, int iHigh )
 {
     AUTO_LOCK( m_mutex );
-    return (int)m_random.nextFloat( iLow, iHigh );
+    // und: Seems that RandomInt() should return value in range [iLow..iHigh],
+    // but the my MT19937 implementation has range [iLow..iHigh) (Never will be iHigh!!!)
+    // So value = nextfloat(iLow, iHigh + 1) % iHigh + 1
+    return (int)( m_random.nextFloat( iLow, iHigh + 1 ) ) % ( iHigh + 1 );
 }
 
 float CMT19937UniformRandomStream::RandomFloat( float flLow, float flHigh )
