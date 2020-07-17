@@ -308,7 +308,7 @@
             }
             "ammo"
             {
-                "font"      "WeaponIcons"
+                "font"      "WeaponIconsSmall"
                 "character" "j"
             }
             "crosshair"
@@ -573,7 +573,7 @@
             }
             "ammo"
             {
-                "font"      "WeaponIcons"
+                "font"      "WeaponIconsSmall"
                 "character" "c"
             }
             "crosshair"
@@ -1052,7 +1052,7 @@
     {
         "printname"             "#HL2_SMG1"
         "viewmodel"             "models/weapons/v_smg1.mdl"
-        "playermodel"           "models/weapons/w_smg1.mdl" //FIXME: 
+        "playermodel"           "models/weapons/w_smg1.mdl"
         "anim_prefix"           "smg2"
         "bucket"                "2"
         "bucket_position"       "0"
@@ -1165,7 +1165,7 @@
             }
             "ammo"
             {
-                "font"      "WeaponIcons"
+                "font"      "WeaponIconsSmall"
                 "character" "n"
             }
             "crosshair"

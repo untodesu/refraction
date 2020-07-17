@@ -24,12 +24,12 @@
 #include "tier0/memdbgon.h"
 
 #define INIT_BAT    -1
+#define WCHAR_BAT   42
 
 //-----------------------------------------------------------------------------
 // Purpose: Displays suit power (armor) on hud
 //-----------------------------------------------------------------------------
-class CHudBattery : public CHudNumericDisplay, public CHudElement
-{
+class CHudBattery : public CHudNumericDisplay, public CHudElement {
     DECLARE_CLASS_SIMPLE( CHudBattery, CHudNumericDisplay );
 
 public:
@@ -38,12 +38,12 @@ public:
     void Reset( void );
     void VidInit( void );
     void OnThink( void );
-    void MsgFunc_Battery(bf_read &msg );
+    void MsgFunc_Battery( bf_read &msg );
     bool ShouldDraw();
 
 private:
-    int     m_iBat;
-    int     m_iNewBat;
+    int m_iBat;
+    int m_iNewBat;
 };
 
 DECLARE_HUDELEMENT( CHudBattery );
@@ -52,7 +52,7 @@ DECLARE_HUD_MESSAGE( CHudBattery, Battery );
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CHudBattery::CHudBattery( const char *pElementName ) : BaseClass(NULL, "HudSuit"), CHudElement( pElementName )
+CHudBattery::CHudBattery( const char *pElementName ) : BaseClass( NULL, "HudSuit" ), CHudElement( pElementName )
 {
     SetHiddenBits( HIDEHUD_HEALTH | HIDEHUD_NEEDSUIT );
 }
@@ -62,10 +62,10 @@ CHudBattery::CHudBattery( const char *pElementName ) : BaseClass(NULL, "HudSuit"
 //-----------------------------------------------------------------------------
 void CHudBattery::Init( void )
 {
-    HOOK_HUD_MESSAGE( CHudBattery, Battery);
+    HOOK_HUD_MESSAGE( CHudBattery, Battery );
     Reset();
-    m_iBat      = INIT_BAT;
-    m_iNewBat   = 0;
+    m_iBat = INIT_BAT;
+    m_iNewBat = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -73,8 +73,9 @@ void CHudBattery::Init( void )
 //-----------------------------------------------------------------------------
 void CHudBattery::Reset( void )
 {
-    SetLabelText(g_pVGuiLocalize->Find("#Valve_Hud_SUIT"));
-    SetDisplayValue(m_iBat);
+    wchar_t szText[2] = { WCHAR_BAT, 0 };
+    SetLabelText( szText );
+    SetDisplayValue( m_iBat );
 }
 
 //-----------------------------------------------------------------------------
@@ -92,9 +93,7 @@ void CHudBattery::VidInit( void )
 //-----------------------------------------------------------------------------
 bool CHudBattery::ShouldDraw( void )
 {
-    bool bNeedsDraw = ( m_iBat != m_iNewBat ) || ( GetAlpha() > 0 );
-
-    return ( bNeedsDraw && CHudElement::ShouldDraw() );
+    return ( ( ( m_iBat != m_iNewBat ) || ( GetAlpha() > 0 ) ) && CHudElement::ShouldDraw() );
 }
 
 //-----------------------------------------------------------------------------
@@ -102,40 +101,33 @@ bool CHudBattery::ShouldDraw( void )
 //-----------------------------------------------------------------------------
 void CHudBattery::OnThink( void )
 {
-    if ( m_iBat == m_iNewBat )
+    if( m_iBat == m_iNewBat )
         return;
 
-    if ( !m_iNewBat )
-    {
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitPowerZero");
+    if( !m_iNewBat ) {
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitPowerZero" );
     }
-    else if ( m_iNewBat < m_iBat )
-    {
+    else if( m_iNewBat < m_iBat ) {
         // battery power has decreased, so play the damaged animation
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitDamageTaken");
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitDamageTaken" );
 
         // play an extra animation if we're super low
-        if ( m_iNewBat < 20 )
-        {
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitArmorLow");
+        if( m_iNewBat < 20 ) {
+            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitArmorLow" );
         }
     }
-    else
-    {
+    else {
         // battery power has increased (if we had no previous armor, or if we just loaded the game, don't use alert state)
-        if ( m_iBat == INIT_BAT || m_iBat == 0 || m_iNewBat >= 20)
-        {
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitPowerIncreasedAbove20");
+        if( m_iBat == INIT_BAT || m_iBat == 0 || m_iNewBat >= 20 ) {
+            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitPowerIncreasedAbove20" );
         }
-        else
-        {
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitPowerIncreasedBelow20");
+        else {
+            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitPowerIncreasedBelow20" );
         }
     }
 
     m_iBat = m_iNewBat;
-
-    SetDisplayValue(m_iBat);
+    SetDisplayValue( m_iBat );
 }
 
 //-----------------------------------------------------------------------------

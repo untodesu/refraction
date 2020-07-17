@@ -7,18 +7,59 @@
 
 #include "cbase.h"
 #include "hud.h"
-#include "hud_suitpower.h"
 #include "hud_macros.h"
 #include "c_basehlplayer.h"
 #include "iclientmode.h"
 #include <vgui_controls/AnimationController.h>
 #include <vgui/ISurface.h>
 #include <vgui/ILocalize.h>
-
-using namespace vgui;
+#include "hudelement.h"
+#include "hud_numericdisplay.h"
+#include <vgui_controls/Panel.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+
+using namespace vgui;
+
+//-----------------------------------------------------------------------------
+// Purpose: Shows the sprint power bar
+//-----------------------------------------------------------------------------
+class CHudSuitPower : public CHudElement, public Panel {
+    DECLARE_CLASS_SIMPLE( CHudSuitPower, Panel );
+
+public:
+    CHudSuitPower( const char *pElementName );
+    virtual void Init( void );
+    virtual void Reset( void );
+    virtual void OnThink( void );
+    bool ShouldDraw( void );
+
+protected:
+    virtual void Paint();
+
+private:
+    CPanelAnimationVar( Color, m_AuxPowerColor, "AuxPowerColor", "255 0 0 255" );
+    CPanelAnimationVar( int, m_iAuxPowerDisabledAlpha, "AuxPowerDisabledAlpha", "70" );
+
+    CPanelAnimationVarAliasType( float, m_flBarInsetX, "BarInsetX", "8", "proportional_float" );
+    CPanelAnimationVarAliasType( float, m_flBarInsetY, "BarInsetY", "8", "proportional_float" );
+    CPanelAnimationVarAliasType( float, m_flBarWidth, "BarWidth", "80", "proportional_float" );
+    CPanelAnimationVarAliasType( float, m_flBarHeight, "BarHeight", "10", "proportional_float" );
+    CPanelAnimationVarAliasType( float, m_flBarChunkWidth, "BarChunkWidth", "10", "proportional_float" );
+    CPanelAnimationVarAliasType( float, m_flBarChunkGap, "BarChunkGap", "2", "proportional_float" );
+
+    CPanelAnimationVar( vgui::HFont, m_hTextFont, "TextFont", "Default" );
+    CPanelAnimationVarAliasType( float, text_xpos, "text_xpos", "8", "proportional_float" );
+    CPanelAnimationVarAliasType( float, text_ypos, "text_ypos", "20", "proportional_float" );
+    CPanelAnimationVarAliasType( float, text2_xpos, "text2_xpos", "8", "proportional_float" );
+    CPanelAnimationVarAliasType( float, text2_ypos, "text2_ypos", "40", "proportional_float" );
+    CPanelAnimationVarAliasType( float, text2_gap, "text2_gap", "10", "proportional_float" );
+
+    float m_flSuitPower;
+    int m_nSuitPowerLow;
+    int m_iActiveSuitDevices;
+};
 
 DECLARE_HUDELEMENT( CHudSuitPower );
 
@@ -60,16 +101,10 @@ void CHudSuitPower::Reset( void )
 //-----------------------------------------------------------------------------
 bool CHudSuitPower::ShouldDraw()
 {
-    bool bNeedsDraw = false;
-
     C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
-    if ( !pPlayer )
+    if( !pPlayer )
         return false;
-
-    // needs draw if suit power changed or animation in progress
-    bNeedsDraw = ( ( pPlayer->m_HL2Local.m_flSuitPower != m_flSuitPower ) || ( m_AuxPowerColor[3] > 0 ) );
-
-    return ( bNeedsDraw && CHudElement::ShouldDraw() );
+    return ( ( ( pPlayer->m_HL2Local.m_flSuitPower != m_flSuitPower ) || ( m_AuxPowerColor[3] > 0 ) ) && CHudElement::ShouldDraw() );
 }
 
 //-----------------------------------------------------------------------------
@@ -79,24 +114,22 @@ void CHudSuitPower::OnThink( void )
 {
     float flCurrentPower = 0;
     C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
-    if ( !pPlayer )
+    if( !pPlayer )
         return;
 
     flCurrentPower = pPlayer->m_HL2Local.m_flSuitPower;
 
     // Only update if we've changed suit power
-    if ( flCurrentPower == m_flSuitPower )
+    if( flCurrentPower == m_flSuitPower )
         return;
 
-    if ( flCurrentPower >= 100.0f && m_flSuitPower < 100.0f )
-    {
+    if( flCurrentPower >= 100.0f && m_flSuitPower < 100.0f ) {
         // we've reached max power
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerMax");
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerMax" );
     }
-    else if ( flCurrentPower < 100.0f && (m_flSuitPower >= 100.0f || m_flSuitPower == SUITPOWER_INIT) )
-    {
+    else if( flCurrentPower < 100.0f && ( m_flSuitPower >= 100.0f || m_flSuitPower == SUITPOWER_INIT ) ) {
         // we've lost power
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerNotMax");
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerNotMax" );
     }
 
     bool flashlightActive = pPlayer->IsFlashlightActive();
@@ -104,25 +137,23 @@ void CHudSuitPower::OnThink( void )
     bool breatherActive = pPlayer->IsBreatherActive();
     int activeDevices = (int)flashlightActive + (int)sprintActive + (int)breatherActive;
 
-    if (activeDevices != m_iActiveSuitDevices)
-    {
+    if( activeDevices != m_iActiveSuitDevices ) {
         m_iActiveSuitDevices = activeDevices;
 
-        switch ( m_iActiveSuitDevices )
-        {
-        default:
-        case 3:
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerThreeItemsActive");
-            break;
-        case 2:
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerTwoItemsActive");
-            break;
-        case 1:
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerOneItemActive");
-            break;
-        case 0:
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerNoItemsActive");
-            break;
+        switch( m_iActiveSuitDevices ) {
+            default:
+            case 3:
+                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerThreeItemsActive" );
+                break;
+            case 2:
+                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerTwoItemsActive" );
+                break;
+            case 1:
+                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerOneItemActive" );
+                break;
+            case 0:
+                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerNoItemsActive" );
+                break;
         }
     }
 
@@ -135,30 +166,25 @@ void CHudSuitPower::OnThink( void )
 void CHudSuitPower::Paint()
 {
     C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
-    if ( !pPlayer )
+    if( !pPlayer )
         return;
 
     // get bar chunks
-    int chunkCount = m_flBarWidth / (m_flBarChunkWidth + m_flBarChunkGap);
-    int enabledChunks = (int)((float)chunkCount * (m_flSuitPower * 1.0f/100.0f) + 0.5f );
+    int chunkCount = m_flBarWidth / ( m_flBarChunkWidth + m_flBarChunkGap );
+    int enabledChunks = (int)( (float)chunkCount * ( m_flSuitPower * 1.0f / 100.0f ) + 0.5f );
 
     // see if we've changed power state
     int lowPower = 0;
-    if (enabledChunks <= (chunkCount / 4))
-    {
+    if( enabledChunks <= ( chunkCount / 4 ) ) {
         lowPower = 1;
     }
-    if (m_nSuitPowerLow != lowPower)
-    {
-        if (m_iActiveSuitDevices || m_flSuitPower < 100.0f)
-        {
-            if (lowPower)
-            {
-                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerDecreasedBelow25");
+    if( m_nSuitPowerLow != lowPower ) {
+        if( m_iActiveSuitDevices || m_flSuitPower < 100.0f ) {
+            if( lowPower ) {
+                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerDecreasedBelow25" );
             }
-            else
-            {
-                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerIncreasedAbove25");
+            else {
+                g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "SuitAuxPowerIncreasedAbove25" );
             }
             m_nSuitPowerLow = lowPower;
         }
@@ -167,87 +193,73 @@ void CHudSuitPower::Paint()
     // draw the suit power bar
     surface()->DrawSetColor( m_AuxPowerColor );
     int xpos = m_flBarInsetX, ypos = m_flBarInsetY;
-    for (int i = 0; i < enabledChunks; i++)
-    {
+    for( int i = 0; i < enabledChunks; i++ ) {
         surface()->DrawFilledRect( xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight );
-        xpos += (m_flBarChunkWidth + m_flBarChunkGap);
+        xpos += ( m_flBarChunkWidth + m_flBarChunkGap );
     }
     // draw the exhausted portion of the bar.
     surface()->DrawSetColor( Color( m_AuxPowerColor[0], m_AuxPowerColor[1], m_AuxPowerColor[2], m_iAuxPowerDisabledAlpha ) );
-    for (int i = enabledChunks; i < chunkCount; i++)
-    {
+    for( int i = enabledChunks; i < chunkCount; i++ ) {
         surface()->DrawFilledRect( xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight );
-        xpos += (m_flBarChunkWidth + m_flBarChunkGap);
+        xpos += ( m_flBarChunkWidth + m_flBarChunkGap );
     }
 
     // draw our name
-    surface()->DrawSetTextFont(m_hTextFont);
-    surface()->DrawSetTextColor(m_AuxPowerColor);
-    surface()->DrawSetTextPos(text_xpos, text_ypos);
+    surface()->DrawSetTextFont( m_hTextFont );
+    surface()->DrawSetTextColor( m_AuxPowerColor );
+    surface()->DrawSetTextPos( text_xpos, text_ypos );
 
-    wchar_t *tempString = g_pVGuiLocalize->Find("#Valve_Hud_AUX_POWER");
+    wchar_t *tempString = g_pVGuiLocalize->Find( "#Valve_Hud_AUX_POWER" );
 
-    if (tempString)
-    {
-        surface()->DrawPrintText(tempString, wcslen(tempString));
+    if( tempString ) {
+        surface()->DrawPrintText( tempString, wcslen( tempString ) );
     }
-    else
-    {
-        surface()->DrawPrintText(L"AUX POWER", wcslen(L"AUX POWER"));
+    else {
+        surface()->DrawPrintText( L"AUX POWER", wcslen( L"AUX POWER" ) );
     }
 
-    if ( m_iActiveSuitDevices )
-    {
+    if( m_iActiveSuitDevices ) {
         // draw the additional text
         int ypos = text2_ypos;
 
-        if (pPlayer->IsBreatherActive())
-        {
-            tempString = g_pVGuiLocalize->Find("#Valve_Hud_OXYGEN");
+        if( pPlayer->IsBreatherActive() ) {
+            tempString = g_pVGuiLocalize->Find( "#Valve_Hud_OXYGEN" );
 
-            surface()->DrawSetTextPos(text2_xpos, ypos);
+            surface()->DrawSetTextPos( text2_xpos, ypos );
 
-            if (tempString)
-            {
-                surface()->DrawPrintText(tempString, wcslen(tempString));
+            if( tempString ) {
+                surface()->DrawPrintText( tempString, wcslen( tempString ) );
             }
-            else
-            {
-                surface()->DrawPrintText(L"OXYGEN", wcslen(L"OXYGEN"));
+            else {
+                surface()->DrawPrintText( L"OXYGEN", wcslen( L"OXYGEN" ) );
             }
             ypos += text2_gap;
         }
 
-        if (pPlayer->IsFlashlightActive())
-        {
-            tempString = g_pVGuiLocalize->Find("#Valve_Hud_FLASHLIGHT");
+        if( pPlayer->IsFlashlightActive() ) {
+            tempString = g_pVGuiLocalize->Find( "#Valve_Hud_FLASHLIGHT" );
 
-            surface()->DrawSetTextPos(text2_xpos, ypos);
+            surface()->DrawSetTextPos( text2_xpos, ypos );
 
-            if (tempString)
-            {
-                surface()->DrawPrintText(tempString, wcslen(tempString));
+            if( tempString ) {
+                surface()->DrawPrintText( tempString, wcslen( tempString ) );
             }
-            else
-            {
-                surface()->DrawPrintText(L"FLASHLIGHT", wcslen(L"FLASHLIGHT"));
+            else {
+                surface()->DrawPrintText( L"FLASHLIGHT", wcslen( L"FLASHLIGHT" ) );
             }
             ypos += text2_gap;
         }
 
-        if (pPlayer->IsSprinting())
-        {
-            tempString = g_pVGuiLocalize->Find("#Valve_Hud_SPRINT");
+        if( pPlayer->IsSprinting() ) {
+            tempString = g_pVGuiLocalize->Find( "#Valve_Hud_SPRINT" );
 
-            surface()->DrawSetTextPos(text2_xpos, ypos);
+            surface()->DrawSetTextPos( text2_xpos, ypos );
 
-            if (tempString)
-            {
-                surface()->DrawPrintText(tempString, wcslen(tempString));
+            if( tempString ) {
+                surface()->DrawPrintText( tempString, wcslen( tempString ) );
             }
-            else
-            {
-                surface()->DrawPrintText(L"SPRINT", wcslen(L"SPRINT"));
+            else {
+                surface()->DrawPrintText( L"SPRINT", wcslen( L"SPRINT" ) );
             }
             ypos += text2_gap;
         }
