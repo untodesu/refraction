@@ -20,9 +20,6 @@ public:
     virtual void SetPresenceDetails( const char *pszFmt, ... );
 
 private:
-    void UpdatePresence( void );
-
-private:
     int64_t m_llRPCStartTimestamp;
     char m_szPresenceState[1024];
     char m_szPresenceDetails[1024];
@@ -40,7 +37,13 @@ static CDiscordRPC s_DiscordRPC;
 IDiscordRPC *g_pDiscordRPC = &s_DiscordRPC;
 
 // Discord AppID
-static ConVar cl_discord_appid( "cl_discord_appid", "733023520220774563", FCVAR_DEVELOPMENTONLY );
+static ConVar discord_appid( "discord_appid", "733023520220774563", FCVAR_DEVELOPMENTONLY );
+
+static inline void Discord_UpdatePresenceEx( const DiscordRichPresence *pPrecense )
+{
+    if( !g_bTextMode )
+        Discord_UpdatePresence( pPrecense );
+}
 
 CDiscordRPC::CDiscordRPC( void ) : m_llRPCStartTimestamp( 0 ), m_Presence()
 {
@@ -69,7 +72,7 @@ bool CDiscordRPC::Init( void )
     char szAppId[256] = { 0 };
     Q_snprintf( szAppId, sizeof( szAppId ), "%d", engine->GetAppID() );
     m_llRPCStartTimestamp = time( 0 );
-    Discord_Initialize( cl_discord_appid.GetString(), &handlers, true, szAppId );
+    Discord_Initialize( discord_appid.GetString(), &handlers, true, szAppId );
 
     Q_memset( &m_Presence, 0, sizeof( DiscordRichPresence ) );
     m_Presence.startTimestamp = m_llRPCStartTimestamp;
@@ -107,7 +110,7 @@ void CDiscordRPC::SetPresenceState( const char *pszFmt, ... )
 {
     if( !pszFmt ) {
         m_Presence.state = NULL;
-        UpdatePresence();
+        Discord_UpdatePresenceEx( &m_Presence );
         return;
     }
 
@@ -118,14 +121,14 @@ void CDiscordRPC::SetPresenceState( const char *pszFmt, ... )
     va_end( ap );
 
     m_Presence.state = m_szPresenceState;
-    UpdatePresence();
+    Discord_UpdatePresenceEx( &m_Presence );
 }
 
 void CDiscordRPC::SetPresenceDetails( const char *pszFmt, ... )
 {
     if( !pszFmt ) {
         m_Presence.details = NULL;
-        UpdatePresence();
+        Discord_UpdatePresenceEx( &m_Presence );
         return;
     }
 
@@ -136,13 +139,7 @@ void CDiscordRPC::SetPresenceDetails( const char *pszFmt, ... )
     va_end( ap );
 
     m_Presence.details = m_szPresenceDetails;
-    UpdatePresence();
-}
-
-void CDiscordRPC::UpdatePresence( void )
-{
-    if( !g_bTextMode )
-        Discord_UpdatePresence( &m_Presence );
+    Discord_UpdatePresenceEx( &m_Presence );
 }
 
 void CDiscordRPC::HandleReady( const DiscordUser *pUser )
