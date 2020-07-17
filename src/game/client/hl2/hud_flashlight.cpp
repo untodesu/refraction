@@ -9,7 +9,6 @@
 #include "hud_numericdisplay.h"
 #include <vgui_controls/Panel.h>
 #include "hud.h"
-#include "hud_suitpower.h"
 #include "hud_macros.h"
 #include "iclientmode.h"
 #include <vgui_controls/AnimationController.h>
@@ -22,8 +21,7 @@
 //-----------------------------------------------------------------------------
 // Purpose: Shows the flashlight icon
 //-----------------------------------------------------------------------------
-class CHudFlashlight : public CHudElement, public vgui::Panel
-{
+class CHudFlashlight : public CHudElement, public vgui::Panel {
     DECLARE_CLASS_SIMPLE( CHudFlashlight, vgui::Panel );
 
 public:
@@ -74,7 +72,7 @@ CHudFlashlight::CHudFlashlight( const char *pElementName ) : CHudElement( pEleme
 //-----------------------------------------------------------------------------
 void CHudFlashlight::ApplySchemeSettings( vgui::IScheme *pScheme )
 {
-    BaseClass::ApplySchemeSettings(pScheme);
+    BaseClass::ApplySchemeSettings( pScheme );
 }
 
 //-----------------------------------------------------------------------------
@@ -90,7 +88,7 @@ void CHudFlashlight::Reset( void )
 //-----------------------------------------------------------------------------
 void CHudFlashlight::SetFlashlightState( bool flashlightOn )
 {
-    if ( m_bFlashlightOn == flashlightOn )
+    if( m_bFlashlightOn == flashlightOn )
         return;
 
     m_bFlashlightOn = flashlightOn;
@@ -106,12 +104,11 @@ void CHudFlashlight::Paint()
 {
 #ifdef HL2_EPISODIC
     C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
-    if ( !pPlayer )
+    if( !pPlayer )
         return;
 
     // Only paint if we're using the new flashlight code
-    if ( pPlayer->m_HL2Local.m_flFlashBattery < 0.0f )
-    {
+    if( pPlayer->m_HL2Local.m_flFlashBattery < 0.0f ) {
         SetPaintBackgroundEnabled( false );
         return;
     }
@@ -120,12 +117,12 @@ void CHudFlashlight::Paint()
     SetFlashlightState( bIsOn );
 
     // get bar chunks
-    int chunkCount = m_flBarWidth / (m_flBarChunkWidth + m_flBarChunkGap);
-    int enabledChunks = (int)((float)chunkCount * (pPlayer->m_HL2Local.m_flFlashBattery * 1.0f/100.0f) + 0.5f );
+    int chunkCount = m_flBarWidth / ( m_flBarChunkWidth + m_flBarChunkGap );
+    int enabledChunks = (int)( (float)chunkCount * ( pPlayer->m_HL2Local.m_flFlashBattery * 1.0f / 100.0f ) + 0.5f );
 
     Color clrFlashlight;
     clrFlashlight = ( enabledChunks < ( chunkCount / 4 ) ) ? gHUD.m_clrCaution : gHUD.m_clrNormal;
-    clrFlashlight[3] = ( bIsOn ) ? 255: 32;
+    clrFlashlight[3] = ( bIsOn ) ? 255 : 32;
 
     // Pick the right character given our current state
     wchar_t pState = ( bIsOn ) ? WCHAR_FLASHLIGHT_ON : WCHAR_FLASHLIGHT_OFF;
@@ -136,16 +133,15 @@ void CHudFlashlight::Paint()
     surface()->DrawUnicodeChar( pState );
 
     // Don't draw the progress bar is we're fully charged
-    if ( bIsOn == false && chunkCount == enabledChunks )
+    if( bIsOn == false && chunkCount == enabledChunks )
         return;
 
     // draw the suit power bar
     surface()->DrawSetColor( clrFlashlight );
     int xpos = m_flBarInsetX, ypos = m_flBarInsetY;
-    for (int i = 0; i < enabledChunks; i++)
-    {
+    for( int i = 0; i < enabledChunks; i++ ) {
         surface()->DrawFilledRect( xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight );
-        xpos += (m_flBarChunkWidth + m_flBarChunkGap);
+        xpos += ( m_flBarChunkWidth + m_flBarChunkGap );
     }
 
     // Be even less transparent than we already are
@@ -153,10 +149,9 @@ void CHudFlashlight::Paint()
 
     // draw the exhausted portion of the bar.
     surface()->DrawSetColor( clrFlashlight );
-    for (int i = enabledChunks; i < chunkCount; i++)
-    {
+    for( int i = enabledChunks; i < chunkCount; i++ ) {
         surface()->DrawFilledRect( xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight );
-        xpos += (m_flBarChunkWidth + m_flBarChunkGap);
+        xpos += ( m_flBarChunkWidth + m_flBarChunkGap );
     }
 #endif // HL2_EPISODIC
 }

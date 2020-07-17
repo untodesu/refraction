@@ -9,7 +9,6 @@
 #include "hud_numericdisplay.h"
 #include <vgui_controls/Panel.h>
 #include "hud.h"
-#include "hud_suitpower.h"
 #include "hud_macros.h"
 #include "iclientmode.h"
 #include <vgui_controls/AnimationController.h>
@@ -19,12 +18,12 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#define LOCATOR_MATERIAL_JALOPY         "vgui/icons/icon_jalopy"
-#define LOCATOR_MATERIAL_BIG_TICK       "vgui/icons/tick_long"
-#define LOCATOR_MATERIAL_SMALL_TICK     "vgui/icons/tick_short"
+#define LOCATOR_MATERIAL_JALOPY     "vgui/icons/icon_jalopy"
+#define LOCATOR_MATERIAL_BIG_TICK   "vgui/icons/tick_long"
+#define LOCATOR_MATERIAL_SMALL_TICK "vgui/icons/tick_short"
 
-ConVar hud_locator_alpha( "hud_locator_alpha", "230" );
-ConVar hud_locator_fov("hud_locator_fov", "350" );
+static ConVar hud_locator_alpha( "hud_locator_alpha", "230" );
+static ConVar hud_locator_fov("hud_locator_fov", "350" );
 
 //-----------------------------------------------------------------------------
 // Purpose: Shows positions of objects relative to the player.
@@ -54,7 +53,7 @@ private:
     int m_textureID_IconBigTick;
     int m_textureID_IconSmallTick;
 
-    Vector          m_vecLocation;
+    Vector m_vecLocation;
 };
 
 using namespace vgui;
@@ -190,7 +189,7 @@ void CHudLocator::DrawGraduations( float flYawPlayerFacing )
 
     int element_tall = GetTall();       // Height of the VGUI element
 
-    surface()->DrawSetColor( 255, 255, 255, 255 );
+    surface()->DrawSetColor( GetFgColor() );
 
     // Tick Icons
 
@@ -252,7 +251,7 @@ void CHudLocator::Paint()
     if( pPlayer->m_HL2Local.m_vecLocatorOrigin == vec3_origin )
         return;
 
-    int element_tall = GetTall();       // Height of the VGUI element
+    int element_tall = GetTall(); // Height of the VGUI element
 
     float fov = (hud_locator_fov.GetFloat()) / 2.0f;
 
@@ -274,7 +273,7 @@ void CHudLocator::Paint()
     // Draw the icons!
     int icon_wide, icon_tall;
     int xPos, yPos;
-    surface()->DrawSetColor( 255, 255, 255, 255 );
+    surface()->DrawSetColor( GetFgColor() );
 
     DrawGraduations( flYawPlayerForward );
 
@@ -290,6 +289,7 @@ void CHudLocator::Paint()
 
         vgui::surface()->DrawSetTexture( m_textureID_IconJalopy );
         vgui::surface()->DrawGetTextureSize( m_textureID_IconJalopy, icon_wide, icon_tall );
+
 
         float flIconWide = ((float)element_tall * 1.25f);
         float flIconTall = ((float)element_tall * 1.25f);

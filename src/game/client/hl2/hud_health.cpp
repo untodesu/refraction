@@ -34,13 +34,13 @@ using namespace vgui;
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#define INIT_HEALTH -1
+#define INIT_HEALTH     -1
+#define WCHAR_HEALTH    43
 
 //-----------------------------------------------------------------------------
 // Purpose: Health panel
 //-----------------------------------------------------------------------------
-class CHudHealth : public CHudElement, public CHudNumericDisplay
-{
+class CHudHealth : public CHudElement, public CHudNumericDisplay {
     DECLARE_CLASS_SIMPLE( CHudHealth, CHudNumericDisplay );
 
 public:
@@ -49,13 +49,12 @@ public:
     virtual void VidInit( void );
     virtual void Reset( void );
     virtual void OnThink();
-            void MsgFunc_Damage( bf_read &msg );
+    void MsgFunc_Damage( bf_read &msg );
 
 private:
     // old variables
-    int     m_iHealth;
-
-    int     m_bitsDamage;
+    int m_iHealth;
+    int m_bitsDamage;
 };
 
 DECLARE_HUDELEMENT( CHudHealth );
@@ -64,7 +63,7 @@ DECLARE_HUD_MESSAGE( CHudHealth, Damage );
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CHudHealth::CHudHealth( const char *pElementName ) : CHudElement( pElementName ), CHudNumericDisplay(NULL, "HudHealth")
+CHudHealth::CHudHealth( const char *pElementName ) : CHudElement( pElementName ), CHudNumericDisplay( NULL, "HudHealth" )
 {
     SetHiddenBits( HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD | HIDEHUD_NEEDSUIT );
 }
@@ -83,20 +82,12 @@ void CHudHealth::Init()
 //-----------------------------------------------------------------------------
 void CHudHealth::Reset()
 {
-    m_iHealth       = INIT_HEALTH;
-    m_bitsDamage    = 0;
+    m_iHealth = INIT_HEALTH;
+    m_bitsDamage = 0;
 
-    wchar_t *tempString = g_pVGuiLocalize->Find("#Valve_Hud_HEALTH");
-
-    if (tempString)
-    {
-        SetLabelText(tempString);
-    }
-    else
-    {
-        SetLabelText(L"HEALTH");
-    }
-    SetDisplayValue(m_iHealth);
+    wchar_t szText[2] = { WCHAR_HEALTH, 0 };
+    SetLabelText( szText );
+    SetDisplayValue( m_iHealth );
 }
 
 //-----------------------------------------------------------------------------
@@ -114,31 +105,27 @@ void CHudHealth::OnThink()
 {
     int newHealth = 0;
     C_BasePlayer *local = C_BasePlayer::GetLocalPlayer();
-    if ( local )
-    {
+    if( local ) {
         // Never below zero
         newHealth = MAX( local->GetHealth(), 0 );
     }
 
     // Only update the fade if we've changed health
-    if ( newHealth == m_iHealth )
-    {
+    if( newHealth == m_iHealth ) {
         return;
     }
 
     m_iHealth = newHealth;
 
-    if ( m_iHealth >= 20 )
-    {
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("HealthIncreasedAbove20");
+    if( m_iHealth >= 20 ) {
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "HealthIncreasedAbove20" );
     }
-    else if ( m_iHealth > 0 )
-    {
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("HealthIncreasedBelow20");
-        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("HealthLow");
+    else if( m_iHealth > 0 ) {
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "HealthIncreasedBelow20" );
+        g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "HealthLow" );
     }
 
-    SetDisplayValue(m_iHealth);
+    SetDisplayValue( m_iHealth );
 }
 
 //-----------------------------------------------------------------------------
@@ -159,12 +146,10 @@ void CHudHealth::MsgFunc_Damage( bf_read &msg )
     vecFrom.z = msg.ReadBitCoord();
 
     // Actually took damage?
-    if ( damageTaken > 0 || armor > 0 )
-    {
-        if ( damageTaken > 0 )
-        {
+    if( damageTaken > 0 || armor > 0 ) {
+        if( damageTaken > 0 ) {
             // start the animation
-            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("HealthDamageTaken");
+            g_pClientMode->GetViewportAnimationController()->StartAnimationSequence( "HealthDamageTaken" );
         }
     }
 }
