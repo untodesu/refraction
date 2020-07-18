@@ -1,21 +1,23 @@
 "GameInfo"
 {
-    game            "HL2/Refraction"
-    gameui2_title   "REFRACTION 1.0"
-    type            singleplayer_only
+    game            "Refraction"
+    gameui2_title   "REFRACTION"
+    type            "singleplayer_only"
+    developer       "undbsd"
+    developer_url   "https://github.com/undbsd/refraction-mod"
 
     FileSystem
     {
         SteamAppId 243730      // This sets the app ID in Steam
         SearchPaths
         {
-            // HL2/Refraction content
+            // Refraction
             game+mod+mod_write+default_write_path   |gameinfo_path|.
             gamebin                                 |gameinfo_path|bin
             game+mod                                |gameinfo_path|content/.
 //          game+mod                                |gameinfo_path|re_content.vpk
 
-            // HL2/Retail content
+            // HL2
             game                                    |all_source_engine_paths|hl2/hl2_english.vpk
             game                                    |all_source_engine_paths|hl2/hl2_pak.vpk
             game                                    |all_source_engine_paths|hl2/hl2_textures.vpk
@@ -23,9 +25,19 @@
             game                                    |all_source_engine_paths|hl2/hl2_sound_misc.vpk
             game                                    |all_source_engine_paths|hl2/hl2_misc.vpk           
             
-            // Misc content
+            // Episodic
+            game                                    |all_source_engine_paths|ep2/ep2_pak.vpk
+            game                                    |all_source_engine_paths|ep2/ep2_sound_vo_english.vpk
+            game                                    |all_source_engine_paths|episodic/ep1_pak.vpk
+            game                                    |all_source_engine_paths|episodic/ep1_sound_vo_english.vpk
+            
+            // Misc
             platform                                |all_source_engine_paths|platform/platform_misc.vpk
+            
+            // Mount stuff from there
             game                                    |all_source_engine_paths|hl2
+            game                                    |all_source_engine_paths|ep2
+            game                                    |all_source_engine_paths|episodic
             platform                                |all_source_engine_paths|platform
         }
     }

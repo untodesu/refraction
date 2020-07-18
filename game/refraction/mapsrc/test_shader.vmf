@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "8372"
-	"mapversion" "52"
+	"editorbuild" "8157"
+	"mapversion" "58"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "52"
+	"mapversion" "58"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -2074,114 +2074,6 @@ world
 		editor
 		{
 			"color" "0 205 134"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "460"
-		editor
-		{
-			"color" "136 105 0"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "956"
-		editor
-		{
-			"color" "136 241 0"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "669"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "682"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "643"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "656"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "578"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "565"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "526"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
-		"id" "525"
-		editor
-		{
-			"color" "136 241 0"
-			"groupid" "956"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -31485,6 +31377,84 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 -14768]"
+	}
+}
+entity
+{
+	"id" "5243"
+	"classname" "prop_vehicle_musclecar"
+	"actionScale" "1"
+	"angles" "0 90 0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"model" "models/vehicle.mdl"
+	"origin" "369.66 308 -80"
+	"skin" "0"
+	"solid" "6"
+	"spawnflags" "1"
+	"targetname" "musclecar"
+	"vehiclescript" "scripts/vehicles/jalopy.txt"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "5263"
+	"classname" "prop_vehicle_buggy"
+	"actionScale" "1"
+	"angles" "0 90 0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"model" "models/buggy.mdl"
+	"origin" "399.99 100 -92"
+	"skin" "0"
+	"solid" "6"
+	"targetname" "buggy"
+	"vehiclescript" "scripts/vehicles/jeep_test.txt"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "5283"
+	"classname" "logic_playerproxy"
+	"targetname" "proxy"
+	"origin" "759 197.871 63.9477"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
+	}
+}
+entity
+{
+	"id" "5289"
+	"classname" "logic_auto"
+	"spawnflags" "1"
+	connections
+	{
+		"OnMapSpawn" "proxy,SetLocatorTargetEntity,musclecar,0,-1"
+		"OnMapSpawn" "musclecar,EnableRadar,,0,-1"
+	}
+	"origin" "759 222.596 65.2275"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
 	}
 }
 cameras
