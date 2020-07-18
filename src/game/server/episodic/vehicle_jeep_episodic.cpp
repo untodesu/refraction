@@ -120,8 +120,6 @@ int CRadarTarget::ObjectCaps()
 }
 
 
-
-
 //
 // Trigger which detects entities placed in the cargo hold of the jalopy
 //
@@ -314,7 +312,8 @@ LINK_ENTITY_TO_CLASS( info_target_vehicle_transition, CInfoTargetVehicleTransiti
 //  CPropJeepEpisodic
 //
 
-LINK_ENTITY_TO_CLASS( prop_vehicle_jeep, CPropJeepEpisodic );
+LINK_ENTITY_TO_CLASS( prop_vehicle_jalopy, CPropJeepEpisodic );
+LINK_ENTITY_TO_CLASS( prop_vehicle_musclecar, CPropJeepEpisodic );
 
 BEGIN_DATADESC( CPropJeepEpisodic )
 

@@ -5980,7 +5980,7 @@ static void CreateJalopy( CBasePlayer *pPlayer )
     // Cheat to create a jeep in front of the player
     Vector vecForward;
     AngleVectors( pPlayer->EyeAngles(), &vecForward );
-    CBaseEntity *pJeep = (CBaseEntity *)CreateEntityByName( "prop_vehicle_jeep" );
+    CBaseEntity *pJeep = (CBaseEntity *)CreateEntityByName( "prop_vehicle_jalopy" );
     if ( pJeep )
     {
         Vector vecOrigin = pPlayer->GetAbsOrigin() + vecForward * 256 + Vector(0,0,64);
@@ -6017,7 +6017,7 @@ static void CreateJeep( CBasePlayer *pPlayer )
     // Cheat to create a jeep in front of the player
     Vector vecForward;
     AngleVectors( pPlayer->EyeAngles(), &vecForward );
-    CBaseEntity *pJeep = (CBaseEntity *)CreateEntityByName( "prop_vehicle_jeep" );
+    CBaseEntity *pJeep = (CBaseEntity *)CreateEntityByName( "prop_vehicle_buggy" );
     if ( pJeep )
     {
         Vector vecOrigin = pPlayer->GetAbsOrigin() + vecForward * 256 + Vector(0,0,64);
