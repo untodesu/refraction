@@ -16,6 +16,7 @@
 
 static ConVar cl_showfps( "cl_showfps", "0", 0, "Draw fps meter at top of screen" );
 static ConVar cl_showpos( "cl_showpos", "0", 0, "Draw current position at top of screen" );
+ConVar cl_showrefwm( "cl_showrefwm", "1", 0, "Draw mod version at top of screen" );
 
 extern bool g_bDisplayParticlePerformance;
 int GetParticlePerformance();
@@ -57,7 +58,7 @@ private:
     float       m_lastBatteryPercent;
 };
 
-#define FPS_PANEL_WIDTH 480
+#define FPS_PANEL_WIDTH 360
 
 //-----------------------------------------------------------------------------
 // Purpose:
@@ -109,7 +110,7 @@ void CFPSPanel::ComputeSize( void )
     int x = wide - FPS_PANEL_WIDTH;
     int y = 0;
     SetPos( x, y );
-    SetSize( FPS_PANEL_WIDTH, 4 * vgui::surface()->GetFontTall( m_hFont ) + 8 );
+    SetSize( FPS_PANEL_WIDTH, 6 * vgui::surface()->GetFontTall( m_hFont ) + 8 );
 }
 
 void CFPSPanel::ApplySchemeSettings( vgui::IScheme *pScheme )
@@ -143,7 +144,7 @@ bool CFPSPanel::ShouldDraw( void )
         return true;
     }
 
-    if( ( !cl_showfps.GetBool() || gpGlobals->absoluteframetime <= 0 ) && !cl_showpos.GetBool() ) {
+    if( ( !cl_showfps.GetBool() || gpGlobals->absoluteframetime <= 0 ) && !cl_showpos.GetBool() && !cl_showrefwm.GetBool() ) {
         m_bLastDraw = false;
         return false;
     }
@@ -198,20 +199,22 @@ void CFPSPanel::Paint()
 {
     int i = 0;
     int x = 2;
+    int iFontTall = g_pVGuiSurface->GetFontTall( m_hFont );
 
-    if( g_bDisplayParticlePerformance ) {
-        int perf = GetParticlePerformance();
-        if( perf != 0 ) {
-            g_pMatSystemSurface->DrawColoredText( m_hFont, x, 42, 0x00, 0xFF, 0x00, 0xFF, "PPM: %d", ( perf + 50 ) / 100 );
-        }
+    if( cl_showrefwm.GetBool() ) {
+#ifdef _DEBUG
+        const char *pszConfig = "DEBUG";
+#else
+        const char *pszConfig = "RELEASE";
+#endif
+        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "Refraction %s(%04d) %s", REFRACTION_VERSION_STR, REFRACTION_VERSION, pszConfig );
     }
 
-    float frametime = ( gpGlobals->realtime - m_lastRealTime );
+    float frametime = gpGlobals->frametime;
     if( cl_showfps.GetBool() && frametime > 0.0 ) {
         if( m_lastRealTime != -1.0 ) {
             float fps = ( 1.0 / frametime );
             unsigned char ucColor[3] = { 0x00 };
-            i++;
 
             // Average FPS
             if( m_AverageFPS < 0.0 ) {
@@ -229,8 +232,7 @@ void CFPSPanel::Paint()
             if( fps_i > m_high ) m_high = fps_i;
 
             GetFPSColor( fps_i, ucColor );
-            g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2, ucColor[0], ucColor[1], ucColor[2], 0xFF, "%d fps (%d..%d), %.2fms at %s", fps_i, m_low, m_high, frametime * 1000.0, engine->GetLevelName() );
-
+            g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), ucColor[0], ucColor[1], ucColor[2], 0xFF, "%d fps (%d..%d), %.2fms at %s", fps_i, m_low, m_high, frametime * 1000.0, engine->GetLevelName() );
         }
     }
     m_lastRealTime = gpGlobals->realtime;
@@ -246,15 +248,15 @@ void CFPSPanel::Paint()
         }
 
         // Print pos & angles
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + i++ * ( vgui::surface()->GetFontTall( m_hFont ) + 2 ), 255, 255, 255, 255, "pos:  %.02f %.02f %.02f", origin.x, origin.y, origin.z );
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + i++ * ( vgui::surface()->GetFontTall( m_hFont ) + 2 ), 255, 255, 255, 255, "ang:  %.02f %.02f %.02f", angles.x, angles.y, angles.z );
+        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "pos:  %.02f %.02f %.02f", origin.x, origin.y, origin.z );
+        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "ang:  %.02f %.02f %.02f", angles.x, angles.y, angles.z );
 
         // Velocity
         Vector velocity( 0 );
         if( player ) {
             velocity = player->GetLocalVelocity();
         }
-        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + i++ * ( vgui::surface()->GetFontTall( m_hFont ) + 2 ), 255, 255, 255, 255, "vel:  %.04f", velocity.Length() );
+        g_pMatSystemSurface->DrawColoredText( m_hFont, x, 2 + ( i++ * iFontTall ), 255, 255, 255, 255, "vel:  %.04f", velocity.Length() );
     }
 }
 

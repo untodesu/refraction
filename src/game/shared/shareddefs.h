@@ -11,19 +11,20 @@
 #pragma once
 #endif
 
-#define TICK_INTERVAL           (gpGlobals->interval_per_tick)
+// VERSION NOTES:
+// The REFRACTION_VERSION macro contains DMMP structure (DEV-MAJOR-MINOR-PATCH)
+// The REFRACTION_VERSION_STR macro contains MMP-D structure where D can be -dev or nothing.
+#define REFRACTION_VERSION      1011
+#define REFRACTION_VERSION_STR  "0.1.1-dev"
 
+#define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 
 #define TIME_TO_TICKS( dt )     ( (int)( 0.5f + (float)(dt) / TICK_INTERVAL ) )
 #define TICKS_TO_TIME( t )      ( TICK_INTERVAL *( t ) )
 #define ROUND_TO_TICKS( t )     ( TICK_INTERVAL * TIME_TO_TICKS( t ) )
 #define TICK_NEVER_THINK        (-1)
 
-#if defined( TF_DLL )
-#define ANIMATION_CYCLE_BITS        10
-#else
 #define ANIMATION_CYCLE_BITS        15
-#endif
 #define ANIMATION_CYCLE_MINFRAC     (1.0f / (1<<ANIMATION_CYCLE_BITS))
 
 // Each mod defines these for itself.

@@ -69,6 +69,7 @@ ConVar          mat_tonemap_percent_target              ( "mat_tonemap_percent_t
 ConVar          mat_tonemap_percent_bright_pixels       ( "mat_tonemap_percent_bright_pixels",          "2.0",  FCVAR_CHEAT     );
 ConVar          mat_tonemap_min_avglum                  ( "mat_tonemap_min_avglum",                     "3.0",  FCVAR_CHEAT     );
 ConVar          mat_fullbright                          ( "mat_fullbright",                             "0",    FCVAR_CHEAT     );
+ConVar          mat_postprocess                         ( "mat_postprocess",                            "1",    FCVAR_ARCHIVE   );
 extern ConVar   localplayer_visionflags;
 
 // Refraction postproc cvars
@@ -1129,7 +1130,8 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
     }
 
     // Draw refraction post effects
-    DrawPostEffects( PP_Final, ARRAYSIZE(PP_Final), x, y, w, h );
+    if( mat_postprocess.GetBool() )
+        DrawPostEffects( PP_Final, ARRAYSIZE(PP_Final), x, y, w, h );
 }
 
 // Motion Blur Material Proxy =========================================================================================
