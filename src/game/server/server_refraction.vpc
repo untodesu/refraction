@@ -20,6 +20,11 @@ $Configuration
 
 $Project "Refraction Server DLL"
 {
+    $Folder "Link Libraries"
+    {
+        $Lib "$LIBPUBLIC\ustd"
+    }
+
     $Folder "Source Files"
     {                
         $File   "$SRCDIR\game\shared\ustdlib_random.h"

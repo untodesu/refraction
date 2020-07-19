@@ -23,6 +23,7 @@ $Project "Refraction Client DLL"
     $Folder "Link Libraries"
     {
         $Lib "$LIBPUBLIC\discord-rpc"
+        $Lib "$LIBPUBLIC\ustd"
     }
 
     $Folder "Source Files"

@@ -1,6 +1,6 @@
 #include "cbase.h"
 #include "discord_rpc_client.h"
-#include <time.h>
+#include <ustdlib/time.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -71,7 +71,7 @@ bool CDiscordRPC::Init( void )
 
     char szAppId[256] = { 0 };
     Q_snprintf( szAppId, sizeof( szAppId ), "%d", engine->GetAppID() );
-    m_llRPCStartTimestamp = time( 0 );
+    m_llRPCStartTimestamp = ustd::Time::unixTime();
     Discord_Initialize( discord_appid.GetString(), &handlers, true, szAppId );
 
     Q_memset( &m_Presence, 0, sizeof( DiscordRichPresence ) );
@@ -89,7 +89,7 @@ void CDiscordRPC::Shutdown( void )
 
 void CDiscordRPC::LevelInitPreEntity( void )
 {
-    m_Presence.startTimestamp = time( 0 );
+    m_Presence.startTimestamp = ustd::Time::unixTime();
     SetPresenceState( "Map - %s", MapName() );
 }
 
