@@ -1,0 +1,68 @@
+//-----------------------------------------------------------------------------
+//  PROJECTS.VGC
+//-----------------------------------------------------------------------------
+
+$Project "client"
+{
+    "game\client\client_refraction.vpc" [$REFRACTION]
+}
+
+$Project "fgdlib"
+{
+    "fgdlib\fgdlib.vpc"
+}
+
+$Project "game_shader_dx9"
+{
+    "materialsystem\stdshaders\game_shader_dx9_refraction.vpc" [$REFRACTION]
+}
+
+$Project "server"
+{
+    "game\server\server_refraction.vpc" [$REFRACTION]
+}
+
+$Project "mathlib"
+{
+    "mathlib\mathlib.vpc"
+}
+
+$Project "raytrace"
+{
+    "raytrace\raytrace.vpc"
+}
+
+$Project "tier1"
+{
+    "tier1\tier1.vpc"
+}
+
+$Project "vbsp"
+{
+    "vbsp\vbsp.vpc"
+}
+
+$Project "vgui_controls"
+{
+    "vgui2\vgui_controls\vgui_controls.vpc"
+}
+
+$Project "vrad_dll"
+{
+    "vrad\vrad_dll.vpc"
+}
+
+$Project "vrad_launcher"
+{
+    "vrad_launcher\vrad_launcher.vpc"
+}
+
+$Project "vvis_dll"
+{
+    "vvis\vvis_dll.vpc"
+}
+
+$Project "vvis_launcher"
+{
+    "vvis_launcher\vvis_launcher.vpc"
+}

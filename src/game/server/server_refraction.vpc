@@ -4,9 +4,10 @@
 //  Project Script
 //-----------------------------------------------------------------------------
 
-$Macro SRCDIR       "..\.."
-$Macro GAMENAME     "refraction"
-$Include "$SRCDIR\game\server\server_base.vpc"
+$Macro GITROOT "..\..\.."
+$Macro GAMENAME "refraction"
+
+$Include "$GITROOT\src\game\server\server_base.vpc"
 
 $Configuration
 {
@@ -273,7 +274,7 @@ $Project "game_server"
             $File "$GAMESHARED\hl2\hl_gamemovement.cpp"
             $File "$GAMESHARED\hl2\hl_gamemovement.h"
             $File "$GAMESHARED\hl2\hl_movedata.h"
-            $File "$SRCDIR\common\hl2orange.spa.h"
+            $File "$GITROOT\src\common\hl2orange.spa.h"
             
             $Folder "unused"
             {

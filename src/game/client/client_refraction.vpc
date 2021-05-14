@@ -4,15 +4,16 @@
 //  Project Script
 //-----------------------------------------------------------------------------
 
-$Macro SRCDIR   "..\.."
+$Macro GITROOT "..\..\.."
 $Macro GAMENAME "refraction"
-$Include "$SRCDIR\game\client\client_base.vpc"
+
+$Include "$GITROOT\src\game\client\client_base.vpc"
 
 $Configuration
 {
     $Compiler
     {
-        $AdditionalIncludeDirectories   "$BASE;$GAMECLIENT\hl2;$GAMECLIENT\hl2\elements;$GAMESHARED\hl2;$GAMESHARED\episodic;$SRCDIR\public"
+        $AdditionalIncludeDirectories   "$BASE;$GAMECLIENT\hl2;$GAMECLIENT\hl2\elements;$GAMESHARED\hl2;$GAMESHARED\episodic;$GITROOT\src\public"
         $PreprocessorDefinitions        "$BASE;HL2_CLIENT_DLL;HL2_EPISODIC;REFRACTION"
     }
 }

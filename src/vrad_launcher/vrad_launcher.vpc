@@ -4,19 +4,19 @@
 //  Project Script
 //-----------------------------------------------------------------------------
 
-$Macro SRCDIR       ".."
-$Macro GAMENAME     "refraction"
-$Macro OUTBINDIR    "$SRCDIR\..\game\$GAMENAME\bin"
-$Macro OUTBINNAME   "vrad"
+$Macro GITROOT "..\.."
+$Macro GAMENAME "refraction"
+$Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
+$Macro OUTBINNAME "vrad"
 
-$Include "$SRCDIR\vpc_scripts\source_exe_con_base.vpc"
+$Include "$GITROOT\vpc\source_exe_con_base.vpc"
 
 $Configuration
 {
     $Compiler
     {
-        $Create/UsePrecompiledHeader        "Use Precompiled Header (/Yu)"
-        $PrecompiledHeaderFile              "Debug/vrad_launcher.pch"
+        $Create/UsePrecompiledHeader "Use Precompiled Header (/Yu)"
+        $PrecompiledHeaderFile "Debug/vrad_launcher.pch"
     }
 }
 
@@ -24,17 +24,17 @@ $Project "vrad_launcher"
 {
     $Folder "Source Files"
     {
-        -$File  "$SRCDIR\public\tier0\memoverride.cpp"
+        -$File "$GITROOT\src\public\tier0\memoverride.cpp"
 
-        $File   "vrad_launcher.cpp"
+        $File "vrad_launcher.cpp"
 
-        $File   "StdAfx.cpp"
+        $File "StdAfx.cpp"
         {
             $Configuration
             {
                 $Compiler
                 {
-                    $Create/UsePrecompiledHeader        "Create Precompiled Header (/Yc)"
+                    $Create/UsePrecompiledHeader "Create Precompiled Header (/Yc)"
                 }
             }
         }
@@ -43,8 +43,8 @@ $Project "vrad_launcher"
 
     $Folder "Header Files"
     {
-        $File   "$SRCDIR\public\tier1\interface.h"
-        $File   "$SRCDIR\public\ivraddll.h"
-        $File   "StdAfx.h"
+        $File "$GITROOT\src\public\tier1\interface.h"
+        $File "$GITROOT\src\public\ivraddll.h"
+        $File "StdAfx.h"
     }
 }

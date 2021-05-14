@@ -4,20 +4,20 @@
 //  Project Script
 //-----------------------------------------------------------------------------
 
-$Macro SRCDIR       ".."
-$Macro GAMENAME     "refraction"
-$Macro OUTBINDIR    "$SRCDIR\..\game\$GAMENAME\bin"
-$Macro OUTBINNAME   "vvis"
+$Macro GITROOT "..\.."
+$Macro GAMENAME "refraction"
+$Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
+$Macro OUTBINNAME "vvis"
 
-$Include "$SRCDIR\vpc_scripts\source_exe_con_base.vpc"
+$Include "$GITROOT\vpc\source_exe_con_base.vpc"
 
 $Configuration
 {
     $Compiler
     {
-        $AdditionalIncludeDirectories       "$BASE,..\common"
-        $Create/UsePrecompiledHeader        "Use Precompiled Header (/Yu)"
-        $PrecompiledHeaderFile              "Debug/vvis_launcher.pch"
+        $AdditionalIncludeDirectories "$BASE,$GITROOT\src\common"
+        $Create/UsePrecompiledHeader "Use Precompiled Header (/Yu)"
+        $PrecompiledHeaderFile "Debug/vvis_launcher.pch"
     }
 }
 
@@ -25,15 +25,15 @@ $Project "vvis_launcher"
 {
     $Folder "Source Files"
     {
-        $File   "vvis_launcher.cpp"
+        $File "vvis_launcher.cpp"
 
-        $File   "StdAfx.cpp"
+        $File "StdAfx.cpp"
         {
             $Configuration
             {
                 $Compiler
                 {
-                    $Create/UsePrecompiledHeader        "Create Precompiled Header (/Yc)"
+                    $Create/UsePrecompiledHeader "Create Precompiled Header (/Yc)"
                 }
             }
         }
@@ -41,7 +41,7 @@ $Project "vvis_launcher"
 
     $Folder "Header Files"
     {
-        $File   "$SRCDIR\public\tier1\interface.h"
-        $File   "StdAfx.h"
+        $File "$GITROOT\src\public\tier1\interface.h"
+        $File "StdAfx.h"
     }
 }

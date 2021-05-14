@@ -3,7 +3,7 @@ setlocal
 
 set GAMEDIR=%cd%\..\..\..\game\refraction\
 set SDKBINDIR=C:\Steam\steamapps\common\Source SDK Base 2013 Singleplayer\bin\
-set SOURCEDIR=..\..
+set SOURCEDIR=..\..\..
 
 call "%VS120COMNTOOLS%\vsvars32.bat"
 

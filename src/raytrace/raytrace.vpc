@@ -4,14 +4,14 @@
 //  Project Script
 //-----------------------------------------------------------------------------
 
-$Macro SRCDIR       ".."
-$Include "$SRCDIR\vpc_scripts\source_lib_base.vpc"
+$Macro GITROOT "..\.."
+$Include "$GITROOT\vpc\source_lib_base.vpc"
 
 $Configuration
 {
     $Compiler
     {
-        $AdditionalIncludeDirectories       "$BASE,$SRCDIR\utils\common"
+        $AdditionalIncludeDirectories "$BASE,$GITROOT\src\common"
     }
 }
 
@@ -19,8 +19,8 @@ $Project "Raytrace"
 {
     $Folder "Source Files"
     {
-        $File   "raytrace.cpp"
-        $File   "trace2.cpp"
-        $File   "trace3.cpp"
+        $File "raytrace.cpp"
+        $File "trace2.cpp"
+        $File "trace3.cpp"
     }
 }

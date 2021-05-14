@@ -4,10 +4,10 @@
 //  Project Script
 //-----------------------------------------------------------------------------
 
-$Macro SRCDIR       "..\.."
-$Macro GAMENAME     "refraction"
+$Macro GITROOT "..\..\.."
+$Macro GAMENAME "refraction"
 
-$Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
+$Include "$GITROOT\src\materialsystem\stdshaders\game_shader_dx9_base.vpc"
 
 $Project "game_shader_dx9"
 {
