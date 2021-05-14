@@ -12,11 +12,8 @@ $Macro GAMESHARED "$SRCDIR\game\shared"
 
 $Macro OUTBINNAME "server"
 $Macro OUTBINDIR "$SRCDIR\..\game\$GAMENAME\bin"
-$Macro GENERATED_PROTO_DIR "$SRCDIR\game\server\generated_proto_$GAMENAME"
 
 $include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
-$include "$SRCDIR\vpc_scripts\protobuf_builder.vpc"
-$Include "$SRCDIR\game\protobuf_include.vpc"
 
 $Configuration "Debug"
 {
