@@ -8,7 +8,7 @@
 
 //
 // UNUSED WEAPONS
-// These weapons *exists* but in the "unused" subdirectory.
+// These weapons *exist* but are unused.
 // They would somehow be re-used, I guess...
 //
 #if 0
@@ -21,7 +21,7 @@ STUB_CLIENTWEAPON( weapon_slam,             Weapon_SLAM,            C_BaseHLComb
 //
 // NPC-ONLY WEAPONS
 // These weapons are supposed to be used by NPCs and not by the player.
-// However it seems that the player can also pick them up :)
+// However it seems that the player can also pick them up
 //
 STUB_CLIENTWEAPON( weapon_annabelle,        WeaponAnnabelle,        C_BaseHLCombatWeapon );
 STUB_CLIENTWEAPON( weapon_alyxgun,          WeaponAlyxGun,          C_HLSelectFireMachineGun );
