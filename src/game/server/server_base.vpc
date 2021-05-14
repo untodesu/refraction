@@ -13,7 +13,7 @@ $Macro GAMESHARED "$GITROOT\src\game\shared"
 $Macro OUTBINNAME "server"
 $Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
 
-$include "$GITROOT\vpc\source_dll_base.vpc"
+$include "$GITROOT\vpc_scripts\source_dll_base.vpc"
 
 $Configuration "Debug"
 {
@@ -977,12 +977,13 @@ $Project
 
     $Folder "Link Libraries"
     {
-        $ImpLibexternal steam_api
-        $Lib choreoobjects
-        $Lib dmxloader
-        $Lib mathlib
-        $Lib particles
-        $Lib tier2
-        $Lib tier3
+        $Lib "$GITROOT\lib\steam_api"
+        $Lib "$GITROOT\lib\choreoobjects"
+        $Lib "$GITROOT\lib\mathlib"
+        $Lib "$GITROOT\lib\dmxloader"
+        $Lib "$GITROOT\lib\mathlib"
+        $Lib "$GITROOT\lib\particles"
+        $Lib "$GITROOT\lib\tier2"
+        $Lib "$GITROOT\lib\tier3"
     }
 }

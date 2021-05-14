@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\.."
+$Macro SRCDIR "$GITROOT"
 $Macro GAMENAME "refraction"
 $Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
 $Macro OUTBINNAME "vvis"
 
-$Include "$GITROOT\vpc\source_exe_con_base.vpc"
+$Include "$GITROOT\vpc_scripts\source_exe_con_base.vpc"
 
 $Configuration
 {

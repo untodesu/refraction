@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\..\.."
+$Macro SRCDIR "$GITROOT"
 $Macro GAMENAME "refraction"
 
 $Include "$GITROOT\src\game\client\client_base.vpc"
@@ -22,7 +23,7 @@ $Project "game_client"
 {
     $Folder "Link Libraries"
     {
-        $Lib "$LIBPUBLIC\discord-rpc"
+        $Lib "$GITROOT\lib\discord-rpc"
     }
 
     $Folder "Source Files"

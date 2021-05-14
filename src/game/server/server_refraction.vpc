@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\..\.."
+$Macro SRCDIR "$GITROOT"
 $Macro GAMENAME "refraction"
 
 $Include "$GITROOT\src\game\server\server_base.vpc"

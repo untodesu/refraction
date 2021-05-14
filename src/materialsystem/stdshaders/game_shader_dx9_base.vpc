@@ -9,7 +9,7 @@ $MacroRequired "GAMENAME"
 
 $Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
 
-$Include "$GITROOT\vpc\source_dll_base.vpc"
+$Include "$GITROOT\vpc_scripts\source_dll_base.vpc"
 
 $Configuration  "Debug"
 {
@@ -66,8 +66,8 @@ $Project
 
     $Folder "Link Libraries"
     {
-        $Lib mathlib
-        $Lib shaderlib
+        $ImpLib "$GITROOT\lib\mathlib"
+        $ImpLib "$GITROOT\lib\shaderlib"
     }
 
     $File "build_shaders.bat"

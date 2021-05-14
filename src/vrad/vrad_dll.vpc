@@ -5,10 +5,11 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\.."
+$Macro SRCDIR "$GITROOT"
 $Macro GAMENAME "refraction"
 $Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
 
-$Include "$GITROOT\vpc\source_dll_base.vpc"
+$Include "$GITROOT\vpc_scripts\source_dll_base.vpc"
 
 $Configuration
 {
@@ -214,12 +215,12 @@ $Project "vrad_dll"
 
     $Folder "Link Libraries"
     {
-        $Lib bitmap
-        $Lib mathlib
-        $Lib raytrace
-        $Lib tier2
-        $Lib vmpi
-        $Lib vtf
+        $Lib "$GITROOT\lib\bitmap"
+        $Lib "$GITROOT\lib\mathlib"
+        $Lib "$GITROOT\lib\raytrace"
+        $Lib "$GITROOT\lib\tier2"
+        $Lib "$GITROOT\lib\vmpi"
+        $Lib "$GITROOT\lib\vtf"
     }
 
     $File "notes.txt"

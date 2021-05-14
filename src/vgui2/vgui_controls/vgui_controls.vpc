@@ -5,16 +5,9 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\..\.."
+$Macro SRCDIR "$GITROOT"
 
-$include "$GITROOT\vpc\source_lib_base.vpc"
-
-$Configuration
-{
-    $Compiler
-    {
-        $AdditionalIncludeDirectories "$BASE;$SRCDIR\thirdparty;$SRCDIR\thirdparty\cef"
-    }
-}
+$include "$GITROOT\vpc_scripts\source_lib_base.vpc"
 
 $Project "vgui_controls"
 {

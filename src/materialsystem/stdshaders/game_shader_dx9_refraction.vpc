@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\..\.."
+$Macro SRCDIR "$GITROOT"
 $Macro GAMENAME "refraction"
 
 $Include "$GITROOT\src\materialsystem\stdshaders\game_shader_dx9_base.vpc"

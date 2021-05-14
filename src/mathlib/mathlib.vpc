@@ -5,8 +5,9 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\.."
+$Macro SRCDIR "$GITROOT"
 
-$include "$GITROOT\vpc\source_lib_base.vpc"
+$include "$GITROOT\vpc_scripts\source_lib_base.vpc"
 
 $Configuration
 {

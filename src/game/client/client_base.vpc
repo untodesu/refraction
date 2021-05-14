@@ -13,7 +13,7 @@ $Macro GAMESHARED "$GITROOT\src\game\shared"
 $Macro OUTBINNAME "client"
 $Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
 
-$Include "$GITROOT\vpc\source_dll_base.vpc"
+$Include "$GITROOT\vpc_scripts\source_dll_base.vpc"
 
 $Configuration "Debug"
 {
@@ -1098,19 +1098,19 @@ $Project
 
     $Folder "Link Libraries"
     {
-        $Lib bitmap
-        $Lib choreoobjects
-        $Lib dmxloader
-        $Lib mathlib
-        $Lib matsys_controls
-        $Lib particles
-        $Lib tier1
-        $Lib tier2
-        $Lib tier3
-        $Lib vgui_controls
-        $Lib vtf
-        $Lib libcurl
-        $Lib libz
-        $ImpLib steam_api
+        $Lib "$GITROOT\lib\bitmap"
+        $Lib "$GITROOT\lib\choreoobjects"
+        $Lib "$GITROOT\lib\dmxloader"
+        $Lib "$GITROOT\lib\mathlib"
+        $Lib "$GITROOT\lib\matsys_controls"
+        $Lib "$GITROOT\lib\particles"
+        $Lib "$GITROOT\lib\tier1"
+        $Lib "$GITROOT\lib\tier2"
+        $Lib "$GITROOT\lib\tier3"
+        $Lib "$GITROOT\lib\vgui_controls"
+        $Lib "$GITROOT\lib\vtf"
+        $Lib "$GITROOT\lib\libcurl"
+        $Lib "$GITROOT\lib\libz"
+        $Lib "$GITROOT\lib\steam_api"
     }
 }

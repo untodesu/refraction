@@ -5,8 +5,9 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\.."
+$Macro SRCDIR "$GITROOT"
 
-$include "$GITROOT\vpc\source_lib_base.vpc"
+$include "$GITROOT\vpc_scripts\source_lib_base.vpc"
 
 $Configuration
 {
@@ -146,6 +147,5 @@ $Project "tier1"
         $File "$GITROOT\src\public\tier1\utlsymbol.h"
         $File "$GITROOT\src\public\tier1\utlsymbollarge.h"
         $File "$GITROOT\src\public\tier1\utlvector.h"
-        $File "$SRCDIR\common\xbox\xboxstubs.h"
     }
 }

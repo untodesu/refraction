@@ -5,10 +5,11 @@
 //-----------------------------------------------------------------------------
 
 $Macro GITROOT "..\.."
+$Macro SRCDIR "$GITROOT"
 $Macro GAMENAME "refraction"
 $Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
 
-$Include "$GITROOT\vpc\source_dll_base.vpc"
+$Include "$GITROOT\vpc_scripts\source_dll_base.vpc"
 
 $Configuration
 {
@@ -95,8 +96,8 @@ $Project "vvis_dll"
 
     $Folder "Link Libraries"
     {
-        $Lib mathlib
-        $Lib tier2
-        $Lib vmpi
+        $Lib "$GITROOT\lib\mathlib"
+        $Lib "$GITROOT\lib\tier2"
+        $Lib "$GITROOT\lib\vmpi"
     }
 }

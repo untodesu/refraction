@@ -5,11 +5,11 @@
 //-----------------------------------------------------------------------------
 $IgnoreRedundancyWarning "ON"
 
-$MacroRequired "SRCDIR"
+$MacroRequired "GITROOT"
 $MacroRequired "OUTBINDIR"
 $MacroRequired "PLATSUBDIR"
 
-$Include "$GITROOT\vpc\source_exe_win_win32_base.vpc"
+$Include "$GITROOT\vpc_scripts\source_exe_win_win32_base.vpc"
 
 $Configuration
 {

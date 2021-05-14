@@ -8,10 +8,10 @@ $MacroRequired "GITROOT"
 $MacroRequired "OUTLIBNAME" "$PROJECTNAME"
 $MacroRequired "OUTLIBDIR"
 
-$Include "$GITROOT\vpc\version.vpc"
-$Include "$GITROOT\vpc\source_lib_win32_debug.vpc"
-$Include "$GITROOT\vpc\source_lib_win32_release.vpc"
-$Include "$GITROOT\vpc\source_win32_base.vpc"
+$Include "$GITROOT\vpc_scripts\version.vpc"
+$Include "$GITROOT\vpc_scripts\source_lib_win32_debug.vpc"
+$Include "$GITROOT\vpc_scripts\source_lib_win32_release.vpc"
+$Include "$GITROOT\vpc_scripts\source_win32_base.vpc"
 
 $IgnoreRedundancyWarning "ON"
 

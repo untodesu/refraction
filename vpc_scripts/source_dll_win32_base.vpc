@@ -1,8 +1,9 @@
 //-----------------------------------------------------------------------------
-//  SOURCE_EXE_WIN_WIN32.VPC
+//  SOURCE_DLL_WIN32_BASE.VPC
 //
-//  Base Settings for Source(TM) Projects
+//  Base Settings for all Source(TM) Projects
 //-----------------------------------------------------------------------------
+$Include "$GITROOT\vpc_scripts\version.vpc"
 
 $MacroRequired "GITROOT"
 $MacroRequired "OUTBINNAME" "$PROJECTNAME"
@@ -10,11 +11,10 @@ $MacroRequired "OUTBINDIR"
 
 $Macro OUTBINDIR "$OUTBINDIR$PLATSUBDIR"
 
-$Include "$GITROOT\vpc\version.vpc"
-$Include "$GITROOT\vpc\loadaddress.vpc"
-$Include "$GITROOT\vpc\source_exe_win_win32_debug.vpc"
-$Include "$GITROOT\vpc\source_exe_win_win32_release.vpc"
-$Include "$GITROOT\vpc\source_win32_base.vpc"
+$Include "$GITROOT\vpc_scripts\loadaddress.vpc"
+$Include "$GITROOT\vpc_scripts\source_dll_win32_debug.vpc"
+$Include "$GITROOT\vpc_scripts\source_dll_win32_release.vpc"
+$Include "$GITROOT\vpc_scripts\source_win32_base.vpc"
 
 $IgnoreRedundancyWarning "ON"
 
@@ -26,11 +26,11 @@ $Configuration
         $TargetName "$OUTBINNAME"
     }
 
-
     $Compiler
     {
         $PreprocessorDefinitions "$BASE;COMPILER_MSVC32"
-        $PreprocessorDefinitions "$BASE;COMPILER_MSVC;EXENAME=$OUTBINNAME;_DLL_EXT=$_DLL_EXT"
+        $PreprocessorDefinitions "$BASE;COMPILER_MSVC;_DLL_EXT=$_DLL_EXT"
+        $PreprocessorDefinitions "$BASE;DLLNAME=$OUTBINNAME"
         $EnableEnhancedInstructionSet "Streaming SIMD Extensions (/arch:SSE)"
     }
 
@@ -38,9 +38,8 @@ $Configuration
     {
         $AdditionalDependencies "$BASE shell32.lib user32.lib advapi32.lib gdi32.lib comdlg32.lib ole32.lib"
         $TargetMachine "MachineX86 (/MACHINE:X86)"
-        $AdditionalOptions "/NXCOMPAT"
         $AdditionalOptions "$BASE /ignore:4221"
-        $AdditionalOptions "$BASE $SRCDIR\lib\public\ftol3.obj" [$VS2013 && $WIN32 && !$DISABLE_FTOL3_OVERRIDE && !$SOURCESDK]
+        $AdditionalOptions "$BASE $GITROOT\lib\public\ftol3.obj" [$VS2013 && $WIN32 && !$DISABLE_FTOL3_OVERRIDE && !$SOURCESDK]
     }
 
     $PreBuildEvent
@@ -53,17 +52,22 @@ $Configuration
 
     $PostBuildEvent
     {
-        $CommandLine "$BASE" "copy $QUOTE$(TargetDir)$QUOTE$(TargetFileName) $OUTBINDIR\$(TargetFileName) >nul" "\n" \
+        $CommandLine "if not exist $QUOTE$OUTBINDIR$QUOTE mkdir $QUOTE$OUTBINDIR$QUOTE" "\n"
+        $CommandLine "$BASE" "copy $QUOTE$(TargetDir)$(TargetFileName)$QUOTE $QUOTE$OUTBINDIR\$(TargetFileName)$QUOTE" "\n" \
             "if ERRORLEVEL 1 goto BuildEventFailed" "\n" \
-            "if exist $QUOTE$(TargetDir)$QUOTE$(TargetName).map copy $QUOTE$(TargetDir)$QUOTE$(TargetName).map $OUTBINDIR\$(TargetName).map >nul" "\n"
-        $CommandLine "$BASE" "copy $QUOTE$(TargetDir)$QUOTE$(TargetName).pdb $OUTBINDIR\$(TargetName).pdb >nul" "\n" \
+            "if exist $QUOTE$(TargetDir)$(TargetName).map$QUOTE copy $QUOTE$(TargetDir)$(TargetName).map$QUOTE $OUTBINDIR\$(TargetName).map" "\n"
+        $CommandLine "$BASE" "copy $QUOTE$(TargetDir)$(TargetName).pdb$QUOTE $OUTBINDIR\$(TargetName).pdb" "\n" \
             "if ERRORLEVEL 1 goto BuildEventFailed" "\n" \
             "goto BuildEventOK" "\n" \
             ":BuildEventFailed" "\n" \
             "echo *** ERROR! PostBuildStep FAILED for $(ProjectName)! EXE or DLL is probably running. ***" "\n" \
-            "del /q $QUOTE$(TargetDir)$QUOTE$(TargetFileName)" "\n" \
+            "del /q $QUOTE$(TargetDir)$(TargetFileName)$QUOTE" "\n" \
             "exit 1" "\n" \
             ":BuildEventOK" "\n"
+        $CommandLine "$BASE" "\n" \
+            "call $GITROOT\tools\bin\vsign.bat -sign $OUTBINDIR\$(TargetFileName)" "\n" [$RETAIL && $PUBLISH]
+        $CommandLine "$BASE" "\n" \
+            "call $GITROOT\tools\bin\vsign.bat -signvalve $OUTBINDIR\$(TargetFileName)" "\n" [!$RETAIL && !$PUBLISH && !$SOURCESDK]
         $Description "Publishing to $OUTBINDIR"
         $ExcludedFromBuild "No"
     }
@@ -74,7 +78,7 @@ $Project
 {
     $Folder "Source Files"
     {
-        $File "$SRCDIR\public\tier0\memoverride.cpp"
+        $File "$GITROOT\src\public\tier0\memoverride.cpp"
         {
             $Configuration
             {
@@ -87,14 +91,14 @@ $Project
 
         // Implement __imp__EncodePointer and __imp__DecodePointer so that we can run on XP SP1
         // when building with VS 2010 and higher.
-        $File "$SRCDIR\public\tier0\pointeroverride.asm" [$WIN32]
+        $File "$GITROOT\src\public\tier0\pointeroverride.asm"
         {
             $Configuration
             {
                 $CustomBuildStep
                 {
                     // General
-                    $CommandLine "$QUOTE$(VCInstallDir)bin\ml.exe$QUOTE /c /Cp /Zi /Fo$QUOTE$(IntDir)\$(InputName).obj$QUOTE $QUOTE$(InputPath)$QUOTE"
+                    $CommandLine "$QUOTE$(VCInstallDir)bin\ml.exe$QUOTE /safeseh /c /Cp /Zi /Fo$QUOTE$(IntDir)\$(InputName).obj$QUOTE $QUOTE$(InputPath)$QUOTE"
                     $Description "Compiling pointeroverride.asm"
                     $Outputs "$(IntDir)\$(InputName).obj"
                 }
