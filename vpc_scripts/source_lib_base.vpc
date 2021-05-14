@@ -1,5 +1,5 @@
 $MacroRequired "GITROOT"
-$MacroRequired "OUTLIBDIR" "$GITROOT\lib\public$PLATSUBDIR"
+$MacroRequired "OUTLIBDIR" "$GITROOT\lib\"
 
 $Include "$GITROOT\vpc_scripts\platform_dirs.vpc"
 $include "$GITROOT\vpc_scripts\source_base.vpc"
