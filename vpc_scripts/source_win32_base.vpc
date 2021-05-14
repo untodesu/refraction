@@ -1,0 +1,36 @@
+//-----------------------------------------------------------------------------
+//  SOURCE_WIN32_BASE.VPC
+//
+//  Base for all Win32 projects.
+//-----------------------------------------------------------------------------
+$Configuration
+{
+    $General
+    {
+        // Request a specific compiler toolset.
+        // TODO: port to VS2017...
+        $PlatformToolset "v120_xp"
+    }
+
+    $General
+    {
+        $ExecutableDirectories "$(ExecutablePath);$(Path)"
+    }
+
+    $Compiler
+    {
+        $MultiProcessorCompilation "True"
+
+        // warning C4316: object allocated on the heap may not be aligned 16
+        $DisableSpecificWarnings "$BASE;4316"
+
+        // Having lots of warnings makes it harder to notice new, and possibly
+        // important warnings. The only way to keep the warning count down is
+        // to treat warnings as errors.
+        $TreatWarningsAsErrors "Yes (/WX)"
+
+        // /Gw is a VS 2013 option that puts global and static variables in
+        // individual sections so that the linker can discard unreferenced data.
+        $AdditionalOptions "$BASE /Gw"
+    }
+}
