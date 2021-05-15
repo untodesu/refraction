@@ -9,5 +9,4 @@
 
 postproc_chromaticaberration_ps30.fxc
 postproc_cubicdistortion_ps30.fxc
-postproc_desaturate_ps30.fxc
 postproc_vs30.fxc

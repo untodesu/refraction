@@ -89,7 +89,6 @@ extern ConVar localplayer_visionflags;
 // Refraction postproc cvars
 static ConVar mat_postproc_chromaticaberration( "mat_postproc_chromaticaberration", "1", FCVAR_ARCHIVE, "Add slight color shift at the screen edges" );
 static ConVar mat_postproc_cubicdistortion( "mat_postproc_cubicdistortion", "1", FCVAR_ARCHIVE, "Add a lens effect to the screen" );
-static ConVar mat_postproc_desaturate( "mat_postproc_desaturate", "1", FCVAR_ARCHIVE, "Desaturate bright areas" );
 
 // Post processing materials precache
 CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
@@ -107,12 +106,10 @@ CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
     // TODO: Precache your postproc here.
     CLIENTEFFECT_MATERIAL( "shaders/postproc_chromaticaberration" )
     CLIENTEFFECT_MATERIAL( "shaders/postproc_cubicdistortion" )
-    CLIENTEFFECT_MATERIAL( "shaders/postproc_desaturate" )
 CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
 
 // TODO: add your custom postproc here.
 PP_Pass_t PP_Final[] = {
-    { PPC_IF_CVAR, "shaders/postproc_desaturate", &mat_postproc_desaturate },
     { PPC_IF_CVAR, "shaders/postproc_chromaticaberration", &mat_postproc_chromaticaberration },
     { PPC_IF_CVAR, "shaders/postproc_cubicdistortion", &mat_postproc_cubicdistortion },
 };
