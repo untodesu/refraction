@@ -11,7 +11,7 @@ $Macro GAMECLIENT "$GITROOT\src\client"
 $Macro GAMESHARED "$GITROOT\src\shared"
 
 $Macro OUTBINNAME "client"
-$Macro OUTBINDIR "$GITROOT\game\$GAMENAME\bin"
+$Macro OUTBINDIR "$GITROOT\out\$GAMENAME\bin"
 
 $Include "$GITROOT\vpc_scripts\source_dll_base.vpc"
 
