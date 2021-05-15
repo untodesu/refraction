@@ -62,7 +62,7 @@ CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" ), m_
     ComputeSize();
     g_pVGui->AddTickSignal( GetVPanel(), 250 );
 
-#if MOD_IS_DEV_BUILD
+#ifdef DEV_BUILD
     Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u devbuild (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
 #else
     Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
