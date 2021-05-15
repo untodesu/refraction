@@ -1,0 +1,13 @@
+//
+// vs 3.0   ps 3.0   shaders collection
+//
+//  These shaders are forced to compile as shader model 3.0
+//  using the new compiler.
+//	    _ps30.vcs
+//	    _vs30.vcs
+//
+
+postproc_chromaticaberration_ps30.fxc
+postproc_cubicdistortion_ps30.fxc
+postproc_desaturate_ps30.fxc
+postproc_vs30.fxc

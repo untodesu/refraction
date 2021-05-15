@@ -9,30 +9,24 @@
 ///////////////////////
 
 
-$Group "game"
+$Group "gamedlls"
 {
     "client"
     "server"
-    
+    "game_shader_dx9"
     "mathlib"
     "tier1"
     "vgui_controls"
 }
 
-$Group "compilers"
+$Group "tools"
 {
     "vbsp"
     "vrad_dll"
     "vrad_launcher"
     "vvis_dll"
     "vvis_launcher"
-    
     "fgdlib"
     "mathlib"
     "raytrace"
-}
-
-$Group "shaders"
-{
-    "game_shader_dx9"
 }
