@@ -13,9 +13,9 @@ float4 main(float2 uv : TEXCOORD0) : COLOR
 {
     float4 color;
     for(float i = 0.0; i < 1.0; i += 0.1) {
-        float4 pure = tex2D(FRAMEBUFFER, barrelDistortion(uv, i));
-        float4 abb1 = tex2D(FRAMEBUFFER, barrelDistortion(uv, i + AMOUNT));
-        float4 abb2 = tex2D(FRAMEBUFFER, barrelDistortion(uv, i - AMOUNT));
+        float4 pure = tex2Dlod(FRAMEBUFFER, float4(barrelDistortion(uv, i), 0.0, 0.0));
+        float4 abb1 = tex2Dlod(FRAMEBUFFER, float4(barrelDistortion(uv, i + AMOUNT), 0.0, 0.0));
+        float4 abb2 = tex2Dlod(FRAMEBUFFER, float4(barrelDistortion(uv, i - AMOUNT), 0.0, 0.0));
         color += float4(abb1.r, pure.g, abb2.b, pure.a);
     }
     color /= 10.0;

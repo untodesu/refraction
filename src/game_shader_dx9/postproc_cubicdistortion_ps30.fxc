@@ -7,5 +7,5 @@ float4 main(float2 uv : TEXCOORD0) : COLOR
 {
     float r2 = pow((uv.x - 0.5), 2) + pow((uv.y - 0.5), 2);
     float f = 1.0 + r2 * (-0.15 + AMOUNT * sqrt(r2));
-    return tex2D(FRAMEBUFFER, float2((f * (uv.x - 0.5) + 0.5), (f * (uv.y - 0.5) + 0.5)));
+    return tex2Dlod(FRAMEBUFFER, float4((f * (uv.x - 0.5) + 0.5), (f * (uv.y - 0.5) + 0.5), 0.0, 0.0));
 }
