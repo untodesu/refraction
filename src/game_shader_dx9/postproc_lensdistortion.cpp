@@ -1,8 +1,3 @@
-// ----------------------------------------------------------------------------
-// POSTPROC_LENSDISTORTION.CPP
-//
-// This file defines the C++ component of lens distortion post processing shader.
-// ----------------------------------------------------------------------------
 #include "BaseVSShader.h"
 #include "postproc_vs30.inc"
 #include "postproc_lensdistortion_ps30.inc"
@@ -20,11 +15,6 @@ BEGIN_SHADER( PostProc_LensDistortion, "Lens distortion effect" )
 
     SHADER_FALLBACK
     {
-        // Requires DX9 + above
-        if( g_pHardwareConfig->GetDXSupportLevel() < 90 ) {
-            Assert( 0 );
-            return "Wireframe";
-        }
         return 0;
     }
 
@@ -60,5 +50,4 @@ BEGIN_SHADER( PostProc_LensDistortion, "Lens distortion effect" )
 
         Draw();
     }
-
 END_SHADER
