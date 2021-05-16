@@ -18,10 +18,10 @@ float DoShadow( sampler DepthSampler, float4 texCoord )
     float2 uoffset = float2( 0.5f/512.f, 0.0f );
     float2 voffset = float2( 0.0f, 0.5f/512.f );
     float3 projTexCoord = texCoord.xyz / texCoord.w;
-    float4 flashlightDepth = float4(    tex2D( DepthSampler, projTexCoord + uoffset + voffset ).x,
-                                        tex2D( DepthSampler, projTexCoord + uoffset - voffset ).x,
-                                        tex2D( DepthSampler, projTexCoord - uoffset + voffset ).x,
-                                        tex2D( DepthSampler, projTexCoord - uoffset - voffset ).x   );
+    float4 flashlightDepth = float4(    tex2D( DepthSampler, projTexCoord.xy + uoffset + voffset ).x,
+                                        tex2D( DepthSampler, projTexCoord.xy + uoffset - voffset ).x,
+                                        tex2D( DepthSampler, projTexCoord.xy - uoffset + voffset ).x,
+                                        tex2D( DepthSampler, projTexCoord.xy - uoffset - voffset ).x   );
 
 #   if ( defined( REVERSE_DEPTH_ON_X360 ) )
     {
@@ -231,7 +231,7 @@ float DoShadowPoisson16Sample( sampler DepthSampler, sampler RandomRotationSampl
     // 2D Rotation Matrix setup
     float3 RMatTop = 0, RMatBottom = 0;
 #if defined(SHADER_MODEL_PS_2_0) || defined(SHADER_MODEL_PS_2_B) || defined(SHADER_MODEL_PS_3_0)
-    RMatTop.xy = tex2D( RandomRotationSampler, cFlashlightScreenScale.xy * (vScreenPos * 0.5 + 0.5) + vNoiseOffset) * 2.0 - 1.0;
+    RMatTop.xy = tex2D( RandomRotationSampler, cFlashlightScreenScale.xy * (vScreenPos * 0.5 + 0.5) + vNoiseOffset).xy * 2.0 - 1.0;
     RMatBottom.xy = float2(-1.0, 1.0) * RMatTop.yx; // 2x2 rotation matrix in 4-tuple
 #endif
 
@@ -645,7 +645,7 @@ float3 SpecularLight( const float3 vWorldNormal, const float3 vLightDir, const f
 
     // Optionally warp as function of scalar specular and fresnel
     if ( bDoSpecularWarp )
-        vSpecular *= tex2D( specularWarpSampler, float2(vSpecular.x, fFresnel) ); // Sample at { (L.R)^k, fresnel }
+        vSpecular *= tex2D( specularWarpSampler, float2(vSpecular.x, fFresnel) ).xyz; // Sample at { (L.R)^k, fresnel }
 
     return vSpecular;
 }
@@ -686,7 +686,7 @@ void DoSpecularFlashlight( float3 flashlightPos, float3 worldPos, float4 flashli
         }
     }
 #else
-    flashlightColor = tex2D( FlashlightSampler, vProjCoords );
+    flashlightColor = tex2D( FlashlightSampler, vProjCoords.xy ).xyz;
 #endif
 
 
@@ -766,7 +766,7 @@ float3 DoFlashlight( float3 flashlightPos, float3 worldPos, float4 flashlightSpa
         }
     }
 #else
-    flashlightColor = tex2D( FlashlightSampler, vProjCoords );
+    flashlightColor = tex2D( FlashlightSampler, vProjCoords.xy ).xyz;
 #endif
 
 #if defined(SHADER_MODEL_PS_2_0) || defined(SHADER_MODEL_PS_2_B) || defined(SHADER_MODEL_PS_3_0)

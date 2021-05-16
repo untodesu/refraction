@@ -7,5 +7,7 @@
 //	    _vs30.vcs
 //
 
+pbr_vs30.fxc
+pbr_ps30.fxc
 postproc_lensdistortion_ps30.fxc
 postproc_vs30.fxc

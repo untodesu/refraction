@@ -1,0 +1,8 @@
+PBR
+{
+    $basetexture    "tile/tilefloor012a"
+    $bumpmap        "tile/tilefloor012b_normal"
+    $envmap         "env_cubemap"
+    $surfaceprop    "tile"
+    $model          "0"
+}

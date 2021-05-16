@@ -2,7 +2,10 @@
 #include "postproc_vs30.inc"
 #include "postproc_lensdistortion_ps30.inc"
 
-BEGIN_SHADER( PostProc_LensDistortion, "Lens distortion effect" )
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
+BEGIN_SHADER( PostProc_LensDistortion, "Help for PostProc_LensDistortion" )
     BEGIN_SHADER_PARAMS
         SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_VEC2, "[-4 0.3]", "Distortion amount" )
     END_SHADER_PARAMS

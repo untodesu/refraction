@@ -50,18 +50,18 @@ $Project
 {
     $Folder "Source Files"
     {
-        $File "BaseVSShader.cpp"
+        $File "$GITROOT\src\game_shader_dx9\BaseVSShader.cpp"
     }
 
     $Folder "Header Files"
     {
-        $File "BaseVSShader.h"
-        $File "common_fxc.h"
-        $File "common_hlsl_cpp_consts.h"
-        $File "common_ps_fxc.h"
-        $File "common_vertexlitgeneric_dx9.h"
-        $File "common_vs_fxc.h"
-        $File "shader_constant_register_map.h"
+        $File "$GITROOT\src\game_shader_dx9\BaseVSShader.h"
+        $File "$GITROOT\src\game_shader_dx9\common_fxc.h"
+        $File "$GITROOT\src\game_shader_dx9\common_hlsl_cpp_consts.h"
+        $File "$GITROOT\src\game_shader_dx9\common_ps_fxc.h"
+        $File "$GITROOT\src\game_shader_dx9\common_vertexlitgeneric_dx9.h"
+        $File "$GITROOT\src\game_shader_dx9\common_vs_fxc.h"
+        $File "$GITROOT\src\game_shader_dx9\shader_constant_register_map.h"
     }
 
     $Folder "Link Libraries"
