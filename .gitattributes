@@ -1,3 +1,4 @@
 *.h text linguist-language=C++
 *.cpp text linguist-language=C++
 *.fxc text linguist-language=HLSL
+*.vsh text linguist-language=Text
