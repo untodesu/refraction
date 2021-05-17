@@ -4,7 +4,7 @@
 // STATIC: "USEENVAMBIENT"              "0..1"
 // STATIC: "EMISSIVE"                   "0..1"
 // STATIC: "SPECULAR"                   "0..1"
-// STATIC:  "PARALLAXOCCLUSION"         "0..1"
+// STATIC: "PARALLAXOCCLUSION"          "0..1"
 
 // DYNAMIC: "WRITEWATERFOGTODESTALPHA"  "0..1"
 // DYNAMIC: "PIXELFOGTYPE"              "0..1"
@@ -34,6 +34,12 @@ static const float EPSILON = 0.00001;
 float3 fresnelSchlick(float3 F0, float cosTheta)
 {
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}
+
+// Shlick's approximation of the Fresnel factor with account for roughness
+float3 fresnelSchlickRoughness(float3 F0, float cosTheta, float roughness)
+{
+    return F0 + (max(float3(1.0, 1.0, 1.0) - roughness, F0) - F0) * pow(1.0 - cosTheta, 5.0);
 }
 
 // GGX/Towbridge-Reitz normal distribution function
@@ -376,7 +382,7 @@ float4 main(PSInput i) : COLOR
     if (!FLASHLIGHT)
     {
         float3 diffuseIrradiance = ambientLookup(normal, EnvAmbientCube, textureNormal, i.lightmapTexCoord1And2, i.lightmapTexCoord3, LightmapSampler, g_DiffuseModulation);
-        float3 ambientLightingFresnelTerm = fresnelSchlick(fresnelReflectance, lightDirectionAngle); // F
+        float3 ambientLightingFresnelTerm = fresnelSchlickRoughness(fresnelReflectance, lightDirectionAngle, roughness); // F
 
         #if SPECULAR
             float3 diffuseContributionFactor = 1 - ambientLightingFresnelTerm; // kd
