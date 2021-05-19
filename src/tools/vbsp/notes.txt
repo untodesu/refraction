@@ -62,5 +62,3 @@ DONE: map with multiple disp faces referencing one map
 DONE: map with multiple disp faces on one brush
 DONE: map with multiple disp faces on one brush referencing one map
 DONE: map with funky texture split encased on one portal
-
-//------------------------------------------------------------------
