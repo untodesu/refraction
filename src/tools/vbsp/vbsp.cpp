@@ -803,7 +803,9 @@ void ProcessModels( void )
     }
 
     // Turn the skybox into a cubemap in case we don't build env_cubemap textures.
-    Cubemap_CreateDefaultCubemaps();
+    // und: buildcubemaps seem to shit itself when cubemaps are present in the .bsp
+    // so keep this commented out until guys at Valve start being dudes and do something.
+    //Cubemap_CreateDefaultCubemaps();
     EndBSPFile();
 }
 
