@@ -19,9 +19,9 @@ static CUtlVector<unsigned char> g_FacesTouched;
 
 
 static CVRadDLL g_VRadDLL;
-EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CVRadDLL, IVRadDLL, VRAD_INTERFACE_VERSION, g_VRadDLL );
-EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CVRadDLL, ILaunchableDLL, LAUNCHABLE_DLL_INTERFACE_VERSION, g_VRadDLL );
-
+CVRadDLL *g_pVRadDLL = &g_VRadDLL;
+//EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CVRadDLL, IVRadDLL, VRAD_INTERFACE_VERSION, g_VRadDLL );
+//EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CVRadDLL, ILaunchableDLL, LAUNCHABLE_DLL_INTERFACE_VERSION, g_VRadDLL );
 
 // ---------------------------------------------------------------------------- //
 // temporary static array data size tracking

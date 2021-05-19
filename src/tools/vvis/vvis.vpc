@@ -1,0 +1,103 @@
+//-----------------------------------------------------------------------------
+//  VVIS_DLL.VPC
+//
+//  Project Script
+//-----------------------------------------------------------------------------
+
+$Macro GITROOT "..\..\.."
+$Macro SRCDIR "$GITROOT"
+$Macro OUTBINDIR "$GITROOT\devtools\bin"
+$Macro OUTBINNAME "vrad"
+
+$Include "$GITROOT\vpc_scripts\source_exe_con_base.vpc"
+
+$Configuration
+{
+    $Compiler
+    {
+        $AdditionalIncludeDirectories "$BASE,$GITROOT\src\common,$GITROOT\src\vmpi,$GITROOT\src\vmpi\mysql\include"
+        $PreprocessorDefinitions "$BASE;MPI;PROTECTED_THINGS_DISABLE"
+    }
+
+    $Linker
+    {
+        $AdditionalDependencies "$BASE odbc32.lib odbccp32.lib ws2_32.lib"
+    }
+}
+
+$Project "vvis"
+{
+    $Folder "Source Files"
+    {
+        -$File "$GITROOT\src\public\tier0\memoverride.cpp"
+
+        $File "$GITROOT\src\common\MySqlDatabase.cpp"
+        $File "$GITROOT\src\common\bsplib.cpp"
+        $File "$GITROOT\src\common\cmdlib.cpp"
+        $File "$GITROOT\src\common\mpi_stats.cpp"
+        $File "$GITROOT\src\common\pacifier.cpp"
+        $File "$GITROOT\src\common\scratchpad_helpers.cpp"
+        $File "$GITROOT\src\common\scriplib.cpp"
+        $File "$GITROOT\src\common\threads.cpp"
+        $File "$GITROOT\src\common\tools_minidump.cpp"
+        $File "$GITROOT\src\common\tools_minidump.h"
+        $File "$GITROOT\src\common\vmpi_tools_shared.cpp"
+        $File "$GITROOT\src\public\collisionutils.cpp"
+        $File "$GITROOT\src\public\filesystem_helpers.cpp"
+        $File "$GITROOT\src\public\loadcmdline.cpp"
+        $File "$GITROOT\src\public\lumpfiles.cpp"
+        $File "$GITROOT\src\public\scratchpad3d.cpp"
+        $File "$GITROOT\src\public\zip_utils.cpp"
+        $File "$GITROOT\src\tools\vvis\WaterDist.cpp"
+        $File "$GITROOT\src\tools\vvis\flow.cpp"
+        $File "$GITROOT\src\tools\vvis\mpivis.cpp"
+        $File "$GITROOT\src\tools\vvis\vvis.cpp"
+    }
+
+    $Folder "Header Files"
+    {
+        $File "$GITROOT\src\common\ISQLDBReplyTarget.h"
+        $File "$GITROOT\src\common\MySqlDatabase.h"
+        $File "$GITROOT\src\common\bsplib.h"
+        $File "$GITROOT\src\common\cmdlib.h"
+        $File "$GITROOT\src\common\pacifier.h"
+        $File "$GITROOT\src\common\scriplib.h"
+        $File "$GITROOT\src\common\threads.h"
+        $File "$GITROOT\src\common\vmpi_tools_shared.h"
+        $File "$GITROOT\src\public\BSPFILE.H"
+        $File "$GITROOT\src\public\BSPTreeData.h"
+        $File "$GITROOT\src\public\GameBSPFile.h"
+        $File "$GITROOT\src\public\bspflags.h"
+        $File "$GITROOT\src\public\cmodel.h"
+        $File "$GITROOT\src\public\mathlib\amd3dx.h"
+        $File "$GITROOT\src\public\mathlib\bumpvects.h"
+        $File "$GITROOT\src\public\mathlib\mathlib.h"
+        $File "$GITROOT\src\public\mathlib\vector.h"
+        $File "$GITROOT\src\public\mathlib\vector2d.h"
+        $File "$GITROOT\src\public\tier0\basetypes.h"
+        $File "$GITROOT\src\public\tier0\commonmacros.h"
+        $File "$GITROOT\src\public\tier1\byteswap.h"
+        $File "$GITROOT\src\public\tier1\checksum_crc.h"
+        $File "$GITROOT\src\public\tier1\checksum_md5.h"
+        $File "$GITROOT\src\public\tier1\strtools.h"
+        $File "$GITROOT\src\public\tier1\utlbuffer.h"
+        $File "$GITROOT\src\public\tier1\utllinkedlist.h"
+        $File "$GITROOT\src\public\tier1\utlmemory.h"
+        $File "$GITROOT\src\public\tier1\utlrbtree.h"
+        $File "$GITROOT\src\public\tier1\utlsymbol.h"
+        $File "$GITROOT\src\public\tier1\utlvector.h"
+        $File "$GITROOT\src\public\vcollide.h"
+        $File "$GITROOT\src\public\vstdlib\vstdlib.h"
+        $File "$GITROOT\src\public\wadtypes.h"
+        $File "$GITROOT\src\vmpi\vmpi_distribute_work.h"
+        $File "$GITROOT\src\tools\vvis\mpivis.h"
+        $File "$GITROOT\src\tools\vvis\vis.h"
+    }
+
+    $Folder "Link Libraries"
+    {
+        $Lib "$GITROOT\lib\mathlib"
+        $Lib "$GITROOT\lib\tier2"
+        $Lib "$GITROOT\lib\vmpi"
+    }
+}
