@@ -3,3 +3,4 @@
 *.fxc text linguist-language=HLSL
 *.vsh text linguist-language=Text
 *.psh text linguist-language=Text
+*_english.txt binary
