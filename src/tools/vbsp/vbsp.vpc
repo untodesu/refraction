@@ -7,7 +7,7 @@
 $Macro GITROOT "..\..\.."
 $Macro SRCDIR "$GITROOT"
 $Macro OUTBINDIR "$GITROOT\devtools\bin"
-$Macro OUTBINNAME "xbsp"
+$Macro OUTBINNAME "vbsp"
 
 $Include "$GITROOT\vpc_scripts\source_exe_con_base.vpc"
 
