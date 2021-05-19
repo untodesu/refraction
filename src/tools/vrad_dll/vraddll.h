@@ -27,6 +27,4 @@ public:
     virtual void    Interrupt();
 };
 
-extern CVRadDLL *g_pVRadDLL;
-
 #endif // VRADDLL_H

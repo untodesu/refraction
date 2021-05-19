@@ -1,0 +1,41 @@
+$Macro GITROOT "..\..\.."
+$Macro SRCDIR "$GITROOT"
+$Macro OUTBINDIR "$GITROOT\tools\bin"
+$Macro OUTBINNAME "vvis"
+
+$Include "$GITROOT\vpc_scripts\source_exe_con_base.vpc"
+
+$Configuration
+{
+    $Compiler
+    {
+        $AdditionalIncludeDirectories "$BASE;$GITROOT\src\common"
+        $Create/UsePrecompiledHeader "Use Precompiled Header (/Yu)"
+        $PrecompiledHeaderFile "Debug/vvis_launcher.pch"
+    }
+}
+
+$Project "vvis_launcher"
+{
+    $Folder "Source Files"
+    {
+        $File "$GITROOT\src\tools\vvis_launcher\vvis_launcher.cpp"
+
+        $File "$GITROOT\src\tools\vvis_launcher\StdAfx.cpp"
+        {
+            $Configuration
+            {
+                $Compiler
+                {
+                    $Create/UsePrecompiledHeader "Create Precompiled Header (/Yc)"
+                }
+            }
+        }
+    }
+
+    $Folder "Header Files"
+    {
+        $File "$GITROOT\src\public\tier1\interface.h"
+        $File "$GITROOT\src\tools\vvis_launcher\StdAfx.h"
+    }
+}

@@ -47,12 +47,22 @@ $Project "vgui_controls"
     "src\vgui2\vgui_controls\vgui_controls.vpc"
 }
 
-$Project "vrad"
+$Project "vrad_dll"
 {
-    "src\tools\vrad\vrad.vpc"
+    "src\tools\vrad_dll\vrad_dll.vpc"
 }
 
-$Project "vvis"
+$Project "vrad_launcher"
 {
-    "src\tools\vvis\vvis.vpc"
+    "src\tools\vrad_launcher\vrad_launcher.vpc"
+}
+
+$Project "vvis_dll"
+{
+    "src\tools\vvis_dll\vvis_dll.vpc"
+}
+
+$Project "vvis_launcher"
+{
+    "src\tools\vvis_launcher\vvis_launcher.vpc"
 }
