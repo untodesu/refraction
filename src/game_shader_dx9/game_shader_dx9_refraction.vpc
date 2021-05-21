@@ -14,14 +14,11 @@ $Project "game_shader_dx9"
 {
     $Folder "Source Files"
     {
-        $File "$GITROOT\src\game_shader_dx9\pbr.cpp"
         $File "$GITROOT\src\game_shader_dx9\postproc_lensdistortion.cpp"
     }
 
     $Folder "Shader Source"
     {
-        $File "$GITROOT\src\game_shader_dx9\pbr_vs30.fxc"
-        $File "$GITROOT\src\game_shader_dx9\pbr_ps30.fxc"
         $File "$GITROOT\src\game_shader_dx9\postproc_vs30.fxc"
         $File "$GITROOT\src\game_shader_dx9\postproc_lensdistortion_ps30.fxc"
     }
