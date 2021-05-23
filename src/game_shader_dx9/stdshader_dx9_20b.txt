@@ -6,4 +6,5 @@
 //	    _ps20b.vcs
 //	    _vs20.vcs
 //
-
+re_lightmappedgeneric_vs20.fxc
+re_lightmappedgeneric_ps20b.fxc

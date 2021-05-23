@@ -78,14 +78,15 @@ CFlashlightEffect::CFlashlightEffect(int nEntIndex)
         r_newflashlight.SetValue( 0 );
     }
 
-    if ( g_pMaterialSystemHardwareConfig->SupportsBorderColor() )
-    {
-        m_FlashlightTexture.Init( "effects/flashlight_border", TEXTURE_GROUP_OTHER, true );
-    }
-    else
-    {
-        m_FlashlightTexture.Init( "effects/flashlight001", TEXTURE_GROUP_OTHER, true );
-    }
+    //if ( g_pMaterialSystemHardwareConfig->SupportsBorderColor() )
+    //{
+    //    m_FlashlightTexture.Init( "effects/flashlight_border", TEXTURE_GROUP_OTHER, true );
+    //}
+    //else
+    //{
+    //    m_FlashlightTexture.Init( "effects/flashlight001", TEXTURE_GROUP_OTHER, true );
+    //}
+    m_FlashlightTexture.Init( "effects/flashlight", TEXTURE_GROUP_OTHER, true );
 }
 
 

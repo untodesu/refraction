@@ -36,8 +36,8 @@ if /i "%6" == "-dx9_30" shift /6
 if /i "%6" == "-force30" goto set_force30_arg
 goto set_force_end
 :set_force30_arg
-			set IS30=1
-			goto set_force_end
+    set IS30=1
+    goto set_force_end
 :set_force_end
 
 if /i "%2" == "-game" goto set_mod_args

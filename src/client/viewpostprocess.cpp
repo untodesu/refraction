@@ -108,7 +108,7 @@ CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
 
 // TODO: add your custom postproc here.
 PP_Pass_t PP_Final[] = {
-    { PPC_IF_CVAR, "shaders/postproc_lensdistortion", &mat_postproc_lensdistortion },
+    { PPC_IF_CVAR, "shaders/lensdistortion", &mat_postproc_lensdistortion },
 };
 
 // To avoid glitchy effects on savegame screenshots.

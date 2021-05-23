@@ -14,19 +14,31 @@ $Project "game_shader_dx9"
 {
     $Folder "Source Files"
     {
-        $File "$GITROOT\src\game_shader_dx9\postproc_lensdistortion.cpp"
-    }
+        $Folder "HLSL"
+        {
+            $File "$GITROOT\src\game_shader_dx9\re_flashlight_ps30.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_flashlight_vs30.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_vs20.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_ps20b.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lensdistortion_vs30.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lensdistortion_ps30.fxc"
+        }
 
-    $Folder "Shader Source"
-    {
-        $File "$GITROOT\src\game_shader_dx9\postproc_vs30.fxc"
-        $File "$GITROOT\src\game_shader_dx9\postproc_lensdistortion_ps30.fxc"
+        $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric.cpp"
+        $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_helper.cpp"
+        $File "$GITROOT\src\game_shader_dx9\re_lensdistortion.cpp"
     }
 
     $Folder "Header Files"
     {
-
+        $Folder "HLSL"
+        {
+            $File "$GITROOT\src\game_shader_dx9\common_lightmappedgeneric_fxc.h"
+            $File "$GITROOT\src\game_shader_dx9\common_vertexlitgeneric_dx9.h"
+        }
+        
+        $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_helper.h"
     }
 
-    $File   "build_refraction_shaders.bat"
+    $File "build_refraction_shaders.bat"
 }

@@ -20,7 +20,7 @@
 #pragma once
 #endif
 
-extern ConVar   my_mat_fullbright;
+static ConVarRef commandbuilder_mat_fullbright( "mat_fullbright", false );
 
 template<int N> class CFixedCommandStorageBuffer
 {
@@ -266,7 +266,7 @@ public:
 
     FORCEINLINE void SetEnvMapTintPixelShaderDynamicState( int pixelReg, int tintVar )
     {
-        if( g_pConfig->bShowSpecular && my_mat_fullbright.GetInt() != 2 )
+        if( g_pConfig->bShowSpecular && commandbuilder_mat_fullbright.GetInt() != 2 )
         {
             SetPixelShaderConstant( pixelReg, Param( tintVar)->GetVecValue() );
         }
@@ -278,7 +278,7 @@ public:
 
     FORCEINLINE void SetEnvMapTintPixelShaderDynamicStateGammaToLinear( int pixelReg, int tintVar, float flAlphaValue = 1.0 )
     {
-        if( ( tintVar != -1 ) && g_pConfig->bShowSpecular && my_mat_fullbright.GetInt() != 2 )
+        if( ( tintVar != -1 ) && g_pConfig->bShowSpecular && commandbuilder_mat_fullbright.GetInt() != 2 )
         {
             float color[4];
             color[3] = flAlphaValue;

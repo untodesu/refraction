@@ -256,6 +256,19 @@ float CalcPixelFogFactor( int iPIXELFOGTYPE, const float4 fogParams, const float
     return retVal;
 }
 
+float CalcPixelFogFactorSupportsVertexFog( int iPIXELFOGTYPE, const float4 fogParams, const float3 vEyePos, const float3 vWorldPos, const float flProjPosZ, const float flVertexFogFactor )
+{
+    #if ( DOPIXELFOG )
+    {
+        return CalcPixelFogFactor( iPIXELFOGTYPE, fogParams, vEyePos.z, vWorldPos, flProjPosZ );
+    }
+    #else
+    {
+        return flVertexFogFactor;
+    }
+    #endif
+}
+
 //g_FogParams not defined by default, but this is the same layout for every shader that does define it
 #define g_FogEndOverRange   g_FogParams.x
 #define g_WaterZ            g_FogParams.y

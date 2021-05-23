@@ -1333,7 +1333,7 @@ void CBasePlayer::ViewPunch( const QAngle &angleOffset )
 void CBasePlayer::ViewPunchReset( float tolerance )
 {
     if(tolerance != 0) {
-        tolerance *= tolerance; // square
+        tolerance = powf( tolerance, 2.0f );
         float check = m_Local.m_vecPunchAngleVel->LengthSqr() + m_Local.m_vecPunchAngle->LengthSqr();
         if(check > tolerance)
             return;

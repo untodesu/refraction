@@ -34,9 +34,9 @@ $Configuration
 {
     $Compiler
     {
-        $AdditionalIncludeDirectories   "$BASE;include"                 [$WIN32||$POSIX]
+        $AdditionalIncludeDirectories   "$BASE;include"
         $PreprocessorDefinitions        "$BASE;STDSHADER_DX9_DLL_EXPORT;FAST_MATERIALVAR_ACCESS;GAME_SHADER_DLL"
-        $PreprocessorDefinitions        "$BASE;USE_ACTUAL_DX"           [($WIN32||$X360) && !$GL]
+        $PreprocessorDefinitions        "$BASE;USE_ACTUAL_DX"
     }
 
     $Linker
@@ -55,13 +55,18 @@ $Project
 
     $Folder "Header Files"
     {
-        $File "$GITROOT\src\game_shader_dx9\BaseVSShader.h"
-        $File "$GITROOT\src\game_shader_dx9\common_fxc.h"
+        $Folder "HLSL"
+        {
+            $File "$GITROOT\src\game_shader_dx9\common_fxc.h"
+            $File "$GITROOT\src\game_shader_dx9\common_ps_fxc.h"
+            $File "$GITROOT\src\game_shader_dx9\common_vs_fxc.h"
+        }
+
         $File "$GITROOT\src\game_shader_dx9\common_hlsl_cpp_consts.h"
-        $File "$GITROOT\src\game_shader_dx9\common_ps_fxc.h"
-        $File "$GITROOT\src\game_shader_dx9\common_vertexlitgeneric_dx9.h"
-        $File "$GITROOT\src\game_shader_dx9\common_vs_fxc.h"
+        $File "$GITROOT\src\game_shader_dx9\BaseVSShader.h"
+        $File "$GITROOT\src\game_shader_dx9\commandbuilder.h"
         $File "$GITROOT\src\game_shader_dx9\shader_constant_register_map.h"
+        $File "$GITROOT\src\game_shader_dx9\cpp_shader_constant_register_map.h"
     }
 
     $Folder "Link Libraries"
