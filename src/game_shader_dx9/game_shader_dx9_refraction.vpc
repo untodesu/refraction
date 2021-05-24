@@ -18,8 +18,8 @@ $Project "game_shader_dx9"
         {
             $File "$GITROOT\src\game_shader_dx9\re_flashlight_ps30.fxc"
             $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_flashlight_vs30.fxc"
-            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_vs20.fxc"
-            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_ps20b.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_vs30.fxc"
+            $File "$GITROOT\src\game_shader_dx9\re_lightmappedgeneric_ps30.fxc"
             $File "$GITROOT\src\game_shader_dx9\re_lensdistortion_vs30.fxc"
             $File "$GITROOT\src\game_shader_dx9\re_lensdistortion_ps30.fxc"
         }

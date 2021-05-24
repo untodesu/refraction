@@ -8,5 +8,7 @@
 //
 re_flashlight_ps30.fxc
 re_lightmappedgeneric_flashlight_vs30.fxc
+re_lightmappedgeneric_vs30.fxc
+re_lightmappedgeneric_ps30.fxc
 re_lensdistortion_vs30.fxc
 re_lensdistortion_ps30.fxc
