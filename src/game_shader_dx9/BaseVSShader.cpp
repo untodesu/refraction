@@ -282,14 +282,6 @@ void CBaseVSShader::DrawFlashlight( IMaterialVar **params, IShaderDynamicAPI *pS
             pTweaks[1] = ShadowAttenFromState( flashlightState );
             HashShadow2DJitter( flashlightState.m_flShadowJitterSeed, &pTweaks[2], &pTweaks[3] );
             pShaderAPI->SetPixelShaderConstant( PSREG_ENVMAP_TINT__SHADOW_TWEAKS, pTweaks, 1 );
-
-            // Dimensions of screen, used for screen-space noise map sampling
-            float vScreenScale[4] = { 1280.0f / 32.0f, 720.0f / 32.0f, 0, 0 };
-            int nWidth, nHeight;
-            pShaderAPI->GetBackBufferDimensions( nWidth, nHeight );
-            vScreenScale[0] = (float)nWidth / 32.0f;
-            vScreenScale[1] = (float)nHeight / 32.0f;
-            pShaderAPI->SetPixelShaderConstant( PSREG_FLASHLIGHT_SCREEN_SCALE, vScreenScale, 1 );
         }
 
         if( params[BASETEXTURE]->IsTexture() && mat_fullbright.GetInt() != 2 ) {
