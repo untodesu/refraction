@@ -1221,7 +1221,7 @@ void C_BasePlayer::UpdateFlashlight()
         EyeVectors( &vecForward, &vecRight, &vecUp );
 
         // Update the light with the new position and direction.
-        m_pFlashlight->UpdateLight( EyePosition(), vecForward, vecRight, vecUp, FLASHLIGHT_DISTANCE );
+        m_pFlashlight->UpdateLight( EyePosition(), vecForward, vecRight, vecUp );
     }
     else if (m_pFlashlight)
     {

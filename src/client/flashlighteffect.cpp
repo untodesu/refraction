@@ -30,9 +30,6 @@ extern ConVar r_flashlightdepthres;
 
 extern ConVar r_flashlightdepthtexture;
 
-void r_newflashlightCallback_f( IConVar *pConVar, const char *pOldString, float flOldValue );
-
-static ConVar r_newflashlight( "r_newflashlight", "1", FCVAR_CHEAT, "", r_newflashlightCallback_f );
 static ConVar r_swingflashlight( "r_swingflashlight", "1", FCVAR_CHEAT );
 static ConVar r_flashlightlockposition( "r_flashlightlockposition", "0", FCVAR_CHEAT );
 static ConVar r_flashlightfov( "r_flashlightfov", "45.0", FCVAR_CHEAT );
@@ -49,16 +46,7 @@ static ConVar r_flashlightambient( "r_flashlightambient", "0.0", FCVAR_CHEAT );
 static ConVar r_flashlightshadowatten( "r_flashlightshadowatten", "0.35", FCVAR_CHEAT );
 static ConVar r_flashlightladderdist( "r_flashlightladderdist", "40.0", FCVAR_CHEAT );
 static ConVar mat_slopescaledepthbias_shadowmap( "mat_slopescaledepthbias_shadowmap", "16", FCVAR_CHEAT );
-static ConVar mat_depthbias_shadowmap(  "mat_depthbias_shadowmap", "0.0005", FCVAR_CHEAT  );
-
-
-void r_newflashlightCallback_f( IConVar *pConVar, const char *pOldString, float flOldValue )
-{
-    if( engine->GetDXSupportLevel() < 70 )
-    {
-        r_newflashlight.SetValue( 0 );
-    }
-}
+static ConVar mat_depthbias_shadowmap( "mat_depthbias_shadowmap", "0.0005", FCVAR_CHEAT );
 
 //-----------------------------------------------------------------------------
 // Purpose:
@@ -66,17 +54,12 @@ void r_newflashlightCallback_f( IConVar *pConVar, const char *pOldString, float 
 //          vecPos - The position of the light emitter.
 //          vecDir - The direction of the light emission.
 //-----------------------------------------------------------------------------
-CFlashlightEffect::CFlashlightEffect(int nEntIndex)
+CFlashlightEffect::CFlashlightEffect( int nEntIndex )
 {
-    m_FlashlightHandle = CLIENTSHADOW_INVALID_HANDLE;
+    m_hFlashlightHandle = CLIENTSHADOW_INVALID_HANDLE;
     m_nEntIndex = nEntIndex;
 
     m_bIsOn = false;
-    m_pPointLight = NULL;
-    if( engine->GetDXSupportLevel() < 70 )
-    {
-        r_newflashlight.SetValue( 0 );
-    }
 
     //if ( g_pMaterialSystemHardwareConfig->SupportsBorderColor() )
     //{
@@ -86,6 +69,7 @@ CFlashlightEffect::CFlashlightEffect(int nEntIndex)
     //{
     //    m_FlashlightTexture.Init( "effects/flashlight001", TEXTURE_GROUP_OTHER, true );
     //}
+
     m_FlashlightTexture.Init( "effects/flashlight", TEXTURE_GROUP_OTHER, true );
 }
 
@@ -114,8 +98,7 @@ void CFlashlightEffect::TurnOn()
 //-----------------------------------------------------------------------------
 void CFlashlightEffect::TurnOff()
 {
-    if (m_bIsOn)
-    {
+    if( m_bIsOn ) {
         m_bIsOn = false;
         LightOff();
     }
@@ -124,22 +107,17 @@ void CFlashlightEffect::TurnOff()
 // Custom trace filter that skips the player and the view model.
 // If we don't do this, we'll end up having the light right in front of us all
 // the time.
-class CTraceFilterSkipPlayerAndViewModel : public CTraceFilter
-{
+class CTraceFilterSkipPlayerAndViewModel : public CTraceFilter {
 public:
     virtual bool ShouldHitEntity( IHandleEntity *pServerEntity, int contentsMask )
     {
         // Test against the vehicle too?
         // FLASHLIGHTFIXME: how do you know that you are actually inside of the vehicle?
         C_BaseEntity *pEntity = EntityFromEntityHandle( pServerEntity );
-        if ( !pEntity )
+        if( !pEntity )
             return true;
 
-        if ( ( dynamic_cast<C_BaseViewModel *>( pEntity ) != NULL ) ||
-             ( dynamic_cast<C_BasePlayer *>( pEntity ) != NULL ) ||
-             pEntity->GetCollisionGroup() == COLLISION_GROUP_DEBRIS ||
-             pEntity->GetCollisionGroup() == COLLISION_GROUP_INTERACTIVE_DEBRIS )
-        {
+        if( ( dynamic_cast<C_BaseViewModel *>( pEntity ) != NULL ) || ( dynamic_cast<C_BasePlayer *>( pEntity ) != NULL ) || pEntity->GetCollisionGroup() == COLLISION_GROUP_DEBRIS || pEntity->GetCollisionGroup() == COLLISION_GROUP_INTERACTIVE_DEBRIS ) {
             return false;
         }
 
@@ -150,9 +128,12 @@ public:
 //-----------------------------------------------------------------------------
 // Purpose: Do the headlight
 //-----------------------------------------------------------------------------
-void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecForward, const Vector &vecRight, const Vector &vecUp )
+void CFlashlightEffect::UpdateLight( const Vector &vecPos, const Vector &vecForward, const Vector &vecRight, const Vector &vecUp )
 {
-    VPROF_BUDGET( "CFlashlightEffect::UpdateLightNew", VPROF_BUDGETGROUP_SHADOW_DEPTH_TEXTURING );
+    VPROF_BUDGET( "CFlashlightEffect::UpdateLight", VPROF_BUDGETGROUP_SHADOW_DEPTH_TEXTURING );
+
+    if( !m_bIsOn )
+        return;
 
     FlashlightState_t state;
 
@@ -166,27 +147,23 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
     CTraceFilterSkipPlayerAndViewModel traceFilter;
     float flOffsetY = r_flashlightoffsety.GetFloat();
 
-    if( r_swingflashlight.GetBool() )
-    {
+    if( r_swingflashlight.GetBool() ) {
         // This projects the view direction backwards, attempting to raise the vertical
         // offset of the flashlight, but only when the player is looking down.
         Vector vecSwingLight = vecPos + vecForward * -12.0f;
-        if( vecSwingLight.z > vecPos.z )
-        {
-            flOffsetY += (vecSwingLight.z - vecPos.z);
+        if( vecSwingLight.z > vecPos.z ) {
+            flOffsetY += ( vecSwingLight.z - vecPos.z );
         }
     }
 
     Vector vOrigin = vecPos + flOffsetY * vecUp;
 
     // Not on ladder...trace a hull
-    if ( !bPlayerOnLadder )
-    {
+    if( !bPlayerOnLadder ) {
         trace_t pmOriginTrace;
-        UTIL_TraceHull( vecPos, vOrigin, Vector(-4, -4, -4), Vector(4, 4, 4), MASK_SOLID & ~(CONTENTS_HITBOX), &traceFilter, &pmOriginTrace );
+        UTIL_TraceHull( vecPos, vOrigin, Vector( -4, -4, -4 ), Vector( 4, 4, 4 ), MASK_SOLID & ~( CONTENTS_HITBOX ), &traceFilter, &pmOriginTrace );
 
-        if ( pmOriginTrace.DidHit() )
-        {
+        if( pmOriginTrace.DidHit() ) {
             vOrigin = vecPos;
         }
     }
@@ -203,12 +180,12 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
     Vector vTarget = vecPos + vecForward * r_flashlightfar.GetFloat();
 
     // Work with these local copies of the basis for the rest of the function
-    Vector vDir   = vTarget - vOrigin;
+    Vector vDir = vTarget - vOrigin;
     Vector vRight = vecRight;
-    Vector vUp    = vecUp;
-    VectorNormalize( vDir   );
+    Vector vUp = vecUp;
+    VectorNormalize( vDir );
     VectorNormalize( vRight );
-    VectorNormalize( vUp    );
+    VectorNormalize( vUp );
 
     // Orthonormalize the basis, since the flashlight texture projection will require this later...
     vUp -= DotProduct( vDir, vUp ) * vDir;
@@ -219,43 +196,39 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
     VectorNormalize( vRight );
 
     AssertFloatEquals( DotProduct( vDir, vRight ), 0.0f, 1e-3 );
-    AssertFloatEquals( DotProduct( vDir, vUp    ), 0.0f, 1e-3 );
-    AssertFloatEquals( DotProduct( vRight, vUp  ), 0.0f, 1e-3 );
+    AssertFloatEquals( DotProduct( vDir, vUp ), 0.0f, 1e-3 );
+    AssertFloatEquals( DotProduct( vRight, vUp ), 0.0f, 1e-3 );
 
     trace_t pmDirectionTrace;
     UTIL_TraceHull( vOrigin, vTarget, Vector( -4, -4, -4 ), Vector( 4, 4, 4 ), iMask, &traceFilter, &pmDirectionTrace );
 
-    if ( r_flashlightvisualizetrace.GetBool() == true )
-    {
+    if( r_flashlightvisualizetrace.GetBool() == true ) {
         debugoverlay->AddBoxOverlay( pmDirectionTrace.endpos, Vector( -4, -4, -4 ), Vector( 4, 4, 4 ), QAngle( 0, 0, 0 ), 0, 0, 255, 16, 0 );
         debugoverlay->AddLineOverlay( vOrigin, pmDirectionTrace.endpos, 255, 0, 0, false, 0 );
     }
 
-    float flDist = (pmDirectionTrace.endpos - vOrigin).Length();
-    if ( flDist < flDistCutoff )
-    {
+    float flDist = ( pmDirectionTrace.endpos - vOrigin ).Length();
+    if( flDist < flDistCutoff ) {
         // We have an intersection with our cutoff range
         // Determine how far to pull back, then trace to see if we are clear
         float flPullBackDist = bPlayerOnLadder ? r_flashlightladderdist.GetFloat() : flDistCutoff - flDist; // Fixed pull-back distance if on ladder
         m_flDistMod = Lerp( flDistDrag, m_flDistMod, flPullBackDist );
 
-        if ( !bPlayerOnLadder )
-        {
+        if( !bPlayerOnLadder ) {
             trace_t pmBackTrace;
-            UTIL_TraceHull( vOrigin, vOrigin - vDir*(flPullBackDist-flEpsilon), Vector( -4, -4, -4 ), Vector( 4, 4, 4 ), iMask, &traceFilter, &pmBackTrace );
-            if( pmBackTrace.DidHit() )
-            {
+            UTIL_TraceHull( vOrigin, vOrigin - vDir*( flPullBackDist - flEpsilon ), Vector( -4, -4, -4 ), Vector( 4, 4, 4 ), iMask, &traceFilter, &pmBackTrace );
+            if( pmBackTrace.DidHit() ) {
                 // We have an intersection behind us as well, so limit our m_flDistMod
-                float flMaxDist = (pmBackTrace.endpos - vOrigin).Length() - flEpsilon;
+                float flMaxDist = ( pmBackTrace.endpos - vOrigin ).Length() - flEpsilon;
                 if( m_flDistMod > flMaxDist )
                     m_flDistMod = flMaxDist;
             }
         }
     }
-    else
-    {
+    else {
         m_flDistMod = Lerp( flDistDrag, m_flDistMod, 0.0f );
     }
+
     vOrigin = vOrigin - vDir * m_flDistMod;
 
     state.m_vecLightOrigin = vOrigin;
@@ -268,54 +241,45 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
 
 #ifdef HL2_EPISODIC
     C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
-    if ( pPlayer )
-    {
+    if( pPlayer ) {
         float flBatteryPower = ( pPlayer->m_HL2Local.m_flFlashBattery >= 0.0f ) ? ( pPlayer->m_HL2Local.m_flFlashBattery ) : pPlayer->m_HL2Local.m_flSuitPower;
-        if ( flBatteryPower <= 10.0f )
-        {
+        if( flBatteryPower <= 10.0f ) {
             float flScale;
-            if ( flBatteryPower >= 0.0f )
-            {
+            if( flBatteryPower >= 0.0f ) {
                 flScale = ( flBatteryPower <= 4.5f ) ? SimpleSplineRemapVal( flBatteryPower, 4.5f, 0.0f, 1.0f, 0.0f ) : 1.0f;
             }
-            else
-            {
+            else {
                 flScale = SimpleSplineRemapVal( flBatteryPower, 10.0f, 4.8f, 1.0f, 0.0f );
             }
 
             flScale = clamp( flScale, 0.0f, 1.0f );
 
-            if ( flScale < 0.35f )
-            {
+            if( flScale < 0.35f ) {
                 float flFlicker = cosf( gpGlobals->curtime * 6.0f ) * sinf( gpGlobals->curtime * 15.0f );
 
-                if ( flFlicker > 0.25f && flFlicker < 0.75f )
-                {
+                if( flFlicker > 0.25f && flFlicker < 0.75f ) {
                     // On
                     state.m_fLinearAtten = r_flashlightlinear.GetFloat() * flScale;
                 }
-                else
-                {
+                else {
                     // Off
                     state.m_fLinearAtten = 0.0f;
                 }
             }
-            else
-            {
+            else {
                 float flNoise = cosf( gpGlobals->curtime * 7.0f ) * sinf( gpGlobals->curtime * 25.0f );
                 state.m_fLinearAtten = r_flashlightlinear.GetFloat() * flScale + 1.5f * flNoise;
             }
 
-            state.m_fHorizontalFOVDegrees = r_flashlightfov.GetFloat() - ( 16.0f * (1.0f-flScale) );
-            state.m_fVerticalFOVDegrees = r_flashlightfov.GetFloat() - ( 16.0f * (1.0f-flScale) );
+            state.m_fHorizontalFOVDegrees = r_flashlightfov.GetFloat() - ( 16.0f * ( 1.0f - flScale ) );
+            state.m_fVerticalFOVDegrees = r_flashlightfov.GetFloat() - ( 16.0f * ( 1.0f - flScale ) );
 
             bFlicker = true;
         }
     }
 #endif // HL2_EPISODIC
 
-    if ( bFlicker == false )
-    {
+    if( bFlicker == false ) {
         state.m_fLinearAtten = r_flashlightlinear.GetFloat();
         state.m_fHorizontalFOVDegrees = r_flashlightfov.GetFloat();
         state.m_fVerticalFOVDegrees = r_flashlightfov.GetFloat();
@@ -338,30 +302,23 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
     state.m_flShadowSlopeScaleDepthBias = mat_slopescaledepthbias_shadowmap.GetFloat();
     state.m_flShadowDepthBias = mat_depthbias_shadowmap.GetFloat();
 
-    if( m_FlashlightHandle == CLIENTSHADOW_INVALID_HANDLE )
-    {
-        m_FlashlightHandle = g_pClientShadowMgr->CreateFlashlight( state );
+    if( m_hFlashlightHandle == CLIENTSHADOW_INVALID_HANDLE ) {
+        m_hFlashlightHandle = g_pClientShadowMgr->CreateFlashlight( state );
     }
-    else
-    {
-        if( !r_flashlightlockposition.GetBool() )
-        {
-            g_pClientShadowMgr->UpdateFlashlightState( m_FlashlightHandle, state );
+    else {
+        if( !r_flashlightlockposition.GetBool() ) {
+            g_pClientShadowMgr->UpdateFlashlightState( m_hFlashlightHandle, state );
         }
     }
 
-    g_pClientShadowMgr->UpdateProjectedTexture( m_FlashlightHandle, true );
-
-    // Kill the old flashlight method if we have one.
-    LightOffOld();
+    g_pClientShadowMgr->UpdateProjectedTexture( m_hFlashlightHandle, true );
 
 #ifndef NO_TOOLFRAMEWORK
-    if ( clienttools->IsInRecordingMode() )
-    {
+    if( clienttools->IsInRecordingMode() ) {
         KeyValues *msg = new KeyValues( "FlashlightState" );
         msg->SetFloat( "time", gpGlobals->curtime );
         msg->SetInt( "entindex", m_nEntIndex );
-        msg->SetInt( "flashlightHandle", m_FlashlightHandle );
+        msg->SetInt( "flashlightHandle", m_hFlashlightHandle );
         msg->SetPtr( "flashlightState", &state );
         ToolFramework_PostToolMessage( HTOOLHANDLE_INVALID, msg );
         msg->deleteThis();
@@ -370,85 +327,16 @@ void CFlashlightEffect::UpdateLightNew(const Vector &vecPos, const Vector &vecFo
 }
 
 //-----------------------------------------------------------------------------
-// Purpose: Do the headlight
-//-----------------------------------------------------------------------------
-void CFlashlightEffect::UpdateLightOld(const Vector &vecPos, const Vector &vecDir, int nDistance)
-{
-    if ( !m_pPointLight || ( m_pPointLight->key != m_nEntIndex ))
-    {
-        // Set up the environment light
-        m_pPointLight = effects->CL_AllocDlight(m_nEntIndex);
-        m_pPointLight->flags = 0.0f;
-        m_pPointLight->radius = 80;
-    }
-
-    // For bumped lighting
-    VectorCopy(vecDir, m_pPointLight->m_Direction);
-
-    Vector end;
-    end = vecPos + nDistance * vecDir;
-
-    // Trace a line outward, skipping the player model and the view model.
-    trace_t pm;
-    CTraceFilterSkipPlayerAndViewModel traceFilter;
-    UTIL_TraceLine( vecPos, end, MASK_ALL, &traceFilter, &pm );
-    VectorCopy( pm.endpos, m_pPointLight->origin );
-
-    float falloff = pm.fraction * nDistance;
-
-    if ( falloff < 500 )
-        falloff = 1.0;
-    else
-        falloff = 500.0 / falloff;
-
-    falloff *= falloff;
-
-    m_pPointLight->radius = 80;
-    m_pPointLight->color.r = m_pPointLight->color.g = m_pPointLight->color.b = 255 * falloff;
-    m_pPointLight->color.exponent = 0;
-
-    // Make it live for a bit
-    m_pPointLight->die = gpGlobals->curtime + 0.2f;
-
-    // Update list of surfaces we influence
-    render->TouchLight( m_pPointLight );
-
-    // kill the new flashlight if we have one
-    LightOffNew();
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Do the headlight
-//-----------------------------------------------------------------------------
-void CFlashlightEffect::UpdateLight(const Vector &vecPos, const Vector &vecDir, const Vector &vecRight, const Vector &vecUp, int nDistance)
-{
-    if ( !m_bIsOn )
-    {
-        return;
-    }
-    if( r_newflashlight.GetBool() )
-    {
-        UpdateLightNew( vecPos, vecDir, vecRight, vecUp );
-    }
-    else
-    {
-        UpdateLightOld( vecPos, vecDir, nDistance );
-    }
-}
-
-
-//-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-void CFlashlightEffect::LightOffNew()
+void CFlashlightEffect::LightOff()
 {
 #ifndef NO_TOOLFRAMEWORK
-    if ( clienttools->IsInRecordingMode() )
-    {
+    if( clienttools->IsInRecordingMode() ) {
         KeyValues *msg = new KeyValues( "FlashlightState" );
         msg->SetFloat( "time", gpGlobals->curtime );
         msg->SetInt( "entindex", m_nEntIndex );
-        msg->SetInt( "flashlightHandle", m_FlashlightHandle );
+        msg->SetInt( "flashlightHandle", m_hFlashlightHandle );
         msg->SetPtr( "flashlightState", NULL );
         ToolFramework_PostToolMessage( HTOOLHANDLE_INVALID, msg );
         msg->deleteThis();
@@ -456,32 +344,10 @@ void CFlashlightEffect::LightOffNew()
 #endif
 
     // Clear out the light
-    if( m_FlashlightHandle != CLIENTSHADOW_INVALID_HANDLE )
-    {
-        g_pClientShadowMgr->DestroyFlashlight( m_FlashlightHandle );
-        m_FlashlightHandle = CLIENTSHADOW_INVALID_HANDLE;
+    if( m_hFlashlightHandle != CLIENTSHADOW_INVALID_HANDLE ) {
+        g_pClientShadowMgr->DestroyFlashlight( m_hFlashlightHandle );
+        m_hFlashlightHandle = CLIENTSHADOW_INVALID_HANDLE;
     }
-}
-
-//-----------------------------------------------------------------------------
-// Purpose:
-//-----------------------------------------------------------------------------
-void CFlashlightEffect::LightOffOld()
-{
-    if ( m_pPointLight && ( m_pPointLight->key == m_nEntIndex ) )
-    {
-        m_pPointLight->die = gpGlobals->curtime;
-        m_pPointLight = NULL;
-    }
-}
-
-//-----------------------------------------------------------------------------
-// Purpose:
-//-----------------------------------------------------------------------------
-void CFlashlightEffect::LightOff()
-{
-    LightOffOld();
-    LightOffNew();
 }
 
 CHeadlightEffect::CHeadlightEffect()
@@ -496,17 +362,17 @@ CHeadlightEffect::~CHeadlightEffect()
 
 void CHeadlightEffect::UpdateLight( const Vector &vecPos, const Vector &vecDir, const Vector &vecRight, const Vector &vecUp, int nDistance )
 {
-    if ( IsOn() == false )
-         return;
+    if( IsOn() == false )
+        return;
 
     FlashlightState_t state;
     Vector basisX, basisY, basisZ;
     basisX = vecDir;
     basisY = vecRight;
     basisZ = vecUp;
-    VectorNormalize(basisX);
-    VectorNormalize(basisY);
-    VectorNormalize(basisZ);
+    VectorNormalize( basisX );
+    VectorNormalize( basisY );
+    VectorNormalize( basisZ );
 
     BasisToQuaternion( basisX, basisY, basisZ, state.m_quatOrientation );
 
@@ -527,12 +393,10 @@ void CHeadlightEffect::UpdateLight( const Vector &vecPos, const Vector &vecDir, 
     state.m_pSpotlightTexture = m_FlashlightTexture;
     state.m_nSpotlightTextureFrame = 0;
 
-    if( GetFlashlightHandle() == CLIENTSHADOW_INVALID_HANDLE )
-    {
+    if( GetFlashlightHandle() == CLIENTSHADOW_INVALID_HANDLE ) {
         SetFlashlightHandle( g_pClientShadowMgr->CreateFlashlight( state ) );
     }
-    else
-    {
+    else {
         g_pClientShadowMgr->UpdateFlashlightState( GetFlashlightHandle(), state );
     }
 
