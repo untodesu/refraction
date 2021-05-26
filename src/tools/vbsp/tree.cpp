@@ -7,7 +7,10 @@
 //=============================================================================//
 #include "vbsp.h"
 
-extern  int c_nodes;
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
+extern int c_nodes;
 
 void RemovePortalFromNode (portal_t *portal, node_t *l);
 

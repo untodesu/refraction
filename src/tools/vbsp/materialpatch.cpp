@@ -14,6 +14,9 @@
 #include "materialpatch.h"
 #include "tier1/strtools.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 // case insensitive
 static CUtlSymbolTable s_SymbolTable( 0, 32, true );
 

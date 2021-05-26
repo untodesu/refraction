@@ -14,6 +14,10 @@
 #include "mstristrip.h"
 #include "tier1/strtools.h"
 #include "materialpatch.h"
+
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 /*
 
   some faces will be removed before saving, but still form nodes:

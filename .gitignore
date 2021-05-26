@@ -63,3 +63,8 @@ config.cfg
 # shader files
 *.tmp
 
+# VMF garbage
+etc/vmf/*.bsp
+etc/vmf/*.log
+etc/vmf/*.vmx
+etc/vmf/*.prt

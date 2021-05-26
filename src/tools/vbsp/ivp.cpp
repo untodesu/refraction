@@ -24,6 +24,9 @@
 #include "materialpatch.h"
 #include "bitvec.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 // bit per leaf
 typedef CBitVec<MAX_MAP_LEAFS> leafbitarray_t;
 

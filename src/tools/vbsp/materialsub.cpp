@@ -11,6 +11,9 @@
 #include "KeyValues.h"
 #include "tier1/strtools.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 bool g_ReplaceMaterials = false;
 
 static KeyValues *kv            = 0;

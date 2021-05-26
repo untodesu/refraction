@@ -15,6 +15,9 @@
 #include "tier1/utlbuffer.h"
 #include "materialpatch.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 struct disp_grid_t
 {
     int             gridIndex;

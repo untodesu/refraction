@@ -17,6 +17,9 @@
 #include "builddisp.h"
 #include "mathlib/vector.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 // map displacement info -- runs parallel to the dispinfos struct
 int              nummapdispinfo = 0;
 mapdispinfo_t    mapdispinfo[MAX_MAP_DISPINFO];

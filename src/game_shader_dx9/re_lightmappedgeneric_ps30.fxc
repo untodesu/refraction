@@ -16,6 +16,7 @@
 // STATIC: "NORMALMASK_DECODE_MODE"     "0..0"
 // STATIC: "NORMAL_DECODE_MODE"         "0..0"
 // STATIC: "OUTLINE"                    "0..1"
+// STATIC: "PARALLAXCORRECT"            "0..1"
 // STATIC: "SEAMLESS"                   "0..1"
 // STATIC: "SELFILLUM"                  "0..1"
 // STATIC: "SOFTEDGES"                  "0..1"
@@ -61,6 +62,7 @@
 // SKIP: $MASKEDBLENDING && ($OUTLINE || $SOFTEDGES)
 // SKIP: $NORMALMAPALPHAENVMAPMASK && $BASEALPHAENVMAPMASK
 // SKIP: $NORMALMAPALPHAENVMAPMASK && $ENVMAPMASK
+// SKIP: $PARALLAXCORRECT && !$CUBEMAP
 // SKIP: $PARALLAXMAP && $DETAILTEXTURE
 // SKIP: $SEAMLESS && $DETAILTEXTURE
 // SKIP: $SEAMLESS && $MASKEDBLENDING
@@ -142,6 +144,10 @@ const float3 g_FlashlightPos				: register( c14 );
 const float4x4 g_FlashlightWorldToTexture	: register( c15 ); // through c18
 const float4 g_ShadowTweaks					: register( c19 );
 
+#if PARALLAXCORRECT
+    const float3 g_CubemapPos   : register( c21 );
+    const float4x4 g_ObbMatrix  : register( c22 ); // through c25
+#endif
 
 sampler BaseTextureSampler		: register( s0 );
 sampler LightmapSampler			: register( s1 );
@@ -574,9 +580,24 @@ float4 main( PS_INPUT i ) : COLOR
 		fresnel = pow( fresnel, 5.0 );
 		fresnel = fresnel * g_OneMinusFresnelReflection + g_FresnelReflection;
 
+        #if PARALLAXCORRECT
+            float3 worldPos = i.worldPos_projPosZ.xyz;
+            float3 positionLS = mul( float4( worldPos, 1 ), g_ObbMatrix );
+            float3 rayLS = mul( reflectVect, (float3x3)g_ObbMatrix );
+
+            float3 firstPlaneIntersect = ( float3( 1.0f, 1.0f, 1.0f ) - positionLS ) / rayLS;
+            float3 secondPlaneIntersect = ( -positionLS ) / rayLS;
+            float3 furthestPlane = max( firstPlaneIntersect, secondPlaneIntersect );
+            float distance = min( furthestPlane.x, min( furthestPlane.y, furthestPlane.z ) );
+
+            // Use distance in WS directly to recover intersection
+            float3 intersectPositionWS = worldPos + reflectVect * distance;
+            reflectVect = intersectPositionWS - g_CubemapPos;
+        #endif
+
 		specularLighting = ENV_MAP_SCALE * texCUBE( EnvmapSampler, reflectVect ).rgb;
 		specularLighting *= specularFactor;
-								   
+
 		specularLighting *= g_EnvmapTint.rgb;
 #if FANCY_BLENDING == 0
 		float3 specularLightingSquared = specularLighting * specularLighting;

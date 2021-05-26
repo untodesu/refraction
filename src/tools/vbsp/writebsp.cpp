@@ -16,8 +16,11 @@
 #include "utldict.h"
 #include "map.h"
 
-int     c_nofaces;
-int     c_facenodes;
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
+int c_nofaces;
+int c_facenodes;
 
 // NOTE: This is a global used to link faces back to the tree node/portals they came from
 // it's used when filling water volumes

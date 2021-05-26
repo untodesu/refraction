@@ -8,6 +8,9 @@
 
 #include "vbsp.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 Vector draw_mins, draw_maxs;
 
 void Draw_ClearWindow (void)

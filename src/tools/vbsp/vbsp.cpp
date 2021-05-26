@@ -20,6 +20,9 @@
 #include "byteswap.h"
 #include "worldvertextransitionfixup.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 extern float g_maxLightmapDimension;
 
 char source[1024];

@@ -13,6 +13,9 @@
 #include "csg.h"
 #include "fmtstr.h"
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 int     c_active_portals;
 int     c_peak_portals;
 int     c_boundary;

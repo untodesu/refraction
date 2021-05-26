@@ -10,6 +10,9 @@
 #include "utlvector.h"
 #include <assert.h>
 
+// memdbgon must be the last include file in a .cpp file!!!
+#include "tier0/memdbgon.h"
+
 face_t *NewFaceFromFace (face_t *f);
 face_t *ComputeVisibleBrushSides( bspbrush_t *list );
 
