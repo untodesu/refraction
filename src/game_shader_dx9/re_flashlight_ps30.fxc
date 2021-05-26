@@ -32,16 +32,15 @@ sampler BumpMapSampler      : register(s3);
 sampler BaseTextureSampler2 : register(s4);
 
 #ifdef WORLDVERTEXTRANSITION
-sampler NormalMap2Sampler : register(s6);
+    sampler NormalMap2Sampler : register(s6);
 #endif
 
 #if DETAILTEXTURE
-sampler DetailSampler : register(s8);
+    sampler DetailSampler : register(s8);
 #endif
 
 #if FLASHLIGHTSHADOWS
-sampler RandomRotationSampler   : register(s5); // Random rotation sampler
-sampler FlashlightDepthSampler  : register(s7);
+    sampler FlashlightDepthSampler  : register(s7);
 #endif
 
 struct PS_INPUT
@@ -147,7 +146,7 @@ float4 main(PS_INPUT i) : COLOR
     float flAtten = saturate(endFalloffFactor * dot(g_FlashlightAttenuation.xyz, float3(1.0, 1.0 / dist, 1.0 / distSquared)));
 
     #if FLASHLIGHTSHADOWS
-        float flShadow = DoFlashlightShadow(FlashlightDepthSampler, RandomRotationSampler, vProjCoords, i.projPos.xy / i.projPos.z, FLASHLIGHTDEPTHFILTERMODE, g_vShadowTweaks, false);
+        float flShadow = DoShadowNvidiaPCF5x5Gaussian(FlashlightDepthSampler, vProjCoords, g_vShadowTweaks.xy);
         float flAttenuated = lerp(flShadow, 1.0, g_vShadowTweaks.y);    // Blend between fully attenuated and not attenuated
         flShadow = saturate(lerp(flAttenuated, flShadow, flAtten));     // Blend between shadow and above, according to light attenuation
         spotColor *= flShadow;

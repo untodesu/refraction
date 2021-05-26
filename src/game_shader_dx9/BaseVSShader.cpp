@@ -178,9 +178,6 @@ void CBaseVSShader::DrawFlashlight( IMaterialVar **params, IShaderDynamicAPI *pS
         // Normalizing cubemap sampler2 or normal map sampler
         pShaderShadow->EnableTexture( SHADER_SAMPLER3, true );
 
-        // RandomRotation sampler
-        pShaderShadow->EnableTexture( SHADER_SAMPLER5, true );
-
         // Flashlight depth sampler
         pShaderShadow->EnableTexture( SHADER_SAMPLER7, true );
         pShaderShadow->SetShadowDepthFiltering( SHADER_SAMPLER7 );
@@ -277,14 +274,14 @@ void CBaseVSShader::DrawFlashlight( IMaterialVar **params, IShaderDynamicAPI *pS
 
         if( pFlashlightDepthTexture && g_pConfig->ShadowDepthTexture() && flashlightState.m_bEnableShadows ) {
             BindTexture( SHADER_SAMPLER7, pFlashlightDepthTexture, 0 );
-            pShaderAPI->BindStandardTexture( SHADER_SAMPLER5, TEXTURE_SHADOW_NOISE_2D );
 
-            // Tweaks associated with a given flashlight
-            float tweaks[4];
-            tweaks[0] = ShadowFilterFromState( flashlightState );
-            tweaks[1] = ShadowAttenFromState( flashlightState );
-            HashShadow2DJitter( flashlightState.m_flShadowJitterSeed, &tweaks[2], &tweaks[3] );
-            pShaderAPI->SetPixelShaderConstant( PSREG_ENVMAP_TINT__SHADOW_TWEAKS, tweaks, 1 );
+            // Tweaks associated with a given shadow map.
+            // DoShadowNvidiaPCF5x5Gaussian requires only one value + flAttenuated.
+            float pTweaks[4] = { 0 };
+            pTweaks[0] = flashlightState.m_flShadowFilterSize / flashlightState.m_flShadowMapResolution;
+            pTweaks[1] = ShadowAttenFromState( flashlightState );
+            HashShadow2DJitter( flashlightState.m_flShadowJitterSeed, &pTweaks[2], &pTweaks[3] );
+            pShaderAPI->SetPixelShaderConstant( PSREG_ENVMAP_TINT__SHADOW_TWEAKS, pTweaks, 1 );
 
             // Dimensions of screen, used for screen-space noise map sampling
             float vScreenScale[4] = { 1280.0f / 32.0f, 720.0f / 32.0f, 0, 0 };
