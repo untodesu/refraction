@@ -14,7 +14,7 @@
 #define MOD_NAME            "Refraction"
 #define MOD_VERSION_MAJOR   0
 #define MOD_VERSION_MINOR   2
-#define MOD_VERSION_PATCH   5
+#define MOD_VERSION_PATCH   6
 
 #define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 
@@ -32,23 +32,14 @@ class CViewVectors
 public:
     CViewVectors() {}
 
-    CViewVectors(
-        Vector vView,
-        Vector vHullMin,
-        Vector vHullMax,
-        Vector vDuckHullMin,
-        Vector vDuckHullMax,
-        Vector vDuckView,
-        Vector vObsHullMin,
-        Vector vObsHullMax,
-        Vector vDeadViewHeight )
+    CViewVectors( Vector vView, Vector vHullMin, Vector vHullMax, Vector vDuckView, Vector vDuckHullMin, Vector vDuckHullMax, Vector vObsHullMin, Vector vObsHullMax, Vector vDeadViewHeight )
     {
         m_vView = vView;
         m_vHullMin = vHullMin;
         m_vHullMax = vHullMax;
+        m_vDuckView = vDuckView;
         m_vDuckHullMin = vDuckHullMin;
         m_vDuckHullMax = vDuckHullMax;
-        m_vDuckView = vDuckView;
         m_vObsHullMin = vObsHullMin;
         m_vObsHullMax = vObsHullMax;
         m_vDeadViewHeight = vDeadViewHeight;
@@ -56,13 +47,12 @@ public:
 
     // Height above entity position where the viewer's eye is.
     Vector m_vView;
-
     Vector m_vHullMin;
     Vector m_vHullMax;
 
+    Vector m_vDuckView;
     Vector m_vDuckHullMin;
     Vector m_vDuckHullMax;
-    Vector m_vDuckView;
 
     Vector m_vObsHullMin;
     Vector m_vObsHullMax;
@@ -75,9 +65,9 @@ public:
 #define VEC_HULL_MIN        g_pGameRules->GetViewVectors()->m_vHullMin
 #define VEC_HULL_MAX        g_pGameRules->GetViewVectors()->m_vHullMax
 
+#define VEC_DUCK_VIEW       g_pGameRules->GetViewVectors()->m_vDuckView
 #define VEC_DUCK_HULL_MIN   g_pGameRules->GetViewVectors()->m_vDuckHullMin
 #define VEC_DUCK_HULL_MAX   g_pGameRules->GetViewVectors()->m_vDuckHullMax
-#define VEC_DUCK_VIEW       g_pGameRules->GetViewVectors()->m_vDuckView
 
 #define VEC_OBS_HULL_MIN    g_pGameRules->GetViewVectors()->m_vObsHullMin
 #define VEC_OBS_HULL_MAX    g_pGameRules->GetViewVectors()->m_vObsHullMax
@@ -102,13 +92,8 @@ public:
 
 #define MAX_CLIMB_SPEED     200
 
-#if defined(TF_DLL) || defined(TF_CLIENT_DLL)
-    #define TIME_TO_DUCK        0.2
-    #define TIME_TO_DUCK_MS     200.0f
-#else
-    #define TIME_TO_DUCK        0.4
-    #define TIME_TO_DUCK_MS     400.0f
-#endif
+#define TIME_TO_DUCK        0.4
+#define TIME_TO_DUCK_MS     400.0f
 #define TIME_TO_UNDUCK      0.2
 #define TIME_TO_UNDUCK_MS   200.0f
 

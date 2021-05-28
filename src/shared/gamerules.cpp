@@ -42,35 +42,30 @@ ConVar log_verbose_enable( "log_verbose_enable", "0", FCVAR_GAMEDLL, "Set to 1 t
 ConVar log_verbose_interval( "log_verbose_interval", "3.0", FCVAR_GAMEDLL, "Determines the interval (in seconds) for the verbose server log." );
 #endif // CLIENT_DLL
 
-static CViewVectors g_DefaultViewVectors(
-    Vector( 0, 0, 64 ),         //VEC_VIEW (m_vView)
+static FORCEINLINE const CViewVectors CreateViewVectors()
+{
+    const Vector vView = Vector( 0.0f, 0.0f, 64.0f );
+    const Vector vHullMin = Vector( -16.0f, -16.0f, 0.0f );
+    const Vector vHullMax = Vector( 16.0f, 16.0f, 72.0f );
+    const Vector vDuckView = Vector( 0.0f, 0.0f, 28.0f );
+    const Vector vDuckHullMin = Vector( -16.0f, -16.0f, 0.0f );
+    const Vector vDuckHullMax = Vector( 16.0f, 16.0f, 36.0f );
+    const Vector vObsHullMin = Vector( -10.0f, -10.0f, -10.0f );
+    const Vector vObsHullMax = Vector( 10.0f, 10.0f, 10.0f );
+    const Vector vDeadView = Vector( 0.0f, 0.0f, 14.0f );
+    return CViewVectors( vView, vHullMin, vHullMax, vDuckView, vDuckHullMin, vDuckHullMax, vObsHullMin, vObsHullMax, vDeadView );
+}
 
-    Vector(-16, -16, 0 ),       //VEC_HULL_MIN (m_vHullMin)
-    Vector( 16,  16,  72 ),     //VEC_HULL_MAX (m_vHullMax)
+static const CViewVectors g_DefaultViewVectors = CreateViewVectors();
 
-    Vector(-16, -16, 0 ),       //VEC_DUCK_HULL_MIN (m_vDuckHullMin)
-    Vector( 16,  16,  36 ),     //VEC_DUCK_HULL_MAX (m_vDuckHullMax)
-    Vector( 0, 0, 28 ),         //VEC_DUCK_VIEW     (m_vDuckView)
-
-    Vector(-10, -10, -10 ),     //VEC_OBS_HULL_MIN  (m_vObsHullMin)
-    Vector( 10,  10,  10 ),     //VEC_OBS_HULL_MAX  (m_vObsHullMax)
-
-    Vector( 0, 0, 14 )          //VEC_DEAD_VIEWHEIGHT (m_vDeadViewHeight)
-);
-
+CGameRulesProxy *CGameRulesProxy::s_pGameRulesProxy = NULL;
 
 // ------------------------------------------------------------------------------------ //
 // CGameRulesProxy implementation.
 // ------------------------------------------------------------------------------------ //
-
-CGameRulesProxy *CGameRulesProxy::s_pGameRulesProxy = NULL;
-
 IMPLEMENT_NETWORKCLASS_ALIASED( GameRulesProxy, DT_GameRulesProxy )
-
-// Don't send any of the CBaseEntity stuff..
-BEGIN_NETWORK_TABLE_NOBASE( CGameRulesProxy, DT_GameRulesProxy )
+BEGIN_NETWORK_TABLE_NOBASE( CGameRulesProxy, DT_GameRulesProxy ) // Don't send any of the CBaseEntity stuff...
 END_NETWORK_TABLE()
-
 
 CGameRulesProxy::CGameRulesProxy()
 {
