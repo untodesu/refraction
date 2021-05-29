@@ -163,7 +163,6 @@ extern int              g_nClipPortalVerts;
 
 extern dcubemapsample_t g_CubemapSamples[MAX_MAP_CUBEMAPSAMPLES];
 extern int              g_nCubemapSamples;
-extern int              g_nCubemapCorrections;
 
 extern int              g_nOverlayCount;
 extern doverlay_t       g_Overlays[MAX_MAP_OVERLAYS];

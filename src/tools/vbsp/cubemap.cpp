@@ -78,8 +78,9 @@ struct CubemapSideData_t
 };
 
 static CubemapSideData_t s_aCubemapSideData[MAX_MAP_BRUSHSIDES];
-static ParallaxCorrection_t s_ParallaxCorrections[MAX_MAP_CUBEMAPCORRECTIONS];
+static ParallaxCorrection_t s_ParallaxCorrections[MAX_MAP_CUBEMAPSAMPLES];
 static const char *s_pszParallaxCorrectionNames[MAX_MAP_CUBEMAPSAMPLES] = { 0 };
+static int s_nNumParallaxCorrections = 0;
 
 inline bool SideHasCubemapAndWasntManuallyReferenced( int iSide )
 {
@@ -99,14 +100,16 @@ void Cubemap_InsertSample( const Vector &origin, int size, const char *pszCorrec
 
 void Cubemap_InsertParallaxCorrection( const ParallaxCorrection_t &correction )
 {
-    Q_memcpy( &s_ParallaxCorrections[g_nCubemapCorrections], &correction, sizeof( ParallaxCorrection_t ) );
-    g_nCubemapCorrections++;
+    if( s_nNumParallaxCorrections < MAX_MAP_CUBEMAPSAMPLES ) {
+        Q_memcpy( &s_ParallaxCorrections[s_nNumParallaxCorrections], &correction, sizeof( ParallaxCorrection_t ) );
+        s_nNumParallaxCorrections++;
+    }
 }
 
 const ParallaxCorrection_t *Cubemap_FindParallaxCorrection( const char *pszName )
 {
     if( pszName && pszName[0] ) {
-        for( int i = 0; i < g_nCubemapCorrections; i++ ) {
+        for( int i = 0; i < s_nNumParallaxCorrections; i++ ) {
             if( !Q_strcmp( pszName, s_ParallaxCorrections[i].pszName ) )
                 return &s_ParallaxCorrections[i];
         }

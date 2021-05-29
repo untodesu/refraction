@@ -125,9 +125,6 @@ void InitParamsLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar **params
     if( !params[info.m_nEnvmapSaturation]->IsDefined() )
         params[info.m_nEnvmapSaturation]->SetFloatValue( 1.0f );
 
-    if( !params[info.m_nParallaxCorrection2]->IsDefined() || !params[info.m_nParallaxCorrection3]->IsDefined() || !params[info.m_nParallaxCorrection4]->IsDefined() )
-        params[info.m_nParallaxCorrection1]->SetUndefined();
-
     InitFloatParam( info.m_nAlphaTestReference, params, 0.0f );
 
     // No texture means no self-illum or env mask in base alpha
@@ -273,7 +270,7 @@ void DrawLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar **params, ISha
         bool hasBumpMask = hasBump && hasBump2 && params[info.m_nBumpMask]->IsTexture() && !hasSelfIllum && !hasDetailTexture && !hasBaseTexture2 && ( params[info.m_nBaseTextureNoEnvmap]->GetIntValue() == 0 );
         bool bHasBlendModulateTexture = ( info.m_nBlendModulateTexture != -1 ) && ( params[info.m_nBlendModulateTexture]->IsTexture() );
         bool hasNormalMapAlphaEnvmapMask = IS_FLAG_SET( MATERIAL_VAR_NORMALMAPALPHAENVMAPMASK );
-        bool hasParallaxCorrection = params[info.m_nParallaxCorrection1]->IsDefined();
+        bool hasParallaxCorrection = params[info.m_nParallaxCorrection1]->IsDefined() && params[info.m_nParallaxCorrection2]->IsDefined() && params[info.m_nParallaxCorrection3]->IsDefined() && params[info.m_nParallaxCorrection4]->IsDefined();
 
         if( hasFlashlight ) {
             // !!speed!! do this in the caller so we don't build struct every time
@@ -848,6 +845,7 @@ void DrawLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar **params, ISha
         DynamicCmdsOut.End();
         pShaderAPI->ExecuteCommandBuffer( DynamicCmdsOut.Base() );
     }
+
     pShader->Draw();
 
     if( IsPC() && ( IS_FLAG_SET( MATERIAL_VAR_ALPHATEST ) != 0 ) && pContextData->m_bFullyOpaqueWithoutAlphaTest ) {

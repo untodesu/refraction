@@ -140,7 +140,7 @@ END_SHADER_PARAMS
         info.m_nParallaxCorrection3 = PARALLAXCORRECTION3;
         info.m_nParallaxCorrection4 = PARALLAXCORRECTION4;
     }
-    
+
     SHADER_FALLBACK
     {
         // If shit breaks, just fall back to the Valve's shader

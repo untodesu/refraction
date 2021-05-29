@@ -88,11 +88,10 @@
 #define MAX_MAP_EDGES                   256000
 #define MAX_MAP_SURFEDGES               512000
 #define MAX_MAP_LIGHTING                0x1000000
-#define MAX_MAP_VISIBILITY              0x1000000           // increased BSPVERSION 7
+#define MAX_MAP_VISIBILITY              0x1000000 // increased BSPVERSION 7
 #define MAX_MAP_TEXTURES                1024
 #define MAX_MAP_WORLDLIGHTS             8192
 #define MAX_MAP_CUBEMAPSAMPLES          1024
-#define MAX_MAP_CUBEMAPCORRECTIONS      1024
 #define MAX_MAP_OVERLAYS                512
 #define MAX_MAP_WATEROVERLAYS           16384
 #define MAX_MAP_TEXDATA_STRING_DATA     256000
