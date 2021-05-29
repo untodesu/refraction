@@ -69,10 +69,10 @@ BEGIN_VS_SHADER( RE_LightmappedGeneric, "Help for RE_LightmappedGeneric" )
         SHADER_PARAM( OUTLINEEND0, SHADER_PARAM_TYPE_FLOAT, "0.0", "inner end value for outline")
         SHADER_PARAM( OUTLINEEND1, SHADER_PARAM_TYPE_FLOAT, "0.0", "outer end value for outline")
 
-        SHADER_PARAM( ENVMAPPARALLAXOBB1, SHADER_PARAM_TYPE_VEC4, "[1 0 0 0]", "Envmap parallax correction matrix row 1" )
-        SHADER_PARAM( ENVMAPPARALLAXOBB2, SHADER_PARAM_TYPE_VEC4, "[0 1 0 0]", "Envmap parallax correction matrix row 2" )
-        SHADER_PARAM( ENVMAPPARALLAXOBB3, SHADER_PARAM_TYPE_VEC4, "[0 0 1 0]", "Envmap parallax correction matrix row 3" )
-        SHADER_PARAM( ENVMAPORIGIN, SHADER_PARAM_TYPE_VEC3, "[0 0 0]", "Envmap parallax correction origin" )
+        SHADER_PARAM( PARALLAXCORRECTION1, SHADER_PARAM_TYPE_VEC4, "[1 0 0 0]", "Envmap parallax correction matrix row 1" )
+        SHADER_PARAM( PARALLAXCORRECTION2, SHADER_PARAM_TYPE_VEC4, "[0 1 0 0]", "Envmap parallax correction matrix row 2" )
+        SHADER_PARAM( PARALLAXCORRECTION3, SHADER_PARAM_TYPE_VEC4, "[0 0 1 0]", "Envmap parallax correction matrix row 3" )
+        SHADER_PARAM( PARALLAXCORRECTION4, SHADER_PARAM_TYPE_VEC3, "[0 0 0]", "Envmap parallax correction origin" )
 END_SHADER_PARAMS
 
     void SetupVars( LightmappedGeneric_Vars_t& info )
@@ -135,12 +135,12 @@ END_SHADER_PARAMS
         info.m_nOutlineEnd0 = OUTLINEEND0;
         info.m_nOutlineEnd1 = OUTLINEEND1;
 
-        info.m_nEnvmapParallaxObb1 = ENVMAPPARALLAXOBB1;
-        info.m_nEnvmapParallaxObb2 = ENVMAPPARALLAXOBB2;
-        info.m_nEnvmapParallaxObb3 = ENVMAPPARALLAXOBB3;
-        info.m_nEnvmapOrigin = ENVMAPORIGIN;
+        info.m_nParallaxCorrection1 = PARALLAXCORRECTION1;
+        info.m_nParallaxCorrection2 = PARALLAXCORRECTION2;
+        info.m_nParallaxCorrection3 = PARALLAXCORRECTION3;
+        info.m_nParallaxCorrection4 = PARALLAXCORRECTION4;
     }
-
+    
     SHADER_FALLBACK
     {
         // If shit breaks, just fall back to the Valve's shader

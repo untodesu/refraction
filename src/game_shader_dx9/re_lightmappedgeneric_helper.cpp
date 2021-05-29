@@ -125,8 +125,8 @@ void InitParamsLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar **params
     if( !params[info.m_nEnvmapSaturation]->IsDefined() )
         params[info.m_nEnvmapSaturation]->SetFloatValue( 1.0f );
 
-    if( !params[info.m_nEnvmapParallaxObb2]->IsDefined() || !params[info.m_nEnvmapParallaxObb2]->IsDefined() || !params[info.m_nEnvmapOrigin]->IsDefined() )
-        params[info.m_nEnvmapParallaxObb1]->SetUndefined();
+    if( !params[info.m_nParallaxCorrection2]->IsDefined() || !params[info.m_nParallaxCorrection3]->IsDefined() || !params[info.m_nParallaxCorrection4]->IsDefined() )
+        params[info.m_nParallaxCorrection1]->SetUndefined();
 
     InitFloatParam( info.m_nAlphaTestReference, params, 0.0f );
 
@@ -273,7 +273,7 @@ void DrawLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar **params, ISha
         bool hasBumpMask = hasBump && hasBump2 && params[info.m_nBumpMask]->IsTexture() && !hasSelfIllum && !hasDetailTexture && !hasBaseTexture2 && ( params[info.m_nBaseTextureNoEnvmap]->GetIntValue() == 0 );
         bool bHasBlendModulateTexture = ( info.m_nBlendModulateTexture != -1 ) && ( params[info.m_nBlendModulateTexture]->IsTexture() );
         bool hasNormalMapAlphaEnvmapMask = IS_FLAG_SET( MATERIAL_VAR_NORMALMAPALPHAENVMAPMASK );
-        bool hasParallaxCorrection = params[info.m_nEnvmapParallaxObb1]->IsDefined();
+        bool hasParallaxCorrection = params[info.m_nParallaxCorrection1]->IsDefined();
 
         if( hasFlashlight ) {
             // !!speed!! do this in the caller so we don't build struct every time
@@ -770,20 +770,13 @@ void DrawLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar **params, ISha
             }
 
             if( hasParallaxCorrection ) {
-                pContextData->m_SemiStaticCmdsOut.SetPixelShaderConstant( 21, params[info.m_nEnvmapOrigin]->GetVecValue() );
+                float matrix[4][4] = { 0 };
+                params[info.m_nParallaxCorrection1]->GetVecValue( matrix[0], 4 );
+                params[info.m_nParallaxCorrection2]->GetVecValue( matrix[2], 4 );
+                params[info.m_nParallaxCorrection3]->GetVecValue( matrix[1], 4 );
+                matrix[3][3] = 1.0f;
 
-                float *vecs[3];
-                vecs[0] = const_cast<float *>( params[info.m_nEnvmapParallaxObb1]->GetVecValue() );
-                vecs[1] = const_cast<float *>( params[info.m_nEnvmapParallaxObb2]->GetVecValue() );
-                vecs[2] = const_cast<float *>( params[info.m_nEnvmapParallaxObb3]->GetVecValue() );
-                float matrix[4][4];
-                for( int i = 0; i < 3; i++ ) {
-                    for( int j = 0; j < 4; j++ ) {
-                        matrix[i][j] = vecs[i][j];
-                    }
-                }
-                matrix[3][0] = matrix[3][1] = matrix[3][2] = 0;
-                matrix[3][3] = 1;
+                pContextData->m_SemiStaticCmdsOut.SetPixelShaderConstant( 21, params[info.m_nParallaxCorrection4]->GetVecValue() );
                 pContextData->m_SemiStaticCmdsOut.SetPixelShaderConstant( 22, &matrix[0][0], 4 );
             }
 

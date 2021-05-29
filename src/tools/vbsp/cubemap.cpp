@@ -78,24 +78,41 @@ struct CubemapSideData_t
 };
 
 static CubemapSideData_t s_aCubemapSideData[MAX_MAP_BRUSHSIDES];
-
-const char *g_pParallaxObbStrs[MAX_MAP_CUBEMAPSAMPLES];
+static ParallaxCorrection_t s_ParallaxCorrections[MAX_MAP_CUBEMAPCORRECTIONS];
+static const char *s_pszParallaxCorrectionNames[MAX_MAP_CUBEMAPSAMPLES] = { 0 };
 
 inline bool SideHasCubemapAndWasntManuallyReferenced( int iSide )
 {
     return s_aCubemapSideData[iSide].bHasEnvMapInMaterial && !s_aCubemapSideData[iSide].bManuallyPickedByAnEnvCubemap;
 }
 
-
-void Cubemap_InsertSample( const Vector &origin, int size, const char *pParallaxObbStr )
+void Cubemap_InsertSample( const Vector &origin, int size, const char *pszCorrectionEntity )
 {
-    g_pParallaxObbStrs[g_nCubemapSamples] = pParallaxObbStr;
+    s_pszParallaxCorrectionNames[g_nCubemapSamples] = pszCorrectionEntity;
     dcubemapsample_t *pSample = &g_CubemapSamples[g_nCubemapSamples];
     pSample->origin[0] = ( int )origin[0];
     pSample->origin[1] = ( int )origin[1];
     pSample->origin[2] = ( int )origin[2];
     pSample->size = size;
     g_nCubemapSamples++;
+}
+
+void Cubemap_InsertParallaxCorrection( const ParallaxCorrection_t &correction )
+{
+    Q_memcpy( &s_ParallaxCorrections[g_nCubemapCorrections], &correction, sizeof( ParallaxCorrection_t ) );
+    g_nCubemapCorrections++;
+}
+
+const ParallaxCorrection_t *Cubemap_FindParallaxCorrection( const char *pszName )
+{
+    if( pszName && pszName[0] ) {
+        for( int i = 0; i < g_nCubemapCorrections; i++ ) {
+            if( !Q_strcmp( pszName, s_ParallaxCorrections[i].pszName ) )
+                return &s_ParallaxCorrections[i];
+        }
+    }
+
+    return NULL;
 }
 
 static const char *FindSkyboxMaterialName( void )
@@ -532,7 +549,7 @@ static void GeneratePatchedName( const char *pMaterialName, const PatchInfo_t &i
 //-----------------------------------------------------------------------------
 // Patches the $envmap for a material and all its dependents, returns true if any patching happened
 //-----------------------------------------------------------------------------
-static bool PatchEnvmapForMaterialAndDependents( const char *pMaterialName, const PatchInfo_t &info, const char *pCubemapTexture, const char *pParallaxObbMatrix )
+static bool PatchEnvmapForMaterialAndDependents( const char *pMaterialName, const PatchInfo_t &info, const char *pCubemapTexture, const int origin[3], const ParallaxCorrection_t *pCorrection )
 {
     // Do *NOT* patch the material if there is an $envmap specified and it's not 'env_cubemap'
 
@@ -550,7 +567,7 @@ static bool PatchEnvmapForMaterialAndDependents( const char *pMaterialName, cons
     const char *pDependentMaterial = FindDependentMaterial( pMaterialName, &pDependentMaterialVar );
     if ( pDependentMaterial )
     {
-        bDependentMaterialPatched = PatchEnvmapForMaterialAndDependents( pDependentMaterial, info, pCubemapTexture, pParallaxObbMatrix );
+        bDependentMaterialPatched = PatchEnvmapForMaterialAndDependents( pDependentMaterial, info, pCubemapTexture, origin, pCorrection );
     }
 
     // If we have neither to patch, we're done
@@ -571,25 +588,30 @@ static bool PatchEnvmapForMaterialAndDependents( const char *pMaterialName, cons
         ++nPatchCount;
     }
 
-    CUtlVector<char *> matRowList;
-    if( pParallaxObbMatrix[0] ) {
-        V_SplitString( pParallaxObbMatrix, ";", matRowList );
+    if( pCorrection ) {
+        char szParallaxCorrection1[512] = { 0 };
+        Q_snprintf( szParallaxCorrection1, sizeof( szParallaxCorrection1 ), "[%f %f %f %f]", pCorrection->mMatrix[0][0], pCorrection->mMatrix[0][1], pCorrection->mMatrix[0][2], pCorrection->mMatrix[0][3] );
+        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection1";
+        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection1;
+        nPatchCount++;
 
-        pPatchInfo[nPatchCount].m_pKey = "$envMapParallaxOBB1";
-        pPatchInfo[nPatchCount].m_pValue = matRowList[0];
-        ++nPatchCount;
+        char szParallaxCorrection2[512] = { 0 };
+        Q_snprintf( szParallaxCorrection2, sizeof( szParallaxCorrection2 ), "[%f %f %f %f]", pCorrection->mMatrix[1][0], pCorrection->mMatrix[1][1], pCorrection->mMatrix[1][2], pCorrection->mMatrix[1][3] );
+        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection2";
+        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection2;
+        nPatchCount++;
 
-        pPatchInfo[nPatchCount].m_pKey = "$envMapParallaxOBB2";
-        pPatchInfo[nPatchCount].m_pValue = matRowList[1];
-        ++nPatchCount;
+        char szParallaxCorrection3[512] = { 0 };
+        Q_snprintf( szParallaxCorrection3, sizeof( szParallaxCorrection3 ), "[%f %f %f %f]", pCorrection->mMatrix[2][0], pCorrection->mMatrix[2][1], pCorrection->mMatrix[2][2], pCorrection->mMatrix[2][3] );
+        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection3";
+        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection3;
+        nPatchCount++;
 
-        pPatchInfo[nPatchCount].m_pKey = "$envMapParallaxOBB3";
-        pPatchInfo[nPatchCount].m_pValue = matRowList[2];
-        ++nPatchCount;
-
-        pPatchInfo[nPatchCount].m_pKey = "$envMapOrigin";
-        pPatchInfo[nPatchCount].m_pValue = matRowList[3];
-        ++nPatchCount;
+        char szParallaxCorrection4[512] = { 0 };
+        Q_snprintf( szParallaxCorrection4, sizeof( szParallaxCorrection4 ), "[%d %d %d]", origin[0], origin[1], origin[2] );
+        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection4";
+        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection4;
+        nPatchCount++;
     }
 
     char pDependentPatchedMaterialName[1024];
@@ -604,8 +626,6 @@ static bool PatchEnvmapForMaterialAndDependents( const char *pMaterialName, cons
     }
 
     CreateMaterialPatch( pMaterialName, pPatchedMaterialName, nPatchCount, pPatchInfo, PATCH_INSERT );
-
-    matRowList.PurgeAndDeleteElements();
 
     return true;
 }
@@ -665,15 +685,9 @@ static int Cubemap_CreateTexInfo( int originalTexInfo, int origin[3], int cubema
         char pTextureName[1024];
         GeneratePatchedName( "c", info, false, pTextureName, 1024 );
 
-        // Append origin info if this cubemap has a parallax OBB
-        char originAppendedString[1024] = "";
-        if( g_pParallaxObbStrs[cubemapIndex][0] != '\0' ) {
-            Q_snprintf( originAppendedString, 1024, "%s;[%d %d %d]", g_pParallaxObbStrs[cubemapIndex], origin[0], origin[1], origin[2] );
-        }
-
         // Hook the texture into the material and all dependent materials
         // but if no hooking was necessary, exit out
-        if( !PatchEnvmapForMaterialAndDependents( pMaterialName, info, pTextureName, originAppendedString ) )
+        if( !PatchEnvmapForMaterialAndDependents( pMaterialName, info, pTextureName, origin, Cubemap_FindParallaxCorrection( s_pszParallaxCorrectionNames[cubemapIndex] ) ) )
             return originalTexInfo;
 
         // Store off the name of the cubemap that we need to create since we successfully patched

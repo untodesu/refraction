@@ -1513,22 +1513,20 @@ ChunkFileResult_t CMapFile::LoadEntityCallback( CChunkFile *pFile, int nParam )
 
         if( !Q_strcmp( "env_cubemap", pClassName ) ) {
             if( ( g_nDXLevel == 0 ) || ( g_nDXLevel >= 70 ) ) {
-                const char *pSideListStr = ValueForKey( mapent, "sides" );
-                const char *pParallaxObbStr = ValueForKey( mapent, "parallaxobb" );
-                int size;
-                size = IntForKey( mapent, "cubemapsize" );
-                Cubemap_InsertSample( mapent->origin, size, pParallaxObbStr );
-                Cubemap_SaveBrushSides( pSideListStr );
+                Cubemap_InsertSample( mapent->origin, IntForKey( mapent, "cubemapsize" ), ValueForKey( mapent, "parallaxcorrection" ) );
+                Cubemap_SaveBrushSides( ValueForKey( mapent, "sides" ) );
             }
+
             // clear out this entity
             mapent->epairs = NULL;
+
             return( ChunkFile_Ok );
         }
 
-        if( !Q_strcmp( "parallax_obb", pClassName ) ) {
-            matrix3x4_t obbMatrix, obbMatrixInv;
-            SetIdentityMatrix( obbMatrix );
-            SetIdentityMatrix( obbMatrixInv );
+        if( !Q_strcmp( "env_cubemap_parallaxcorrection", pClassName ) ) {
+            matrix3x4_t mMatrix, mMatrixInv;
+            SetIdentityMatrix( mMatrix );
+            SetIdentityMatrix( mMatrixInv );
 
             mapbrush_t *pBrush = &mapbrushes[mapent->firstbrush];
             Vector vCorner, vX, vY, vZ;
@@ -1553,12 +1551,8 @@ ChunkFileResult_t CMapFile::LoadEntityCallback( CChunkFile *pFile, int nParam )
 
             while( i < pBrush->numsides ) {
                 winding_t *pWinding = pBrush->original_sides[i++].winding;
-                if( !pWinding ) {
-                    i++;
+                if( !pWinding )
                     continue;
-                }
-
-                i++;
                 break;
             }
 
@@ -1572,19 +1566,24 @@ ChunkFileResult_t CMapFile::LoadEntityCallback( CChunkFile *pFile, int nParam )
                 Vector vDiag = pWinding->p[0] - pWinding->p[2];
                 vX *= fabsf( DotProduct( vDiag, vX ) );
 
-                MatrixSetColumn( vX, 0, obbMatrix );
-                MatrixSetColumn( vY, 1, obbMatrix );
-                MatrixSetColumn( vZ, 2, obbMatrix );
-                MatrixSetColumn( vCorner, 3, obbMatrix );
+                MatrixSetColumn( vX, 0, mMatrix );
+                MatrixSetColumn( vY, 1, mMatrix );
+                MatrixSetColumn( vZ, 2, mMatrix );
+                MatrixSetColumn( vCorner, 3, mMatrix );
 
-                MI_Invert( obbMatrix, obbMatrixInv );
+                MI_Invert( mMatrix, mMatrixInv );
 
                 break;
             }
 
-            char szMatrix[1024];
-            Q_snprintf( szMatrix, 1024, "[%f %f %f %f];[%f %f %f %f];[%f %f %f %f]", obbMatrixInv[0][0], obbMatrixInv[0][1], obbMatrixInv[0][2], obbMatrixInv[0][3], obbMatrixInv[1][0], obbMatrixInv[1][1], obbMatrixInv[1][2], obbMatrixInv[1][3], obbMatrixInv[2][0], obbMatrixInv[2][1], obbMatrixInv[2][2], obbMatrixInv[2][3] );
-            SetKeyValue( mapent, "transformationmatrix", szMatrix );
+            ParallaxCorrection_t correction;
+            correction.mMatrix = mMatrixInv;
+            correction.pszName = ValueForKey( mapent, "targetname" );
+
+            Cubemap_InsertParallaxCorrection( correction );
+
+            mapent->numbrushes = 0;
+            mapent->epairs = NULL;
 
             return ( ChunkFile_Ok );
         }
@@ -2479,22 +2478,7 @@ bool LoadMapFile( const char *pszFileName )
             Error( "Error opening %s: %s.\n", pszFileName, File.GetErrorText( eResult ) );
         }
     }
-
-    for( int i = 0; i < g_nCubemapSamples; i++ ) {
-        if( g_pParallaxObbStrs[i][0] ) {
-            entity_t *pParallaxObb = EntityByName( g_pParallaxObbStrs[i] );
-            g_pParallaxObbStrs[i] = ValueForKey( pParallaxObb, "transformationmatrix" );
-        }
-    }
-
-    for( int i = 0; i < g_MainMap->num_entities; i++ ) {
-        entity_t *pEntity = &g_MainMap->entities[i];
-        if( !Q_strcmp( "parallax_obb", ValueForKey( pEntity, "classname" ) ) ) {
-            pEntity->numbrushes = 0;
-            pEntity->epairs = NULL;
-        }
-    }
-
+    
     if( ( eResult == ChunkFile_Ok ) || ( eResult == ChunkFile_EOF ) ) {
         // Update the overlay/side list(s).
         Overlay_UpdateSideLists( g_LoadingMap->m_StartMapOverlays );

@@ -81,10 +81,10 @@
         9 : "256x256"
     ]
     sides(sidelist) : "Brush faces": : "(Optional) Brushes faces to directly attach to the env_cubemap. Press Pick then click on faces in the 3D View to select them. Use CTRL while clicking to add or remove from the selection."
-    parallaxobb(target_destination) : "Cubemap Bounds" : : "(Optional) assigns this cubemap a bounding box for parallax correction (brush entity tied to parallax_obb)."
+    parallaxcorrection(target_destination) : "Cubemap Bounds" : : "(Optional) assigns this cubemap a bounding box for parallax correction (brush entity tied to parallax_obb)."
 ]
 
-@SolidClass = parallax_obb
+@SolidClass = env_cubemap_parallaxcorrection
 [
     targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]

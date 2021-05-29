@@ -86,10 +86,10 @@ struct LightmappedGeneric_Vars_t {
     int m_nOutlineEnd0;
     int m_nOutlineEnd1;
 
-    int m_nEnvmapParallaxObb1;
-    int m_nEnvmapParallaxObb2;
-    int m_nEnvmapParallaxObb3;
-    int m_nEnvmapOrigin;
+    int m_nParallaxCorrection1;
+    int m_nParallaxCorrection2;
+    int m_nParallaxCorrection3;
+    int m_nParallaxCorrection4;
 };
 
 void InitParamsLightmappedGeneric( CBaseVSShader *pShader, IMaterialVar** params, const char *pMaterialName, LightmappedGeneric_Vars_t &info );

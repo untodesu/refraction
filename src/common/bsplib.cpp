@@ -673,6 +673,7 @@ int                 g_nClipPortalVerts;
 
 dcubemapsample_t    g_CubemapSamples[MAX_MAP_CUBEMAPSAMPLES];
 int                 g_nCubemapSamples = 0;
+int                 g_nCubemapCorrections = 0;
 
 int                 g_nOverlayCount;
 doverlay_t          g_Overlays[MAX_MAP_OVERLAYS];
