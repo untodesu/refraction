@@ -445,10 +445,6 @@ void CViewRender::OnRenderStart()
         //Update our FOV, including any zooms going on
         int iDefaultFOV = default_fov.GetInt();
         int localFOV = player->GetFOV();
-        int min_fov = player->GetMinFOV();
-
-        // Don't let it go too low
-        localFOV = MAX( min_fov, localFOV );
 
         gHUD.m_flFOVSensitivityAdjust = 1.0f;
 

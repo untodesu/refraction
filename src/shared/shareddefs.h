@@ -217,8 +217,6 @@ enum CastVote
 
 #define MAX_PLACE_NAME_LENGTH       18
 
-#define MAX_FOV                     90
-
 //===================================================================================================================
 // Team Defines
 #define TEAM_ANY                -2

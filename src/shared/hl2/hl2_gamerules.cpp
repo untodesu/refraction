@@ -1645,6 +1645,7 @@ float CHalfLife2::AdjustPlayerDamageInflicted( float damage )
         break;
     }
 }
+
 #endif//CLIENT_DLL
 
 //---------------------------------------------------------

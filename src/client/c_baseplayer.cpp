@@ -2550,20 +2550,6 @@ void C_BasePlayer::LeaveVehicle( void )
 #endif
 }
 
-
-float C_BasePlayer::GetMinFOV() const
-{
-    if ( gpGlobals->maxClients == 1 )
-    {
-        // Let them do whatever they want, more or less, in single player
-        return 5;
-    }
-    else
-    {
-        return 75;
-    }
-}
-
 float C_BasePlayer::GetFinalPredictedTime() const
 {
     return ( m_nFinalPredictedTick * TICK_INTERVAL );

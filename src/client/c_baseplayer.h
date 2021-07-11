@@ -335,9 +335,6 @@ public:
     void        SetPreviouslyPredictedOrigin( const Vector &vecAbsOrigin );
     const Vector &GetPreviouslyPredictedOrigin() const;
 
-    // CS wants to allow small FOVs for zoomed-in AWPs.
-    virtual float GetMinFOV() const;
-
     virtual void DoMuzzleFlash();
     virtual void PlayPlayerJingle();
 
