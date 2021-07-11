@@ -103,7 +103,7 @@ CLIENTEFFECT_REGISTER_BEGIN( PrecachePostProcessingEffects )
     CLIENTEFFECT_MATERIAL( "dev/blurfiltery_nohdr" )
 
     // TODO: Precache your postproc here.
-    CLIENTEFFECT_MATERIAL( "shaders/postproc_lensdistortion" )
+    CLIENTEFFECT_MATERIAL( "shaders/lensdistortion" )
 CLIENTEFFECT_REGISTER_END_CONDITIONAL( engine->GetDXSupportLevel() >= 90 )
 
 // TODO: add your custom postproc here.
