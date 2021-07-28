@@ -3,9 +3,7 @@
 // Purpose:
 //
 //===========================================================================//
-#if defined( _WIN32 ) && !defined( _X360 )
 #include <windows.h>
-#endif
 
 #if !defined( DONT_PROTECT_FILEIO_FUNCTIONS )
 #define DONT_PROTECT_FILEIO_FUNCTIONS // for protected_things.h
@@ -25,17 +23,7 @@
 #include "tier0/icommandline.h"
 #include "tier0/dbg.h"
 #include "tier0/threadtools.h"
-#ifdef _WIN32
 #include <direct.h> // getcwd
-#elif POSIX
-#include <dlfcn.h>
-#include <unistd.h>
-#define _getcwd getcwd
-#endif
-#if defined( _X360 )
-#include "xbox/xbox_win32stubs.h"
-#endif
-
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -45,8 +33,7 @@
 // ------------------------------------------------------------------------------------ //
 InterfaceReg *InterfaceReg::s_pInterfaceRegs = NULL;
 
-InterfaceReg::InterfaceReg( InstantiateInterfaceFn fn, const char *pName ) :
-    m_pName(pName)
+InterfaceReg::InterfaceReg( InstantiateInterfaceFn fn, const char *pName ) : m_pName( pName )
 {
     m_CreateFn = fn;
     m_pNext = s_pInterfaceRegs;
@@ -69,64 +56,26 @@ void* CreateInterfaceInternal( const char *pName, int *pReturnCode )
 {
     InterfaceReg *pCur;
 
-    for (pCur=InterfaceReg::s_pInterfaceRegs; pCur; pCur=pCur->m_pNext)
-    {
-        if (strcmp(pCur->m_pName, pName) == 0)
-        {
-            if (pReturnCode)
-            {
+    for( pCur = InterfaceReg::s_pInterfaceRegs; pCur; pCur = pCur->m_pNext ) {
+        if( strcmp( pCur->m_pName, pName ) == 0 ) {
+            if( pReturnCode ) {
                 *pReturnCode = IFACE_OK;
             }
             return pCur->m_CreateFn();
         }
     }
 
-    if (pReturnCode)
-    {
+    if( pReturnCode ) {
         *pReturnCode = IFACE_FAILED;
     }
+
     return NULL;
 }
 
-void* CreateInterface( const char *pName, int *pReturnCode )
+void *CreateInterface( const char *pName, int *pReturnCode )
 {
     return CreateInterfaceInternal( pName, pReturnCode );
 }
-
-
-
-#ifdef POSIX
-// Linux doesn't have this function so this emulates its functionality
-void *GetModuleHandle(const char *name)
-{
-    void *handle;
-
-    if( name == NULL )
-    {
-        // hmm, how can this be handled under linux....
-        // is it even needed?
-        return NULL;
-    }
-
-    if( (handle=dlopen(name, RTLD_NOW))==NULL)
-    {
-            printf("DLOPEN Error:%s\n",dlerror());
-            // couldn't open this file
-            return NULL;
-    }
-
-    // read "man dlopen" for details
-    // in short dlopen() inc a ref count
-    // so dec the ref count by performing the close
-    dlclose(handle);
-    return handle;
-}
-#endif
-
-#if defined( _WIN32 ) && !defined( _X360 )
-#define WIN32_LEAN_AND_MEAN
-#include "windows.h"
-#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: returns a pointer to a function, given a module
@@ -135,21 +84,17 @@ void *GetModuleHandle(const char *name)
 //-----------------------------------------------------------------------------
 static void *Sys_GetProcAddress( const char *pModuleName, const char *pName )
 {
-    HMODULE hModule = (HMODULE)GetModuleHandle( pModuleName );
-#ifdef WIN32
-    return (void *)GetProcAddress( hModule, pName );
-#else
-    return (void *)dlsym( (void *)hModule, pName );
-#endif
+    return (void *)GetProcAddress( (HMODULE)GetModuleHandle( pModuleName ), pName );
 }
 
 static void *Sys_GetProcAddress( HMODULE hModule, const char *pName )
 {
-#ifdef WIN32
     return (void *)GetProcAddress( hModule, pName );
-#else
-    return (void *)dlsym( (void *)hModule, pName );
-#endif
+}
+
+void *Sys_GetProcAddress( CSysModule *pModule, const char *pszProcName )
+{
+    return (void *)GetProcAddress( (HMODULE)pModule, pszProcName );
 }
 
 bool Sys_IsDebuggerPresent()
@@ -157,8 +102,7 @@ bool Sys_IsDebuggerPresent()
     return Plat_IsInDebugSession();
 }
 
-struct ThreadedLoadLibaryContext_t
-{
+struct ThreadedLoadLibaryContext_t {
     const char *m_pLibraryName;
     HMODULE m_hLibrary;
 };
@@ -168,15 +112,12 @@ struct ThreadedLoadLibaryContext_t
 // wraps LoadLibraryEx() since 360 doesn't support that
 static HMODULE InternalLoadLibrary( const char *pName, Sys_Flags flags )
 {
-#if defined(_X360)
-    return LoadLibrary( pName );
-#else
-    if ( flags & SYS_NOLOAD )
+    if( flags & SYS_NOLOAD )
         return GetModuleHandle( pName );
     else
         return LoadLibraryEx( pName, NULL, LOAD_WITH_ALTERED_SEARCH_PATH );
-#endif
 }
+
 unsigned ThreadedLoadLibraryFunc( void *pParam )
 {
     ThreadedLoadLibaryContext_t *pContext = (ThreadedLoadLibaryContext_t*)pParam;
@@ -188,33 +129,21 @@ unsigned ThreadedLoadLibraryFunc( void *pParam )
 
 HMODULE Sys_LoadLibrary( const char *pLibraryName, Sys_Flags flags )
 {
-    char str[ 1024 ];
+    char str[1024];
     // Note: DLL_EXT_STRING can be "_srv.so" or "_360.dll". So be careful
     //  when using the V_*Extension* routines...
     const char *pDllStringExtension = V_GetFileExtension( DLL_EXT_STRING );
     const char *pModuleExtension = pDllStringExtension ? ( pDllStringExtension - 1 ) : DLL_EXT_STRING;
 
-    Q_strncpy( str, pLibraryName, sizeof(str) );
+    Q_strncpy( str, pLibraryName, sizeof( str ) );
 
-    if ( IsX360() )
-    {
-        // old, probably busted, behavior for xbox
-        if ( !Q_stristr( str, pModuleExtension ) )
-        {
-            V_SetExtension( str, pModuleExtension, sizeof(str) );
-        }
-    }
-    else
-    {
-        // always force the final extension to be .dll
-        V_SetExtension( str, pModuleExtension, sizeof(str) );
-    }
+    // always force the final extension to be .dll
+    V_SetExtension( str, pModuleExtension, sizeof( str ) );
 
     Q_FixSlashes( str );
 
-#ifdef _WIN32
     ThreadedLoadLibraryFunc_t threadFunc = GetThreadedLoadLibraryFunc();
-    if ( !threadFunc )
+    if( !threadFunc )
         return InternalLoadLibrary( str, flags );
 
     // We shouldn't be passing noload while threaded.
@@ -226,38 +155,15 @@ HMODULE Sys_LoadLibrary( const char *pLibraryName, Sys_Flags flags )
 
     ThreadHandle_t h = CreateSimpleThread( ThreadedLoadLibraryFunc, &context );
 
-#ifdef _X360
-    ThreadSetAffinity( h, XBOX_PROCESSOR_3 );
-#endif
-
     unsigned int nTimeout = 0;
-    while( ThreadWaitForObject( h, true, nTimeout ) == TW_TIMEOUT )
-    {
+    while( ThreadWaitForObject( h, true, nTimeout ) == TW_TIMEOUT ) {
         nTimeout = threadFunc();
     }
 
     ReleaseThreadHandle( h );
     return context.m_hLibrary;
-
-#elif POSIX
-    int dlopen_mode = RTLD_NOW;
-
-    if ( flags & SYS_NOLOAD )
-        dlopen_mode |= RTLD_NOLOAD;
-
-    HMODULE ret = ( HMODULE )dlopen( str, dlopen_mode );
-    if ( !ret && !( flags & SYS_NOLOAD ) )
-    {
-        const char *pError = dlerror();
-        if ( pError && ( strstr( pError, "No such file" ) == 0 ) && ( strstr( pError, "image not found" ) == 0 ) )
-        {
-            Msg( " failed to dlopen %s error=%s\n", str, pError );
-        }
-    }
-
-    return ret;
-#endif
 }
+
 static bool s_bRunningWithDebugModules = false;
 
 //-----------------------------------------------------------------------------
@@ -273,101 +179,51 @@ CSysModule *Sys_LoadModule( const char *pModuleName, Sys_Flags flags /* = SYS_NO
     char szCwd[1024];
     HMODULE hDLL = NULL;
 
-    if ( !Q_IsAbsolutePath( pModuleName ) )
-    {
+    if( !Q_IsAbsolutePath( pModuleName ) ) {
         // full path wasn't passed in, using the current working dir
         _getcwd( szCwd, sizeof( szCwd ) );
-        if ( IsX360() )
-        {
-            int i = CommandLine()->FindParm( "-basedir" );
-            if ( i )
-            {
-                strcpy( szCwd, CommandLine()->GetParm( i+1 ) );
-            }
-        }
-        if (szCwd[strlen(szCwd) - 1] == '/' || szCwd[strlen(szCwd) - 1] == '\\' )
-        {
-            szCwd[strlen(szCwd) - 1] = 0;
+        if( szCwd[strlen( szCwd ) - 1] == '/' || szCwd[strlen( szCwd ) - 1] == '\\' ) {
+            szCwd[strlen( szCwd ) - 1] = 0;
         }
 
         char szAbsoluteModuleName[1024];
         size_t cCwd = strlen( szCwd );
-        if ( strstr( pModuleName, "bin/") == pModuleName || ( szCwd[ cCwd - 1 ] == 'n'  && szCwd[ cCwd - 2 ] == 'i' && szCwd[ cCwd - 3 ] == 'b' )  )
-        {
+        if( strstr( pModuleName, "bin/" ) == pModuleName || ( szCwd[cCwd - 1] == 'n'  && szCwd[cCwd - 2] == 'i' && szCwd[cCwd - 3] == 'b' ) ) {
             // don't make bin/bin path
-            Q_snprintf( szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s/%s", szCwd, pModuleName );
+            Q_snprintf( szAbsoluteModuleName, sizeof( szAbsoluteModuleName ), "%s/%s", szCwd, pModuleName );
         }
-        else
-        {
-            Q_snprintf( szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s/bin/%s", szCwd, pModuleName );
+        else {
+            Q_snprintf( szAbsoluteModuleName, sizeof( szAbsoluteModuleName ), "%s/bin/%s", szCwd, pModuleName );
         }
         hDLL = Sys_LoadLibrary( szAbsoluteModuleName, flags );
     }
 
-    if ( !hDLL )
-    {
-        // full path failed, let LoadLibrary() try to search the PATH now
+    if( !hDLL ) {
         hDLL = Sys_LoadLibrary( pModuleName, flags );
 #if defined( _DEBUG )
-        if ( !hDLL )
-        {
-// So you can see what the error is in the debugger...
-#if defined( _WIN32 ) && !defined( _X360 )
+        if( !hDLL ) {
+            // So you can see what the error is in the debugger...
             char *lpMsgBuf;
-
-            FormatMessage(
-                FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                FORMAT_MESSAGE_FROM_SYSTEM |
-                FORMAT_MESSAGE_IGNORE_INSERTS,
-                NULL,
-                GetLastError(),
-                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-                (LPTSTR) &lpMsgBuf,
-                0,
-                NULL
-            );
-
+            FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, GetLastError(), MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), (LPTSTR)&lpMsgBuf, 0, NULL );
             LocalFree( (HLOCAL)lpMsgBuf );
-#elif defined( _X360 )
-            DWORD error = GetLastError();
-            Msg( "Error(%d) - Failed to load %s:\n", error, pModuleName );
-#else
-            Msg( "Failed to load %s: %s\n", pModuleName, dlerror() );
-#endif // _WIN32
         }
 #endif // DEBUG
     }
 
-#if !defined(LINUX)
     // If running in the debugger, assume debug binaries are okay, otherwise they must run with -allowdebug
-    if ( Sys_GetProcAddress( hDLL, "BuiltDebug" ) )
-    {
-        if ( !IsX360() && hDLL &&
-             !CommandLine()->FindParm( "-allowdebug" ) &&
-             !Sys_IsDebuggerPresent() )
-        {
+    if( hDLL && Sys_GetProcAddress( hDLL, "BuiltDebug" ) ) {
+        if( !CommandLine()->FindParm( "-allowdebug" ) && !Sys_IsDebuggerPresent() ) {
             Error( "Module %s is a debug build\n", pModuleName );
         }
 
         DevWarning( "Module %s is a debug build\n", pModuleName );
 
-        if ( !s_bRunningWithDebugModules )
-        {
+        if( !s_bRunningWithDebugModules ) {
             s_bRunningWithDebugModules = true;
-
-#if 0 //def IS_WINDOWS_PC
-            char chMemoryName[ MAX_PATH ];
-            DebugKernelMemoryObjectName( chMemoryName );
-
-            (void) CreateFileMapping( INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 1024, chMemoryName );
-            // Created a shared memory kernel object specific to process id
-            // Existence of this object indicates that we have debug modules loaded
-#endif
         }
     }
-#endif
 
-    return reinterpret_cast<CSysModule *>(hDLL);
+    return (CSysModule *)hDLL;
 }
 
 //-----------------------------------------------------------------------------
@@ -375,20 +231,6 @@ CSysModule *Sys_LoadModule( const char *pModuleName, Sys_Flags flags /* = SYS_NO
 //-----------------------------------------------------------------------------
 bool Sys_RunningWithDebugModules()
 {
-    if ( !s_bRunningWithDebugModules )
-    {
-#if 0 //def IS_WINDOWS_PC
-        char chMemoryName[ MAX_PATH ];
-        DebugKernelMemoryObjectName( chMemoryName );
-
-        HANDLE hObject = OpenFileMapping( FILE_MAP_READ, FALSE, chMemoryName );
-        if ( hObject && hObject != INVALID_HANDLE_VALUE )
-        {
-            CloseHandle( hObject );
-            s_bRunningWithDebugModules = true;
-        }
-#endif
-    }
     return s_bRunningWithDebugModules;
 }
 
@@ -400,16 +242,9 @@ bool Sys_RunningWithDebugModules()
 //-----------------------------------------------------------------------------
 void Sys_UnloadModule( CSysModule *pModule )
 {
-    if ( !pModule )
+    if( !pModule )
         return;
-
-    HMODULE hDLL = reinterpret_cast<HMODULE>(pModule);
-
-#ifdef _WIN32
-    FreeLibrary( hDLL );
-#elif defined(POSIX)
-    dlclose((void *)hDLL);
-#endif
+    FreeLibrary( (HMODULE)pModule );
 }
 
 //-----------------------------------------------------------------------------
@@ -420,22 +255,9 @@ void Sys_UnloadModule( CSysModule *pModule )
 //-----------------------------------------------------------------------------
 CreateInterfaceFn Sys_GetFactory( CSysModule *pModule )
 {
-    if ( !pModule )
+    if( !pModule )
         return NULL;
-
-    HMODULE hDLL = reinterpret_cast<HMODULE>(pModule);
-#ifdef _WIN32
-    return reinterpret_cast<CreateInterfaceFn>(GetProcAddress( hDLL, CREATEINTERFACE_PROCNAME ));
-#elif defined(POSIX)
-    // Linux gives this error:
-    //../public/interface.cpp: In function `IBaseInterface *(*Sys_GetFactory
-    //(CSysModule *)) (const char *, int *)':
-    //../public/interface.cpp:154: ISO C++ forbids casting between
-    //pointer-to-function and pointer-to-object
-    //
-    // so lets get around it :)
-    return (CreateInterfaceFn)(GetProcAddress( (void *)hDLL, CREATEINTERFACE_PROCNAME ));
-#endif
+    return (CreateInterfaceFn)GetProcAddress( (HMODULE)pModule, CREATEINTERFACE_PROCNAME );
 }
 
 //-----------------------------------------------------------------------------
@@ -454,12 +276,7 @@ CreateInterfaceFn Sys_GetFactoryThis( void )
 //-----------------------------------------------------------------------------
 CreateInterfaceFn Sys_GetFactory( const char *pModuleName )
 {
-#ifdef _WIN32
-    return static_cast<CreateInterfaceFn>( Sys_GetProcAddress( pModuleName, CREATEINTERFACE_PROCNAME ) );
-#elif defined(POSIX)
-    // see Sys_GetFactory( CSysModule *pModule ) for an explanation
-    return (CreateInterfaceFn)( Sys_GetProcAddress( pModuleName, CREATEINTERFACE_PROCNAME ) );
-#endif
+    return (CreateInterfaceFn)Sys_GetProcAddress( pModuleName, CREATEINTERFACE_PROCNAME );
 }
 
 //-----------------------------------------------------------------------------
@@ -474,24 +291,22 @@ bool Sys_LoadInterface(
     void **pOutInterface )
 {
     CSysModule *pMod = Sys_LoadModule( pModuleName );
-    if ( !pMod )
+    if( !pMod )
         return false;
 
     CreateInterfaceFn fn = Sys_GetFactory( pMod );
-    if ( !fn )
-    {
+    if( !fn ) {
         Sys_UnloadModule( pMod );
         return false;
     }
 
     *pOutInterface = fn( pInterfaceVersionName, NULL );
-    if ( !( *pOutInterface ) )
-    {
+    if( !( *pOutInterface ) ) {
         Sys_UnloadModule( pMod );
         return false;
     }
 
-    if ( pOutModule )
+    if( pOutModule )
         *pOutModule = pMod;
 
     return true;
@@ -504,10 +319,7 @@ bool Sys_LoadInterface(
 //  then it'll call Sys_UnloadModule on the module so that the refcount is decremented
 //  and the .dll actually can unload from memory.
 //-----------------------------------------------------------------------------
-CDllDemandLoader::CDllDemandLoader( char const *pchModuleName ) :
-    m_pchModuleName( pchModuleName ),
-    m_hModule( 0 ),
-    m_bLoadAttempted( false )
+CDllDemandLoader::CDllDemandLoader( char const *pchModuleName ) : m_pchModuleName( pchModuleName ), m_hModule( 0 ), m_bLoadAttempted( false )
 {
 }
 
@@ -518,14 +330,12 @@ CDllDemandLoader::~CDllDemandLoader()
 
 CreateInterfaceFn CDllDemandLoader::GetFactory()
 {
-    if ( !m_hModule && !m_bLoadAttempted )
-    {
+    if( !m_hModule && !m_bLoadAttempted ) {
         m_bLoadAttempted = true;
         m_hModule = Sys_LoadModule( m_pchModuleName );
     }
 
-    if ( !m_hModule )
-    {
+    if( !m_hModule ) {
         return NULL;
     }
 
@@ -534,8 +344,7 @@ CreateInterfaceFn CDllDemandLoader::GetFactory()
 
 void CDllDemandLoader::Unload()
 {
-    if ( m_hModule )
-    {
+    if( m_hModule ) {
         Sys_UnloadModule( m_hModule );
         m_hModule = 0;
     }

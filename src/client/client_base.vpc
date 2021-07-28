@@ -56,6 +56,30 @@ $Project
 {
     $Folder "Source Files"
     {
+        $Folder "OpenAL"
+        {
+            $File "$GAMECLIENT\openal\al_buffer.cpp"
+            $File "$GAMECLIENT\openal\al_buffer.h"
+            $File "$GAMECLIENT\openal\al_decoder.cpp"
+            $File "$GAMECLIENT\openal\al_decoder.h"
+            $File "$GAMECLIENT\openal\al_decoder_mp3.cpp"
+            $File "$GAMECLIENT\openal\al_decoder_mp3.h"
+            $File "$GAMECLIENT\openal\al_decoder_wav.cpp"
+            $File "$GAMECLIENT\openal\al_decoder_wav.h"
+            $File "$GAMECLIENT\openal\al_sound.cpp"
+            $File "$GAMECLIENT\openal\al_sound.h"
+            $File "$GAMECLIENT\openal\al_sound_stream.cpp"
+            $File "$GAMECLIENT\openal\al_sound_stream.h"
+            $File "$GAMECLIENT\openal\al_source.cpp"
+            $File "$GAMECLIENT\openal\al_source.h"
+            $File "$GAMECLIENT\openal\al_source_pool.cpp"
+            $File "$GAMECLIENT\openal\al_source_pool.h"
+            $File "$GAMECLIENT\openal\al_system.cpp"
+            $File "$GAMECLIENT\openal\al_system.h"
+            $File "$GAMECLIENT\openal\al_utils.cpp"
+            $File "$GAMECLIENT\openal\al_utils.h"
+        }
+        
         $File "$GAMECLIENT\AnimateSpecificTextureProxy.cpp"
         $File "$GAMECLIENT\C_MaterialModifyControl.cpp"
         $File "$GAMECLIENT\C_WaterLODControl.cpp"
@@ -920,8 +944,8 @@ $Project
         $File "$GITROOT\src\public\gamebspfile.h"
         $File "$GITROOT\src\public\gametrace.h"
         $File "$GITROOT\src\public\globalvars_base.h"
-        $File "$GITROOT\src\public\haptics\haptic_utils.h" [$WIN32]
-        $File "$GITROOT\src\public\haptics\ihaptics.h" [$WIN32]
+        $File "$GITROOT\src\public\haptics\haptic_utils.h"
+        $File "$GITROOT\src\public\haptics\ihaptics.h"
         $File "$GITROOT\src\public\iachievementmgr.h"
         $File "$GITROOT\src\public\icliententity.h"
         $File "$GITROOT\src\public\icliententitylist.h"
@@ -1111,6 +1135,7 @@ $Project
         $Lib "$GITROOT\lib\vtf"
         $Lib "$GITROOT\lib\libcurl"
         $Lib "$GITROOT\lib\libz"
+        $Lib "$GITROOT\lib\salad"
         $Lib "$GITROOT\lib\steam_api"
     }
 }

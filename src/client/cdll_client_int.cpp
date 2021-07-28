@@ -105,6 +105,7 @@
 #include "mumble.h"
 #include "discord_rpc_client.h"
 #include "novelui/novelui.h"
+#include "openal/al_system.h"
 
 // NVNT includes
 #include "hud_macros.h"
@@ -869,6 +870,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
     vgui::VGui_InitMatSysInterfacesList( "ClientDLL", &appSystemFactory, 1 );
 
     IGameSystem::Add( GameStringSystem() ); // Client Leaf System has to be initialized first, since DetailObjectSystem uses it
+    IGameSystem::Add( g_pOpenAL ); // OpenAL has to be initialized prior to the SoundEmitterSystem
     IGameSystem::Add( SoundEmitterSystem() );
     IGameSystem::Add( ToolFrameworkClientSystem() );
     IGameSystem::Add( ClientLeafSystem() );
