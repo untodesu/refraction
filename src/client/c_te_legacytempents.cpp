@@ -1867,8 +1867,8 @@ void CTempEnts::MuzzleFlash( const Vector& pos1, const QAngle& angles, int type,
         break;
 
     default:
-        // There's no supported muzzle flash for the type specified!
-        Assert(0);
+        // RPG was Assert(0)-ing here
+        DevWarning( "CTempEnts::MuzzleFlash: There's no supported muzzle flash for the type specified!\n" );
         break;
     }
 

@@ -1535,7 +1535,7 @@ void CWeaponRPG::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatChara
             // NPCs always get a grace period
             m_hMissile->SetGracePeriod( 0.5 );
 
-            pOperator->DoMuzzleFlash();
+            //pOperator->DoMuzzleFlash();
 
             WeaponSound( WPS_PRIMARY_NPC );
 
