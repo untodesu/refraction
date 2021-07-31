@@ -1,0 +1,82 @@
+macro "GIT_ROOT" "../.."
+
+include "$GIT_ROOT$/qpc_scripts/source_lib_base.qpc"
+
+config
+{
+    compile
+    {
+        defines
+        {
+            "MATHLIB_LIB"
+        }
+        
+        inc_dirs
+        {
+            "$PUB_DIR$/mathlib"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$SRC_DIR$/mathlib/color_conversion.cpp"
+        "$SRC_DIR$/mathlib/halton.cpp"
+        "$SRC_DIR$/mathlib/lightdesc.cpp"
+        "$SRC_DIR$/mathlib/mathlib_base.cpp"
+        "$SRC_DIR$/mathlib/powsse.cpp"
+        "$SRC_DIR$/mathlib/sparse_convolution_noise.cpp"
+        "$SRC_DIR$/mathlib/sseconst.cpp"
+        "$SRC_DIR$/mathlib/sse.cpp"
+        "$SRC_DIR$/mathlib/ssenoise.cpp"
+        "$SRC_DIR$/mathlib/3dnow.cpp"
+        "$SRC_DIR$/mathlib/anorms.cpp"
+        "$SRC_DIR$/mathlib/bumpvects.cpp"
+        "$SRC_DIR$/mathlib/IceKey.cpp"
+        "$SRC_DIR$/mathlib/imagequant.cpp"
+        "$SRC_DIR$/mathlib/polyhedron.cpp"
+        "$SRC_DIR$/mathlib/quantize.cpp"
+        "$SRC_DIR$/mathlib/randsse.cpp"
+        "$SRC_DIR$/mathlib/spherical.cpp"
+        "$SRC_DIR$/mathlib/simdvectormatrix.cpp"
+        "$SRC_DIR$/mathlib/vector.cpp"
+        "$SRC_DIR$/mathlib/vmatrix.cpp"
+        "$SRC_DIR$/mathlib/almostequal.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        folder "public"
+        {
+            "$PUB_DIR$/mathlib/amd3dx.h"
+            "$PUB_DIR$/mathlib/anorms.h"
+            "$PUB_DIR$/mathlib/bumpvects.h"
+            "$PUB_DIR$/mathlib/compressed_3d_unitvec.h"
+            "$PUB_DIR$/mathlib/compressed_light_cube.h"
+            "$PUB_DIR$/mathlib/compressed_vector.h"
+            "$PUB_DIR$/mathlib/halton.h"
+            "$PUB_DIR$/mathlib/IceKey.H"
+            "$PUB_DIR$/mathlib/lightdesc.h"
+            "$PUB_DIR$/mathlib/math_pfns.h"
+            "$PUB_DIR$/mathlib/mathlib.h"
+            "$PUB_DIR$/mathlib/noise.h"
+            "$PUB_DIR$/mathlib/polyhedron.h"
+            "$PUB_DIR$/mathlib/quantize.h"
+            "$PUB_DIR$/mathlib/simdvectormatrix.h"
+            "$PUB_DIR$/mathlib/spherical_geometry.h"
+            "$PUB_DIR$/mathlib/ssemath.h"
+            "$PUB_DIR$/mathlib/ssequaternion.h"
+            "$PUB_DIR$/mathlib/vector.h"
+            "$PUB_DIR$/mathlib/vector2d.h"
+            "$PUB_DIR$/mathlib/vector4d.h"
+            "$PUB_DIR$/mathlib/vmatrix.h"
+            "$PUB_DIR$/mathlib/vplane.h"
+        }
+        
+        "$SRC_DIR$/mathlib/noisedata.h"
+        "$SRC_DIR$/mathlib/sse.h"
+        "$SRC_DIR$/mathlib/3dnow.h"
+    }
+}

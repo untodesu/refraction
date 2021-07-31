@@ -1,0 +1,2 @@
+macro "CONSOLE_APP_PROJECT" "1"
+include "$GIT_ROOT$/qpc_scripts/source_exe_base.qpc"

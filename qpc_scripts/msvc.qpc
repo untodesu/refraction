@@ -1,0 +1,66 @@
+config
+{
+    general
+    {
+        // TODO: VS2017 support
+        compiler "msvc_120_xp"
+    }
+
+    compile
+    {
+        pch "none"
+        
+        defines
+        {
+            "COMPILER_MSVC32" "PLATFORM_WINDOWS_PC32" "WIN32" "_WIN32" "WINDOWS" "_WINDOWS" "COMPILER_MSVC" "MBCS"
+            "_ALLOW_RUNTIME_LIBRARY_MISMATCH" "_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH" "_ALLOW_MSC_VER_MISMATCH"
+            "_CRT_SECURE_NO_DEPRECATE" "_CRT_NONSTDC_NO_DEPRECATE" "_CRT_SECURE_NO_WARNINGS"
+        }
+        
+        options
+        {
+            "/ignore:4316" "/ignore:4594" "/ignore:4457" "/ignore:4456" "/ignore:4458" "/ignore:4459" "/ignore:4624" "/ignore:4577" "/Gw"
+            "/arch:SSE"
+            "/Oy-"                                              [$NOFPO$]
+            "/ZI" "/Od" "/MTd"                                  [$DEBUG$]
+            "/d2Zi+" "/O2" "/Ob2" "/Oi" "/Ot" "/MT" "/Gy" "/Zi" [$RELEASE$]
+            "/W4" "/GF" "/fp:fast" "/GR" "/errorReport:prompt" "/MP" "/Zc:wchar_t" "/Zc:forScope"
+        }
+    }
+    
+    link
+    {
+        libs
+        {
+            "user32.lib"
+            "shell32.lib"
+        }
+        
+        options
+        {
+            "/NOLOGO"
+            "/ignore:4221"
+            "/SUBSYSTEM:CONSOLE" [$CONSOLE_APP_PROJECT$]
+            "/SUBSYSTEM:WINDOWS" [!$CONSOLE_APP_PROJECT$]
+        }
+    }
+
+    link [!$STATIC_LIB_PROJECT$]
+    {
+        ignore_libs
+        {
+            "libcmt"    [$DEBUG$]
+            "libcmtd"   [$RELEASE$]
+            "libc"
+            "libcd"
+        }
+        
+        options
+        {
+            "/INCREMENTAL:NO"   [$RELEASE$]
+            "/OPT:ICF"          [$RETAIL$]
+            "/OPT:NOICF"        [!$RETAIL$]
+            "/DEBUG" "/ERRORREPORT:PROMPT" "/SAFESEH:NO"
+        }
+    }
+}

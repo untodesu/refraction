@@ -1,0 +1,145 @@
+macro "GIT_ROOT" "../.."
+
+include "$GIT_ROOT$/qpc_scripts/source_lib_base.qpc"
+
+config
+{
+    compile
+    {
+        defines
+        {
+            "TIER1_STATIC_LIB"
+        }
+    }
+    
+    link
+    {
+        libs
+        {
+            "Rpcrt4"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$SRC_DIR$/tier1/bitbuf.cpp"
+        "$SRC_DIR$/tier1/newbitbuf.cpp"
+        "$SRC_DIR$/tier1/byteswap.cpp"
+        "$SRC_DIR$/tier1/characterset.cpp"
+        "$SRC_DIR$/tier1/checksum_crc.cpp"
+        "$SRC_DIR$/tier1/checksum_md5.cpp"
+        "$SRC_DIR$/tier1/checksum_sha1.cpp"
+        "$SRC_DIR$/tier1/commandbuffer.cpp"
+        "$SRC_DIR$/tier1/convar.cpp"
+        "$SRC_DIR$/tier1/datamanager.cpp"
+        "$SRC_DIR$/tier1/diff.cpp"
+        "$SRC_DIR$/tier1/generichash.cpp"
+        "$SRC_DIR$/tier1/ilocalize.cpp"
+        "$SRC_DIR$/tier1/interface.cpp"
+        "$SRC_DIR$/tier1/KeyValues.cpp"
+        "$SRC_DIR$/tier1/kvpacker.cpp"
+        "$SRC_DIR$/tier1/lzmaDecoder.cpp"
+        "$SRC_DIR$/tier1/mempool.cpp"
+        "$SRC_DIR$/tier1/memstack.cpp"
+        "$SRC_DIR$/tier1/NetAdr.cpp"
+        "$SRC_DIR$/tier1/splitstring.cpp"
+        "$SRC_DIR$/tier1/rangecheckedvar.cpp"
+        "$SRC_DIR$/tier1/reliabletimer.cpp"
+        "$SRC_DIR$/tier1/stringpool.cpp"
+        "$SRC_DIR$/tier1/strtools.cpp"
+        "$SRC_DIR$/tier1/tier1.cpp"
+        "$SRC_DIR$/tier1/tokenreader.cpp"
+        "$SRC_DIR$/tier1/sparsematrix.cpp"
+        "$SRC_DIR$/tier1/uniqueid.cpp"
+        "$SRC_DIR$/tier1/utlbuffer.cpp"
+        "$SRC_DIR$/tier1/utlbufferutil.cpp"
+        "$SRC_DIR$/tier1/utlstring.cpp"
+        "$SRC_DIR$/tier1/utlsymbol.cpp"
+        "$SRC_DIR$/tier1/snappy.cpp"
+        "$SRC_DIR$/tier1/snappy-sinksource.cpp"
+        "$SRC_DIR$/tier1/snappy-stubs-internal.cpp"
+        
+        "$SRC_DIR$/tier1/processor_detect.cpp"
+        {
+            options
+            {
+                "/EHsc"
+            }
+        }
+    }
+    
+    folder "Header Files"
+    {
+        folder "public"
+        {
+            "$PUB_DIR$/tier1/bitbuf.h"
+            "$PUB_DIR$/tier1/byteswap.h"
+            "$PUB_DIR$/tier1/callqueue.h"
+            "$PUB_DIR$/tier1/characterset.h"
+            "$PUB_DIR$/tier1/checksum_crc.h"
+            "$PUB_DIR$/tier1/checksum_md5.h"
+            "$PUB_DIR$/tier1/checksum_sha1.h"
+            "$PUB_DIR$/tier1/CommandBuffer.h"
+            "$PUB_DIR$/tier1/convar.h"
+            "$PUB_DIR$/tier1/datamanager.h"
+            "$PUB_DIR$/datamap.h"
+            "$PUB_DIR$/tier1/delegates.h"
+            "$PUB_DIR$/tier1/diff.h"
+            "$PUB_DIR$/tier1/fmtstr.h"
+            "$PUB_DIR$/tier1/functors.h"
+            "$PUB_DIR$/tier1/generichash.h"
+            "$PUB_DIR$/tier1/iconvar.h"
+            "$PUB_DIR$/tier1/ilocalize.h"
+            "$PUB_DIR$/tier1/interface.h"
+            "$PUB_DIR$/tier1/KeyValues.h"
+            "$PUB_DIR$/tier1/kvpacker.h"
+            "$PUB_DIR$/tier1/lzmaDecoder.h"
+            "$PUB_DIR$/tier1/lzss.h"
+            "$PUB_DIR$/tier1/mempool.h"
+            "$PUB_DIR$/tier1/memstack.h"
+            "$PUB_DIR$/tier1/netadr.h"
+            "$PUB_DIR$/tier1/processor_detect.h"
+            "$PUB_DIR$/tier1/rangecheckedvar.h"
+            "$PUB_DIR$/tier1/refcount.h"
+            "$PUB_DIR$/tier1/smartptr.h"
+            "$PUB_DIR$/tier1/snappy.h"
+            "$PUB_DIR$/tier1/snappy-sinksource.h"
+            "$PUB_DIR$/tier1/stringpool.h"
+            "$PUB_DIR$/tier1/strtools.h"
+            "$PUB_DIR$/tier1/tier1.h"
+            "$PUB_DIR$/tier1/tokenreader.h"
+            "$PUB_DIR$/tier1/uniqueid.h"
+            "$PUB_DIR$/tier1/utlbidirectionalset.h"
+            "$PUB_DIR$/tier1/utlblockmemory.h"
+            "$PUB_DIR$/tier1/utlbuffer.h"
+            "$PUB_DIR$/tier1/utlbufferutil.h"
+            "$PUB_DIR$/tier1/utlcommon.h"
+            "$PUB_DIR$/tier1/utldict.h"
+            "$PUB_DIR$/tier1/utlenvelope.h"
+            "$PUB_DIR$/tier1/utlfixedmemory.h"
+            "$PUB_DIR$/tier1/utlhandletable.h"
+            "$PUB_DIR$/tier1/utlhash.h"
+            "$PUB_DIR$/tier1/utlhashtable.h"
+            "$PUB_DIR$/tier1/utllinkedlist.h"
+            "$PUB_DIR$/tier1/utlmap.h"
+            "$PUB_DIR$/tier1/utlmemory.h"
+            "$PUB_DIR$/tier1/utlmultilist.h"
+            "$PUB_DIR$/tier1/utlpriorityqueue.h"
+            "$PUB_DIR$/tier1/utlqueue.h"
+            "$PUB_DIR$/tier1/utlrbtree.h"
+            "$PUB_DIR$/tier1/UtlSortVector.h"
+            "$PUB_DIR$/tier1/utlstack.h"
+            "$PUB_DIR$/tier1/utlstring.h"
+            "$PUB_DIR$/tier1/UtlStringMap.h"
+            "$PUB_DIR$/tier1/utlsymbol.h"
+            "$PUB_DIR$/tier1/utlsymbollarge.h"
+            "$PUB_DIR$/tier1/utlvector.h"
+        }
+        
+        "$SRC_DIR$/tier1/snappy-internal.h"
+        "$SRC_DIR$/tier1/snappy-stubs-internal.h"
+    }
+}

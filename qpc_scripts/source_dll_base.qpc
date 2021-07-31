@@ -1,0 +1,17 @@
+include "$GIT_ROOT$/qpc_scripts/source_dll_exe_base.qpc"
+
+config
+{
+    general
+    {
+        config_type "dynamic_lib"
+    }
+    
+    compile
+    {
+        defines
+        {
+            "_USRDLL"
+        }
+    }
+}

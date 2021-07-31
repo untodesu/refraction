@@ -1,0 +1,44 @@
+macro "GIT_ROOT" "../../.."
+
+macro "OUT_BIN_DIR" "$GIT_ROOT$/devtools/bin"
+macro "OUT_BIN_NAME" "vvis"
+
+include "$GIT_ROOT$/qpc_scripts/source_exe_con_base.qpc"
+
+config
+{
+    compile
+    {
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+        }
+        
+        pch "use"
+        pch_file "StdAfx.h"
+        pch_out "$(IntDir)/vvis_launcher.pch"
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$SRC_DIR$/tools/vvis_launcher/vvis_launcher.cpp"
+        
+        "$SRC_DIR$/tools/vvis_launcher/StdAfx.cpp"
+        {
+            pch "create"
+        }
+    }
+    
+    folder "Header Files"
+    {
+        folder "public"
+        {
+            "$PUB_DIR$/tier1/interface.h"
+        }
+        
+        "$SRC_DIR$/tools/vvis_launcher/StdAfx.h"
+    }
+}

@@ -1,0 +1,40 @@
+macro "OUT_BIN_DIR" "$BUILD_DIR$"               [!$OUT_BIN_DIR$]
+macro "OUT_BIN_NAME" "$PROJECT_SCRIPT_NAME$"    [!$OUT_BIN_NAME$]
+
+include "$GIT_ROOT$/qpc_scripts/source_base.qpc"
+
+config
+{
+    link
+    {
+        lib_dirs
+        {
+            "$LIB_DIR$"
+        }
+        
+        libs
+        {
+            "tier0"
+            "tier1"
+            "vstdlib"
+        }
+    }
+}
+
+requires
+{
+    "tier0"
+    "tier1"
+    "vstdlib"
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$PUB_DIR$/tier0/memoverride.cpp"
+        {
+            pch "none"
+        }
+    }
+}

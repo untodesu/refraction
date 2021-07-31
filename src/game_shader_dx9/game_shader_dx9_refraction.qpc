@@ -1,0 +1,38 @@
+macro "PROJECT_NAME"    "refraction game_shader_dx9"
+macro "GIT_ROOT"        "../.."
+macro "GAME_NAME"       "refraction"
+
+include "$GIT_ROOT$/src/game_shader_dx9/game_shader_dx9_base.qpc"
+
+files
+{
+    folder "Source Files"
+    {
+        folder "HLSL"
+        {
+            "$SRC_DIR$/game_shader_dx9/re_flashlight_ps30.fxc"
+            "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_flashlight_vs30.fxc"
+            "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_vs30.fxc"
+            "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_ps30.fxc"
+            "$SRC_DIR$/game_shader_dx9/re_lensdistortion_vs30.fxc"
+            "$SRC_DIR$/game_shader_dx9/re_lensdistortion_ps30.fxc"
+        }
+        
+        "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric.cpp"
+        "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_helper.cpp"
+        "$SRC_DIR$/game_shader_dx9/re_lensdistortion.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        folder "HLSL"
+        {
+            "$SRC_DIR$/game_shader_dx9/common_lightmappedgeneric_fxc.h"
+            "$SRC_DIR$/game_shader_dx9/common_vertexlitgeneric_dx9.h"
+        }
+        
+        "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_helper.h"
+    }
+    
+    "$SRC_DIR$/game_shader_dx9/build_refraction_shaders.bat"
+}

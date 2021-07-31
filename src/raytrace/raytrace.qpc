@@ -1,0 +1,24 @@
+macro "GIT_ROOT" "../.."
+
+include "$GIT_ROOT$/qpc_scripts/source_lib_base.qpc"
+
+config
+{
+    compile
+    {
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$GIT_ROOT$/src/raytrace/raytrace.cpp"
+        "$GIT_ROOT$/src/raytrace/trace2.cpp"
+        "$GIT_ROOT$/src/raytrace/trace3.cpp"
+    }
+}

@@ -1,0 +1,69 @@
+macro "OUT_BIN_NAME" "game_shader_dx9"
+macro "OUT_BIN_DIR" "$GIT_ROOT$/game/$GAME_NAME$/bin"
+
+include "$GIT_ROOT$/qpc_scripts/source_dll_base.qpc"
+
+config
+{
+    compile
+    {
+        defines
+        {
+            "STDSHADER_DX9_DLL_EXPORT"
+            "FAST_MATERIALVAR_ACCESS"
+            "GAME_SHADER_DLL"
+            "USE_ACTUAL_DX"
+        }
+        
+        inc_dirs
+        {
+            "$SRC_DIR$/game_shader_dx9/include"
+        }
+    }
+    
+    link
+    {
+        libs
+        {
+            "mathlib"
+            "shaderlib"
+            "version"
+            "winmm"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        folder "HLSL"
+        {
+        }
+        
+        "$SRC_DIR$/game_shader_dx9/BaseVSShader.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        folder "HLSL"
+        {
+            "$SRC_DIR$/game_shader_dx9/common_fxc.h"
+            "$SRC_DIR$/game_shader_dx9/common_ps_fxc.h"
+            "$SRC_DIR$/game_shader_dx9/common_vs_fxc.h"
+        }
+        
+        "$SRC_DIR$/game_shader_dx9/common_hlsl_cpp_consts.h"
+        "$SRC_DIR$/game_shader_dx9/BaseVSShader.h"
+        "$SRC_DIR$/game_shader_dx9/commandbuilder.h"
+        "$SRC_DIR$/game_shader_dx9/shader_constant_register_map.h"
+        "$SRC_DIR$/game_shader_dx9/cpp_shader_constant_register_map.h"
+    }
+    
+    "$SRC_DIR$/game_shader_dx9/build_shaders.bat"
+    "$SRC_DIR$/game_shader_dx9/clean.bat"
+    "$SRC_DIR$/game_shader_dx9/cleantemps.bat"
+    
+    "$SRC_DIR$/game_shader_dx9/stdshader_dx9_20b.txt"
+    "$SRC_DIR$/game_shader_dx9/stdshader_dx9_30.txt"
+}

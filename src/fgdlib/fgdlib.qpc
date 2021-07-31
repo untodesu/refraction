@@ -1,0 +1,38 @@
+macro "GIT_ROOT" "../.."
+
+include "$GIT_ROOT$/qpc_scripts/source_lib_base.qpc"
+
+config
+{
+    compile
+    {
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$SRC_DIR$/fgdlib/gamedata.cpp"
+        "$SRC_DIR$/fgdlib/gdclass.cpp"
+        "$SRC_DIR$/fgdlib/gdvar.cpp"
+        "$SRC_DIR$/fgdlib/inputoutput.cpp"
+        "$SRC_DIR$/fgdlib/wckeyvalues.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        "$PUB_DIR$/fgdlib/fgdlib.h"
+        "$PUB_DIR$/fgdlib/gamedata.h"
+        "$PUB_DIR$/fgdlib/gdclass.h"
+        "$PUB_DIR$/fgdlib/gdvar.h"
+        "$PUB_DIR$/fgdlib/helperinfo.h"
+        "$PUB_DIR$/fgdlib/ieditortexture.h"
+        "$PUB_DIR$/fgdlib/inputoutput.h"
+        "$PUB_DIR$/fgdlib/wckeyvalues.h"
+    }
+}

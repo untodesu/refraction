@@ -1,0 +1,34 @@
+configurations
+{
+    "Debug"
+    "Release"
+}
+
+group "refraction" [$REFRACTION$]
+{
+    "src/client/client_refraction.qpc"
+    "src/server/server_refraction.qpc"
+    "src/game_shader_dx9/game_shader_dx9_refraction.qpc"
+}
+
+group "libs"
+{
+    "src/fgdlib/fgdlib.qpc"
+    "src/mathlib/mathlib.qpc"
+    "src/tier1/tier1.qpc"
+    "src/vgui2/vgui_controls/vgui_controls.qpc"
+}
+
+group "tools"
+{
+    "src/tools/vbsp/vbsp.qpc"
+    "src/tools/vrad_dll/vrad_dll.qpc"
+    "src/tools/vrad_launcher/vrad_launcher.qpc"
+    "src/tools/vvis_dll/vvis_dll.qpc"
+    "src/tools/vvis_launcher/vvis_launcher.qpc"
+}
+
+group "gamedlls"
+{
+    contains "refraction" [$REFRACTION$]
+}

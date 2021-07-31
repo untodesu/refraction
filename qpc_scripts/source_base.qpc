@@ -1,0 +1,52 @@
+macro "NOFPO" "1" [$RELEASE$]
+
+macro "LIB_DIR" "$GIT_ROOT$/lib"
+macro "SRC_DIR" "$GIT_ROOT$/src"
+macro "PUB_DIR" "$GIT_ROOT$/public"
+
+macro "GAME_NAME"
+
+macro "OUT_DIR" "$OUT_BIN_DIR$" [!$OUT_DIR$ && !$STATIC_LIB_PROJECT$]
+macro "OUT_DIR" "$OUT_LIB_DIR$" [!$OUT_DIR$ &&  $STATIC_LIB_PROJECT$]
+
+macro "OUT_NAME" "$OUT_BIN_NAME$" [!$OUT_NAME$ && !$STATIC_LIB_PROJECT$]
+macro "OUT_NAME" "$OUT_LIB_NAME$" [!$OUT_NAME$ &&  $STATIC_LIB_PROJECT$]
+
+macro "BUILD_DIR" "$CONFIG$/$GAME_NAME$"
+
+include "$GIT_ROOT$/qpc_scripts/msvc.qpc"
+
+config
+{
+    general
+    {
+        out_dir "$OUT_DIR$"
+        out_name "$OUT_NAME$"
+        build_dir "$BUILD_DIR$"
+        language "cpp"
+    }
+    
+    compile
+    {
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+            "$PUB_DIR$"
+            "$PUB_DIR$/tier0"
+            "$PUB_DIR$/tier1"
+        }
+        
+        defines
+        {
+            "STAGING_ONLY"                                  [$STAGING_ONLY$]
+            "_HAS_ITERATOR_DEBUGGING=0" "_DEBUG" "DEBUG"    [$DEBUG$]
+            "NDEBUG"                                        [$RELEASE$]
+            "RELEASE_ASSERTS"                               [$RELEASE$ && $RELEASE_ASSERTS$]
+            "RETAIL_ASSERTS"                                [$RETAIL$ && $RETAIL_ASSERTS$]
+            "DEV_BUILD"                                     [!$PUBLISH$]
+            "_PROFILE"                                      [$PROFILE$ && !$RETAIL]
+            "FRAME_POINTER_OMISSION_DISABLED" "VPC" "RAD_TELEMETRY_DISABLED"
+            "_X86_" "_x86_" "PLATFORM_32BITS" "_I386_" "_I386" "_DLL_EXT=$EXT_DLL$" "DLLNAME=$OUT_BIN_NAME$"
+        }
+    }
+}

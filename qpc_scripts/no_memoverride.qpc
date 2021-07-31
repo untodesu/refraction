@@ -1,0 +1,7 @@
+files
+{
+    folder "Source Files"
+    {
+        - "$PUB_DIR$/tier0/memoverride.cpp"
+    }
+}

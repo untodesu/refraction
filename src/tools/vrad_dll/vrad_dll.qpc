@@ -1,0 +1,228 @@
+macro "GIT_ROOT" "../../.."
+
+macro "OUT_BIN_DIR" "$GIT_ROOT$/devtools/bin"
+macro "OUT_BIN_NAME" "vrad_dll"
+
+include "$GIT_ROOT$/qpc_scripts/source_dll_base.qpc"
+
+config
+{
+    compile
+    {
+        defines
+        {
+            "MPI"
+            "PROTECTED_THINGS_DISABLE"
+            "VRAD"
+        }
+        
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+            "$SRC_DIR$/vmpi"
+        }
+    }
+    
+    link
+    {
+        libs
+        {
+            "bitmap"
+            "mathlib"
+            "raytrace"
+            "tier2"
+            "vmpi"
+            "vtf"
+            "ws2_32"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        folder "common"
+        {
+            "$PUB_DIR$/ChunkFile.cpp"
+            "$PUB_DIR$/DispColl_Common.cpp"
+            "$PUB_DIR$/builddisp.cpp"
+            "$SRC_DIR$/common/bsplib.cpp"
+            "$SRC_DIR$/common/cmdlib.cpp"
+            "$SRC_DIR$/common/map_shared.cpp"
+            "$SRC_DIR$/common/polylib.cpp"
+            "$SRC_DIR$/common/scriplib.cpp"
+            "$SRC_DIR$/common/threads.cpp"
+            "$SRC_DIR$/common/tools_minidump.cpp"
+            "$SRC_DIR$/common/tools_minidump.h"
+        }
+        
+        folder "public"
+        {
+            "$PUB_DIR$/CollisionUtils.cpp"
+            "$PUB_DIR$/ScratchPad3D.cpp"
+            "$PUB_DIR$/ScratchPadUtils.cpp"
+            "$PUB_DIR$/filesystem_helpers.cpp"
+        }
+        
+        "$PUB_DIR$/BSPTreeData.cpp"
+        "$PUB_DIR$/disp_common.cpp"
+        "$PUB_DIR$/disp_powerinfo.cpp"
+        "$PUB_DIR$/loadcmdline.cpp"
+        "$PUB_DIR$/lumpfiles.cpp"
+        "$PUB_DIR$/zip_utils.cpp"
+        "$SRC_DIR$/common/MySqlDatabase.cpp"
+        "$SRC_DIR$/common/mpi_stats.cpp"
+        "$SRC_DIR$/common/pacifier.cpp"
+        "$SRC_DIR$/common/physdll.cpp"
+        "$SRC_DIR$/common/utilmatlib.cpp"
+        "$SRC_DIR$/common/vmpi_tools_shared.cpp"
+        "$SRC_DIR$/common/vmpi_tools_shared.h"
+        "$SRC_DIR$/tools/vrad_dll/SampleHash.cpp"
+        "$SRC_DIR$/tools/vrad_dll/VRAD_DispColl.cpp"
+        "$SRC_DIR$/tools/vrad_dll/VRadDisps.cpp"
+        "$SRC_DIR$/tools/vrad_dll/VRadStaticProps.cpp"
+        "$SRC_DIR$/tools/vrad_dll/VradDetailProps.cpp"
+        "$SRC_DIR$/tools/vrad_dll/disp_vrad.cpp"
+        "$SRC_DIR$/tools/vrad_dll/imagepacker.cpp"
+        "$SRC_DIR$/tools/vrad_dll/incremental.cpp"
+        "$SRC_DIR$/tools/vrad_dll/leaf_ambient_lighting.cpp"
+        "$SRC_DIR$/tools/vrad_dll/lightmap.cpp"
+        "$SRC_DIR$/tools/vrad_dll/macro_texture.cpp"
+        "$SRC_DIR$/tools/vrad_dll/mpivrad.cpp"
+        "$SRC_DIR$/tools/vrad_dll/radial.cpp"
+        "$SRC_DIR$/tools/vrad_dll/trace.cpp"
+        "$SRC_DIR$/tools/vrad_dll/vismat.cpp"
+        "$SRC_DIR$/tools/vrad_dll/vrad.cpp"
+        "$SRC_DIR$/tools/vrad_dll/vraddll.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        folder "common"
+        {
+            "$SRC_DIR$/common/ISQLDBReplyTarget.h"
+            "$SRC_DIR$/common/MySqlDatabase.h"
+            "$SRC_DIR$/common/bsplib.h"
+            "$SRC_DIR$/common/cmdlib.h"
+            "$SRC_DIR$/common/consolewnd.h"
+            "$SRC_DIR$/common/map_shared.h"
+            "$SRC_DIR$/common/mpi_stats.h"
+            "$SRC_DIR$/common/pacifier.h"
+            "$SRC_DIR$/common/polylib.h"
+            "$SRC_DIR$/common/scriplib.h"
+            "$SRC_DIR$/common/threads.h"
+            "$SRC_DIR$/common/utilmatlib.h"
+            "$SRC_DIR$/vmpi/ichannel.h"
+            "$SRC_DIR$/vmpi/imysqlwrapper.h"
+            "$SRC_DIR$/vmpi/iphelpers.h"
+            "$SRC_DIR$/vmpi/messbuf.h"
+            "$SRC_DIR$/vmpi/threadhelpers.h"
+            "$SRC_DIR$/vmpi/vmpi_defs.h"
+            "$SRC_DIR$/vmpi/vmpi_dispatch.h"
+            "$SRC_DIR$/vmpi/vmpi_distribute_work.h"
+            "$SRC_DIR$/vmpi/vmpi_filesystem.h"
+        }
+        
+        folder "public"
+        {
+            "$PUB_DIR$/BSPFILE.H"
+            "$PUB_DIR$/BSPTreeData.h"
+            "$PUB_DIR$/ChunkFile.h"
+            "$PUB_DIR$/CollisionUtils.h"
+            "$PUB_DIR$/DispColl_Common.h"
+            "$PUB_DIR$/GameBSPFile.h"
+            "$PUB_DIR$/ScratchPad3D.h"
+            "$PUB_DIR$/ScratchPadUtils.h"
+            "$PUB_DIR$/appframework/IAppSystem.h"
+            "$PUB_DIR$/basehandle.h"
+            "$PUB_DIR$/bitvec.h"
+            "$PUB_DIR$/bspflags.h"
+            "$PUB_DIR$/builddisp.h"
+            "$PUB_DIR$/cmodel.h"
+            "$PUB_DIR$/const.h"
+            "$PUB_DIR$/coordsize.h"
+            "$PUB_DIR$/disp_common.h"
+            "$PUB_DIR$/disp_powerinfo.h"
+            "$PUB_DIR$/disp_vertindex.h"
+            "$PUB_DIR$/filesystem.h"
+            "$PUB_DIR$/filesystem_helpers.h"
+            "$PUB_DIR$/gametrace.h"
+            "$PUB_DIR$/ihandleentity.h"
+            "$PUB_DIR$/iscratchpad3d.h"
+            "$PUB_DIR$/ivraddll.h"
+            "$PUB_DIR$/materialsystem/hardwareverts.h"
+            "$PUB_DIR$/materialsystem/imaterial.h"
+            "$PUB_DIR$/materialsystem/imaterialsystem.h"
+            "$PUB_DIR$/materialsystem/imaterialvar.h"
+            "$PUB_DIR$/materialsystem/materialsystem_config.h"
+            "$PUB_DIR$/mathlib/ANORMS.H"
+            "$PUB_DIR$/mathlib/amd3dx.h"
+            "$PUB_DIR$/mathlib/bumpvects.h"
+            "$PUB_DIR$/mathlib/compressed_vector.h"
+            "$PUB_DIR$/mathlib/halton.h"
+            "$PUB_DIR$/mathlib/mathlib.h"
+            "$PUB_DIR$/mathlib/vector.h"
+            "$PUB_DIR$/mathlib/vector2d.h"
+            "$PUB_DIR$/mathlib/vector4d.h"
+            "$PUB_DIR$/mathlib/vmatrix.h"
+            "$PUB_DIR$/mathlib/vplane.h"
+            "$PUB_DIR$/optimize.h"
+            "$PUB_DIR$/phyfile.h"
+            "$PUB_DIR$/string_t.h"
+            "$PUB_DIR$/studio.h"
+            "$PUB_DIR$/tier0/basetypes.h"
+            "$PUB_DIR$/tier0/commonmacros.h"
+            "$PUB_DIR$/tier0/dbg.h"
+            "$PUB_DIR$/tier0/fasttimer.h"
+            "$PUB_DIR$/tier0/icommandline.h"
+            "$PUB_DIR$/tier0/memdbgon.h"
+            "$PUB_DIR$/tier0/platform.h"
+            "$PUB_DIR$/tier0/protected_things.h"
+            "$PUB_DIR$/tier0/vprof.h"
+            "$PUB_DIR$/tier1/bitbuf.h"
+            "$PUB_DIR$/tier1/byteswap.h"
+            "$PUB_DIR$/tier1/characterset.h"
+            "$PUB_DIR$/tier1/checksum_crc.h"
+            "$PUB_DIR$/tier1/checksum_md5.h"
+            "$PUB_DIR$/tier1/interface.h"
+            "$PUB_DIR$/tier1/strtools.h"
+            "$PUB_DIR$/tier1/tokenreader.h"
+            "$PUB_DIR$/tier1/utlbuffer.h"
+            "$PUB_DIR$/tier1/utldict.h"
+            "$PUB_DIR$/tier1/utlhash.h"
+            "$PUB_DIR$/tier1/utllinkedlist.h"
+            "$PUB_DIR$/tier1/utlmemory.h"
+            "$PUB_DIR$/tier1/utlrbtree.h"
+            "$PUB_DIR$/tier1/utlsymbol.h"
+            "$PUB_DIR$/tier1/utlvector.h"
+            "$PUB_DIR$/trace.h"
+            "$PUB_DIR$/vcollide.h"
+            "$PUB_DIR$/vphysics_interface.h"
+            "$PUB_DIR$/vstdlib/random.h"
+            "$PUB_DIR$/vstdlib/vstdlib.h"
+            "$PUB_DIR$/vtf/vtf.h"
+            "$PUB_DIR$/wadtypes.h"
+            "$PUB_DIR$/worldsize.h"
+            "$SRC_DIR$/common/physdll.h"
+            "$SRC_DIR$/vmpi/vmpi.h"
+        }
+        
+        "$PUB_DIR$/bitmap/tgawriter.h"
+        "$PUB_DIR$/map_utils.h"
+        "$SRC_DIR$/tools/vrad_dll/VRAD_DispColl.h"
+        "$SRC_DIR$/tools/vrad_dll/disp_vrad.h"
+        "$SRC_DIR$/tools/vrad_dll/iincremental.h"
+        "$SRC_DIR$/tools/vrad_dll/imagepacker.h"
+        "$SRC_DIR$/tools/vrad_dll/incremental.h"
+        "$SRC_DIR$/tools/vrad_dll/leaf_ambient_lighting.h"
+        "$SRC_DIR$/tools/vrad_dll/lightmap.h"
+        "$SRC_DIR$/tools/vrad_dll/macro_texture.h"
+        "$SRC_DIR$/tools/vrad_dll/mpivrad.h"
+        "$SRC_DIR$/tools/vrad_dll/radial.h"
+        "$SRC_DIR$/tools/vrad_dll/vismat.h"
+        "$SRC_DIR$/tools/vrad_dll/vrad.h"
+        "$SRC_DIR$/tools/vrad_dll/vraddetailprops.h"
+        "$SRC_DIR$/tools/vrad_dll/vraddll.h"
+    }
+}

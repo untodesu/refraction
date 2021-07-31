@@ -1,0 +1,194 @@
+macro "GIT_ROOT" "../../.."
+
+macro "OUT_BIN_DIR" "$GIT_ROOT$/devtools/bin"
+macro "OUT_BIN_NAME" "vbsp"
+
+include "$GIT_ROOT$/qpc_scripts/source_exe_con_base.qpc"
+
+config
+{
+    general
+    {
+    }
+    
+    compile
+    {
+        defines
+        {
+            "MACRO_MATHLIB"
+            "PROTECTED_THINGS_DISABLE"
+        }
+        
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+            "$SRC_DIR$/vmpi"
+        }
+    }
+    
+    link
+    {
+        libs
+        {
+            "bitmap"
+            "fgdlib"
+            "mathlib"
+            "tier2"
+            "vtf"
+            
+            "odbc32"
+            "odbccp32"
+            "winmm"
+            "ws2_32"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        folder "common"
+        {
+            "$PUB_DIR$/ChunkFile.cpp"
+            "$PUB_DIR$/builddisp.cpp"
+            "$PUB_DIR$/filesystem_helpers.cpp"
+            "$PUB_DIR$/filesystem_init.cpp"
+            "$SRC_DIR$/common/bsplib.cpp"
+            "$SRC_DIR$/common/cmdlib.cpp"
+            "$SRC_DIR$/common/filesystem_tools.cpp"
+            "$SRC_DIR$/common/map_shared.cpp"
+            "$SRC_DIR$/common/pacifier.cpp"
+            "$SRC_DIR$/common/polylib.cpp"
+            "$SRC_DIR$/common/scriplib.cpp"
+            "$SRC_DIR$/common/threads.cpp"
+            "$SRC_DIR$/common/tools_minidump.cpp"
+            "$SRC_DIR$/common/tools_minidump.h"
+        }
+        
+        "$PUB_DIR$/CollisionUtils.cpp"
+        "$PUB_DIR$/ScratchPad3D.cpp"
+        "$PUB_DIR$/disp_common.cpp"
+        "$PUB_DIR$/disp_powerinfo.cpp"
+        "$PUB_DIR$/loadcmdline.cpp"
+        "$PUB_DIR$/lumpfiles.cpp"
+        "$PUB_DIR$/zip_utils.cpp"
+        "$SRC_DIR$/common/mstristrip.cpp"
+        "$SRC_DIR$/common/physdll.cpp"
+        "$SRC_DIR$/common/scratchpad_helpers.cpp"
+        "$SRC_DIR$/common/utilmatlib.cpp"
+        "$SRC_DIR$/tools/vbsp/StaticProp.cpp"
+        "$SRC_DIR$/tools/vbsp/boundbox.cpp"
+        "$SRC_DIR$/tools/vbsp/brushbsp.cpp"
+        "$SRC_DIR$/tools/vbsp/csg.cpp"
+        "$SRC_DIR$/tools/vbsp/cubemap.cpp"
+        "$SRC_DIR$/tools/vbsp/detail.cpp"
+        "$SRC_DIR$/tools/vbsp/detailObjects.cpp"
+        "$SRC_DIR$/tools/vbsp/disp_ivp.cpp"
+        "$SRC_DIR$/tools/vbsp/disp_vbsp.cpp"
+        "$SRC_DIR$/tools/vbsp/faces.cpp"
+        "$SRC_DIR$/tools/vbsp/glfile.cpp"
+        "$SRC_DIR$/tools/vbsp/ivp.cpp"
+        "$SRC_DIR$/tools/vbsp/leakfile.cpp"
+        "$SRC_DIR$/tools/vbsp/manifest.cpp"
+        "$SRC_DIR$/tools/vbsp/map.cpp"
+        "$SRC_DIR$/tools/vbsp/materialpatch.cpp"
+        "$SRC_DIR$/tools/vbsp/materialsub.cpp"
+        "$SRC_DIR$/tools/vbsp/nodraw.cpp"
+        "$SRC_DIR$/tools/vbsp/normals.cpp"
+        "$SRC_DIR$/tools/vbsp/overlay.cpp"
+        "$SRC_DIR$/tools/vbsp/portals.cpp"
+        "$SRC_DIR$/tools/vbsp/prtfile.cpp"
+        "$SRC_DIR$/tools/vbsp/textures.cpp"
+        "$SRC_DIR$/tools/vbsp/tree.cpp"
+        "$SRC_DIR$/tools/vbsp/vbsp.cpp"
+        "$SRC_DIR$/tools/vbsp/worldvertextransitionfixup.cpp"
+        "$SRC_DIR$/tools/vbsp/writebsp.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        folder "common"
+        {
+            "$PUB_DIR$/ChunkFile.h"
+            "$PUB_DIR$/GameBSPFile.h"
+            "$PUB_DIR$/builddisp.h"
+            "$PUB_DIR$/filesystem.h"
+            "$PUB_DIR$/filesystem_helpers.h"
+            "$PUB_DIR$/tier1/interface.h"
+            "$PUB_DIR$/tier1/tokenreader.h"
+            "$PUB_DIR$/zip_uncompressed.h"
+            "$SRC_DIR$/common/FileSystem_Tools.h"
+            "$SRC_DIR$/common/bsplib.h"
+            "$SRC_DIR$/common/cmdlib.h"
+            "$SRC_DIR$/common/map_shared.h"
+            "$SRC_DIR$/common/pacifier.h"
+            "$SRC_DIR$/common/polylib.h"
+            "$SRC_DIR$/common/utilmatlib.h"
+            "$SRC_DIR$/tools/vbsp/disp_ivp.h"
+            "$SRC_DIR$/tools/vbsp/ivp.h"
+            "$SRC_DIR$/vmpi/vmpi.h"
+        }
+        
+        folder "public"
+        {
+            "$PUB_DIR$/mathlib/amd3dx.h"
+            "$PUB_DIR$/BSPFILE.H"
+            "$PUB_DIR$/BSPTreeData.h"
+            "$PUB_DIR$/CollisionUtils.h"
+            "$PUB_DIR$/IScratchPad3D.h"
+            "$PUB_DIR$/NTree.h"
+            "$PUB_DIR$/ScratchPad3D.h"
+            "$PUB_DIR$/arraystack.h"
+            "$PUB_DIR$/bspflags.h"
+            "$PUB_DIR$/cmodel.h"
+            "$PUB_DIR$/disp_common.h"
+            "$PUB_DIR$/mathlib/bumpvects.h"
+            "$PUB_DIR$/mathlib/mathlib.h"
+            "$PUB_DIR$/mathlib/vector.h"
+            "$PUB_DIR$/mathlib/vector2d.h"
+            "$PUB_DIR$/mathlib/vector4d.h"
+            "$PUB_DIR$/mathlib/vmatrix.h"
+            "$PUB_DIR$/mathlib/vplane.h"
+            "$PUB_DIR$/nmatrix.h"
+            "$PUB_DIR$/nvector.h"
+            "$PUB_DIR$/phyfile.h"
+            "$PUB_DIR$/studio.h"
+            "$PUB_DIR$/tier0/basetypes.h"
+            "$PUB_DIR$/tier0/commonmacros.h"
+            "$PUB_DIR$/tier0/dbg.h"
+            "$PUB_DIR$/tier1/byteswap.h"
+            "$PUB_DIR$/tier1/utlbuffer.h"
+            "$PUB_DIR$/tier1/utllinkedlist.h"
+            "$PUB_DIR$/tier1/utlmemory.h"
+            "$PUB_DIR$/tier1/utlrbtree.h"
+            "$PUB_DIR$/tier1/utlsymbol.h"
+            "$PUB_DIR$/tier1/utlvector.h"
+            "$PUB_DIR$/vcollide.h"
+            "$PUB_DIR$/vphysics_interface.h"
+            "$PUB_DIR$/wadtypes.h"
+            "$PUB_DIR$/worldsize.h"
+            "$SRC_DIR$/common/mstristrip.h"
+            "$SRC_DIR$/common/physdll.h"
+            "$SRC_DIR$/common/qfiles.h"
+            "$SRC_DIR$/common/scriplib.h"
+            "$SRC_DIR$/common/threads.h"
+        }
+        
+        "$PUB_DIR$/disp_powerinfo.h"
+        "$PUB_DIR$/disp_vertindex.h"
+        "$SRC_DIR$/common/scratchpad_helpers.h"
+        "$SRC_DIR$/tools/vbsp/boundbox.h"
+        "$SRC_DIR$/tools/vbsp/csg.h"
+        "$SRC_DIR$/tools/vbsp/detail.h"
+        "$SRC_DIR$/tools/vbsp/disp_vbsp.h"
+        "$SRC_DIR$/tools/vbsp/faces.h"
+        "$SRC_DIR$/tools/vbsp/manifest.h"
+        "$SRC_DIR$/tools/vbsp/map.h"
+        "$SRC_DIR$/tools/vbsp/materialpatch.h"
+        "$SRC_DIR$/tools/vbsp/materialsub.h"
+        "$SRC_DIR$/tools/vbsp/vbsp.h"
+        "$SRC_DIR$/tools/vbsp/worldvertextransitionfixup.h"
+        "$SRC_DIR$/tools/vbsp/writebsp.h"
+    }
+}

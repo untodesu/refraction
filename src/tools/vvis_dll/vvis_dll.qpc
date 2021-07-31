@@ -1,0 +1,121 @@
+macro "GIT_ROOT" "../../.."
+
+macro "OUT_BIN_DIR" "$GIT_ROOT$/devtools/bin"
+macro "OUT_BIN_NAME" "vvis_dll"
+
+include "$GIT_ROOT$/qpc_scripts/source_dll_base.qpc"
+
+config
+{
+    compile
+    {
+        defines
+        {
+            "MPI"
+            "PROTECTED_THINGS_DISABLE"
+        }
+        
+        inc_dirs
+        {
+            "$SRC_DIR$/common"
+            "$SRC_DIR$/vmpi"
+        }
+    }
+    
+    link
+    {
+        libs
+        {
+            "mathlib"
+            "tier2"
+            "vmpi"
+            "odbc32"
+            "odbccp32"
+            "ws2_32"
+        }
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        folder "common"
+        {
+            "$SRC_DIR$/common/MySqlDatabase.cpp"
+            "$SRC_DIR$/common/bsplib.cpp"
+            "$SRC_DIR$/common/cmdlib.cpp"
+            "$SRC_DIR$/common/mpi_stats.cpp"
+            "$SRC_DIR$/common/pacifier.cpp"
+            "$SRC_DIR$/common/scratchpad_helpers.cpp"
+            "$SRC_DIR$/common/scriplib.cpp"
+            "$SRC_DIR$/common/threads.cpp"
+            "$SRC_DIR$/common/tools_minidump.cpp"
+            "$SRC_DIR$/common/tools_minidump.h"
+            "$SRC_DIR$/common/vmpi_tools_shared.cpp"
+        }
+        
+        folder "public"
+        {
+            "$PUB_DIR$/collisionutils.cpp"
+            "$PUB_DIR$/filesystem_helpers.cpp"
+            "$PUB_DIR$/loadcmdline.cpp"
+            "$PUB_DIR$/lumpfiles.cpp"
+            "$PUB_DIR$/scratchpad3d.cpp"
+            "$PUB_DIR$/zip_utils.cpp"
+        }
+        
+        "$SRC_DIR$/tools/vvis_dll/WaterDist.cpp"
+        "$SRC_DIR$/tools/vvis_dll/flow.cpp"
+        "$SRC_DIR$/tools/vvis_dll/mpivis.cpp"
+        "$SRC_DIR$/tools/vvis_dll/vvis.cpp"
+    }
+    
+    folder "Header Files"
+    {
+        folder "common"
+        {
+            "$SRC_DIR$/common/ISQLDBReplyTarget.h"
+            "$SRC_DIR$/common/MySqlDatabase.h"
+            "$SRC_DIR$/common/bsplib.h"
+            "$SRC_DIR$/common/cmdlib.h"
+            "$SRC_DIR$/common/pacifier.h"
+            "$SRC_DIR$/common/scriplib.h"
+            "$SRC_DIR$/common/threads.h"
+            "$SRC_DIR$/common/vmpi_tools_shared.h"
+        }
+        
+        folder "public"
+        {
+            "$PUB_DIR$/BSPFILE.H"
+            "$PUB_DIR$/BSPTreeData.h"
+            "$PUB_DIR$/GameBSPFile.h"
+            "$PUB_DIR$/bspflags.h"
+            "$PUB_DIR$/cmodel.h"
+            "$PUB_DIR$/mathlib/amd3dx.h"
+            "$PUB_DIR$/mathlib/bumpvects.h"
+            "$PUB_DIR$/mathlib/mathlib.h"
+            "$PUB_DIR$/mathlib/vector.h"
+            "$PUB_DIR$/mathlib/vector2d.h"
+            "$PUB_DIR$/tier0/basetypes.h"
+            "$PUB_DIR$/tier0/commonmacros.h"
+            "$PUB_DIR$/tier1/byteswap.h"
+            "$PUB_DIR$/tier1/checksum_crc.h"
+            "$PUB_DIR$/tier1/checksum_md5.h"
+            "$PUB_DIR$/tier1/strtools.h"
+            "$PUB_DIR$/tier1/utlbuffer.h"
+            "$PUB_DIR$/tier1/utllinkedlist.h"
+            "$PUB_DIR$/tier1/utlmemory.h"
+            "$PUB_DIR$/tier1/utlrbtree.h"
+            "$PUB_DIR$/tier1/utlsymbol.h"
+            "$PUB_DIR$/tier1/utlvector.h"
+            "$PUB_DIR$/vcollide.h"
+            "$PUB_DIR$/vstdlib/vstdlib.h"
+            "$PUB_DIR$/wadtypes.h"
+            "$SRC_DIR$/vmpi/vmpi_distribute_work.h"
+        }
+        
+        "$SRC_DIR$/tools/vvis_dll/mpivis.h"
+        "$SRC_DIR$/tools/vvis_dll/vis.h"
+    }
+}

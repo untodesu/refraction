@@ -1,0 +1,41 @@
+macro "GIT_ROOT" "../../.."
+
+macro "OUT_BIN_DIR" "$GIT_ROOT$/devtools/bin"
+macro "OUT_BIN_NAME" "vrad"
+
+include "$GIT_ROOT$/qpc_scripts/source_exe_con_base.qpc"
+include "$GIT_ROOT$/qpc_scripts/no_memoverride.qpc"
+
+config
+{
+    compile
+    {
+        pch "use"
+        pch_file "StdAfx.h"
+        pch_out "$(IntDir)/vrad_launcher.pch"
+    }
+}
+
+files
+{
+    folder "Source Files"
+    {
+        "$SRC_DIR$/tools/vrad_launcher/vrad_launcher.cpp"
+        
+        "$SRC_DIR$/tools/vrad_launcher/StdAfx.cpp"
+        {
+            pch "create"
+        }
+    }
+    
+    folder "Header Files"
+    {
+        folder "public"
+        {
+            "$PUB_DIR$/tier1/interface.h"
+            "$PUB_DIR$/ivraddll.h"
+        }
+        
+        "$SRC_DIR$/tools/vrad_launcher/StdAfx.h"
+    }
+}

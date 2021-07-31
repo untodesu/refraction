@@ -1,0 +1,31 @@
+macro "OUT_LIB_NAME" "$PROJECT_SCRIPT_NAME$"    [!$OUT_LIB_NAME$]
+macro "OUT_LIB_DIR" "$LIB_DIR$"                 [!$OUT_LIB_DIR$]
+
+macro "STATIC_LIB_PROJECT" "1"
+
+include "$GIT_ROOT$/qpc_scripts/source_base.qpc"
+
+config
+{
+    general
+    {
+        config_type "static_lib"
+    }
+    
+    compile
+    {
+        defines
+        {
+            "_LIB"
+            "LIBNAME=$OUT_LIB_NAME$"
+        }
+    }
+    
+    link
+    {
+        options
+        {
+            "/ignore:4006" // warning LNK4006: %whatever% already defined in %whatever%
+        }
+    }
+}
