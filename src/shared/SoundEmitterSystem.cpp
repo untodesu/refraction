@@ -77,14 +77,16 @@ struct DeferredCall_EmitSound_t : public DeferredCall_t {
     CRecipientFilter filter;
     int iEntIndex;
     EmitSound_t ep;
-    Vector *pvOrigin;
+    bool bHasOrigin;
+    Vector vOrigin;
     CUtlString soundname;
 };
 
 struct DeferredCall_EmitSoundByHandle_t : public DeferredCall_t {
     int iEntIndex;
     EmitSound_t ep;
-    Vector *pvOrigin;
+    bool bHasOrigin;
+    Vector vOrigin;
     CUtlString soundname;
     CRecipientFilter filter;
     HSOUNDSCRIPTHANDLE hSoundHandle;
@@ -518,12 +520,12 @@ public:
         if( pCall->ep.m_bWarnOnDirectWaveReference && Q_stristr( pszSoundName, ".wav" ) )
             WaveTrace( pszSoundName, "EmitSound" );
 
-#if defined(_DEBUG) && !defined(CLIENT_DLL)
+#if defined( _DEBUG ) && !defined( CLIENT_DLL )
         if( !enginesound->IsSoundPrecached( pszSoundName ) )
             ConColorMsg( LOG_COLOR_CYAN, "Deferred_EmitSound: Sound %s was not precached\n", pszSoundName );
 #endif
 
-        enginesound->EmitSound( pCall->filter, pCall->iEntIndex, pCall->ep.m_nChannel, pszSoundName, pCall->ep.m_flVolume, pCall->ep.m_SoundLevel, pCall->ep.m_nFlags, pCall->ep.m_nPitch, pCall->ep.m_nSpecialDSP, pCall->pvOrigin, NULL, &pCall->ep.m_UtlVecSoundOrigin, true, pCall->ep.m_flSoundTime, pCall->ep.m_nSpeakerEntity );
+        enginesound->EmitSound( pCall->filter, pCall->iEntIndex, pCall->ep.m_nChannel, pszSoundName, pCall->ep.m_flVolume, pCall->ep.m_SoundLevel, pCall->ep.m_nFlags, pCall->ep.m_nPitch, pCall->ep.m_nSpecialDSP, pCall->bHasOrigin ? &pCall->vOrigin : NULL, NULL, &pCall->ep.m_UtlVecSoundOrigin, true, pCall->ep.m_flSoundTime, pCall->ep.m_nSpeakerEntity );
 
         TraceEmitSound( "Deferred_EmitSound: Raw wave emitted '%s' (ent %i)\n", pszSoundName, pCall->iEntIndex );
     }
@@ -568,7 +570,7 @@ public:
         if( !st && params.delay_msec )
             st = gpGlobals->curtime + (float)params.delay_msec / 1000.0f;
 
-        enginesound->EmitSound( pCall->filter, pCall->iEntIndex, params.channel, params.soundname, params.volume, params.soundlevel, pCall->ep.m_nFlags, params.pitch, pCall->ep.m_nSpecialDSP, pCall->pvOrigin, NULL, &pCall->ep.m_UtlVecSoundOrigin, true, st, pCall->ep.m_nSpeakerEntity );
+        enginesound->EmitSound( pCall->filter, pCall->iEntIndex, params.channel, params.soundname, params.volume, params.soundlevel, pCall->ep.m_nFlags, params.pitch, pCall->ep.m_nSpecialDSP, pCall->bHasOrigin ? &pCall->vOrigin : NULL, NULL, &pCall->ep.m_UtlVecSoundOrigin, true, st, pCall->ep.m_nSpeakerEntity );
 
         TraceEmitSound( "Deferred_EmitSoundByHandle: '%s' emitted as '%s' (ent %i)\n", pszSoundName, params.soundname, pCall->iEntIndex );
 
@@ -1432,8 +1434,6 @@ int CDeferredSoundWorkerThread::Run()
             if( gpGlobals->curtime >= pCall->flTriggerTime ) {
                 g_SoundEmitterSystem.Deferred_EmitSound( pCall );
                 m_utlEmitSound.Remove( i );
-                if( pCall->pvOrigin )
-                    delete pCall->pvOrigin;
                 delete pCall;
             }
         }
@@ -1444,8 +1444,6 @@ int CDeferredSoundWorkerThread::Run()
             if( gpGlobals->curtime >= pCall->flTriggerTime ) {
                 g_SoundEmitterSystem.Deferred_EmitSoundByHandle( pCall );
                 m_utlEmitSoundByHandle.Remove( i );
-                if( pCall->pvOrigin )
-                    delete pCall->pvOrigin;
                 delete pCall;
             }
         }
@@ -1556,7 +1554,8 @@ void CDeferredSoundWorkerThread::EmitSound( float flTriggerTime, IRecipientFilte
     pCall->filter.CopyFrom( (CRecipientFilter &)filter );
     pCall->iEntIndex = iEntIndex;
     pCall->ep = ep;
-    pCall->pvOrigin = ep.m_pOrigin ? new Vector( *ep.m_pOrigin ) : NULL;
+    if( ep.m_pOrigin )
+        pCall->vOrigin.Init( ep.m_pOrigin->x, ep.m_pOrigin->y, ep.m_pOrigin->z );
     pCall->soundname = ep.m_pSoundName;
     m_utlEmitSound.AddToTail( pCall );
 }
@@ -1568,7 +1567,8 @@ void CDeferredSoundWorkerThread::EmitSoundByHandle( float flTriggerTime, int iEn
     pCall->flTriggerTime = flTriggerTime;
     pCall->iEntIndex = iEntIndex;
     pCall->ep = ep;
-    pCall->pvOrigin = ep.m_pOrigin ? new Vector( *ep.m_pOrigin ) : NULL;
+    if( ep.m_pOrigin )
+        pCall->vOrigin.Init( ep.m_pOrigin->x, ep.m_pOrigin->y, ep.m_pOrigin->z );
     pCall->soundname = ep.m_pSoundName;
     pCall->filter.CopyFrom( (CRecipientFilter &)filter );
     pCall->hSoundHandle = hSoundHandle;
