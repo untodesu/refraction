@@ -14,9 +14,9 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-static ConVar cl_showfps( "cl_showfps", "0", FCVAR_ARCHIVE, "Draw fps meter at top of screen" );
-static ConVar cl_showpos( "cl_showpos", "0", FCVAR_ARCHIVE, "Draw current position at top of screen" );
-static ConVar cl_showmod( "cl_showmod", "1", FCVAR_ARCHIVE, "Draw mod's version at top of screen" );
+static ConVar cl_showfps( "cl_showfps", "0", FCVAR_ARCHIVE, "Draw a fps meter at the top of the screen (0 - disabled, otherwise enabled)" );
+static ConVar cl_showpos( "cl_showpos", "0", FCVAR_ARCHIVE, "Draw the current position at the top of the screen (0 - disabled, otherwise enabled)" );
+static ConVar cl_showver( "cl_showver", "1", FCVAR_ARCHIVE, "Draw the game's version at the top of the screen (0 - disabled, otherwise enabled)" );
 
 extern bool g_bDisplayParticlePerformance;
 int GetParticlePerformance();
@@ -42,7 +42,7 @@ private:
 
     vgui::HFont m_hFont;
     float m_flFPS;
-    char m_szWatermark[256];
+    char m_szVersion[256];
 };
 
 #define FPS_PANEL_WIDTH 400
@@ -64,9 +64,9 @@ CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" ), m_
     g_pVGui->AddTickSignal( GetVPanel(), 250 );
 
 #if defined( DEV_BUILD )
-    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u development build", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
+    Q_snprintf( m_szVersion, sizeof( m_szVersion ), "%s %u.%u.%u development build", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
 #else
-    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
+    Q_snprintf( m_szVersion, sizeof( m_szVersion ), "%s %u.%u.%u", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
 #endif
 }
 
@@ -169,9 +169,9 @@ void CFPSPanel::Paint()
     int ypos = 2;
     int iFontTall = g_pVGuiSurface->GetFontTall( m_hFont );
     
-    // Draw mod/game watermark...
-    if( cl_showmod.GetBool() ) {
-        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s", m_szWatermark );
+    // Draw version string
+    if( cl_showver.GetBool() ) {
+        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s", m_szVersion );
         ypos += 2 + iFontTall;
     }
 

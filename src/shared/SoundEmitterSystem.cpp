@@ -150,10 +150,10 @@ public:
     enum { SND_WORKER_EXIT = 42 };
 };
 
-static ConVar snd_los_enabled( "snd_los_enabled", "1", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Enable Latency of Sound (LoS) (1 - enabled, otherwise - disabled)" );
+static ConVar snd_los_enabled( "snd_los_enabled", "1", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Enable Latency of Sound (LoS) (0 - disabled, otherwise - enabled)" );
 static ConVar snd_los_speed_of_sound( "snd_los_speed_of_sound", "343", FCVAR_CHEAT | FCVAR_REPLICATED, "Speed of sound (in m/s)" );
 static ConVar snd_los_min_distance( "snd_los_min_distance", "256", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Minimal distance at which LoS works (in inches)" );
-static ConVar snd_los_debug( "snd_los_debug", "0", FCVAR_REPLICATED, "Print sound delay when the event is queued (1 - enabled, otherwise - disabled)" );
+static ConVar snd_los_debug( "snd_los_debug", "0", FCVAR_REPLICATED, "Print sound delay when the event is queued (0 - disabled, otherwise - enabled)" );
 
 static bool LOS_CalcDelay( const Vector &vOrigin, float &flDelay )
 {
