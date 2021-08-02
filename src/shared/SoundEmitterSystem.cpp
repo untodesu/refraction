@@ -69,8 +69,11 @@ void ClearModelSoundsCache();
 // the explicit call to engine[sound]->Emit[Ambient]Sound[ByHandle]()
 // in order to add some effects like Latency of Sound (LoS).
 
-struct DeferredCall_EmitSound_t {
-    float flStartTime;
+struct DeferredCall_t {
+    float flTriggerTime;
+};
+
+struct DeferredCall_EmitSound_t : public DeferredCall_t {
     CRecipientFilter filter;
     int iEntIndex;
     EmitSound_t ep;
@@ -78,8 +81,7 @@ struct DeferredCall_EmitSound_t {
     CUtlString soundname;
 };
 
-struct DeferredCall_EmitSoundByHandle_t {
-    float flStartTime;
+struct DeferredCall_EmitSoundByHandle_t : public DeferredCall_t {
     int iEntIndex;
     EmitSound_t ep;
     Vector *pvOrigin;
@@ -88,8 +90,7 @@ struct DeferredCall_EmitSoundByHandle_t {
     HSOUNDSCRIPTHANDLE hSoundHandle;
 };
 
-struct DeferredCall_EmitAmbientSound_t {
-    float flStartTime;
+struct DeferredCall_EmitAmbientSound_t : public DeferredCall_t {
     int iEntIndex;
     Vector vOrigin;
     CUtlString soundname;
@@ -99,8 +100,7 @@ struct DeferredCall_EmitAmbientSound_t {
     float flSoundTime;
 };
 
-struct DeferredCall_EmitAmbientSound2_t {
-    float flStartTime;
+struct DeferredCall_EmitAmbientSound2_t : public DeferredCall_t {
     int iEntIndex;
     Vector vOrigin;
     CUtlString sample;
@@ -111,6 +111,18 @@ struct DeferredCall_EmitAmbientSound2_t {
     float flSoundTime;
 };
 
+struct DeferredCall_StopSound_t : public DeferredCall_t {
+    int iEntIndex;
+    CUtlString soundname;
+    HSOUNDSCRIPTHANDLE hSoundHandle;
+};
+
+struct DeferredCall_StopSound2_t : public DeferredCall_t {
+    int iEntIndex;
+    int iChannel;
+    CUtlString sample;
+};
+
 class CDeferredSoundWorkerThread : public CWorkerThread {
 public:
     CDeferredSoundWorkerThread();
@@ -119,16 +131,20 @@ public:
     void OnExit();
     void Cleanup();
 
-    void EmitSound( float flStartTime, IRecipientFilter &filter, int iEntIndex, const EmitSound_t &ep );
-    void EmitSoundByHandle( float flStartTime, int iEntIndex, const EmitSound_t &ep, IRecipientFilter &filter, HSOUNDSCRIPTHANDLE hSoundHandle );
-    void EmitAmbientSound( float flStartTime, int iEntIndex, const Vector &vOrigin, const char *pszSoundName, float flVolume, int iFlags, int iPitch, float flSoundTime);
-    void EmitAmbientSound2( float flStartTime, int iEntIndex, const Vector &vOrigin, const char *pszSample, float flVolume, soundlevel_t soundlevel, int iFlags, int iPitch, float flSoundTime );
+    void EmitSound( float flTriggerTime, IRecipientFilter &filter, int iEntIndex, const EmitSound_t &ep );
+    void EmitSoundByHandle( float flTriggerTime, int iEntIndex, const EmitSound_t &ep, IRecipientFilter &filter, HSOUNDSCRIPTHANDLE hSoundHandle );
+    void EmitAmbientSound( float flTriggerTime, int iEntIndex, const Vector &vOrigin, const char *pszSoundName, float flVolume, int iFlags, int iPitch, float flSoundTime );
+    void EmitAmbientSound2( float flTriggerTime, int iEntIndex, const Vector &vOrigin, const char *pszSample, float flVolume, soundlevel_t soundlevel, int iFlags, int iPitch, float flSoundTime );
+    void StopSound( float flTriggerTime, int iEntIndex, const char *pszSoundName, HSOUNDSCRIPTHANDLE hSoundHandle = SOUNDEMITTER_INVALID_HANDLE );
+    void StopSound2( float flTriggerTime, int iEntIndex, int iChannel, const char *pszSample );
 
 private:
     CUtlVectorMT<CUtlVector<DeferredCall_EmitSound_t *>> m_utlEmitSound;
     CUtlVectorMT<CUtlVector<DeferredCall_EmitSoundByHandle_t *>> m_utlEmitSoundByHandle;
     CUtlVectorMT<CUtlVector<DeferredCall_EmitAmbientSound_t *>> m_utlEmitAmbientSound;
     CUtlVectorMT<CUtlVector<DeferredCall_EmitAmbientSound2_t *>> m_utlEmitAmbientSound2;
+    CUtlVectorMT<CUtlVector<DeferredCall_StopSound_t *>> m_utlStopSound;
+    CUtlVectorMT<CUtlVector<DeferredCall_StopSound2_t *>> m_utlStopSound2;
 
 public:
     enum { SND_WORKER_EXIT = 42 };
@@ -136,7 +152,7 @@ public:
 
 static ConVar snd_los_enabled( "snd_los_enabled", "1", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Enable Latency of Sound (LoS) (1 - enabled, otherwise - disabled)" );
 static ConVar snd_los_speed_of_sound( "snd_los_speed_of_sound", "343", FCVAR_CHEAT | FCVAR_REPLICATED, "Speed of sound (in m/s)" );
-static ConVar snd_los_min_distance( "snd_los_min_distance", "1024", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Minimal distance at which LoS works (in inches)" );
+static ConVar snd_los_min_distance( "snd_los_min_distance", "256", FCVAR_ARCHIVE | FCVAR_REPLICATED, "Minimal distance at which LoS works (in inches)" );
 static ConVar snd_los_debug( "snd_los_debug", "0", FCVAR_REPLICATED, "Print sound delay when the event is queued (1 - enabled, otherwise - disabled)" );
 
 static bool LOS_CalcDelay( const Vector &vOrigin, float &flDelay )
@@ -500,7 +516,7 @@ public:
 #endif
 
         if( pCall->ep.m_bWarnOnDirectWaveReference && Q_stristr( pszSoundName, ".wav" ) )
-            WaveTrace(pszSoundName, "EmitSound");
+            WaveTrace( pszSoundName, "EmitSound" );
 
 #if defined(_DEBUG) && !defined(CLIENT_DLL)
         if( !enginesound->IsSoundPrecached( pszSoundName ) )
@@ -508,7 +524,7 @@ public:
 #endif
 
         enginesound->EmitSound( pCall->filter, pCall->iEntIndex, pCall->ep.m_nChannel, pszSoundName, pCall->ep.m_flVolume, pCall->ep.m_SoundLevel, pCall->ep.m_nFlags, pCall->ep.m_nPitch, pCall->ep.m_nSpecialDSP, pCall->pvOrigin, NULL, &pCall->ep.m_UtlVecSoundOrigin, true, pCall->ep.m_flSoundTime, pCall->ep.m_nSpeakerEntity );
-        
+
         TraceEmitSound( "Deferred_EmitSound: Raw wave emitted '%s' (ent %i)\n", pszSoundName, pCall->iEntIndex );
     }
 
@@ -623,6 +639,35 @@ public:
         TraceEmitSound( "Deferred_EmitAmbientSound2: Raw wave emitted '%s' (ent %i)\n", pszSample, pCall->iEntIndex );
     }
 
+    void Deferred_StopSound( DeferredCall_StopSound_t *pCall )
+    {
+        const char *pszSoundName = pCall->soundname.Get();
+
+        if( pCall->hSoundHandle == SOUNDEMITTER_INVALID_HANDLE )
+            pCall->hSoundHandle = (HSOUNDSCRIPTHANDLE)soundemitterbase->GetSoundIndex( pszSoundName );
+        if( pCall->hSoundHandle == SOUNDEMITTER_INVALID_HANDLE )
+            return;
+
+        CSoundParametersInternal *pParams = soundemitterbase->InternalGetParametersForSound( (int)pCall->hSoundHandle );
+        if( !pParams )
+            return;
+
+        int iNumSounds = pParams->NumSoundNames();
+        for( int i = 0; i < iNumSounds; i++ ) {
+            const char *pszWaveName = soundemitterbase->GetWaveName( pParams->GetSoundNames()[i].symbol );
+            AssertMsg( pszWaveName, "Wave name is null!" );
+            enginesound->StopSound( pCall->iEntIndex, pParams->GetChannel(), pszWaveName );
+            TraceEmitSound( "Deferred_StopSound:  '%s' stopped as '%s' (ent %i)\n", pszSoundName, pszWaveName, pCall->iEntIndex );
+        }
+    }
+
+    void Deferred_StopSound2( DeferredCall_StopSound2_t *pCall )
+    {
+        const char *pszSample = pCall->sample.Get();
+        enginesound->StopSound( pCall->iEntIndex, pCall->iChannel, pszSample );
+        TraceEmitSound( "Deferred_StopSound2:  Raw wave stopped '%s' (ent %i)\n", pszSample, pCall->iEntIndex );
+    }
+
     void EmitSoundByHandle( IRecipientFilter& filter, int entindex, const EmitSound_t &ep, HSOUNDSCRIPTHANDLE &handle )
     {
         gender_t gender = GENDER_NONE; // attack helicopter
@@ -642,7 +687,7 @@ public:
             params.pitch = ep.m_nPitch;
         if( ep.m_nFlags & SND_CHANGE_VOL )
             params.volume = ep.m_flVolume;
-        
+
 #if !defined(CLIENT_DLL)
         if( CEnvMicrophone::OnSoundPlayed( entindex, params.soundname, params.soundlevel, params.volume, ep.m_nFlags, params.pitch, ep.m_pOrigin, ep.m_flSoundTime, ep.m_UtlVecSoundOrigin ) )
             return;
@@ -861,23 +906,11 @@ public:
 
     void StopSoundByHandle( int entindex, const char *soundname, HSOUNDSCRIPTHANDLE& handle )
     {
-        if( handle == SOUNDEMITTER_INVALID_HANDLE )
-            handle = (HSOUNDSCRIPTHANDLE)soundemitterbase->GetSoundIndex( soundname );
-        if( handle == SOUNDEMITTER_INVALID_HANDLE )
-            return;
-
-        CSoundParametersInternal *params = soundemitterbase->InternalGetParametersForSound( (int)handle );
-        if( !params )
-            return;
-
-        // HACK:  we have to stop all sounds if there are > 1 in the rndwave section...
-        int c = params->NumSoundNames();
-        for( int i = 0; i < c; ++i ) {
-            char const *wavename = soundemitterbase->GetWaveName( params->GetSoundNames()[i].symbol );
-            Assert( wavename );
-            enginesound->StopSound( entindex, params->GetChannel(), wavename );
-            TraceEmitSound( "StopSound:  '%s' stopped as '%s' (ent %i)\n", soundname, wavename, entindex );
-        }
+        float flDelay;
+        CBaseEntity *pEntity = CBaseEntity::Instance( entindex );
+        if( TestSoundChar( soundname, CHAR_DRYMIX ) || !entindex || !pEntity || !LOS_CalcDelay( pEntity->GetAbsOrigin(), flDelay ) )
+            flDelay = 0.0f;
+        m_workerThread.StopSound( gpGlobals->curtime + flDelay, entindex, soundname, handle );
     }
 
     void StopSound( int entindex, const char *soundname )
@@ -891,13 +924,16 @@ public:
     void StopSound( int iEntIndex, int iChannel, const char *pSample )
     {
         if( pSample && ( Q_stristr( pSample, ".wav" ) || Q_stristr( pSample, ".mp3" ) || pSample[0] == '!' ) ) {
-            enginesound->StopSound( iEntIndex, iChannel, pSample );
-            TraceEmitSound( "StopSound:  Raw wave stopped '%s' (ent %i)\n", pSample, iEntIndex );
+            float flDelay;
+            CBaseEntity *pEntity = CBaseEntity::Instance( iEntIndex );
+            if( TestSoundChar( pSample, CHAR_DRYMIX ) || !iEntIndex || !pEntity || !LOS_CalcDelay( pEntity->GetAbsOrigin(), flDelay ) )
+                flDelay = 0.0f;
+            m_workerThread.StopSound2( gpGlobals->curtime + flDelay, iEntIndex, iChannel, pSample );
+            return;
         }
-        else {
-            // Look it up in sounds.txt and ignore other parameters
-            StopSound( iEntIndex, pSample );
-        }
+        
+        // Look it up in sounds.txt and ignore other parameters
+        StopSound( iEntIndex, pSample );
     }
 
     void EmitAmbientSound( int entindex, const Vector &origin, const char *pSample, float volume, soundlevel_t soundlevel, int flags, int pitch, float soundtime /*= 0.0f*/, float *duration /*=NULL*/ )
@@ -1393,7 +1429,7 @@ int CDeferredSoundWorkerThread::Run()
         AUTO_LOCK_FM( m_utlEmitSound );
         for( int i = 0; i < m_utlEmitSound.Count(); i++ ) {
             DeferredCall_EmitSound_t *pCall = m_utlEmitSound.Element( i );
-            if( gpGlobals->curtime >= pCall->flStartTime ) {
+            if( gpGlobals->curtime >= pCall->flTriggerTime ) {
                 g_SoundEmitterSystem.Deferred_EmitSound( pCall );
                 m_utlEmitSound.Remove( i );
                 if( pCall->pvOrigin )
@@ -1405,7 +1441,7 @@ int CDeferredSoundWorkerThread::Run()
         AUTO_LOCK_FM( m_utlEmitSoundByHandle );
         for( int i = 0; i < m_utlEmitSoundByHandle.Count(); i++ ) {
             DeferredCall_EmitSoundByHandle_t *pCall = m_utlEmitSoundByHandle[i];
-            if( gpGlobals->curtime >= pCall->flStartTime ) {
+            if( gpGlobals->curtime >= pCall->flTriggerTime ) {
                 g_SoundEmitterSystem.Deferred_EmitSoundByHandle( pCall );
                 m_utlEmitSoundByHandle.Remove( i );
                 if( pCall->pvOrigin )
@@ -1417,7 +1453,7 @@ int CDeferredSoundWorkerThread::Run()
         AUTO_LOCK_FM( m_utlEmitAmbientSound );
         for( int i = 0; i < m_utlEmitAmbientSound.Count(); i++ ) {
             DeferredCall_EmitAmbientSound_t *pCall = m_utlEmitAmbientSound[i];
-            if( gpGlobals->curtime >= pCall->flStartTime ) {
+            if( gpGlobals->curtime >= pCall->flTriggerTime ) {
                 g_SoundEmitterSystem.Deferred_EmitAmbientSound( pCall );
                 m_utlEmitAmbientSound.Remove( i );
                 delete pCall;
@@ -1427,9 +1463,29 @@ int CDeferredSoundWorkerThread::Run()
         AUTO_LOCK_FM( m_utlEmitAmbientSound2 );
         for( int i = 0; i < m_utlEmitAmbientSound2.Count(); i++ ) {
             DeferredCall_EmitAmbientSound2_t *pCall = m_utlEmitAmbientSound2[i];
-            if( gpGlobals->curtime >= pCall->flStartTime ) {
+            if( gpGlobals->curtime >= pCall->flTriggerTime ) {
                 g_SoundEmitterSystem.Deferred_EmitAmbientSound2( pCall );
                 m_utlEmitAmbientSound2.Remove( i );
+                delete pCall;
+            }
+        }
+
+        AUTO_LOCK_FM( m_utlStopSound );
+        for( int i = 0; i < m_utlStopSound.Count(); i++ ) {
+            DeferredCall_StopSound_t *pCall = m_utlStopSound[i];
+            if( gpGlobals->curtime >= pCall->flTriggerTime ) {
+                g_SoundEmitterSystem.Deferred_StopSound( pCall );
+                m_utlStopSound.Remove( i );
+                delete pCall;
+            }
+        }
+
+        AUTO_LOCK_FM( m_utlStopSound2 );
+        for( int i = 0; i < m_utlStopSound2.Count(); i++ ) {
+            DeferredCall_StopSound2_t *pCall = m_utlStopSound2[i];
+            if( gpGlobals->curtime >= pCall->flTriggerTime ) {
+                g_SoundEmitterSystem.Deferred_StopSound2( pCall );
+                m_utlStopSound2.Remove( i );
                 delete pCall;
             }
         }
@@ -1455,6 +1511,7 @@ void CDeferredSoundWorkerThread::Cleanup()
     iCallsRemaining += m_utlEmitSoundByHandle.Count();
     iCallsRemaining += m_utlEmitAmbientSound.Count();
     iCallsRemaining += m_utlEmitAmbientSound2.Count();
+    iCallsRemaining += m_utlStopSound.Count();
 
     if( iCallsRemaining ) {
         ConColorMsg( LOG_COLOR_CYAN, "CDeferredSoundWorkerThread: Purging %d uninvoked calls\n", iCallsRemaining );
@@ -1478,14 +1535,24 @@ void CDeferredSoundWorkerThread::Cleanup()
         for( int i = 0; i < m_utlEmitAmbientSound2.Count(); i++ )
             delete m_utlEmitAmbientSound2[i];
         m_utlEmitAmbientSound2.RemoveAll();
+
+        AUTO_LOCK_FM( m_utlStopSound );
+        for( int i = 0; i < m_utlStopSound.Count(); i++ )
+            delete m_utlStopSound[i];
+        m_utlStopSound.RemoveAll();
+
+        AUTO_LOCK_FM( m_utlStopSound2 );
+        for( int i = 0; i < m_utlStopSound2.Count(); i++ )
+            delete m_utlStopSound2[i];
+        m_utlStopSound2.RemoveAll();
     }
 }
 
-void CDeferredSoundWorkerThread::EmitSound( float flStartTime, IRecipientFilter &filter, int iEntIndex, const EmitSound_t &ep )
+void CDeferredSoundWorkerThread::EmitSound( float flTriggerTime, IRecipientFilter &filter, int iEntIndex, const EmitSound_t &ep )
 {
     AUTO_LOCK_FM( m_utlEmitSound );
     DeferredCall_EmitSound_t *pCall = new DeferredCall_EmitSound_t;
-    pCall->flStartTime = flStartTime;
+    pCall->flTriggerTime = flTriggerTime;
     pCall->filter.CopyFrom( (CRecipientFilter &)filter );
     pCall->iEntIndex = iEntIndex;
     pCall->ep = ep;
@@ -1494,11 +1561,11 @@ void CDeferredSoundWorkerThread::EmitSound( float flStartTime, IRecipientFilter 
     m_utlEmitSound.AddToTail( pCall );
 }
 
-void CDeferredSoundWorkerThread::EmitSoundByHandle( float flStartTime, int iEntIndex, const EmitSound_t &ep, IRecipientFilter &filter, HSOUNDSCRIPTHANDLE hSoundHandle )
+void CDeferredSoundWorkerThread::EmitSoundByHandle( float flTriggerTime, int iEntIndex, const EmitSound_t &ep, IRecipientFilter &filter, HSOUNDSCRIPTHANDLE hSoundHandle )
 {
     AUTO_LOCK_FM( m_utlEmitSoundByHandle );
     DeferredCall_EmitSoundByHandle_t *pCall = new DeferredCall_EmitSoundByHandle_t;
-    pCall->flStartTime = flStartTime;
+    pCall->flTriggerTime = flTriggerTime;
     pCall->iEntIndex = iEntIndex;
     pCall->ep = ep;
     pCall->pvOrigin = ep.m_pOrigin ? new Vector( *ep.m_pOrigin ) : NULL;
@@ -1508,11 +1575,11 @@ void CDeferredSoundWorkerThread::EmitSoundByHandle( float flStartTime, int iEntI
     m_utlEmitSoundByHandle.AddToTail( pCall );
 }
 
-void CDeferredSoundWorkerThread::EmitAmbientSound( float flStartTime, int iEntIndex, const Vector &vOrigin, const char *pszSoundName, float flVolume, int iFlags, int iPitch, float flSoundTime )
+void CDeferredSoundWorkerThread::EmitAmbientSound( float flTriggerTime, int iEntIndex, const Vector &vOrigin, const char *pszSoundName, float flVolume, int iFlags, int iPitch, float flSoundTime )
 {
     AUTO_LOCK_FM( m_utlEmitAmbientSound );
     DeferredCall_EmitAmbientSound_t *pCall = new DeferredCall_EmitAmbientSound_t;
-    pCall->flStartTime = flStartTime;
+    pCall->flTriggerTime = flTriggerTime;
     pCall->iEntIndex = iEntIndex;
     pCall->vOrigin = vOrigin;
     pCall->soundname = pszSoundName;
@@ -1523,11 +1590,11 @@ void CDeferredSoundWorkerThread::EmitAmbientSound( float flStartTime, int iEntIn
     m_utlEmitAmbientSound.AddToTail( pCall );
 }
 
-void CDeferredSoundWorkerThread::EmitAmbientSound2( float flStartTime, int iEntIndex, const Vector &vOrigin, const char *pszSample, float flVolume, soundlevel_t soundlevel, int iFlags, int iPitch, float flSoundTime )
+void CDeferredSoundWorkerThread::EmitAmbientSound2( float flTriggerTime, int iEntIndex, const Vector &vOrigin, const char *pszSample, float flVolume, soundlevel_t soundlevel, int iFlags, int iPitch, float flSoundTime )
 {
     AUTO_LOCK_FM( m_utlEmitAmbientSound2 );
     DeferredCall_EmitAmbientSound2_t *pCall = new DeferredCall_EmitAmbientSound2_t;
-    pCall->flStartTime = flStartTime;
+    pCall->flTriggerTime = flTriggerTime;
     pCall->iEntIndex = iEntIndex;
     pCall->vOrigin = vOrigin;
     pCall->sample = pszSample;
@@ -1537,4 +1604,26 @@ void CDeferredSoundWorkerThread::EmitAmbientSound2( float flStartTime, int iEntI
     pCall->iPitch = iPitch;
     pCall->flSoundTime = flSoundTime;
     m_utlEmitAmbientSound2.AddToTail( pCall );
+}
+
+void CDeferredSoundWorkerThread::StopSound( float flTriggerTime, int iEntIndex, const char *pszSoundName, HSOUNDSCRIPTHANDLE hSoundHandle )
+{
+    AUTO_LOCK_FM( m_utlStopSound );
+    DeferredCall_StopSound_t *pCall = new DeferredCall_StopSound_t;
+    pCall->flTriggerTime = flTriggerTime;
+    pCall->iEntIndex = iEntIndex;
+    pCall->soundname = pszSoundName;
+    pCall->hSoundHandle = hSoundHandle;
+    m_utlStopSound.AddToTail( pCall );
+}
+
+void CDeferredSoundWorkerThread::StopSound2( float flTriggerTime, int iEntIndex, int iChannel, const char *pszSample )
+{
+    AUTO_LOCK_FM( m_utlStopSound2 );
+    DeferredCall_StopSound2_t *pCall = new DeferredCall_StopSound2_t;
+    pCall->flTriggerTime = flTriggerTime;
+    pCall->iEntIndex = iEntIndex;
+    pCall->iChannel = iChannel;
+    pCall->sample = pszSample;
+    m_utlStopSound2.AddToTail( pCall );
 }

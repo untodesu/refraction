@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8849"
-	"mapversion" "27"
+	"mapversion" "29"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -19,7 +19,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "27"
+	"mapversion" "29"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -2992,6 +2992,158 @@ world
 }
 entity
 {
+	"id" "154"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_01"
+	"origin" "0 512 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "163"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_02"
+	"origin" "0 1024 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "168"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_03"
+	"origin" "0 1536 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "173"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_04"
+	"origin" "0 2048 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "338"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_05"
+	"origin" "0 2560 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "343"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_06"
+	"origin" "0 3072 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "348"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_07"
+	"origin" "0 3584 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
+	"id" "353"
+	"classname" "env_explosion"
+	"fireballsprite" "sprites/wxplo1.vmt"
+	"iMagnitude" "100"
+	"rendermode" "5"
+	"spawnflags" "3"
+	"targetname" "expl_08"
+	"origin" "0 4096 0"
+	editor
+	{
+		"color" "126 191 0"
+		"groupid" "443"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 11000]"
+	}
+}
+entity
+{
 	"id" "114"
 	"classname" "info_player_start"
 	"angles" "0 90 0"
@@ -4265,154 +4417,18 @@ entity
 }
 entity
 {
-	"id" "154"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_01"
-	"origin" "0 512 0"
+	"id" "467"
+	"classname" "env_soundscape"
+	"radius" "2712"
+	"soundscape" "ep2_whiteforest.training"
+	"StartDisabled" "0"
+	"origin" "0 2304 0"
 	editor
 	{
-		"color" "126 191 0"
-		"groupid" "443"
+		"color" "220 30 220"
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "163"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_02"
-	"origin" "0 1024 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "168"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_03"
-	"origin" "0 1536 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "173"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_04"
-	"origin" "0 2048 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "338"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_05"
-	"origin" "0 2560 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "343"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_06"
-	"origin" "0 3072 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "348"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_07"
-	"origin" "0 3584 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
-	"id" "353"
-	"classname" "env_explosion"
-	"fireballsprite" "sprites/wxplo1.vmt"
-	"iMagnitude" "100"
-	"rendermode" "5"
-	"spawnflags" "3"
-	"targetname" "expl_08"
-	"origin" "0 4096 0"
-	editor
-	{
-		"color" "126 191 0"
-		"groupid" "443"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras
