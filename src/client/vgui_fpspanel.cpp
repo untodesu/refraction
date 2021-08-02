@@ -16,6 +16,7 @@
 
 static ConVar cl_showfps( "cl_showfps", "0", FCVAR_ARCHIVE, "Draw fps meter at top of screen" );
 static ConVar cl_showpos( "cl_showpos", "0", FCVAR_ARCHIVE, "Draw current position at top of screen" );
+static ConVar cl_showmod( "cl_showmod", "1", FCVAR_ARCHIVE, "Draw mod's version at top of screen" );
 
 extern bool g_bDisplayParticlePerformance;
 int GetParticlePerformance();
@@ -62,10 +63,10 @@ CFPSPanel::CFPSPanel( vgui::VPANEL parent ) : BaseClass( NULL, "CFPSPanel" ), m_
     ComputeSize();
     g_pVGui->AddTickSignal( GetVPanel(), 250 );
 
-#ifdef DEV_BUILD
-    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u devbuild (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+#if defined( DEV_BUILD )
+    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u development build", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
 #else
-    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u (%s %s)", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+    Q_snprintf( m_szWatermark, sizeof( m_szWatermark ), "%s %u.%u.%u", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
 #endif
 }
 
@@ -169,8 +170,10 @@ void CFPSPanel::Paint()
     int iFontTall = g_pVGuiSurface->GetFontTall( m_hFont );
     
     // Draw mod/game watermark...
-    g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s", m_szWatermark );
-    ypos += 2 + iFontTall;
+    if( cl_showmod.GetBool() ) {
+        g_pMatSystemSurface->DrawColoredText( m_hFont, 2, ypos, 255, 255, 255, 255, "%s", m_szWatermark );
+        ypos += 2 + iFontTall;
+    }
 
     // Draw FPS
     float flFrametime = gpGlobals->absoluteframetime;

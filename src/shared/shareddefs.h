@@ -11,10 +11,11 @@
 #pragma once
 #endif
 
-#define MOD_NAME            "Refraction"
-#define MOD_VERSION_MAJOR   0
-#define MOD_VERSION_MINOR   2
-#define MOD_VERSION_PATCH   6
+
+#define GAME_NAME           "refraction"
+#define GAME_VERSION_MAJOR  0
+#define GAME_VERSION_MINOR  2
+#define GAME_VERSION_PATCH  7
 
 #define TICK_INTERVAL           (gpGlobals->interval_per_tick)
 

@@ -932,10 +932,10 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
 
     HookHapticMessages(); // Always hook the messages
 
-#ifdef DEV_BUILD
-    ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u client dll (development build) (%s %s)\n", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+#if defined( DEV_BUILD )
+    ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u client dll (development build)\n", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
 #else
-    ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u-%s client dll (%s %s)\n", MOD_NAME, MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH, __DATE__, __TIME__ );
+    ConColorMsg( LOG_COLOR_YELLOW, "%s %u.%u.%u client dll\n", GAME_NAME, GAME_VERSION_MAJOR, GAME_VERSION_MINOR, GAME_VERSION_PATCH );
 #endif
 
     return true;
