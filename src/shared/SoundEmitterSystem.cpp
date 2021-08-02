@@ -166,7 +166,7 @@ static bool LOS_CalcDelay( const Vector &vOrigin, float &flDelay )
             if( flDistance >= snd_los_min_distance.GetFloat() ) {
                 flDelay = flDistance * ( METERS_PER_INCH / snd_los_speed_of_sound.GetFloat() );
                 if( snd_los_debug.GetBool() )
-                    ConDColorMsg( LOG_COLOR_CYAN, "LOS_CalcDelay:  delay: %fs dist: %.2f\"\n", flDelay, flDistance );
+                    ConDColorMsg( LOG_COLOR_CYAN, "LOS_CalcDelay:  delay: %fs dist: %.2f\n", flDelay, flDistance );
                 return true;
             }
         }
@@ -908,7 +908,7 @@ public:
     {
         float flDelay;
         CBaseEntity *pEntity = CBaseEntity::Instance( entindex );
-        if( TestSoundChar( soundname, CHAR_DRYMIX ) || !entindex || !pEntity || !LOS_CalcDelay( pEntity->GetAbsOrigin(), flDelay ) )
+        if( TestSoundChar( soundname, CHAR_DRYMIX ) || !pEntity || !LOS_CalcDelay( pEntity->GetAbsOrigin(), flDelay ) )
             flDelay = 0.0f;
         m_workerThread.StopSound( gpGlobals->curtime + flDelay, entindex, soundname, handle );
     }
@@ -926,12 +926,12 @@ public:
         if( pSample && ( Q_stristr( pSample, ".wav" ) || Q_stristr( pSample, ".mp3" ) || pSample[0] == '!' ) ) {
             float flDelay;
             CBaseEntity *pEntity = CBaseEntity::Instance( iEntIndex );
-            if( TestSoundChar( pSample, CHAR_DRYMIX ) || !iEntIndex || !pEntity || !LOS_CalcDelay( pEntity->GetAbsOrigin(), flDelay ) )
+            if( TestSoundChar( pSample, CHAR_DRYMIX ) || !pEntity || !LOS_CalcDelay( pEntity->GetAbsOrigin(), flDelay ) )
                 flDelay = 0.0f;
             m_workerThread.StopSound2( gpGlobals->curtime + flDelay, iEntIndex, iChannel, pSample );
             return;
         }
-        
+
         // Look it up in sounds.txt and ignore other parameters
         StopSound( iEntIndex, pSample );
     }
