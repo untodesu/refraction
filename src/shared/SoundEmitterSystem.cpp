@@ -69,11 +69,8 @@ void ClearModelSoundsCache();
 // the explicit call to engine[sound]->Emit[Ambient]Sound[ByHandle]()
 // in order to add some effects like Latency of Sound (LoS).
 
-struct DeferredCall_t {
+struct DeferredCall_EmitSound_t {
     float flTriggerTime;
-};
-
-struct DeferredCall_EmitSound_t : public DeferredCall_t {
     CRecipientFilter filter;
     int iEntIndex;
     EmitSound_t ep;
@@ -82,7 +79,8 @@ struct DeferredCall_EmitSound_t : public DeferredCall_t {
     CUtlString soundname;
 };
 
-struct DeferredCall_EmitSoundByHandle_t : public DeferredCall_t {
+struct DeferredCall_EmitSoundByHandle_t {
+    float flTriggerTime;
     int iEntIndex;
     EmitSound_t ep;
     bool bHasOrigin;
@@ -92,7 +90,8 @@ struct DeferredCall_EmitSoundByHandle_t : public DeferredCall_t {
     HSOUNDSCRIPTHANDLE hSoundHandle;
 };
 
-struct DeferredCall_EmitAmbientSound_t : public DeferredCall_t {
+struct DeferredCall_EmitAmbientSound_t {
+    float flTriggerTime;
     int iEntIndex;
     Vector vOrigin;
     CUtlString soundname;
@@ -102,7 +101,8 @@ struct DeferredCall_EmitAmbientSound_t : public DeferredCall_t {
     float flSoundTime;
 };
 
-struct DeferredCall_EmitAmbientSound2_t : public DeferredCall_t {
+struct DeferredCall_EmitAmbientSound2_t {
+    float flTriggerTime;
     int iEntIndex;
     Vector vOrigin;
     CUtlString sample;
@@ -113,13 +113,15 @@ struct DeferredCall_EmitAmbientSound2_t : public DeferredCall_t {
     float flSoundTime;
 };
 
-struct DeferredCall_StopSound_t : public DeferredCall_t {
+struct DeferredCall_StopSound_t {
+    float flTriggerTime;
     int iEntIndex;
     CUtlString soundname;
     HSOUNDSCRIPTHANDLE hSoundHandle;
 };
 
-struct DeferredCall_StopSound2_t : public DeferredCall_t {
+struct DeferredCall_StopSound2_t {
+    float flTriggerTime;
     int iEntIndex;
     int iChannel;
     CUtlString sample;
