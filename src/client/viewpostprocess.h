@@ -6,12 +6,19 @@
 
 #ifndef VIEWPOSTPROCESS_H
 #define VIEWPOSTPROCESS_H
-#if defined( _WIN32 )
-#pragma once
-#endif
+#include "igamesystem.h"
+#include "tier1/convar.h"
 
-void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, bool bPostVGui = false );
-void DoImageSpaceMotionBlur( const CViewSetup &view, int x, int y, int w, int h );
-void DumpTGAofRenderTarget( const int width, const int height, const char *pFilename );
+class IPostProcessSystem : public CBaseGameSystem {
+public:
+    virtual void DoBloomAndTonemapping( int iX, int iY, int iWidth, int iHeight, bool bFlashlight, bool bPostVGui ) = 0;
+    virtual void DoMotionBlur( const CViewSetup &view, int iX, int iY, int iWidth, int iHeight ) = 0;
+    virtual void DoCustomPostEffects( int iX, int iY, int iWidth, int iHeight ) = 0;
+    virtual void DumpRT( int iWidth, int iHeight, const char *pszFilename ) = 0;
+    virtual void EnableCustomPostEffect( const char *pszName, bool bEnable, bool bHold ) = 0;
+    virtual void UnholdAllCustomPostEffects() = 0;
+};
+
+extern IPostProcessSystem *g_pPostProcess;
 
 #endif // VIEWPOSTPROCESS_H

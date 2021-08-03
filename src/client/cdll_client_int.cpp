@@ -105,6 +105,7 @@
 #include "mumble.h"
 #include "discord_rpc_client.h"
 #include "novelui/novelui.h"
+#include "viewpostprocess.h"
 
 // NVNT includes
 #include "hud_macros.h"
@@ -868,6 +869,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
 
     vgui::VGui_InitMatSysInterfacesList( "ClientDLL", &appSystemFactory, 1 );
 
+    IGameSystem::Add( g_pPostProcess );
     IGameSystem::Add( GameStringSystem() ); // Client Leaf System has to be initialized first, since DetailObjectSystem uses it
     IGameSystem::Add( SoundEmitterSystem() );
     IGameSystem::Add( ToolFrameworkClientSystem() );

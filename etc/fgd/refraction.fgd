@@ -88,3 +88,20 @@
 [
     targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
+
+
+@PointClass base(Targetname) = postprocess_controller : "An entity that controls the post processing."
+[
+    input EnableCustomPostEffect(string) : "Enable a custom post-processing effect."
+    input DisableCustomPostEffect(string) : "Disable a custom post-processing effect."
+    input ResetCustomPostEffect(string) : "Reset a custom post-processing effect to its initial state."
+    input SetBloomScale(float) : "Set a custom bloom scale."
+    input ResetBloomScale(void) : "Use the default bloom scale."
+    input SetTonemapScale(void) : "Set the player's tonemap scale. It should be a value between 0 and 2, where 0 is the eyes fully closed, 1 is use the unchanged autoexposure (default), and 2 is the eye fully wide open."
+    input BlendTonemapScale(string) : "Blend from the player's current tonemap scale to a new one. The parameter syntax is as follows: <target tonemap scale> <blend duration>. For example: '0.5 10' would blend from the current tonemap scale to 0.5 over a period of 10 seconds. Tonemap scale is a value between 0 and 2, where 0 is the eyes fully closed, 1 is use the unchanged autoexposure (default), and 2 is the eye fully wide open."
+    input SetTonemapRate(float) : "Set the rate for autoexposure adjustment."
+    input SetMinAutoExposure(float) : "Set a custom tonemap auto exposure minimum."
+    input ResetMinAutoExposure(void) : "Use the default value for tonemap auto exposure minimum."
+    input SetMaxAutoExposure(float) : "Set a custom tonemap auto exposure maximum."
+    input ResetMaxAutoExposure(void) : "Use the default value for tonemap auto exposure minimum."
+]

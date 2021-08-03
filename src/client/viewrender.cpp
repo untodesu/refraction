@@ -92,7 +92,6 @@ static ConVar r_visocclusion( "r_visocclusion", "0", FCVAR_CHEAT );
 extern ConVar r_flashlightdepthtexture;
 
 extern ConVar vcollide_wireframe;
-extern ConVar mat_motion_blur_enabled;
 extern ConVar r_depthoverlay;
 extern ConVar mat_viewportscale;
 extern ConVar mat_viewportupscale;
@@ -1752,15 +1751,15 @@ void CViewRender::RenderView( const CViewSetup &view, int nClearFlags, int whatT
         render->DrawLights();
         RenderPlayerSprites();
 
+        bool bPostProcessingAvailable = !building_cubemaps.GetBool() && view.m_bDoBloomAndToneMapping;
+
         // Image-space motion blur
         // We probably should use a different view variable here
-        if( !building_cubemaps.GetBool() && view.m_bDoBloomAndToneMapping ) {
-            if( ( mat_motion_blur_enabled.GetInt() ) && ( g_pMaterialSystemHardwareConfig->GetDXSupportLevel() >= 90 ) ) {
-                pRenderContext.GetFrom( materials );
-                PIXEVENT( pRenderContext, "DoImageSpaceMotionBlur" );
-                DoImageSpaceMotionBlur( view, view.x, view.y, view.width, view.height );
-                pRenderContext.SafeRelease();
-            }
+        if( bPostProcessingAvailable ) {
+            pRenderContext.GetFrom( materials );
+            PIXEVENT( pRenderContext, "DoMotionBlur" );
+            g_pPostProcess->DoMotionBlur( view, view.x, view.y, view.width, view.height );
+            pRenderContext.SafeRelease();
         }
 
         GetClientModeNormal()->DoPostScreenSpaceEffects( &view );
@@ -1787,21 +1786,22 @@ void CViewRender::RenderView( const CViewSetup &view, int nClearFlags, int whatT
         // Prevent sound stutter if going slow
         engine->Sound_ExtraUpdate();
 
-        if( !building_cubemaps.GetBool() && view.m_bDoBloomAndToneMapping ) {
+        if( bPostProcessingAvailable ) {
             pRenderContext.GetFrom( materials );
-            PIXEVENT( pRenderContext, "DoEnginePostProcessing" );
-
-            bool bFlashlightIsOn = false;
-            C_BasePlayer *pLocal = C_BasePlayer::GetLocalPlayer();
-            if( pLocal ) {
-                bFlashlightIsOn = pLocal->IsEffectActive( EF_DIMLIGHT );
-            }
-
-            DoEnginePostProcessing( view.x, view.y, view.width, view.height, bFlashlightIsOn );
+            PIXEVENT( pRenderContext, "DoBloomAndTonemapping" );
+            C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();
+            g_pPostProcess->DoBloomAndTonemapping( view.x, view.y, view.width, view.height, pPlayer ? pPlayer->IsEffectActive( EF_DIMLIGHT ) : false, false );
             pRenderContext.SafeRelease();
         }
 
         // And here are the screen-space effects
+        if( bPostProcessingAvailable ) {
+            pRenderContext.GetFrom( materials );
+            PIXEVENT( pRenderContext, "DoCustomPostEffects" );
+            g_pPostProcess->DoCustomPostEffects( view.x, view.y, view.width, view.height );
+            pRenderContext.SafeRelease();
+        }
+
         if( IsPC() ) {
             // Grab the pre-color corrected frame for editing purposes
             tmZone( TELEMETRY_LEVEL0, TMZF_NONE, "GrabPreColorCorrectedFrame" );
@@ -4843,7 +4843,7 @@ void CUnderWaterView::CRefractionView::Draw()
 
     // Optionally write the rendered image to a debug texture
     if( g_bDumpRenderTargets ) {
-        DumpTGAofRenderTarget( width, height, "WaterRefract" );
+        g_pPostProcess->DumpRT( width, height, "WaterRefract" );
     }
 
     ITexture *pTexture = GetWaterRefractionTexture();
