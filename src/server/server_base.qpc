@@ -10,9 +10,7 @@ config
 {
     general
     {
-        build_dir "./Debug_$GAME_NAME$"     [$DEBUG$]
-        build_dir "./Release_$GAME_NAME$"   [$RELEASE$]
-        build_dir "./$GAME_NAME$"
+        build_dir "./$CONFIG$_$GAME_NAME$"
     }
 
     compile
