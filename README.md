@@ -21,7 +21,8 @@ The mod at its current state is pretty much mapping-ready but there's still no c
 
 
 ## Licensing
-**NOTE:** this may change in future! I don't want to stick license _my_ work under Valve's license!  
+**NOTE:** this may change in future! I don't want to stick with licensing _my_ work under Valve's license!  
+
 Any third-party library or code used by Refraction code or tools is noted in the [thirdpartylegalnotices.txt](thirdpartylegalnotices.txt) file.  
 The entirety of Refraction code and assets present in the repository is licensed under Valve's SDK license ([LICENSE](LICENSE)):
 ```
