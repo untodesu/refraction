@@ -330,7 +330,7 @@ public:
 
 private:
     CBaseEntityModelLoadProxy( const CBaseEntityModelLoadProxy& );
-    CBaseEntityModelLoadProxy& operator=( const CBaseEntityModelLoadProxy& );
+    CBaseEntityModelLoadProxy &operator=( const CBaseEntityModelLoadProxy& );
 };
 
 static CUtlHashtable< CBaseEntityModelLoadProxy, empty_t, PointerHashFunctor, PointerEqualFunctor, CBaseEntity * > sg_DynamicLoadHandlers;
@@ -577,7 +577,7 @@ void CBaseEntity::ValidateDataDescription(void)
 //-----------------------------------------------------------------------------
 // Sets the collision bounds + the size
 //-----------------------------------------------------------------------------
-void CBaseEntity::SetCollisionBounds( const Vector& mins, const Vector &maxs )
+void CBaseEntity::SetCollisionBounds( const Vector &mins, const Vector &maxs )
 {
     m_Collision.SetCollisionBounds( mins, maxs );
 }
@@ -1913,15 +1913,24 @@ BEGIN_DATADESC_NO_BASE( CBaseEntity )
 
     DEFINE_INPUTFUNC( FIELD_STRING, "AddOutput", InputAddOutput ),
 
-    DEFINE_INPUTFUNC( FIELD_STRING, "FireUser1", InputFireUser1 ),
-    DEFINE_INPUTFUNC( FIELD_STRING, "FireUser2", InputFireUser2 ),
-    DEFINE_INPUTFUNC( FIELD_STRING, "FireUser3", InputFireUser3 ),
-    DEFINE_INPUTFUNC( FIELD_STRING, "FireUser4", InputFireUser4 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser1", InputFireUser1 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser2", InputFireUser2 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser3", InputFireUser3 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser4", InputFireUser4 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser5", InputFireUser5 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser6", InputFireUser6 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser7", InputFireUser7 ),
+    DEFINE_INPUTFUNC( FIELD_VOID, "FireUser8", InputFireUser8 ),
+    DEFINE_INPUTFUNC( FIELD_STRING, "FireUserRandom", InputFireUserRandom ),
 
     DEFINE_OUTPUT( m_OnUser1, "OnUser1" ),
     DEFINE_OUTPUT( m_OnUser2, "OnUser2" ),
     DEFINE_OUTPUT( m_OnUser3, "OnUser3" ),
     DEFINE_OUTPUT( m_OnUser4, "OnUser4" ),
+    DEFINE_OUTPUT( m_OnUser5, "OnUser5" ),
+    DEFINE_OUTPUT( m_OnUser6, "OnUser6" ),
+    DEFINE_OUTPUT( m_OnUser7, "OnUser7" ),
+    DEFINE_OUTPUT( m_OnUser8, "OnUser8" ),
 
     // Function Pointers
     DEFINE_FUNCTION( SUB_Remove ),
@@ -3364,7 +3373,7 @@ void CBaseEntity::FunctionCheck( void *pFunction, const char *name )
 #endif
 
 
-bool CBaseEntity::TestCollision( const Ray_t &ray, unsigned int mask, trace_t& trace )
+bool CBaseEntity::TestCollision( const Ray_t &ray, unsigned int mask, trace_t &trace )
 {
     return false;
 }
@@ -3372,7 +3381,7 @@ bool CBaseEntity::TestCollision( const Ray_t &ray, unsigned int mask, trace_t& t
 //-----------------------------------------------------------------------------
 // Perform hitbox test, returns true *if hitboxes were tested at all*!!
 //-----------------------------------------------------------------------------
-bool CBaseEntity::TestHitboxes( const Ray_t &ray, unsigned int fContentsMask, trace_t& tr )
+bool CBaseEntity::TestHitboxes( const Ray_t &ray, unsigned int fContentsMask, trace_t &tr )
 {
     return false;
 }
@@ -4970,21 +4979,21 @@ void ConsoleFireTargets( CBasePlayer *pPlayer, const char *name)
 // Input   :
 // Output  :
 //------------------------------------------------------------------------------
-void CC_Ent_Name( const CCommand& args )
+void CC_Ent_Name( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_NAME_BIT);
 }
 static ConCommand ent_name("ent_name", CC_Ent_Name, 0, FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_Text( const CCommand& args )
+void CC_Ent_Text( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_TEXT_BIT);
 }
 static ConCommand ent_text("ent_text", CC_Ent_Text, "Displays text debugging information about the given entity(ies) on top of the entity (See Overlay Text)\n\tArguments:      {entity_name} / {class_name} / no argument picks what player is looking at ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_BBox( const CCommand& args )
+void CC_Ent_BBox( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_BBOX_BIT);
 }
@@ -4992,7 +5001,7 @@ static ConCommand ent_bbox("ent_bbox", CC_Ent_BBox, "Displays the movement bound
 
 
 //------------------------------------------------------------------------------
-void CC_Ent_AbsBox( const CCommand& args )
+void CC_Ent_AbsBox( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_ABSBOX_BIT);
 }
@@ -5000,28 +5009,28 @@ static ConCommand ent_absbox("ent_absbox", CC_Ent_AbsBox, "Displays the total bo
 
 
 //------------------------------------------------------------------------------
-void CC_Ent_RBox( const CCommand& args )
+void CC_Ent_RBox( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_RBOX_BIT);
 }
 static ConCommand ent_rbox("ent_rbox", CC_Ent_RBox, "Displays the total bounding box for the given entity(s) in green.  Some entites will also display entity specific overlays.\n\tArguments:      {entity_name} / {class_name} / no argument picks what player is looking at ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_AttachmentPoints( const CCommand& args )
+void CC_Ent_AttachmentPoints( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_ATTACHMENTS_BIT);
 }
 static ConCommand ent_attachments("ent_attachments", CC_Ent_AttachmentPoints, "Displays the attachment points on an entity.\n\tArguments:       {entity_name} / {class_name} / no argument picks what player is looking at ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_ViewOffset( const CCommand& args )
+void CC_Ent_ViewOffset( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_VIEWOFFSET);
 }
 static ConCommand ent_viewoffset("ent_viewoffset", CC_Ent_ViewOffset, "Displays the eye position for the given entity(ies) in red.\n\tArguments:    {entity_name} / {class_name} / no argument picks what player is looking at ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_Remove( const CCommand& args )
+void CC_Ent_Remove( const CCommand &args )
 {
     CBaseEntity *pEntity = NULL;
 
@@ -5064,7 +5073,7 @@ void CC_Ent_Remove( const CCommand& args )
 static ConCommand ent_remove("ent_remove", CC_Ent_Remove, "Removes the given entity(s)\n\tArguments:    {entity_name} / {class_name} / no argument picks what player is looking at ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_RemoveAll( const CCommand& args )
+void CC_Ent_RemoveAll( const CCommand &args )
 {
     // If no name was given remove based on the picked
     if ( args.ArgC() < 2 )
@@ -5100,7 +5109,7 @@ void CC_Ent_RemoveAll( const CCommand& args )
 static ConCommand ent_remove_all("ent_remove_all", CC_Ent_RemoveAll, "Removes all entities of the specified type\n\tArguments:      {entity_name} / {class_name} ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Ent_SetName( const CCommand& args )
+void CC_Ent_SetName( const CCommand &args )
 {
     CBaseEntity *pEntity = NULL;
 
@@ -5146,7 +5155,7 @@ void CC_Ent_SetName( const CCommand& args )
 static ConCommand ent_setname("ent_setname", CC_Ent_SetName, "Sets the targetname of the given entity(s)\n\tArguments:      {new entity name} {entity_name} / {class_name} / no argument picks what player is looking at ", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Find_Ent( const CCommand& args )
+void CC_Find_Ent( const CCommand &args )
 {
     if ( args.ArgC() < 2 )
     {
@@ -5194,7 +5203,7 @@ void CC_Find_Ent( const CCommand& args )
 static ConCommand find_ent("find_ent", CC_Find_Ent, "Find and list all entities with classnames or targetnames that contain the specified substring.\nFormat: find_ent <substring>\n", FCVAR_CHEAT);
 
 //------------------------------------------------------------------------------
-void CC_Find_Ent_Index( const CCommand& args )
+void CC_Find_Ent_Index( const CCommand &args )
 {
     if ( args.ArgC() < 2 )
     {
@@ -5217,7 +5226,7 @@ static ConCommand find_ent_index("find_ent_index", CC_Find_Ent_Index, "Display d
 
 // Purpose :
 //------------------------------------------------------------------------------
-void CC_Ent_Dump( const CCommand& args )
+void CC_Ent_Dump( const CCommand &args )
 {
     CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() );
     if (!pPlayer)
@@ -5299,7 +5308,7 @@ static ConCommand ent_dump("ent_dump", CC_Ent_Dump, "Usage:\n   ent_dump <entity
 // Input   :
 // Output  :
 //------------------------------------------------------------------------------
-void CC_Ent_FireTarget( const CCommand& args )
+void CC_Ent_FireTarget( const CCommand &args )
 {
     ConsoleFireTargets(UTIL_GetCommandClient(),args[1]);
 }
@@ -5541,7 +5550,7 @@ private:
 static CEntFireAutoCompletionFunctor g_EntFireAutoComplete;
 static ConCommand ent_fire("ent_fire", &g_EntFireAutoComplete, "Usage:\n   ent_fire <target> [action] [value] [delay]\n", FCVAR_CHEAT, &g_EntFireAutoComplete );
 
-void CC_Ent_CancelPendingEntFires( const CCommand& args )
+void CC_Ent_CancelPendingEntFires( const CCommand &args )
 {
     if ( !UTIL_IsCommandIssuedByServerAdmin() )
         return;
@@ -5559,7 +5568,7 @@ static ConCommand ent_cancelpendingentfires("ent_cancelpendingentfires", CC_Ent_
 // Input   :
 // Output  :
 //------------------------------------------------------------------------------
-void CC_Ent_Info( const CCommand& args )
+void CC_Ent_Info( const CCommand &args )
 {
     CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() );
     if (!pPlayer)
@@ -5619,7 +5628,7 @@ static ConCommand ent_info("ent_info", CC_Ent_Info, "Usage:\n   ent_info <class 
 // Input   :
 // Output  :
 //------------------------------------------------------------------------------
-void CC_Ent_Messages( const CCommand& args )
+void CC_Ent_Messages( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_MESSAGE_BIT);
 }
@@ -5667,7 +5676,7 @@ static ConCommand picker("picker", CC_Ent_Picker, "Toggles 'picker' mode.  When 
 // Input   :
 // Output  :
 //------------------------------------------------------------------------------
-void CC_Ent_Pivot( const CCommand& args )
+void CC_Ent_Pivot( const CCommand &args )
 {
     SetDebugBits(UTIL_GetCommandClient(),args[1],OVERLAY_PIVOT_BIT);
 }
@@ -5678,7 +5687,7 @@ static ConCommand ent_pivot("ent_pivot", CC_Ent_Pivot, "Displays the pivot for t
 // Input   :
 // Output  :
 //------------------------------------------------------------------------------
-void CC_Ent_Step( const CCommand& args )
+void CC_Ent_Step( const CCommand &args )
 {
     int nSteps = atoi(args[1]);
     if (nSteps <= 0)
@@ -5844,7 +5853,7 @@ void CBaseEntity::ComputeAbsDirection( const Vector &vecLocalDirection, Vector *
 }
 
 
-matrix3x4_t& CBaseEntity::GetParentToWorldTransform( matrix3x4_t &tempMatrix )
+matrix3x4_t &CBaseEntity::GetParentToWorldTransform( matrix3x4_t &tempMatrix )
 {
     CBaseEntity *pMoveParent = GetMoveParent();
     if ( !pMoveParent )
@@ -5873,7 +5882,7 @@ matrix3x4_t& CBaseEntity::GetParentToWorldTransform( matrix3x4_t &tempMatrix )
 //-----------------------------------------------------------------------------
 // These methods recompute local versions as well as set abs versions
 //-----------------------------------------------------------------------------
-void CBaseEntity::SetAbsOrigin( const Vector& absOrigin )
+void CBaseEntity::SetAbsOrigin( const Vector &absOrigin )
 {
     AssertMsg( absOrigin.IsValid(), "Invalid origin set" );
 
@@ -5913,7 +5922,7 @@ void CBaseEntity::SetAbsOrigin( const Vector& absOrigin )
     }
 }
 
-void CBaseEntity::SetAbsAngles( const QAngle& absAngles )
+void CBaseEntity::SetAbsAngles( const QAngle &absAngles )
 {
     // This is necessary to get the other fields of m_rgflCoordinateFrame ok
     CalcAbsolutePosition();
@@ -6028,7 +6037,7 @@ void CBaseEntity::SetAbsAngularVelocity( const QAngle &vecAbsAngVelocity )
 //-----------------------------------------------------------------------------
 // Methods that modify local physics state, and let us know to compute abs state later
 //-----------------------------------------------------------------------------
-void CBaseEntity::SetLocalOrigin( const Vector& origin )
+void CBaseEntity::SetLocalOrigin( const Vector &origin )
 {
     // Safety check against NaN's or really huge numbers
     if ( !IsEntityPositionReasonable( origin ) )
@@ -6063,7 +6072,7 @@ void CBaseEntity::SetLocalOrigin( const Vector& origin )
     }
 }
 
-void CBaseEntity::SetLocalAngles( const QAngle& angles )
+void CBaseEntity::SetLocalAngles( const QAngle &angles )
 {
     // NOTE: The angle normalize is a little expensive, but we can save
     // a bunch of time in interpolation if we don't have to invalidate everything
@@ -6281,7 +6290,7 @@ void CBaseEntity::RemoveAllDecals( void )
 // Purpose:
 // Input  : set -
 //-----------------------------------------------------------------------------
-void CBaseEntity::ModifyOrAppendCriteria( AI_CriteriaSet& set )
+void CBaseEntity::ModifyOrAppendCriteria( AI_CriteriaSet &set )
 {
     // TODO
     // Append chapter/day?
@@ -6334,7 +6343,7 @@ void CBaseEntity::ModifyOrAppendCriteria( AI_CriteriaSet& set )
 // Input  : set -
 //          "" -
 //-----------------------------------------------------------------------------
-void CBaseEntity::AppendContextToCriteria( AI_CriteriaSet& set, const char *prefix /*= ""*/ )
+void CBaseEntity::AppendContextToCriteria( AI_CriteriaSet &set, const char *prefix /*= ""*/ )
 {
     RemoveExpiredConcepts();
 
@@ -6457,7 +6466,7 @@ int CBaseEntity::FindContextByName( const char *name ) const
 // Purpose:
 // Input  : inputdata -
 //-----------------------------------------------------------------------------
-void CBaseEntity::InputAddContext( inputdata_t& inputdata )
+void CBaseEntity::InputAddContext( inputdata_t &inputdata )
 {
     const char *contextName = inputdata.value.String();
     AddContext( contextName );
@@ -6475,29 +6484,78 @@ void CBaseEntity::InputAddContext( inputdata_t& inputdata )
 //          OnUser1 output to it's sprite's Toggle input, then connect each path_track's
 //          OnPass output to !activator's FireUser1 input.
 //-----------------------------------------------------------------------------
-void CBaseEntity::InputFireUser1( inputdata_t& inputdata )
+void CBaseEntity::InputFireUser1( inputdata_t &inputdata )
 {
     m_OnUser1.FireOutput( inputdata.pActivator, this );
 }
 
-
-void CBaseEntity::InputFireUser2( inputdata_t& inputdata )
+void CBaseEntity::InputFireUser2( inputdata_t &inputdata )
 {
     m_OnUser2.FireOutput( inputdata.pActivator, this );
 }
 
-
-void CBaseEntity::InputFireUser3( inputdata_t& inputdata )
+void CBaseEntity::InputFireUser3( inputdata_t &inputdata )
 {
     m_OnUser3.FireOutput( inputdata.pActivator, this );
 }
 
-
-void CBaseEntity::InputFireUser4( inputdata_t& inputdata )
+void CBaseEntity::InputFireUser4( inputdata_t &inputdata )
 {
     m_OnUser4.FireOutput( inputdata.pActivator, this );
 }
 
+void CBaseEntity::InputFireUser5( inputdata_t &inputdata )
+{
+    m_OnUser5.FireOutput( inputdata.pActivator, this );
+}
+
+void CBaseEntity::InputFireUser6( inputdata_t &inputdata )
+{
+    m_OnUser6.FireOutput( inputdata.pActivator, this );
+}
+
+void CBaseEntity::InputFireUser7( inputdata_t &inputdata )
+{
+    m_OnUser7.FireOutput( inputdata.pActivator, this );
+}
+
+void CBaseEntity::InputFireUser8( inputdata_t &inputdata )
+{
+    m_OnUser8.FireOutput( inputdata.pActivator, this );
+}
+
+void CBaseEntity::InputFireUserRandom( inputdata_t &inputdata )
+{
+    int iMin = 1, iMax = 8;
+    sscanf( inputdata.value.String(), "%d %d", &iMin, &iMax );
+    int iInput = random->RandomInt( Clamp( iMin, 1, 8 ), Clamp( iMax, 1, 8 ) );
+    switch( iInput ) {
+        case 1:
+            InputFireUser1( inputdata );
+            break;
+        case 2:
+            InputFireUser2( inputdata );
+            break;
+        case 3:
+            InputFireUser3( inputdata );
+            break;
+        case 4:
+            InputFireUser4( inputdata );
+            break;
+        case 5:
+            InputFireUser5( inputdata );
+            break;
+        case 6:
+            InputFireUser6( inputdata );
+            break;
+        case 7:
+            InputFireUser7( inputdata );
+            break;
+        case 8:
+            InputFireUser8( inputdata );
+            break;
+    }
+}
 
 //-----------------------------------------------------------------------------
 // Purpose:
@@ -6541,7 +6599,7 @@ void CBaseEntity::AddContext( const char *contextName )
 // Purpose:
 // Input  : inputdata -
 //-----------------------------------------------------------------------------
-void CBaseEntity::InputRemoveContext( inputdata_t& inputdata )
+void CBaseEntity::InputRemoveContext( inputdata_t &inputdata )
 {
     const char *contextName = inputdata.value.String();
     int idx = FindContextByName( contextName );
@@ -6555,7 +6613,7 @@ void CBaseEntity::InputRemoveContext( inputdata_t& inputdata )
 // Purpose:
 // Input  : inputdata -
 //-----------------------------------------------------------------------------
-void CBaseEntity::InputClearContext( inputdata_t& inputdata )
+void CBaseEntity::InputClearContext( inputdata_t &inputdata )
 {
     m_ResponseContexts.RemoveAll();
 }
@@ -6573,7 +6631,7 @@ IResponseSystem *CBaseEntity::GetResponseSystem()
 // Purpose:
 // Input  : inputdata -
 //-----------------------------------------------------------------------------
-void CBaseEntity::InputDispatchResponse( inputdata_t& inputdata )
+void CBaseEntity::InputDispatchResponse( inputdata_t &inputdata )
 {
     DispatchResponse( inputdata.value.String() );
 }
@@ -6714,7 +6772,7 @@ void CBaseEntity::DumpResponseCriteria( void )
 }
 
 //------------------------------------------------------------------------------
-void CC_Ent_Show_Response_Criteria( const CCommand& args )
+void CC_Ent_Show_Response_Criteria( const CCommand &args )
 {
     CBaseEntity *pEntity = NULL;
     while ( (pEntity = GetNextCommandEntity( UTIL_GetCommandClient(), args[1], pEntity )) != NULL )
@@ -6727,7 +6785,7 @@ static ConCommand ent_show_response_criteria("ent_show_response_criteria", CC_En
 //------------------------------------------------------------------------------
 // Purpose: Show an entity's autoaim radius
 //------------------------------------------------------------------------------
-void CC_Ent_Autoaim( const CCommand& args )
+void CC_Ent_Autoaim( const CCommand &args )
 {
     SetDebugBits( UTIL_GetCommandClient(),args[1], OVERLAY_AUTOAIM_BIT );
 }
@@ -6972,7 +7030,7 @@ QAngle CBaseEntity::GetStepAngles( void ) const
 //  the recipient list.
 // Input  : filter -
 //-----------------------------------------------------------------------------
-void CBaseEntity::RemoveRecipientsIfNotCloseCaptioning( CRecipientFilter& filter )
+void CBaseEntity::RemoveRecipientsIfNotCloseCaptioning( CRecipientFilter &filter )
 {
     int c = filter.GetRecipientCount();
     for ( int i = c - 1; i >= 0; --i )
@@ -7023,7 +7081,7 @@ void CBaseEntity::RemoveRecipientsIfNotCloseCaptioning( CRecipientFilter& filter
 //          bUpdatePositions -
 //          soundtime -
 //-----------------------------------------------------------------------------
-void CBaseEntity::EmitSentenceByIndex( IRecipientFilter& filter, int iEntIndex, int iChannel, int iSentenceIndex,
+void CBaseEntity::EmitSentenceByIndex( IRecipientFilter &filter, int iEntIndex, int iChannel, int iSentenceIndex,
     float flVolume, soundlevel_t iSoundlevel, int iFlags /*= 0*/, int iPitch /*=PITCH_NORM*/,
     const Vector *pOrigin /*=NULL*/, const Vector *pDirection /*=NULL*/,
     bool bUpdatePositions /*=true*/, float soundtime /*=0.0f*/ )
@@ -7298,7 +7356,7 @@ void CBaseEntity::SetCollisionBoundsFromModel()
 //------------------------------------------------------------------------------
 // Purpose: Create an NPC of the given type
 //------------------------------------------------------------------------------
-void CC_Ent_Create( const CCommand& args )
+void CC_Ent_Create( const CCommand &args )
 {
     MDLCACHE_CRITICAL_SECTION();
 
@@ -7369,7 +7427,7 @@ static ConCommand ent_create("ent_create", CC_Ent_Create, "Creates an entity of 
 //------------------------------------------------------------------------------
 // Purpose: Teleport a specified entity to where the player is looking
 //------------------------------------------------------------------------------
-bool CC_GetCommandEnt( const CCommand& args, CBaseEntity **ent, Vector *vecTargetPoint, QAngle *vecPlayerAngle )
+bool CC_GetCommandEnt( const CCommand &args, CBaseEntity **ent, Vector *vecTargetPoint, QAngle *vecPlayerAngle )
 {
     // Find the entity
     *ent = NULL;
@@ -7424,7 +7482,7 @@ bool CC_GetCommandEnt( const CCommand& args, CBaseEntity **ent, Vector *vecTarge
 //------------------------------------------------------------------------------
 // Purpose: Teleport a specified entity to where the player is looking
 //------------------------------------------------------------------------------
-void CC_Ent_Teleport( const CCommand& args )
+void CC_Ent_Teleport( const CCommand &args )
 {
     if ( args.ArgC() < 2 )
     {
@@ -7445,7 +7503,7 @@ static ConCommand ent_teleport("ent_teleport", CC_Ent_Teleport, "Teleport the sp
 //------------------------------------------------------------------------------
 // Purpose: Orient a specified entity to match the player's angles
 //------------------------------------------------------------------------------
-void CC_Ent_Orient( const CCommand& args )
+void CC_Ent_Orient( const CCommand &args )
 {
     if ( args.ArgC() < 2 )
     {

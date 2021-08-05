@@ -667,6 +667,11 @@ public:
     void InputFireUser2( inputdata_t &inputdata );
     void InputFireUser3( inputdata_t &inputdata );
     void InputFireUser4( inputdata_t &inputdata );
+    void InputFireUser5( inputdata_t &inputdata );
+    void InputFireUser6( inputdata_t &inputdata );
+    void InputFireUser7( inputdata_t &inputdata );
+    void InputFireUser8( inputdata_t &inputdata );
+    void InputFireUserRandom( inputdata_t &inputdata );
 
     // Returns the origin at which to play an inputted dispatcheffect
     virtual void GetInputDispatchEffectPosition( const char *sInputString, Vector &pOrigin, QAngle &pAngles );
@@ -1102,7 +1107,7 @@ public:
         FunctionCheck( *(reinterpret_cast<void **>(&m_pfnTouch)), name );
         return func;
     }
-    USEPTR  UseSet( USEPTR func, char *name )
+    USEPTR UseSet( USEPTR func, char *name )
     {
 #ifdef GNUC
         COMPILE_TIME_ASSERT( sizeof(func) == 8 );
@@ -1113,7 +1118,7 @@ public:
         FunctionCheck( *(reinterpret_cast<void **>(&m_pfnUse)), name );
         return func;
     }
-    ENTITYFUNCPTR   BlockedSet( ENTITYFUNCPTR func, char *name )
+    ENTITYFUNCPTR BlockedSet( ENTITYFUNCPTR func, char *name )
     {
 #ifdef GNUC
         COMPILE_TIME_ASSERT( sizeof(func) == 8 );
@@ -1690,8 +1695,12 @@ private:
     COutputEvent m_OnUser2;
     COutputEvent m_OnUser3;
     COutputEvent m_OnUser4;
+    COutputEvent m_OnUser5;
+    COutputEvent m_OnUser6;
+    COutputEvent m_OnUser7;
+    COutputEvent m_OnUser8;
 
-    QAngle          m_angAbsRotation;
+    QAngle m_angAbsRotation;
 
     CNetworkVector( m_vecOrigin );
     CNetworkQAngle( m_angRotation );

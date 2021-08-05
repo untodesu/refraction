@@ -16,11 +16,6 @@
             gamebin                                 |gameinfo_path|bin
             game+mod                                |gameinfo_path|content/.
             //game+mod                                |gameinfo_path|re_content.vpk
-            
-            // Episodic
-            game                                    |all_source_engine_paths|ep2/ep2_pak.vpk
-            game                                    |all_source_engine_paths|ep2/ep2_sound_vo_english.vpk
-            game                                    |all_source_engine_paths|episodic/ep1_pak.vpk
 
             // HL2
             game                                    |all_source_engine_paths|hl2/hl2_english.vpk
@@ -29,6 +24,11 @@
             game                                    |all_source_engine_paths|hl2/hl2_sound_vo_english.vpk
             game                                    |all_source_engine_paths|hl2/hl2_sound_misc.vpk
             game                                    |all_source_engine_paths|hl2/hl2_misc.vpk
+            
+            // Episodic
+            game                                    |all_source_engine_paths|ep2/ep2_pak.vpk
+            game                                    |all_source_engine_paths|ep2/ep2_sound_vo_english.vpk
+            game                                    |all_source_engine_paths|episodic/ep1_pak.vpk
             
             // Misc
             platform                                |all_source_engine_paths|platform/platform_misc.vpk
