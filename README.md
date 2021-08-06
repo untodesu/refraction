@@ -10,10 +10,9 @@ The mod at its current state is pretty much mapping-ready but there's still no c
 
 ## Features
 1. Custom post-processing system allowing programmers to add custom screen-space post-processing effects easier than it was before. The `postprocess_controller` entity (replaces env_tonemap_controller) is responsible for toggling such effects.
-2. Deferred sound system. Sounds now respect the speed of sound (as long as they are not marked as `CHAR_DRYMIX`).
-3. Lots of fixes from [VDC](https://developer.valvesoftware.com) and from Pull Requests of Valve's SDK.
-4. NovelUI allows programmers to easily create new GameUI elements without pain.
-5. Something that I don't remember that good but it exists and it is awesome `:)`
+2. Lots of fixes from [VDC](https://developer.valvesoftware.com) and from Pull Requests of Valve's SDK.
+3. NovelUI allows programmers to easily create new GameUI elements without pain.
+4. Something that I don't remember that good but it exists and it is awesome `:)`
 
 ## Miscellaneous
 1. There's `openal` branch with an attempt to use OpenAL instead of Deferred Sound System.
