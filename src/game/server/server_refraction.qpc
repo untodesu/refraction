@@ -2,7 +2,7 @@ macro "PROJECT_NAME"    "refraction server"
 macro "GIT_ROOT"        "../../.."
 macro "GAME_NAME"       "refraction"
 
-include "$GIT_ROOT$/src/server/server_base.qpc"
+include "$GIT_ROOT$/src/game/server/server_base.qpc"
 
 config
 {
