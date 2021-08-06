@@ -6,8 +6,8 @@ configurations
 
 group "refraction" [$REFRACTION$]
 {
-    "src/client/client_refraction.qpc"
-    "src/server/server_refraction.qpc"
+    "src/game/client/client_refraction.qpc"
+    "src/game/server/server_refraction.qpc"
     "src/game_shader_dx9/game_shader_dx9_refraction.qpc"
 }
 
