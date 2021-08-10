@@ -188,7 +188,8 @@ float LinearToGamma( const float f1linear )
 
 float3 GammaToLinear( const float3 gamma )
 {
-    return pow( gamma, 2.2f );
+    float x = 2.2f;
+    return float3(pow(gamma.x, x), pow(gamma.y, x), pow(gamma.z, x));
 }
 
 float4 GammaToLinear( const float4 gamma )

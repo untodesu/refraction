@@ -1,14 +1,6 @@
-//
-// vs 3.0   ps 3.0   shaders collection
-//
-//  These shaders are forced to compile as shader model 3.0
-//  using the new compiler.
-//	    _ps30.vcs
-//	    _vs30.vcs
-//
-re_flashlight_ps30.fxc
-re_lightmappedgeneric_flashlight_vs30.fxc
-re_lightmappedgeneric_vs30.fxc
-re_lightmappedgeneric_ps30.fxc
-re_lensdistortion_vs30.fxc
-re_lensdistortion_ps30.fxc
+sdk_flashlight_ps30.fxc
+sdk_lensdistortion_ps30.fxc
+sdk_lensdistortion_vs30.fxc
+sdk_lightmappedgeneric_flashlight_vs30.fxc
+sdk_lightmappedgeneric_ps30.fxc
+sdk_lightmappedgeneric_vs30.fxc

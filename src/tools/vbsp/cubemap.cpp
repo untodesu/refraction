@@ -592,28 +592,24 @@ static bool PatchEnvmapForMaterialAndDependents( const char *pMaterialName, cons
     }
 
     if( pCorrection ) {
-        char szParallaxCorrection1[512] = { 0 };
-        Q_snprintf( szParallaxCorrection1, sizeof( szParallaxCorrection1 ), "[%f %f %f %f]", pCorrection->mMatrix[0][0], pCorrection->mMatrix[0][1], pCorrection->mMatrix[0][2], pCorrection->mMatrix[0][3] );
-        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection1";
-        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection1;
+        char szEnvMapOrigin[512] = { 0 };
+        Q_snprintf( szEnvMapOrigin, sizeof( szEnvMapOrigin ), "[%d %d %d]", origin[0], origin[1], origin[2] );
+        pPatchInfo[nPatchCount].m_pKey = "$envmaporigin";
+        pPatchInfo[nPatchCount].m_pValue = szEnvMapOrigin;
         nPatchCount++;
 
-        char szParallaxCorrection2[512] = { 0 };
-        Q_snprintf( szParallaxCorrection2, sizeof( szParallaxCorrection2 ), "[%f %f %f %f]", pCorrection->mMatrix[1][0], pCorrection->mMatrix[1][1], pCorrection->mMatrix[1][2], pCorrection->mMatrix[1][3] );
-        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection2";
-        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection2;
-        nPatchCount++;
-
-        char szParallaxCorrection3[512] = { 0 };
-        Q_snprintf( szParallaxCorrection3, sizeof( szParallaxCorrection3 ), "[%f %f %f %f]", pCorrection->mMatrix[2][0], pCorrection->mMatrix[2][1], pCorrection->mMatrix[2][2], pCorrection->mMatrix[2][3] );
-        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection3";
-        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection3;
-        nPatchCount++;
-
-        char szParallaxCorrection4[512] = { 0 };
-        Q_snprintf( szParallaxCorrection4, sizeof( szParallaxCorrection4 ), "[%d %d %d]", origin[0], origin[1], origin[2] );
-        pPatchInfo[nPatchCount].m_pKey = "$parallaxcorrection4";
-        pPatchInfo[nPatchCount].m_pValue = szParallaxCorrection4;
+        char szEnvMapParallax[2048] = { 0 };
+        Q_strncat( szEnvMapParallax, "[", sizeof( szEnvMapParallax ) );
+        for( int i = 0; i < 3; i++ ) {
+            for( int j = 0; j < 4; j++ ) {
+                char szFloat[32] = { 0 };
+                Q_snprintf( szFloat, sizeof( szFloat ), "%f ", pCorrection->mMatrix[i][j] );
+                Q_strncat( szEnvMapParallax, szFloat, sizeof( szEnvMapParallax ) );
+            }
+        }
+        Q_strncat( szEnvMapParallax, " 0 0 0 1]", sizeof( szEnvMapParallax ) );
+        pPatchInfo[nPatchCount].m_pKey = "$envmapparallax";
+        pPatchInfo[nPatchCount].m_pValue = szEnvMapParallax;
         nPatchCount++;
     }
 

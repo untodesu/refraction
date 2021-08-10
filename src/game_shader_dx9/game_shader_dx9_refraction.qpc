@@ -10,17 +10,18 @@ files
     {
         folder "HLSL"
         {
-            "$SRC_DIR$/game_shader_dx9/re_flashlight_ps30.fxc"
-            "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_flashlight_vs30.fxc"
-            "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_vs30.fxc"
-            "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_ps30.fxc"
-            "$SRC_DIR$/game_shader_dx9/re_lensdistortion_vs30.fxc"
-            "$SRC_DIR$/game_shader_dx9/re_lensdistortion_ps30.fxc"
+            "$SRC_DIR$/game_shader_dx9/sdk_flashlight_ps30.fxc"
+            "$SRC_DIR$/game_shader_dx9/sdk_lensdistortion_ps30.fxc"
+            "$SRC_DIR$/game_shader_dx9/sdk_lensdistortion_vs30.fxc"
+            "$SRC_DIR$/game_shader_dx9/sdk_lightmappedgeneric_flashlight_vs30.fxc"
+            "$SRC_DIR$/game_shader_dx9/sdk_lightmappedgeneric_ps30.fxc"
+            "$SRC_DIR$/game_shader_dx9/sdk_lightmappedgeneric_vs30.fxc"
         }
         
-        "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric.cpp"
-        "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_helper.cpp"
-        "$SRC_DIR$/game_shader_dx9/re_lensdistortion.cpp"
+        "$SRC_DIR$/game_shader_dx9/sdk_lensdistortion.cpp"
+        "$SRC_DIR$/game_shader_dx9/sdk_lightmappedgeneric.cpp"
+        "$SRC_DIR$/game_shader_dx9/sdk_lightmappedgeneric_helper.cpp"
+        "$SRC_DIR$/game_shader_dx9/sdk_worldvertextransition.cpp"
     }
     
     folder "Header Files"
@@ -31,7 +32,7 @@ files
             "$SRC_DIR$/game_shader_dx9/common_vertexlitgeneric_dx9.h"
         }
         
-        "$SRC_DIR$/game_shader_dx9/re_lightmappedgeneric_helper.h"
+        "$SRC_DIR$/game_shader_dx9/sdk_lightmappedgeneric_helper.h"
     }
     
     "$SRC_DIR$/game_shader_dx9/build_refraction_shaders.bat"

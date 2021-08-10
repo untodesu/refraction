@@ -1,4 +1,4 @@
-RE_LensDistortion
+SDK_LensDistortion
 {
     $amount "[-4 0.3]"
 }
