@@ -527,8 +527,8 @@ HALF4 main( PS_INPUT i ) : COLOR
 
         #if PARALLAXCORRECT
             float3 worldPos = i.worldPos_projPosZ.xyz;
-            float3 positionLS = mul( float4( worldPos, 1 ), g_ObbMatrix ).xyz;
-            float3 rayLS = mul( float4(reflectVect, 1), g_ObbMatrix ).xyz;
+            float3 positionLS = mul( float4( worldPos, 1 ), g_ObbMatrix );
+            float3 rayLS = mul( reflectVect, (float3x3)g_ObbMatrix );
 
             float3 firstPlaneIntersect = ( float3( 1.0f, 1.0f, 1.0f ) - positionLS ) / rayLS;
             float3 secondPlaneIntersect = ( -positionLS ) / rayLS;
