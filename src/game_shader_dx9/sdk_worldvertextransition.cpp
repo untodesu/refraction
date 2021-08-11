@@ -103,6 +103,9 @@ BEGIN_VS_SHADER( SDK_WorldVertexTransition, "Help for SDK_WorldVertexTransition"
     }
 
     // Yoinked™ from DownFall
+    // All Hammer editions for 2013 engine branch (including H++)
+    // have a hack that basically inverts the alpha values virtually
+    // making a workaround for older WorldVertexTransition shaders...
     void SetupVarsEditor( LightmappedGeneric_Vars_t &info )
     {
         SetupVars( info );
