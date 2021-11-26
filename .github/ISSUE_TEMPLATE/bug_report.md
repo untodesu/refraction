@@ -1,25 +1,20 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
+about: A bug report.
+title: A bug
 labels: bug
 assignees: ''
 
 ---
 
 #### Description
-A short and understandable description of the bug.  
-Example: X is working differently than described in Y.
+A short and clear description of the bug.  
 
 #### Expected behaviour
-A short description or a link to the description of the correct behaviour.  
-Example: X should do Z.
+A short and clear description of the behavior that should be seen instead.  
 
-#### Possible ideas to fix the bug
-Optional words about fixing the bug.  
-Example: Change some code at W from A to B.
+#### Media (optional)
+Screenshots, git tag, anything that would help us to fix the issue.  
 
-#### Version info:
-1. Mod's commit id or tag: `0.2.7` or `0a1b2c3d4e`.
-2. Build config: Debug or Release.
-3. Build type: GitHub or Self-Hosted (built by yourself).
+#### Technical (optional)
+Possible solutions for the problem.
