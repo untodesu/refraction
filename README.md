@@ -27,11 +27,11 @@ At its current state Refraction is about 75% compatible with HL2 and Episodic ma
 
 ## Licensing
 Refraction is a dual-licensed project.  
-* All the code that is left unchanged from the original Source Engine SDK
+* All the code that is left unchanged from the original SDK
 repo is licensed under the SDK license, see [LICENSE_SDK](LICENSE_SDK) for details.  
 * Any kind of third-party code (lib and public) is licensed under its
-appropriate license and possibly notified in [thirdpartylegalnotices.txt](thirdpartylegalnotices.txt).  
+appropriate license and notified in [thirdpartylegalnotices.txt](thirdpartylegalnotices.txt).  
 * All the remaining code that was directly contributed, unless explicitly
-stated is licensed under the MIT license, see [LICENSE_MIT](LICENSE_MIT) for details.  
+stated is licensed under the MIT (Expat) license, see [LICENSE_MIT](LICENSE_MIT) for details.  
 
 **In short:** you may use the code as long as you have LICENSE_MIT added to your source and binary tree via thirdpartylegalnotices.txt
