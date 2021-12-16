@@ -1,23 +1,29 @@
-# Refraction
-Refraction is an open-source Source 2013 mod.  
-The mod at its current state is pretty much mapping-ready but there's still no concrete ideas about what levels to create.
+# REFRACTION
+Refraction is an open-source Source Engine 2013 mod aimed for adding some Quality-of-Life changes and fixes to the SP SDK.  
+At its current state Refraction is about 75% compatible with HL2 and Episodic maps.  
 
-## Differences from Valve's SDK
-1. Refraction uses [QPC](https://github.com/quiverteam/QuiverProjectCreator) to generate the project files.
-2. Refraction is Windows-only modification (Linux users can use Proton/Wine).
-3. Refraction is not split into two branches, it works on SP version of Source.
-4. The project structure is a bit different: it is made game-based, not engine-based.
+## Core features
+1. Replaced VPC with [QuiverProjectCreator](https://github.com/quiverteam/QuiverProjectCreator).
+2. Dropped Linux and OSX support for the sake of code simplicity.
+3. Small UTL changes and fixes (such as better C++ comment parsing).
+4. Restructured file hierarchy in order to make the code to be more game-oriented.
 
-## Features
-1. Custom post-processing system allowing programmers to add custom screen-space post-processing effects easier than it was before. The `postprocess_controller` entity (replaces env_tonemap_controller) is responsible for toggling such effects.
-2. Lots of fixes from [VDC](https://developer.valvesoftware.com) and from Pull Requests of Valve's SDK.
-3. NovelUI allows programmers to easily create new GameUI elements without pain.
-4. Something that I don't remember that good but it exists and it is awesome `:)`
+## Game features
+1. A fully customizable GameUI replacement (NovelUI).
+2. A custom post-processing system allowing programmers to define custom screen-space effects. The `postprocess_controller` entity (replaces `env_tonemap_controller` and is partially compatible with its KV signature) allows toggling those effects (configuring values in a non-hacky way is TBA).
+3. Lots of small fixes from [VDC](https://developer.valvesoftware.com) and [SDK pull requests](https://github.com/ValveSoftware/source-sdk-2013/pulls).
+4. Improved forward compatibility of HL2 maps running on Episodic builds (some entities were irreversibly changed making some maps unplayable; two of the numerous examples would be the jeep entities, and mounted machine guns - they weren't working at all on HL2 maps).
+5. Quake-styled (or HL1-WON-styled) view rolling when strafing with customization.
+6. Unlocked Field of View (FOV). I recommend setting it at 105 for widescreen.
+7. Custom VGUI color scheme and fonts for the console.
 
-## Miscellaneous
-1. There's `openal` branch with an attempt to use OpenAL instead of Deferred Sound System.
-2. I was planning on adding real shadow mapping (CSM-ish) to the mod but eventually gave up. May get back to it in the future.
+## Optional and discontinued features
+1. OpenAL sound system (`openal` branch) - discontinued.
+2. Deferred sound system (`deferred-sound` branch) - put on hold.
 
+## Planned features
+1. Shadow mapping
+2. ????
 
 ## Licensing
 Refraction is a dual-licensed project.  
@@ -27,3 +33,5 @@ repo is licensed under the SDK license, see [LICENSE_SDK](LICENSE_SDK) for detai
 appropriate license and possibly notified in [thirdpartylegalnotices.txt](thirdpartylegalnotices.txt).  
 * All the remaining code that was directly contributed, unless explicitly
 stated is licensed under the MIT license, see [LICENSE_MIT](LICENSE_MIT) for details.  
+
+**In short:** you may use the code as long as you have LICENSE_MIT added to your source and binary tree via thirdpartylegalnotices.txt
