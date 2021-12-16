@@ -12,7 +12,7 @@ At its current state Refraction is about 75% compatible with HL2 and Episodic ma
 1. A fully customizable GameUI replacement (NovelUI).
 2. A custom post-processing system allowing programmers to define custom screen-space effects. The `postprocess_controller` entity (replaces `env_tonemap_controller` and is partially compatible with its KV signature) allows toggling those effects (configuring values in a non-hacky way is TBA).
 3. Lots of small fixes from [VDC](https://developer.valvesoftware.com) and [SDK pull requests](https://github.com/ValveSoftware/source-sdk-2013/pulls).
-4. Improved forward compatibility of HL2 maps running on Episodic builds (some entities were irreversibly changed making some maps unplayable; two of the numerous examples would be the jeep entities, and mounted machine guns - they weren't working at all on HL2 maps).
+4. Improved forward compatibility of HL2 maps running on Episodic builds (some entities were irreversibly changed making some maps unplayable; two of the numerous examples would be jeep entities - buggy was not working correctly, and mounted machine guns - they weren't working at all on HL2 maps).
 5. Quake-styled (or HL1-WON-styled) view rolling when strafing with customization.
 6. Unlocked Field of View (FOV). I recommend setting it at 105 for widescreen.
 7. Custom VGUI color scheme and fonts for the console.
