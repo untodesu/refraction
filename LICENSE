@@ -1,0 +1,10 @@
+Refraction is a dual-licensed project.
+
+* All the code that is left unchanged from the original Source Engine SDK
+repo is licensed under the SDK license, see LICENSE_SDK for details.
+
+* Any kind of third-party code (lib and public) is licensed under its
+appropriate license and possibly notified in thirdpartylegalnotices.txt
+
+* All the remaining code that was directly contributed, unless explicitly
+stated is licensed under the MIT licens, see LICENSE_MIT for details.
