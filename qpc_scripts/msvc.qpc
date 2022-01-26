@@ -2,8 +2,7 @@ config
 {
     general
     {
-        // TODO: VS2017 support
-        compiler "msvc_120_xp"
+        compiler "msvc_142"
     }
 
     compile
@@ -19,8 +18,12 @@ config
         
         options
         {
-            "/ignore:4316" "/ignore:4594" "/ignore:4457" "/ignore:4456" "/ignore:4458" "/ignore:4459" "/ignore:4624" "/ignore:4577" "/Gw"
-            "/arch:SSE"
+            // Ignoring these is not great but not terrible either
+            "/ignore:4316" "/ignore:4456" "/ignore:4457" "/ignore:4458"
+            "/ignore:4459" "/ignore:4463" "/ignore:4577" "/ignore:4594"
+            "/ignore:4624" "/ignore:4838" "/ignore:6255" "/ignore:6386"
+            "/ignore:26812" "/ignore:26451"
+            "/arch:SSE2" "/Gw"
             "/Oy-"                                              [$NOFPO$]
             "/ZI" "/Od" "/MTd"                                  [$DEBUG$]
             "/d2Zi+" "/O2" "/Ob2" "/Oi" "/Ot" "/MT" "/Gy" "/Zi" [$RELEASE$]
@@ -34,6 +37,7 @@ config
         {
             "user32.lib"
             "shell32.lib"
+            "legacy_stdio_definitions.lib"
         }
         
         options
@@ -61,6 +65,11 @@ config
             "/OPT:ICF"          [$RETAIL$]
             "/OPT:NOICF"        [!$RETAIL$]
             "/DEBUG" "/ERRORREPORT:PROMPT" "/SAFESEH:NO"
+            
+            // FIXME: we should use MP's particles.lib or hexedit
+            // the current one: _hypot is a piece of shit and I hate
+            // it with all my strength NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE
+            "/force:multiple"
         }
     }
 }

@@ -433,7 +433,7 @@ inline CCycleCount const& CFastTimer::GetDuration() const
 // CAverageCycleCounter inlines
 
 inline CAverageCycleCounter::CAverageCycleCounter()
- :  m_nIters( 0 )
+ :  m_nIters( 0 ), m_fReport(false), m_pszName("")
 {
 }
 
@@ -505,7 +505,7 @@ public:
     uint64 CMicroSecLeft() const;
 
 private:
-    uint64 m_lCycleLimit;
+    uint64 m_lCycleLimit = 0;
 };
 
 

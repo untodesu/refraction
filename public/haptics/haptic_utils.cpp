@@ -106,7 +106,7 @@ void ConnectHaptics(CreateInterfaceFn appFactory)
         CreateInterfaceFn factory = Sys_GetFactory( pFalconModule );
         if(factory)
         {
-            haptics = reinterpret_cast< IHaptics* >( factory( HAPTICS_INTERFACE_VERSION, NULL ) );
+            haptics = (IHaptics *)(factory(HAPTICS_INTERFACE_VERSION, NULL));
             if(haptics &&
                 haptics->Initialize(engine,
                     view,
@@ -145,10 +145,24 @@ void DisconnectHaptics()
     {
         Sys_UnloadModule(pFalconModule);
         pFalconModule = 0;
-    }else{
-        // delete the stub.
-        delete haptics;
     }
+    else if(haptics) {
+        // Putting a virtual destructor to IHaptics (ihaptics.h)
+        // results in undefined undefined (YEP, UNDEFINED SQUARED)
+        // behaviour when the engine crashes when the DLLs are build
+        // with no debug information because the code tries to access
+        // a null pointer for whatever reason (also zero is in the call
+        // stack which honestly worries me) and the call stack is messed
+        // up (haptics.dll's source code is not legally available, duh)
+        // So any code part that "delete"s IHaptics must not break the
+        // undefined (once) behaviour
+        // we do this only once and here.
+#pragma warning(push)
+#pragma warning(disable: 5205)
+        delete haptics;
+#pragma warning(pop)
+    }
+
     haptics = NULL;
 }
 //Might be able to handle this better...
@@ -158,7 +172,6 @@ void HapticsHandleMsg_HapSetConst( Vector const &constant )
     haptics->SetConstantForce(constant);
     //C_BasePlayer* pPlayer = C_BasePlayer::GetLocalPlayer();
 }
-
 
 //Might be able to handle this better...
 void HapticsHandleMsg_SPHapWeapEvent( int iActivity )
