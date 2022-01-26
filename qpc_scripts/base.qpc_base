@@ -16,6 +16,7 @@ group "libs"
     "src/fgdlib/fgdlib.qpc"
     "src/mathlib/mathlib.qpc"
     "src/tier1/tier1.qpc"
+    "src/raytrace/raytrace.qpc"
     "src/vgui2/vgui_controls/vgui_controls.qpc"
 }
 

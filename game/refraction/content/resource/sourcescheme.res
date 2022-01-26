@@ -243,7 +243,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "15"
                 "weight"    "0"
                 "antialias" "1"
@@ -254,7 +254,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "15"
                 "weight"    "550"
                 "antialias" "1"
@@ -265,7 +265,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "15"
                 "weight"    "0"
                 "underline" "1"
@@ -277,7 +277,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "13"
                 "weight"    "550"
                 "antialias" "1"
@@ -288,7 +288,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "13"
                 "weight"    "400"
                 "dropshadow" "1"
@@ -300,7 +300,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "14"
                 "weight"    "0"
                 "antialias" "1"
@@ -311,7 +311,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "18"
                 "weight"    "0"
                 "antialias" "1"
@@ -322,7 +322,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
+                "name"      "Source Code Pro Light"
                 "tall"      "12"
                 "weight"    "1000"
                 "antialias" "1"
@@ -334,8 +334,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro"
-                "tall"      "15"
+                "name"      "Source Code Pro Light"
+                "tall"      "16"
                 "weight"    "450"
                 "antialias" "1"
             }
