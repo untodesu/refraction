@@ -65,11 +65,6 @@ config
             "/OPT:ICF"          [$RETAIL$]
             "/OPT:NOICF"        [!$RETAIL$]
             "/DEBUG" "/ERRORREPORT:PROMPT" "/SAFESEH:NO"
-            
-            // FIXME: we should use MP's particles.lib or hexedit
-            // the current one: _hypot is a piece of shit and I hate
-            // it with all my strength NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE NIGHTMARE
-            "/force:multiple"
         }
     }
 }
