@@ -23,7 +23,6 @@ class bf_read;
 // stubbed version of haptics interface. Used when haptics is not available.
 class CHapticsStubbed : public IHaptics
 {
-public:
 public: // Initialization.
     virtual bool Initialize(IVEngineClient* newengine,
         IViewRender *newview,

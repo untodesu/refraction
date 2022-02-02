@@ -69,7 +69,7 @@ public: // Game input handling
     virtual void SetNavigationClass(const char *defaultNavigationName) = 0;
 
     // Turns the internal navigation off. ( clears navigation class )
-    inline  void ClearNavigationClass();
+    inline void ClearNavigationClass();
 
     // Returns the active navigation class ( if none returns NULL )
     virtual const char *GetNavigationClass() = 0;

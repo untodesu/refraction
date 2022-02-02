@@ -138,21 +138,16 @@ class LogMessage {
 class LogMessageCrash : public LogMessage {
  public:
   LogMessageCrash() { }
-#if _MSC_VER == 1700 || _MSC_VER == 1800
-// Bogus warning from VS 2012 and VS 2013:
+// Bogus warning from VS 2012 and VS 2013 (und: plus VS2019 suddenly...):
 // warning C4722: 'snappy::LogMessageCrash::~LogMessageCrash' : destructor never returns, potential memory leak
 #pragma warning(push)
-#pragma warning(disable : 4722)
-#endif
+#pragma warning(disable: 4722)
   ~LogMessageCrash() {
-      fprintf( stderr, "\n" );
-//    cerr << endl;
+    fprintf( stderr, "\n" );
     abort();
   }
 };
-#if _MSC_VER == 1700 || _MSC_VER == 1800
 #pragma warning(pop)
-#endif
 
 // This class is used to explicitly ignore values in the conditional
 // logging macros.  This avoids compiler warnings like "value computed

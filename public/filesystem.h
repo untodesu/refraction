@@ -390,13 +390,17 @@ struct FileHash_t
         k_EFileHashTypeEntireFile       = 1,
         k_EFileHashTypeIncompleteFile   = 2,
     };
+
     FileHash_t()
     {
         m_eFileHashType = FileHash_t::k_EFileHashTypeUnknown;
         m_cbFileLen = 0;
         m_PackFileID = 0;
         m_nPackFileNumber = 0;
+        m_crcIOSequence = 0;
+        m_md5contents = MD5Value_t();
     }
+
     int m_eFileHashType;
     CRC32_t m_crcIOSequence;
     MD5Value_t m_md5contents;

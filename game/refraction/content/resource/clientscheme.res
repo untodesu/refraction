@@ -737,6 +737,7 @@ Scheme
     {
         "1" "resource/halflife2.ttf"
         "2" "resource/hl2crosshairs.ttf"
+        "3" "resource/sourcecodepro.ttf"
     }
 
 }

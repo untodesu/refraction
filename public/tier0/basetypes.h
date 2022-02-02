@@ -196,14 +196,7 @@ inline unsigned long FloatAbsBits( vec_t f )
 
 // Given today's processors, I cannot think of any circumstance
 // where bit tricks would be faster than fabs. henryg 8/16/2011
-#ifdef _MSC_VER
-#ifndef _In_
-#define _In_
-#endif
-extern "C" float fabsf(_In_ float);
-#else
 #include <math.h>
-#endif
 
 inline float FloatMakeNegative( vec_t f )
 {

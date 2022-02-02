@@ -142,7 +142,7 @@ unsigned FASTCALL HashStringCaselessConventional( const char *pszKey )
 //-----------------------------------------------------------------------------
 unsigned FASTCALL HashInt( const int n )
 {
-    register unsigned       even, odd;
+    unsigned even, odd;
     even  = g_nRandomValues[n & 0xff];
     odd   = g_nRandomValues[((n >> 8) & 0xff)];
 
@@ -159,10 +159,8 @@ unsigned FASTCALL HashInt( const int n )
 //-----------------------------------------------------------------------------
 unsigned FASTCALL Hash4( const void *pKey )
 {
-    register const uint32 * p = (const uint32 *) pKey;
-    register unsigned       even,
-                            odd,
-                            n;
+    const uint32 *p = (const uint32 *) pKey;
+    unsigned even, odd, n;
     n     = *p;
     even  = g_nRandomValues[n & 0xff];
     odd   = g_nRandomValues[((n >> 8) & 0xff)];
@@ -181,10 +179,9 @@ unsigned FASTCALL Hash4( const void *pKey )
 //-----------------------------------------------------------------------------
 unsigned FASTCALL Hash8( const void *pKey )
 {
-    register const uint32 * p = (const uint32 *) pKey;
-    register unsigned       even,
-                            odd,
-                            n;
+    const uint32 *p = (const uint32 *) pKey;
+    unsigned even, odd, n;
+
     n     = *p;
     even  = g_nRandomValues[n & 0xff];
     odd   = g_nRandomValues[((n >> 8) & 0xff)];
@@ -209,10 +206,9 @@ unsigned FASTCALL Hash8( const void *pKey )
 //-----------------------------------------------------------------------------
 unsigned FASTCALL Hash12( const void *pKey )
 {
-    register const uint32 * p = (const uint32 *) pKey;
-    register unsigned       even,
-                            odd,
-                            n;
+    const uint32 *p = (const uint32 *) pKey;
+    unsigned even, odd, n;
+
     n     = *p;
     even  = g_nRandomValues[n & 0xff];
     odd   = g_nRandomValues[((n >> 8) & 0xff)];
@@ -243,10 +239,9 @@ unsigned FASTCALL Hash12( const void *pKey )
 //-----------------------------------------------------------------------------
 unsigned FASTCALL Hash16( const void *pKey )
 {
-    register const uint32 * p = (const uint32 *) pKey;
-    register unsigned       even,
-                            odd,
-                            n;
+    const uint32 *p = (const uint32 *) pKey;
+    unsigned even, odd, n;
+
     n     = *p;
     even  = g_nRandomValues[n & 0xff];
     odd   = g_nRandomValues[((n >> 8) & 0xff)];
@@ -342,14 +337,23 @@ uint32 MurmurHash2( const void * key, int len, uint32 seed )
     }
 
     // Handle the last few bytes of the input array
-
-    switch(len)
-    {
-    case 3: h ^= data[2] << 16;
-    case 2: h ^= data[1] << 8;
-    case 1: h ^= data[0];
-        h *= m;
-    };
+    switch(len) {
+        case 3:
+            h ^= data[2] << 16;
+            h ^= data[1] << 8;
+            h ^= data[0];
+            h *= m;
+            break;
+        case 2:
+            h ^= data[1] << 8;
+            h ^= data[0];
+            h *= m;
+            break;
+        case 1:
+            h ^= data[0];
+            h *= m;
+            break;
+    }
 
     // Do a few final mixes of the hash to ensure the last few
     // bytes are well-incorporated.
