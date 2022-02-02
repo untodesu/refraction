@@ -202,30 +202,31 @@ enum CastVote
 //===================================================================================================================
 // Player Defines
 
-// Max number of players in a game ( see const.h for ABSOLUTE_PLAYER_LIMIT (256 ) )
+// Max number of players in a game (see const.h for ABSOLUTE_PLAYER_LIMIT (256))
 // The Source engine is really designed for 32 or less players.  If you raise this number above 32, you better know what you are doing
-//  and have a good answer for a bunch of perf question related to player simulation, thinking logic, tracelines, networking overhead, etc.
+// and have a good answer for a bunch of perf question related to player simulation, thinking logic, tracelines, networking overhead, etc.
 // But if you are brave or are doing something interesting, go for it...   ywb 9/22/03
-
 //You might be wondering why these aren't multiple of 2. Well the reason is that if servers decide to have HLTV or Replay enabled we need the extra slot.
 //This is ok since MAX_PLAYERS is used for code specific things like arrays and loops, but it doesn't really means that this is the max number of players allowed
 //Since this is decided by the gamerules (and it can be whatever number as long as its less than MAX_PLAYERS).
-#if defined( CSTRIKE_DLL )
-    #define MAX_PLAYERS             65  // Absolute max players supported
-#else
-    #define MAX_PLAYERS             33  // Absolute max players supported
-#endif
+#define MAX_PLAYERS 33
 
-#define MAX_PLACE_NAME_LENGTH       18
+#define MAX_PLACE_NAME_LENGTH 18
+
+// Unlike the New Quirky Half-Life 2 Beta Branch, the FOV
+// in here is defined to be 110, not 120 - avoiding graphical
+// glitches related to Source's PVS algorithms hardcoded or something.
+// 110 degrees of field of view is enough for everyone.
+#define MAX_FOV 110
+#define MIN_FOV 75
 
 //===================================================================================================================
 // Team Defines
-#define TEAM_ANY                -2
-#define TEAM_INVALID            -1
-#define TEAM_UNASSIGNED         0   // not assigned to a team
-#define TEAM_SPECTATOR          1   // spectator team
-// Start your team numbers after this
-#define LAST_SHARED_TEAM        TEAM_SPECTATOR
+#define TEAM_ANY               -2
+#define TEAM_INVALID           -1
+#define TEAM_UNASSIGNED         0               // not assigned to a team
+#define TEAM_SPECTATOR          1               // spectator team
+#define LAST_SHARED_TEAM        TEAM_SPECTATOR  // Start your team numbers after this
 
 // The first team that's game specific (i.e. not unassigned / spectator)
 #define FIRST_GAME_TEAM         (LAST_SHARED_TEAM+1)

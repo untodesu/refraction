@@ -1759,7 +1759,9 @@ int CBasePlayer::GetDefaultFOV( void ) const
     }
 #endif
 
-    return ( m_iDefaultFOV == 0 ) ? g_pGameRules->DefaultFOV() : m_iDefaultFOV;
+    int iFOV = m_iDefaultFOV ? m_iDefaultFOV : g_pGameRules->DefaultFOV();
+    iFOV = clamp(iFOV, MIN_FOV, MAX_FOV);
+    return iFOV;
 }
 
 void CBasePlayer::AvoidPhysicsProps( CUserCmd *pCmd )

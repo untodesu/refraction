@@ -850,9 +850,12 @@ void CGameRules::ClientSettingsChanged( CBasePlayer *pPlayer )
         pPlayer->SetPlayerName( pszName );
     }
 
-    const char *pszFov = engine->GetClientConVarValue( pPlayer->entindex(), "fov_desired" );
-    if ( pszFov )
-        pPlayer->SetDefaultFOV( atoi(pszFov) );
+    const char *pszFov = engine->GetClientConVarValue(pPlayer->entindex(), "fov_desired");
+    if(pszFov) {
+        int iFOV = atoi(pszFov);
+        iFOV = clamp(iFOV, MIN_FOV, MAX_FOV);
+        pPlayer->SetDefaultFOV(iFOV);
+    }
 
     // NVNT see if this user is still or has began using a haptic device
     const char *pszHH = engine->GetClientConVarValue( pPlayer->entindex(), "hap_HasDevice" );
