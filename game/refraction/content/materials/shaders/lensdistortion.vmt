@@ -6,7 +6,6 @@ SDK_LensDistortion
         PlayerHealth
         {
             resultVar $health
-            normalized 1
             factor 0.01
         }
     }

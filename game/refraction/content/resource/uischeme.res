@@ -65,8 +65,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Sans Pro"
-                "tall"      "15"
+                "name"      "Roboto Mono Light"
+                "tall"      "16"
                 "weight"    "500"
                 "antialias" "1"
             }
@@ -93,6 +93,6 @@ Scheme
     {
         "1" "resource/K12HL2.ttf"
         "2" "resource/HALFLIFE2.ttf"
-        "3" "resource/sourcesanspro.ttf"
+        "3" "resource/RobotoMono.ttf"
     }
 }

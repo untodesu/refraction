@@ -243,8 +243,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "15"
+                "name"      "Ubuntu Mono"
+                "tall"      "16"
                 "weight"    "0"
                 "antialias" "1"
             }
@@ -254,8 +254,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "15"
+                "name"      "Ubuntu Mono"
+                "tall"      "16"
                 "weight"    "550"
                 "antialias" "1"
             }
@@ -265,8 +265,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "15"
+                "name"      "Ubuntu Mono"
+                "tall"      "16"
                 "weight"    "0"
                 "underline" "1"
                 "antialias" "1"
@@ -277,8 +277,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "13"
+                "name"      "Ubuntu Mono"
+                "tall"      "17"
                 "weight"    "550"
                 "antialias" "1"
             }
@@ -288,8 +288,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "13"
+                "name"      "Ubuntu Mono"
+                "tall"      "17"
                 "weight"    "400"
                 "dropshadow" "1"
                 "antialias" "1"
@@ -300,7 +300,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
+                "name"      "Ubuntu Mono"
                 "tall"      "14"
                 "weight"    "0"
                 "antialias" "1"
@@ -311,7 +311,7 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
+                "name"      "Ubuntu Mono"
                 "tall"      "18"
                 "weight"    "0"
                 "antialias" "1"
@@ -322,8 +322,8 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "12"
+                "name"      "Ubuntu Mono"
+                "tall"      "15"
                 "weight"    "1000"
                 "antialias" "1"
                 "antialias" "1"
@@ -334,9 +334,9 @@ Scheme
         {
             "1"
             {
-                "name"      "Source Code Pro Light"
-                "tall"      "16"
-                "weight"    "450"
+                "name"      "Ubuntu Mono"
+                "tall"      "17"
+                "weight"    "200"
                 "antialias" "1"
             }
         }
@@ -849,6 +849,6 @@ Scheme
     CustomFontFiles
     {
         "1" "resource/HALFLIFE2.ttf"
-        "2" "resource/sourcecodepro.ttf"
+        "2" "resource/UbuntuMono.ttf"
     }
 }
