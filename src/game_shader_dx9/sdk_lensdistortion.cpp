@@ -5,15 +5,18 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-BEGIN_SHADER( SDK_LensDistortion, "Help for SDK_LensDistortion" )
+BEGIN_SHADER(SDK_LensDistortion, "Help for SDK_LensDistortion")
     BEGIN_SHADER_PARAMS
-        SHADER_PARAM( AMOUNT, SHADER_PARAM_TYPE_VEC2, "[-4 0.3]", "Distortion amount" )
-    END_SHADER_PARAMS
+        SHADER_PARAM(AMOUNT, SHADER_PARAM_TYPE_VEC2, "[-4.0 0.3]", "Distortion amount")
+        SHADER_PARAM(HEALTH, SHADER_PARAM_TYPE_FLOAT, "0.0", "Player health")
+    END_SHADER_PARAMS;
 
     SHADER_INIT
     {
-        if( !params[AMOUNT]->IsDefined() )
+        if(!params[AMOUNT]->IsDefined())
             params[AMOUNT]->SetVecValue(-4.0f, 0.3f);
+        if(!params[HEALTH]->IsDefined())
+            params[HEALTH]->SetFloatValue(0.0f);
     }
 
     SHADER_FALLBACK
@@ -25,28 +28,29 @@ BEGIN_SHADER( SDK_LensDistortion, "Help for SDK_LensDistortion" )
     {
         SHADOW_STATE
         {
-            pShaderShadow->EnableDepthWrites( false );
-            pShaderShadow->EnableTexture( SHADER_SAMPLER0, true );
+            pShaderShadow->EnableDepthWrites(false);
+            pShaderShadow->EnableTexture(SHADER_SAMPLER0, true);
 
-            pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION, 1, 0, 0 );
+            pShaderShadow->VertexShaderVertexFormat(VERTEX_POSITION, 1, 0, 0);
 
-            DECLARE_STATIC_VERTEX_SHADER( sdk_lensdistortion_vs30 );
-            SET_STATIC_VERTEX_SHADER( sdk_lensdistortion_vs30 );
-            DECLARE_STATIC_PIXEL_SHADER( sdk_lensdistortion_ps30 );
-            SET_STATIC_PIXEL_SHADER( sdk_lensdistortion_ps30 );
+            DECLARE_STATIC_VERTEX_SHADER(sdk_lensdistortion_vs30);
+            SET_STATIC_VERTEX_SHADER(sdk_lensdistortion_vs30);
+            DECLARE_STATIC_PIXEL_SHADER(sdk_lensdistortion_ps30);
+            SET_STATIC_PIXEL_SHADER(sdk_lensdistortion_ps30);
         }
 
         DYNAMIC_STATE
         {
-            pShaderAPI->BindStandardTexture( SHADER_SAMPLER0, TEXTURE_FRAME_BUFFER_FULL_TEXTURE_0 );
-            
-            const float *CX = params[AMOUNT]->GetVecValue();
-            pShaderAPI->SetPixelShaderConstant( 0, CX, 2 );
+            pShaderAPI->BindStandardTexture(SHADER_SAMPLER0, TEXTURE_FRAME_BUFFER_FULL_TEXTURE_0);
 
-            DECLARE_DYNAMIC_VERTEX_SHADER( sdk_lensdistortion_vs30 );
-            SET_DYNAMIC_VERTEX_SHADER( sdk_lensdistortion_vs30 );
-            DECLARE_DYNAMIC_PIXEL_SHADER( sdk_lensdistortion_ps30 );
-            SET_DYNAMIC_PIXEL_SHADER( sdk_lensdistortion_ps30 );
+            const float *C0half = params[AMOUNT]->GetVecValue();
+            const float C0[4] = { C0half[0], C0half[1], params[HEALTH]->GetFloatValue(), (float)Plat_FloatTime() };
+            pShaderAPI->SetPixelShaderConstant(0, C0, 4);
+
+            DECLARE_DYNAMIC_VERTEX_SHADER(sdk_lensdistortion_vs30);
+            SET_DYNAMIC_VERTEX_SHADER(sdk_lensdistortion_vs30);
+            DECLARE_DYNAMIC_PIXEL_SHADER(sdk_lensdistortion_ps30);
+            SET_DYNAMIC_PIXEL_SHADER(sdk_lensdistortion_ps30);
         }
 
         Draw();

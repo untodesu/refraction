@@ -1,24 +1,30 @@
 #include "common_ps_fxc.h"
 
-sampler2D   FRAMEBUFFER : register(S0);
-float2      AMOUNT      : register(C0);
+float4 Arguments1 : register(C0);
+sampler2D FrameBuffer : register(S0);
+#define DistortLens Arguments1.x
+#define DistortColor Arguments1.y
+#define PlayerHealth Arguments1.z
+#define CurTime Arguments1.w
 
-float2 barrelDistortion(float2 uv, float amt)
+float2 BarrelDistortUV(float2 uv, float amount)
 {
-    float2 cc = (uv - 0.5);
-    return (uv + cc * (dot(cc, cc) * 0.015) * amt);
+    float2 cc = uv - 0.5;
+    return uv + cc * dot(cc, cc) * 0.015 * amount;
 }
 
 float4 main(float2 uv : TEXCOORD0) : COLOR
 {
     float4 color = float4(0.0, 0.0, 0.0, 0.0);
-    float2 base_uv = barrelDistortion(uv, AMOUNT.x);
-    for(float i = 0.0; i < 1.0; i += 0.1) {
-        float4 pure = tex2Dlod(FRAMEBUFFER, float4(barrelDistortion(base_uv, i), 0.0, 0.0));
-        float4 abb1 = tex2Dlod(FRAMEBUFFER, float4(barrelDistortion(base_uv, i + AMOUNT.y), 0.0, 0.0));
-        float4 abb2 = tex2Dlod(FRAMEBUFFER, float4(barrelDistortion(base_uv, i - AMOUNT.y), 0.0, 0.0));
-        color += float4(abb1.r, pure.g, abb2.b, pure.a);
+    float2 base = BarrelDistortUV(uv, DistortLens);
+    
+    float abb_amount = DistortColor + (1.0 - PlayerHealth) * (cos(CurTime * 6.28318531) * 0.5 + 1.0);
+    for(float i = 0.0; i <= 1.0; i += 0.1) {
+        float4 abb0 = tex2Dlod(FrameBuffer, float4(BarrelDistortUV(base, i), 0.0, 0.0));
+        float4 abb1 = tex2Dlod(FrameBuffer, float4(BarrelDistortUV(base, i + abb_amount), 0.0, 0.0));
+        float4 abb2 = tex2Dlod(FrameBuffer, float4(BarrelDistortUV(base, i - abb_amount), 0.0, 0.0));
+        color += float4(abb1.r, abb0.g, abb2.b, abb0.a) * 0.1;
     }
-    color /= 10.0;
+
     return color;
 }

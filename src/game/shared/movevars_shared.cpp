@@ -42,7 +42,7 @@ ConVar sv_footsteps("sv_footsteps", "1", FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR
 ConVar sv_stepsize("sv_stepsize", "18", FCVAR_NOTIFY | FCVAR_REPLICATED);
 
 ConVar sv_rollspeed("sv_rollspeed", "300.0", FCVAR_REPLICATED);
-ConVar sv_rollangle("sv_rollangle", "1.0", FCVAR_REPLICATED, "Max view roll angle");
+ConVar sv_rollangle("sv_rollangle", "3.0", FCVAR_REPLICATED, "Max view roll angle");
 
 ConVar sv_waterdist("sv_waterdist", "12", FCVAR_REPLICATED, "Vertical view fixup when eyes are near water plane.");
 

@@ -1,4 +1,13 @@
 SDK_LensDistortion
 {
     $amount "[-4 0.3]"
+    Proxies
+    {
+        PlayerHealth
+        {
+            resultVar $health
+            normalized 1
+            factor 0.01
+        }
+    }
 }

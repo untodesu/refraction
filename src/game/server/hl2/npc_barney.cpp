@@ -111,6 +111,10 @@ END_DATADESC()
 //-----------------------------------------------------------------------------
 void CNPC_Barney::SelectModel()
 {
+    // TODO: implement a system to determine what timeline
+    // the map is assigned to and choose the according model.
+    // For instance, for "episodic" maps we will use the model
+    // of barney being slightly dirty and messed up from battles.
     SetModelName( AllocPooledString( BARNEY_MODEL ) );
 }
 
