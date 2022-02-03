@@ -646,25 +646,3 @@ void C_BaseHLPlayer::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quatern
     BaseClass::BuildTransformations( hdr, pos, q, cameraTransform, boneMask, boneComputed );
     BuildFirstPersonMeathookTransformations( hdr, pos, q, cameraTransform, boneMask, boneComputed, "ValveBiped.Bip01_Head1" );
 }
-
-ConVar cl_rollspeed( "cl_rollspeed", "300.0", FCVAR_ARCHIVE );
-ConVar cl_rollangle( "cl_rollangle", "0.65", FCVAR_ARCHIVE );
-
-//-----------------------------------------------------------------------------
-// Purpose: Do quake-styled view rolling.
-// i think this looks great.
-//-----------------------------------------------------------------------------
-void C_BaseHLPlayer::CalcViewRoll( QAngle &eyeAngles )
-{
-    if( GetMoveType() == MOVETYPE_NOCLIP ) {
-        return;
-    }
-
-    eyeAngles[ROLL] += CalcRoll( GetAbsAngles(), GetAbsVelocity(), cl_rollangle.GetFloat(), cl_rollspeed.GetFloat() ) * 5.0;
-
-    if( GetHealth() <= 0 ) {
-        // only roll the view if the player is dead and the viewheight[2] is nonzero
-        // this is so deadcam in multiplayer will work.
-        eyeAngles[ROLL] = 80;   // dead view angle
-    }
-}

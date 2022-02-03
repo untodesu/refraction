@@ -1652,10 +1652,14 @@ void CBasePlayer::CalcViewRoll( QAngle& eyeAngles )
     if(GetMoveType() == MOVETYPE_NOCLIP)
         return;
 
-    float side = CalcRoll( GetAbsAngles(), GetAbsVelocity(), sv_rollangle.GetFloat(), sv_rollspeed.GetFloat() );
-    eyeAngles[ROLL] += side;
-}
+    eyeAngles[ROLL] += CalcRoll(GetAbsAngles(), GetAbsVelocity(), sv_rollangle.GetFloat(), sv_rollspeed.GetFloat()) * 5.0f;
 
+    if(GetHealth() <= 0) {
+        // only roll the view if the player is dead and the viewheight[2] is nonzero 
+        // this is so deadcam in multiplayer will work.
+        eyeAngles[ROLL] = 80.0f; // dead view angle
+    }
+}
 
 void CBasePlayer::DoMuzzleFlash()
 {
