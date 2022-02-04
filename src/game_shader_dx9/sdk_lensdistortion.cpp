@@ -7,16 +7,16 @@
 
 BEGIN_SHADER(SDK_LensDistortion, "Help for SDK_LensDistortion")
     BEGIN_SHADER_PARAMS
-        SHADER_PARAM(AMOUNT, SHADER_PARAM_TYPE_VEC2, "[-4.0 0.3]", "Distortion amount")
-        SHADER_PARAM(HEALTH, SHADER_PARAM_TYPE_FLOAT, "0.0", "Player health")
+        SHADER_PARAM(AMOUNT, SHADER_PARAM_TYPE_VEC2, "[-4.0 0.5]", "Distortion amount")
+        SHADER_PARAM(HEALTH, SHADER_PARAM_TYPE_FLOAT, "1.0", "Player health")
     END_SHADER_PARAMS;
 
     SHADER_INIT
     {
         if(!params[AMOUNT]->IsDefined())
-            params[AMOUNT]->SetVecValue(-4.0f, 0.3f);
+            params[AMOUNT]->SetVecValue(-4.0f, 0.5f);
         if(!params[HEALTH]->IsDefined())
-            params[HEALTH]->SetFloatValue(0.0f);
+            params[HEALTH]->SetFloatValue(1.0f);
     }
 
     SHADER_FALLBACK

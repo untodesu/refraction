@@ -316,6 +316,7 @@ files
         "$GAME_CLIENT$/playerandobjectenumerator.cpp"
         "$GAME_CLIENT$/playerspawncache.cpp"
         "$GAME_CLIENT$/prediction.cpp"
+        "$GAME_CLIENT$/proxyconvar.cpp"
         "$GAME_CLIENT$/proxyentity.cpp"
         "$GAME_CLIENT$/proxyplayer.cpp"
         "$GAME_CLIENT$/proxypupil.cpp"

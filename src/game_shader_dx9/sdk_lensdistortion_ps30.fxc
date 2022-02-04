@@ -1,30 +1,35 @@
 #include "common_ps_fxc.h"
 
-float4 Arguments1 : register(C0);
+float4 ShaderParams1 : register(C0);
 sampler2D FrameBuffer : register(S0);
-#define DistortLens Arguments1.x
-#define DistortColor Arguments1.y
-#define PlayerHealth Arguments1.z
-#define CurTime Arguments1.w
+#define P_Distort1 ShaderParams1.x
+#define P_Distort2 ShaderParams1.y
+#define P_PlHealth ShaderParams1.z
+#define P_AnimTime ShaderParams1.w
 
-float2 BarrelDistortUV(float2 uv, float amount)
+#define Abb_NumIterations 16
+
+float2 BarrelDistort(float2 uv, float amount)
 {
     float2 cc = uv - 0.5;
     return uv + cc * dot(cc, cc) * 0.015 * amount;
 }
 
-float4 main(float2 uv : TEXCOORD0) : COLOR
+float4 main(float2 uv : TEXCOORD0) : Color
 {
-    float4 color = float4(0.0, 0.0, 0.0, 0.0);
-    float2 base = BarrelDistortUV(uv, DistortLens);
-    
-    float abb_amount = DistortColor + (1.0 - PlayerHealth) * (cos(CurTime * 6.28318531) * 0.5 + 1.0);
-    for(float i = 0.0; i <= 1.0; i += 0.1) {
-        float4 abb0 = tex2Dlod(FrameBuffer, float4(BarrelDistortUV(base, i), 0.0, 0.0));
-        float4 abb1 = tex2Dlod(FrameBuffer, float4(BarrelDistortUV(base, i + abb_amount), 0.0, 0.0));
-        float4 abb2 = tex2Dlod(FrameBuffer, float4(BarrelDistortUV(base, i - abb_amount), 0.0, 0.0));
-        color += float4(abb1.r, abb0.g, abb2.b, abb0.a) * 0.1;
+    // Lens distortion - imitate wider field of view
+    float2 lensdist = BarrelDistort(uv, P_Distort1);
+
+    // Chromatic aberration - color shifting (animated,
+    // depends on player health - see lensdistortion.vmt)
+    float3 abb_accum = float3(0.0, 0.0, 0.0);
+    float abb_amount = P_Distort2 + (1.0 - P_PlHealth) * (cos(P_AnimTime * 6.28318531) * 0.5 + 1.0) * 0.5;
+    for(float i = 0.0; i <= 1.0; i += 1.0 / Abb_NumIterations) {
+        float abb0 = tex2Dlod(FrameBuffer, float4(BarrelDistort(lensdist, i), 0.0, 0.0)).g;
+        float abb1 = tex2Dlod(FrameBuffer, float4(BarrelDistort(lensdist, i + abb_amount), 0.0, 0.0)).r;
+        float abb2 = tex2Dlod(FrameBuffer, float4(BarrelDistort(lensdist, i - abb_amount), 0.0, 0.0)).b;
+        abb_accum += float3(abb1, abb0, abb2) / Abb_NumIterations;
     }
 
-    return color;
+    return float4(abb_accum, 1.0);
 }

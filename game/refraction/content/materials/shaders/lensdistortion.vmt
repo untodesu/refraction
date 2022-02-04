@@ -1,6 +1,6 @@
 SDK_LensDistortion
 {
-    $amount "[-4 0.3]"
+    $amount "[-4.0 0.5]"
     Proxies
     {
         PlayerHealth
