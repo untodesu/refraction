@@ -1,7 +1,7 @@
 "GameInfo"
 {
     game            "Refraction 0.2.7"
-    novel_title     "REFRACTION"
+    nextui_title    "REFRACTION"
     type            "singleplayer_only"
     developer       "Kirill GPRB"
     developer_url   "https://github.com/undnull"

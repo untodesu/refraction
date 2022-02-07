@@ -23,39 +23,13 @@ config
             "$GAME_SHARED$/episodic"
         }
     }
-    
-    link
-    {
-        libs
-        {
-            "discord-rpc"
-        }
-    }
 }
 
 files
 {
     folder "Source Files"
     {
-        "$GAME_CLIENT$/c_team_objectiveresource.cpp"
-        "$GAME_CLIENT$/c_team_objectiveresource.h"          
-        "$GAME_CLIENT$/death.cpp"
-        "$GAME_CLIENT$/discord_rpc_client.cpp"
-        "$GAME_CLIENT$/discord_rpc_client.h"
-        "$GAME_CLIENT$/hud_chat.cpp"
-        "$GAME_CLIENT$/hud_posture.cpp"
         "$GAME_CLIENT$/hud_squadstatus.cpp"
-        "$GAME_SHARED$/script_intro_shared.cpp"
-        
-        folder "Novel UI"
-        {
-            "$GAME_CLIENT$/novelui/novelui.cpp"
-            "$GAME_CLIENT$/novelui/novelui.h"
-            "$GAME_CLIENT$/novelui/rootpanel.cpp"
-            "$GAME_CLIENT$/novelui/rootpanel.h"
-            "$GAME_CLIENT$/novelui/gametitle.cpp"
-            "$GAME_CLIENT$/novelui/gamemenu.cpp"
-        }
         
         folder "HalfLife2"
         {

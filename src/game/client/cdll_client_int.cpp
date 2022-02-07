@@ -104,7 +104,7 @@
 #include "client_virtualreality.h"
 #include "mumble.h"
 #include "discord_rpc_client.h"
-#include "novelui/novelui.h"
+#include "nextui/INextUI.h"
 #include "viewpostprocess.h"
 
 // NVNT includes
@@ -884,7 +884,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
     IGameSystem::Add( PerfVisualBenchmark() );
     IGameSystem::Add( MumbleSystem() );
     IGameSystem::Add( g_pDiscordRPC );
-    IGameSystem::Add( g_pNovelUI );
+    IGameSystem::Add( g_pNextUI );
 
     modemanager->Init();
     g_pClientMode->InitViewport();
