@@ -30,7 +30,7 @@ void CGameMenu::ApplySchemeSettings(vgui::IScheme *pScheme)
     m_FadeColor = GetSchemeColor("GameMenu.Background.FadeColor", pScheme);
     m_TitleColor = GetSchemeColor("GameMenu.Title.Color", pScheme);
 
-    m_flFadeWidthPercent = atof(pScheme->GetResourceString("GameMenu.Background.FadeWidthPercent")) / 100.0f;
+    m_flGradientWidthPercent = atof(pScheme->GetResourceString("GameMenu.Background.GradientWidthPercent")) / 100.0f;
     m_flButtonStackX = XRES(atof(pScheme->GetResourceString("GameMenu.ButtonStack.PositionX")));
     m_flButtonStackY = YRES(atof(pScheme->GetResourceString("GameMenu.ButtonStack.PositionY")));
     m_flTitleX = XRES(atof(pScheme->GetResourceString("GameMenu.Title.PositionX")));
@@ -59,7 +59,7 @@ void CGameMenu::Paint()
 void CGameMenu::PaintBackground()
 {
     g_pVGuiSurface->DrawSetColor(m_FadeColor);
-    g_pVGuiSurface->DrawFilledRectFade(0, 0, m_iScreenW * m_flFadeWidthPercent, m_iScreenH, 255, 0, true);
+    g_pVGuiSurface->DrawFilledRectFade(0, 0, m_iScreenW * m_flGradientWidthPercent, m_iScreenH, 0xFF, 0x00, true);
 }
 
 void CGameMenu::OnThink()
@@ -73,8 +73,6 @@ void CGameMenu::OnThink()
 
 void CGameMenu::Rearrange()
 {
-    vgui::IScheme *pScheme = g_pVGuiSchemeManager->GetIScheme(GetScheme());
-
     RemoveAll();
 
     int iButtonYPos = m_flButtonStackY;

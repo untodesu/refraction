@@ -13,6 +13,7 @@ public:
     virtual void OnCursorExited();
     virtual void OnMousePressed(vgui::MouseCode eCode);
     virtual void OnThink();
+    virtual void OnClick();
     void SetCommand(const char *pszCommand);
     void SetRolloverSound(const char *pszSound);
     void SetClickSound(const char *pszSound);

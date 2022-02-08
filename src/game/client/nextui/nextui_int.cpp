@@ -43,7 +43,8 @@ bool CNextUI::Init()
 
     s_pGameUI->SetMainMenuOverride(m_pRootPanel->GetVPanel());
 
-    CGameMenu *pMenu = new CGameMenu(m_pRootPanel);
+    m_pGameMenuScreen = new CGameMenu(m_pRootPanel);
+    m_pCurrentScreen = m_pGameMenuScreen;
 
     return true;
 }
@@ -78,6 +79,11 @@ vgui::AnimationController *CNextUI::GetAnimationController() const
     return m_pAnimationController;
 }
 
+CNextUIRootPanel *CNextUI::GetRootPanel() const
+{
+    return m_pRootPanel;
+}
+
 void CNextUI::GetLocalizedString(const char *pszSource, wchar_t *pszDest, int iDestChars) const
 {
     const wchar_t *pszValue = g_pVGuiLocalize->Find(pszSource);
@@ -87,6 +93,35 @@ void CNextUI::GetLocalizedString(const char *pszSource, wchar_t *pszDest, int iD
     }
 
     g_pVGuiLocalize->ConvertANSIToUnicode(pszSource, pszDest, iDestChars);
+}
+
+void CNextUI::SetCurrentScreen(CNextUIScreen *pScreen)
+{
+    if(m_pCurrentScreen != pScreen) {
+        if(m_pCurrentScreen)
+            m_pCurrentScreen->SetVisible(false);
+        m_pPreviousScreen = m_pCurrentScreen;
+        m_pCurrentScreen = pScreen;
+        m_pCurrentScreen->SetVisible(true);
+        m_pCurrentScreen->Activate();
+    }
+}
+
+void CNextUI::UnsetCurrentScreen(CNextUIScreen *pScreen)
+{
+    if(m_pCurrentScreen == pScreen) {
+        m_pCurrentScreen->SetVisible(false);
+        m_pCurrentScreen = m_pPreviousScreen;
+        if(!m_pCurrentScreen)
+            m_pCurrentScreen = m_pGameMenuScreen;
+        m_pCurrentScreen->SetVisible(true);
+        m_pPreviousScreen = NULL;
+    }
+}
+
+CNextUIScreen *CNextUI::GetCurrentScreen()
+{
+    return m_pCurrentScreen;
 }
 
 IGameUI *CNextUI::GetGameUI()

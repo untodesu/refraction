@@ -21,7 +21,7 @@ private:
     vgui::HFont m_hTitleFont = 0;
     Color m_FadeColor = Color();
     Color m_TitleColor = Color();
-    float m_flFadeWidthPercent = 0.0f;
+    float m_flGradientWidthPercent = 0.0f;
     float m_flButtonStackX = 0.0f;
     float m_flButtonStackY = 0.0f;
     float m_flTitleX = 0.0f;

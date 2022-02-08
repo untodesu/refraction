@@ -9,6 +9,12 @@ class CNextUIScreen : public vgui::Panel {
 public:
     CNextUIScreen(vgui::Panel *pParent, const char *pszPanelName);
     virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
+    virtual void OnActivate();
+    void Activate();
+
+private:
+    bool m_bSchemeLoaded;
+    bool m_bQueuedActivate;
 };
 
 #endif
