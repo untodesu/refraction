@@ -129,7 +129,8 @@ void CNextUIPopup::ApplySchemeSettings(vgui::IScheme *pScheme)
 
     m_flFadeTime = atof(pScheme->GetResourceString("Popup.Background.FadeTime"));
     m_flGradientHeightPercent = atof(pScheme->GetResourceString("Popup.Background.GradientHeightPercent")) / 100.0f;
-    m_flTextOffsetY = YRES(atof(pScheme->GetResourceString("Popup.Text.OffsetY")));
+    m_flTextX = XRES(atof(pScheme->GetResourceString("Popup.Text.PositionX")));
+    m_flTextY = YRES(atof(pScheme->GetResourceString("Popup.Text.PositionY")));
 
     m_flGradientHeightPercentInv = Max(0.0f, 1.0f - m_flGradientHeightPercent);
 
@@ -143,12 +144,7 @@ void CNextUIPopup::ApplySchemeSettings(vgui::IScheme *pScheme)
         }
     }
 
-    // NextUI screens are full-screen panels
-    int iWidth, iHeight;
-    g_pVGuiSurface->GetScreenSize(iWidth, iHeight);
-    m_flWidth = iWidth;
-
-    BaseClass::ApplySchemeSettings(pScheme);
+    CNextUIScreen::ApplySchemeSettings(pScheme);
 }
 
 void CNextUIPopup::PaintBackground()
@@ -163,12 +159,12 @@ void CNextUIPopup::PaintBackground()
 
 void CNextUIPopup::Paint()
 {
+    CNextUIScreen::Paint();
+
     if(m_szText[0]) {
-        int iTextW, iTextH;
-        g_pVGuiSurface->GetTextSize(m_hTextFont, m_szText, iTextW, iTextH);
         g_pVGuiSurface->DrawSetTextColor(m_TextColor);
         g_pVGuiSurface->DrawSetTextFont(m_hTextFont);
-        g_pVGuiSurface->DrawSetTextPos((m_flWidth / 2.0f) - (iTextW / 2.0f), m_flTextOffsetY);
+        g_pVGuiSurface->DrawSetTextPos(m_flTextX, m_flTextY);
         g_pVGuiSurface->DrawPrintText(m_szText, Q_wcslen(m_szText));
     }
 }

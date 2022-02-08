@@ -55,7 +55,6 @@ public:
 private:
     wchar_t m_szText[2048];
     float m_flGradientHeightPercentInv = 0.0f;
-    float m_flWidth = 0.0f;
     CUtlVector<CNextUIPopupButton *> m_vecButtons;
 
 private:
@@ -65,7 +64,8 @@ private:
     vgui::HFont m_hTextFont = 0;
     float m_flFadeTime = 0.0f;
     float m_flGradientHeightPercent = 0.0f;
-    float m_flTextOffsetY = 0.0f;
+    float m_flTextX = 0.0f;
+    float m_flTextY = 0.0f;
     Color m_TargetFadeColor = Color();
     Color m_TextColor = Color();
 };

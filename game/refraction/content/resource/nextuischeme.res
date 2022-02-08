@@ -6,6 +6,7 @@ Scheme {
         BgBold      "0   0   0   196"
         BgHighlight "255 255 255 255"
         FgHighlight "255 127 0   255"
+        FgTitle     "255 255 255 196"
     }
 
     BaseSettings {
@@ -25,13 +26,16 @@ Scheme {
         GameMenu.Button.BackgroundColor.Highlight   "BgBold"
         GameMenu.Button.HighlightColor.Normal       "NullTransp"
         GameMenu.Button.HighlightColor.Highlight    "FgHighlight"
-        GameMenu.Button.TextColor.Normal            "FgNormal"
+        GameMenu.Button.TextColor.Normal            "FgTitle"
         GameMenu.Button.TextColor.Highlight         "FgHighlight"
         GameMenu.ButtonStack.PositionX              "64"
-        GameMenu.ButtonStack.PositionY              "160"
-        GameMenu.Title.Color                        "FgNormal"
+        GameMenu.ButtonStack.PositionY              "192"
+        GameMenu.Title.Color                        "FgTitle"
         GameMenu.Title.PositionX                    "64"
-        GameMenu.Title.PositionY                    "64"
+        GameMenu.Title.PositionY                    "128"
+        Screen.Title.Color                          "FgTitle"
+        Screen.Title.PositionX                      "32"
+        Screen.Title.PositionY                      "32"
         Popup.Background.FadeColor                  "BgBold"
         Popup.Background.FadeTime                   "1.0"
         Popup.Background.GradientHeightPercent      "25"
@@ -39,12 +43,13 @@ Scheme {
         Popup.Button.Height                         "32"
         Popup.Button.BackgroundColor.Normal         "BgDim"
         Popup.Button.BackgroundColor.Highlight      "BgHighlight"
-        Popup.Button.TextColor.Normal               "FgNormal"
+        Popup.Button.TextColor.Normal               "FgTitle"
         Popup.Button.TextColor.Highlight            "NullSolid"
         Popup.Button.BaseX                          "16"
         Popup.Button.BaseY                          "16"
         Popup.Text.Color                            "FgNormal"
-        Popup.Text.OffsetY                          "64"
+        Popup.Text.PositionX                        "32"
+        Popup.Text.PositionY                        "80"
     }
 
     Fonts {
@@ -77,6 +82,16 @@ Scheme {
             }
         }
         
+        ScreenTitle {
+            1 {
+                name            "Alte DIN 1451 Mittelschrift"
+                tall            "48"
+                weight          "200"
+                antialias       "1"
+                custom          "1"
+            }
+        }
+        
         PopupButton {
             1 {
                 name            "Noto Sans"
@@ -91,7 +106,7 @@ Scheme {
             1 {
                 name            "Noto Sans"
                 tall            "32"
-                weight          "1200"
+                weight          "100"
                 antialias       "1"
                 custom          "1"
             }

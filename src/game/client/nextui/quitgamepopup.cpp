@@ -82,6 +82,7 @@ CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
         if(!s_pQuitGamePopupInGame) {
             s_pQuitGamePopupInGame = new CNextUIPopup(pUI->GetRootPanel(), "QuitGameDialogInGame");
             s_pQuitGamePopupInGame->SetText("#GameUI_SaveAndQuitQuery_Info");
+            s_pQuitGamePopupInGame->SetTitle("#GameUI_QuitConfirmationTitle");
 
             // Save and quit
             CNextUIPopupButton_Quicksave *pButton_1 = new CNextUIPopupButton_Quicksave(s_pQuitGamePopupInGame, "#GameUI_SaveAndQuit");
@@ -104,6 +105,7 @@ CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
         if(!s_pQuitGamePopup) {
             s_pQuitGamePopup = new CNextUIPopup(pUI->GetRootPanel(), "QuitGameDialog");
             s_pQuitGamePopup->SetText("#GameUI_QuitConfirmationText");
+            s_pQuitGamePopup->SetTitle("#GameUI_QuitConfirmationTitle");
 
             // Quit game
             CNextUIPopupButton *pButton_1 = new CNextUIPopupButton(s_pQuitGamePopup, "#GameUI_Quit");
