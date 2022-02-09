@@ -1,16 +1,16 @@
-#ifndef _NEXTUI_POPUP_H_
-#define _NEXTUI_POPUP_H_ 1
+#ifndef _NEXTUI_DIALOG_H_
+#define _NEXTUI_DIALOG_H_ 1
 #include "nextui_button.h"
 #include "nextui_screen.h"
 #include "vgui_controls/AnimationController.h"
 #include "tier1/utlvector.h"
 
-class CNextUIPopupButton : public CNextUIButton {
-    DECLARE_CLASS_SIMPLE(CNextUIPopupButton, CNextUIButton);
+class CNextUIDialogButton : public CNextUIButton {
+    DECLARE_CLASS_SIMPLE(CNextUIDialogButton, CNextUIButton);
 
 public:
-    CNextUIPopupButton(vgui::Panel *pParent, const char *pszText);
-    CNextUIPopupButton(vgui::Panel *pParent, const wchar_t *pszText);
+    CNextUIDialogButton(vgui::Panel *pParent, const char *pszText);
+    CNextUIDialogButton(vgui::Panel *pParent, const wchar_t *pszText);
     virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
     virtual void PaintBackground();
     virtual void Paint();
@@ -39,23 +39,23 @@ private:
     Color m_TextColor_Highlight = Color();
 };
 
-class CNextUIPopup : public CNextUIScreen {
-    DECLARE_CLASS_SIMPLE(CNextUIPopup, CNextUIScreen);
+class CNextUIDialog : public CNextUIScreen {
+    DECLARE_CLASS_SIMPLE(CNextUIDialog, CNextUIScreen);
 
 public:
-    CNextUIPopup(vgui::Panel *pParent, const char *pszPanelName);
+    CNextUIDialog(vgui::Panel *pParent, const char *pszPanelName);
     virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
     virtual void PaintBackground();
     virtual void Paint();
     virtual void OnActivate();
-    void AddButton(CNextUIPopupButton *pButton);
+    void AddButton(CNextUIDialogButton *pButton);
     void SetText(const char *pszText);
     void SetText(const wchar_t *pszText);
 
 private:
     wchar_t m_szText[2048];
     float m_flGradientHeightPercentInv = 0.0f;
-    CUtlVector<CNextUIPopupButton *> m_vecButtons;
+    CUtlVector<CNextUIDialogButton *> m_vecButtons;
 
 private:
     CPanelAnimationVar(Color, m_FadeColor, "FadeColor", "0 0 0 0");

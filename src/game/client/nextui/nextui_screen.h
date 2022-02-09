@@ -10,7 +10,7 @@ public:
     CNextUIScreen(vgui::Panel *pParent, const char *pszPanelName);
     virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
     virtual void OnActivate();
-    virtual void Paint();
+    void PaintTitle();
     void SetTitle(const char *pszTitle);
     void SetTitle(const wchar_t *pszTitle);
     void Activate();

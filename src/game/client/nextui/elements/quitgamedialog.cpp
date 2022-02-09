@@ -1,7 +1,7 @@
 #include "cbase.h"
 #include "filesystem.h"
-#include "nextui_int.h"
-#include "nextui_popup.h"
+#include "nextui/nextui_dialog.h"
+#include "nextui/nextui_int.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -31,11 +31,11 @@ static void GameUI_FindSaveSlot(char *pszBuffer, int iBufferSize)
     Assert(0);
 }
 
-class CNextUIPopupButton_Quicksave : public CNextUIPopupButton {
-    DECLARE_CLASS_SIMPLE(CNextUIPopupButton_Quicksave, CNextUIPopupButton);
+class CNextUIDialogButton_Quicksave : public CNextUIDialogButton {
+    DECLARE_CLASS_SIMPLE(CNextUIDialogButton_Quicksave, CNextUIDialogButton);
 
 public:
-    CNextUIPopupButton_Quicksave(CNextUIPopup *pParent, const char *pszTitle)
+    CNextUIDialogButton_Quicksave(CNextUIDialog *pParent, const char *pszTitle)
         : BaseClass(pParent, pszTitle)
     {
 
@@ -51,11 +51,11 @@ public:
     }
 };
 
-class CNextUIPopupButton_UnsetParentScreen : public CNextUIPopupButton {
-    DECLARE_CLASS_SIMPLE(CNextUIPopupButton_UnsetParentScreen, CNextUIPopupButton);
+class CNextUIDialogButton_UnsetParentScreen : public CNextUIDialogButton {
+    DECLARE_CLASS_SIMPLE(CNextUIDialogButton_UnsetParentScreen, CNextUIDialogButton);
 
 public:
-    CNextUIPopupButton_UnsetParentScreen(CNextUIPopup *pParent, const char *pszTitle)
+    CNextUIDialogButton_UnsetParentScreen(CNextUIDialog *pParent, const char *pszTitle)
         : BaseClass(pParent, pszTitle), m_pParent(pParent)
     {
 
@@ -68,11 +68,11 @@ public:
     }
 
 private:
-    CNextUIPopup *m_pParent;
+    CNextUIDialog *m_pParent;
 };
 
-static CNextUIPopup *s_pQuitGamePopup = NULL;
-static CNextUIPopup *s_pQuitGamePopupInGame = NULL;
+static CNextUIDialog *s_pQuitGamePopup = NULL;
+static CNextUIDialog *s_pQuitGamePopupInGame = NULL;
 
 CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
 {
@@ -80,22 +80,22 @@ CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
 
     if(engine->IsInGame() && !engine->IsLevelMainMenuBackground()) {
         if(!s_pQuitGamePopupInGame) {
-            s_pQuitGamePopupInGame = new CNextUIPopup(pUI->GetRootPanel(), "QuitGameDialogInGame");
+            s_pQuitGamePopupInGame = new CNextUIDialog(pUI->GetRootPanel(), "QuitGameDialogInGame");
             s_pQuitGamePopupInGame->SetText("#GameUI_SaveAndQuitQuery_Info");
             s_pQuitGamePopupInGame->SetTitle("#GameUI_QuitConfirmationTitle");
 
             // Save and quit
-            CNextUIPopupButton_Quicksave *pButton_1 = new CNextUIPopupButton_Quicksave(s_pQuitGamePopupInGame, "#GameUI_SaveAndQuit");
+            CNextUIDialogButton_Quicksave *pButton_1 = new CNextUIDialogButton_Quicksave(s_pQuitGamePopupInGame, "#GameUI_SaveAndQuit");
             pButton_1->SetCommand("QuitNoConfirm");
             s_pQuitGamePopupInGame->AddButton(pButton_1);
 
             // Don't save and quit
-            CNextUIPopupButton *pButton_2 = new CNextUIPopupButton(s_pQuitGamePopupInGame, "#GameUI_DontSaveAndQuit");
+            CNextUIDialogButton *pButton_2 = new CNextUIDialogButton(s_pQuitGamePopupInGame, "#GameUI_DontSaveAndQuit");
             pButton_2->SetCommand("QuitNoConfirm");
             s_pQuitGamePopupInGame->AddButton(pButton_2);
 
             // Cancel
-            CNextUIPopupButton_UnsetParentScreen *pButton_3 = new CNextUIPopupButton_UnsetParentScreen(s_pQuitGamePopupInGame, "#GameUI_Cancel");
+            CNextUIDialogButton_UnsetParentScreen *pButton_3 = new CNextUIDialogButton_UnsetParentScreen(s_pQuitGamePopupInGame, "#GameUI_Cancel");
             s_pQuitGamePopupInGame->AddButton(pButton_3);
         }
         
@@ -103,17 +103,17 @@ CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
     }
     else {
         if(!s_pQuitGamePopup) {
-            s_pQuitGamePopup = new CNextUIPopup(pUI->GetRootPanel(), "QuitGameDialog");
+            s_pQuitGamePopup = new CNextUIDialog(pUI->GetRootPanel(), "QuitGameDialog");
             s_pQuitGamePopup->SetText("#GameUI_QuitConfirmationText");
             s_pQuitGamePopup->SetTitle("#GameUI_QuitConfirmationTitle");
 
             // Quit game
-            CNextUIPopupButton *pButton_1 = new CNextUIPopupButton(s_pQuitGamePopup, "#GameUI_Quit");
+            CNextUIDialogButton *pButton_1 = new CNextUIDialogButton(s_pQuitGamePopup, "#GameUI_Quit");
             pButton_1->SetCommand("QuitNoConfirm");
             s_pQuitGamePopup->AddButton(pButton_1);
 
             // Cancel
-            CNextUIPopupButton_UnsetParentScreen *pButton_2 = new CNextUIPopupButton_UnsetParentScreen(s_pQuitGamePopup, "#GameUI_Cancel");
+            CNextUIDialogButton_UnsetParentScreen *pButton_2 = new CNextUIDialogButton_UnsetParentScreen(s_pQuitGamePopup, "#GameUI_Cancel");
             s_pQuitGamePopup->AddButton(pButton_2);
         }
 

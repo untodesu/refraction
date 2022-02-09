@@ -1,7 +1,7 @@
 #include "cbase.h"
 #include "vgui/ISurface.h"
 #include "gamemenu.h"
-#include "nextui_int.h"
+#include "nextui/nextui_int.h"
 #include "tier1/KeyValues.h"
 #include "filesystem.h"
 

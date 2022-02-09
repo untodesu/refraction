@@ -36,20 +36,20 @@ Scheme {
         Screen.Title.Color                          "FgTitle"
         Screen.Title.PositionX                      "32"
         Screen.Title.PositionY                      "32"
-        Popup.Background.FadeColor                  "BgBold"
-        Popup.Background.FadeTime                   "1.0"
-        Popup.Background.GradientHeightPercent      "25"
-        Popup.Button.Width                          "128"
-        Popup.Button.Height                         "32"
-        Popup.Button.BackgroundColor.Normal         "BgDim"
-        Popup.Button.BackgroundColor.Highlight      "BgHighlight"
-        Popup.Button.TextColor.Normal               "FgTitle"
-        Popup.Button.TextColor.Highlight            "NullSolid"
-        Popup.Button.BaseX                          "16"
-        Popup.Button.BaseY                          "16"
-        Popup.Text.Color                            "FgNormal"
-        Popup.Text.PositionX                        "32"
-        Popup.Text.PositionY                        "80"
+        Dialog.Background.FadeColor                 "BgBold"
+        Dialog.Background.FadeTime                  "2.0"
+        Dialog.Background.GradientHeightPercent     "25"
+        Dialog.Button.Width                         "128"
+        Dialog.Button.Height                        "32"
+        Dialog.Button.BackgroundColor.Normal        "BgDim"
+        Dialog.Button.BackgroundColor.Highlight     "BgHighlight"
+        Dialog.Button.TextColor.Normal              "FgTitle"
+        Dialog.Button.TextColor.Highlight           "NullSolid"
+        Dialog.Button.BaseX                         "16"
+        Dialog.Button.BaseY                         "16"
+        Dialog.Text.Color                           "FgNormal"
+        Dialog.Text.PositionX                       "32"
+        Dialog.Text.PositionY                       "80"
     }
 
     Fonts {
@@ -92,7 +92,7 @@ Scheme {
             }
         }
         
-        PopupButton {
+        DialogButton {
             1 {
                 name            "Noto Sans"
                 tall            "32"
@@ -102,7 +102,7 @@ Scheme {
             }
         }
         
-        PopupText {
+        DialogText {
             1 {
                 name            "Noto Sans"
                 tall            "32"

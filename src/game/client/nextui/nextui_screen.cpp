@@ -37,7 +37,7 @@ void CNextUIScreen::OnActivate()
 {
 }
 
-void CNextUIScreen::Paint()
+void CNextUIScreen::PaintTitle()
 {
     if(m_szTitle[0]) {
         g_pVGuiSurface->DrawSetTextColor(m_TitleColor);

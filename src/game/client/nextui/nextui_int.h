@@ -3,7 +3,7 @@
 #pragma once
 #include "GameUI/IGameUI.h"
 #include "INextUI.h"
-#include "gamemenu.h"
+#include "elements/gamemenu.h"
 #include "nextui_rootpanel.h"
 #include "nextui_screen.h"
 #include "vgui_controls/AnimationController.h"

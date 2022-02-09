@@ -1,12 +1,12 @@
 #include "cbase.h"
+#include "nextui_dialog.h"
 #include "nextui_int.h"
-#include "nextui_popup.h"
 #include "vgui/ISurface.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-CNextUIPopupButton::CNextUIPopupButton(vgui::Panel *pParent, const char *pszText)
+CNextUIDialogButton::CNextUIDialogButton(vgui::Panel *pParent, const char *pszText)
     : BaseClass(pParent, "", pszText)
 {
     SetPaintBackgroundEnabled(true);
@@ -14,7 +14,7 @@ CNextUIPopupButton::CNextUIPopupButton(vgui::Panel *pParent, const char *pszText
     SetPaintEnabled(true);
 }
 
-CNextUIPopupButton::CNextUIPopupButton(vgui::Panel *pParent, const wchar_t *pszText)
+CNextUIDialogButton::CNextUIDialogButton(vgui::Panel *pParent, const wchar_t *pszText)
     : BaseClass(pParent, "", pszText), m_BackgroundColor(), m_TextColor()
 {
     SetPaintBackgroundEnabled(true);
@@ -22,26 +22,26 @@ CNextUIPopupButton::CNextUIPopupButton(vgui::Panel *pParent, const wchar_t *pszT
     SetPaintEnabled(true);
 }
 
-void CNextUIPopupButton::ApplySchemeSettings(vgui::IScheme *pScheme)
+void CNextUIDialogButton::ApplySchemeSettings(vgui::IScheme *pScheme)
 {
     BaseClass::ApplySchemeSettings(pScheme);
 
-    m_hTextFont = pScheme->GetFont("PopupButton", true);
+    m_hTextFont = pScheme->GetFont("DialogButton", true);
 
-    m_flBaseX = atof(pScheme->GetResourceString("Popup.Button.BaseX"));
-    m_flBaseY = atof(pScheme->GetResourceString("Popup.Button.BaseY"));
-    m_flWidth = atof(pScheme->GetResourceString("Popup.Button.Width"));
+    m_flBaseX = atof(pScheme->GetResourceString("Dialog.Button.BaseX"));
+    m_flBaseY = atof(pScheme->GetResourceString("Dialog.Button.BaseY"));
+    m_flWidth = atof(pScheme->GetResourceString("Dialog.Button.Width"));
 
-    m_BackgroundColor_Normal = GetSchemeColor("Popup.Button.BackgroundColor.Normal", pScheme);
-    m_BackgroundColor_Highlight = GetSchemeColor("Popup.Button.BackgroundColor.Highlight", pScheme);
-    m_TextColor_Normal = GetSchemeColor("Popup.Button.TextColor.Normal", pScheme);
-    m_TextColor_Highlight = GetSchemeColor("Popup.Button.TextColor.Highlight", pScheme);
+    m_BackgroundColor_Normal = GetSchemeColor("Dialog.Button.BackgroundColor.Normal", pScheme);
+    m_BackgroundColor_Highlight = GetSchemeColor("Dialog.Button.BackgroundColor.Highlight", pScheme);
+    m_TextColor_Normal = GetSchemeColor("Dialog.Button.TextColor.Normal", pScheme);
+    m_TextColor_Highlight = GetSchemeColor("Dialog.Button.TextColor.Highlight", pScheme);
 
     m_BackgroundColor = m_BackgroundColor_Normal;
     m_TextColor = m_TextColor_Normal;
 
     m_flResWidth = XRES(m_flWidth);
-    m_flResHeight = XRES(atof(pScheme->GetResourceString("Popup.Button.Height")));
+    m_flResHeight = XRES(atof(pScheme->GetResourceString("Dialog.Button.Height")));
     SetSize(m_flResWidth, m_flResHeight);
     SetPosition(m_iXPos);
 
@@ -52,7 +52,7 @@ void CNextUIPopupButton::ApplySchemeSettings(vgui::IScheme *pScheme)
     m_bLastHighlight = !m_bHighlight;
 }
 
-void CNextUIPopupButton::PaintBackground()
+void CNextUIDialogButton::PaintBackground()
 {
     int iWide, iTall;
     GetSize(iWide, iTall);
@@ -61,7 +61,7 @@ void CNextUIPopupButton::PaintBackground()
     g_pVGuiSurface->DrawFilledRectFade(0, 0, iWide, iTall / 2 - 1, 255, 0, false);
 }
 
-void CNextUIPopupButton::Paint()
+void CNextUIDialogButton::Paint()
 {
     const wchar_t *pszText = GetText();
     if(pszText[0]) {
@@ -74,7 +74,7 @@ void CNextUIPopupButton::Paint()
     }
 }
 
-void CNextUIPopupButton::OnThink()
+void CNextUIDialogButton::OnThink()
 {
     BaseClass::OnThink();
 
@@ -92,7 +92,7 @@ void CNextUIPopupButton::OnThink()
     }
 }
 
-void CNextUIPopupButton::SetPosition(int iXPos)
+void CNextUIDialogButton::SetPosition(int iXPos)
 {
     int iWide, iTall;
     GetSize(iWide, iTall);
@@ -107,12 +107,12 @@ void CNextUIPopupButton::SetPosition(int iXPos)
     SetPos(iNewXPos, iNewYPos);
 }
 
-void CNextUIPopupButton::SetPositionIdx(int iID, int iCount)
+void CNextUIDialogButton::SetPositionIdx(int iID, int iCount)
 {
     SetPosition(m_flBaseX + (640.f - m_flWidth - m_flBaseX * 2.0f) * (float)iID / (float)iCount);
 }
 
-CNextUIPopup::CNextUIPopup(vgui::Panel *pParent, const char *pszPanelName)
+CNextUIDialog::CNextUIDialog(vgui::Panel *pParent, const char *pszPanelName)
     : BaseClass(pParent, pszPanelName), m_szText()
 {
     // HACK: we should set this from the outside
@@ -123,19 +123,19 @@ CNextUIPopup::CNextUIPopup(vgui::Panel *pParent, const char *pszPanelName)
     SetPaintEnabled(true);
 }
 
-void CNextUIPopup::ApplySchemeSettings(vgui::IScheme *pScheme)
+void CNextUIDialog::ApplySchemeSettings(vgui::IScheme *pScheme)
 {
-    m_hTextFont = pScheme->GetFont("PopupText", true);
+    m_hTextFont = pScheme->GetFont("DialogText", true);
 
-    m_flFadeTime = atof(pScheme->GetResourceString("Popup.Background.FadeTime"));
-    m_flGradientHeightPercent = atof(pScheme->GetResourceString("Popup.Background.GradientHeightPercent")) / 100.0f;
-    m_flTextX = XRES(atof(pScheme->GetResourceString("Popup.Text.PositionX")));
-    m_flTextY = YRES(atof(pScheme->GetResourceString("Popup.Text.PositionY")));
+    m_flFadeTime = atof(pScheme->GetResourceString("Dialog.Background.FadeTime"));
+    m_flGradientHeightPercent = atof(pScheme->GetResourceString("Dialog.Background.GradientHeightPercent")) / 100.0f;
+    m_flTextX = XRES(atof(pScheme->GetResourceString("Dialog.Text.PositionX")));
+    m_flTextY = YRES(atof(pScheme->GetResourceString("Dialog.Text.PositionY")));
 
     m_flGradientHeightPercentInv = Max(0.0f, 1.0f - m_flGradientHeightPercent);
 
-    m_TargetFadeColor = GetSchemeColor("Popup.Background.FadeColor", pScheme);
-    m_TextColor = GetSchemeColor("Popup.Text.Color", pScheme);
+    m_TargetFadeColor = GetSchemeColor("Dialog.Background.FadeColor", pScheme);
+    m_TextColor = GetSchemeColor("Dialog.Text.Color", pScheme);
 
     int iButtonCount = m_vecButtons.Count() - 1;
     if(iButtonCount >= 0) {
@@ -147,7 +147,7 @@ void CNextUIPopup::ApplySchemeSettings(vgui::IScheme *pScheme)
     CNextUIScreen::ApplySchemeSettings(pScheme);
 }
 
-void CNextUIPopup::PaintBackground()
+void CNextUIDialog::PaintBackground()
 {
     int iWide, iTall;
     GetSize(iWide, iTall);
@@ -157,9 +157,9 @@ void CNextUIPopup::PaintBackground()
     g_pVGuiSurface->DrawFilledRectFade(0, iTall * m_flGradientHeightPercentInv, iWide, iTall, 0x00, 0xFF, false);
 }
 
-void CNextUIPopup::Paint()
+void CNextUIDialog::Paint()
 {
-    CNextUIScreen::Paint();
+    PaintTitle();
 
     if(m_szText[0]) {
         g_pVGuiSurface->DrawSetTextColor(m_TextColor);
@@ -169,14 +169,14 @@ void CNextUIPopup::Paint()
     }
 }
 
-void CNextUIPopup::OnActivate()
+void CNextUIDialog::OnActivate()
 {
     m_FadeColor = Color(0, 0, 0, 0);
     vgui::AnimationController *pAC = CNextUI::GetInstance()->GetAnimationController();
     pAC->RunAnimationCommand(this, "FadeColor", m_TargetFadeColor, 0.0, m_flFadeTime, pAC->INTERPOLATOR_DEACCEL);
 }
 
-void CNextUIPopup::AddButton(CNextUIPopupButton *pButton)
+void CNextUIDialog::AddButton(CNextUIDialogButton *pButton)
 {
     int iCount = m_vecButtons.Count();
     for(int i = 0; i < iCount; i++) {
@@ -188,12 +188,12 @@ void CNextUIPopup::AddButton(CNextUIPopupButton *pButton)
     m_vecButtons.AddToTail(pButton);
 }
 
-void CNextUIPopup::SetText(const char *pszText)
+void CNextUIDialog::SetText(const char *pszText)
 {
     CNextUI::GetInstance()->GetLocalizedString(pszText, m_szText, sizeof(m_szText) / sizeof(wchar_t));
 }
 
-void CNextUIPopup::SetText(const wchar_t *pszText)
+void CNextUIDialog::SetText(const wchar_t *pszText)
 {
     Q_wcsncpy(m_szText, pszText, sizeof(m_szText));
 }

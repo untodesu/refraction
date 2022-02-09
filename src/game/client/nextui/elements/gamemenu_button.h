@@ -1,7 +1,7 @@
 #ifndef _NEXTUI_GAMEMENU_BUTTON_H_
 #define _NEXTUI_GAMEMENU_BUTTON_H_ 1
 #pragma once
-#include "nextui_button.h"
+#include "nextui/nextui_button.h"
 #include "vgui_controls/AnimationController.h"
 
 class CGameMenuButton : public CNextUIButton {

@@ -1,6 +1,6 @@
 #include "cbase.h"
 #include "gamemenu_button.h"
-#include "nextui_int.h"
+#include "nextui/nextui_int.h"
 #include "vgui/ISurface.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
