@@ -197,3 +197,26 @@ void CNextUIDialog::SetText(const wchar_t *pszText)
 {
     Q_wcsncpy(m_szText, pszText, sizeof(m_szText));
 }
+
+CNextUIDialogButton_CloseParent::CNextUIDialogButton_CloseParent(CNextUIDialog *pParent, const char *pszText)
+    : BaseClass(pParent, pszText), m_pParent(pParent)
+{
+}
+
+CNextUIDialogButton_CloseParent::CNextUIDialogButton_CloseParent(CNextUIDialog *pParent, const wchar_t *pszText)
+    : BaseClass(pParent, pszText), m_pParent(pParent)
+{
+}
+
+void CNextUIDialogButton_CloseParent::SetParent(CNextUIDialog *pParent)
+{
+    BaseClass::SetParent(pParent);
+    m_pParent = pParent;
+}
+
+void CNextUIDialogButton_CloseParent::OnClick()
+{
+    if(m_pParent)
+        CNextUI::GetInstance()->UnsetCurrentScreen(m_pParent);
+    BaseClass::OnClick();
+}

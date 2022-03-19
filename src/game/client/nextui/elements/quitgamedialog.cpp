@@ -1,35 +1,11 @@
 #include "cbase.h"
 #include "filesystem.h"
+//#include "saveloaddialog.h"
 #include "nextui/nextui_dialog.h"
 #include "nextui/nextui_int.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
-
-// This is literally what GameUI.dll does lmao
-static void GameUI_FindSaveSlot(char *pszBuffer, int iBufferSize)
-{
-    static char szFilename[1024] = { 0 };
-
-    pszBuffer[0] = 0;
-    for(int i = 0; i < 1000; i++) {
-        Q_snprintf(szFilename, sizeof(szFilename), "save/half-life-%03d.sav", i);
-
-        FileHandle_t fp = g_pFullFileSystem->Open(szFilename, "rb");
-        if(!fp) {
-            Q_strncpy(pszBuffer, szFilename + 5, iBufferSize);
-            char *pszExtension = Q_strstr(pszBuffer, ".sav");
-            if(pszExtension)
-                pszExtension[0] = 0;
-            return;
-        }
-
-        g_pFullFileSystem->Close(fp);
-    }
-
-    ConColorMsg(LOG_COLOR_B_RED, "NextUI: unable to generate a new save file");
-    Assert(0);
-}
 
 class CNextUIDialogButton_Quicksave : public CNextUIDialogButton {
     DECLARE_CLASS_SIMPLE(CNextUIDialogButton_Quicksave, CNextUIDialogButton);
@@ -44,31 +20,11 @@ public:
     void OnClick() override
     {
         static char szSaveName[32] = { 0 }, szCommand[128] = { 0 };;
-        GameUI_FindSaveSlot(szSaveName, sizeof(szSaveName));
+        SaveFileInfo::FindSaveSlot(szSaveName, sizeof(szSaveName));
         Q_snprintf(szCommand, sizeof(szCommand), "save %s", szSaveName);
         engine->ClientCmd_Unrestricted(szCommand);
         BaseClass::OnClick();
     }
-};
-
-class CNextUIDialogButton_UnsetParentScreen : public CNextUIDialogButton {
-    DECLARE_CLASS_SIMPLE(CNextUIDialogButton_UnsetParentScreen, CNextUIDialogButton);
-
-public:
-    CNextUIDialogButton_UnsetParentScreen(CNextUIDialog *pParent, const char *pszTitle)
-        : BaseClass(pParent, pszTitle), m_pParent(pParent)
-    {
-
-    }
-
-    void OnClick() override
-    {
-        CNextUI::GetInstance()->UnsetCurrentScreen(m_pParent);
-        BaseClass::OnClick();
-    }
-
-private:
-    CNextUIDialog *m_pParent;
 };
 
 static CNextUIDialog *s_pQuitGamePopup = NULL;
@@ -95,7 +51,7 @@ CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
             s_pQuitGamePopupInGame->AddButton(pButton_2);
 
             // Cancel
-            CNextUIDialogButton_UnsetParentScreen *pButton_3 = new CNextUIDialogButton_UnsetParentScreen(s_pQuitGamePopupInGame, "#GameUI_Cancel");
+            CNextUIDialogButton_CloseParent *pButton_3 = new CNextUIDialogButton_CloseParent(s_pQuitGamePopupInGame, "#GameUI_Cancel");
             s_pQuitGamePopupInGame->AddButton(pButton_3);
         }
         
@@ -113,7 +69,7 @@ CON_COMMAND(nextui_quitgame, "QuitGameDialog[InGame]")
             s_pQuitGamePopup->AddButton(pButton_1);
 
             // Cancel
-            CNextUIDialogButton_UnsetParentScreen *pButton_2 = new CNextUIDialogButton_UnsetParentScreen(s_pQuitGamePopup, "#GameUI_Cancel");
+            CNextUIDialogButton_CloseParent *pButton_2 = new CNextUIDialogButton_CloseParent(s_pQuitGamePopup, "#GameUI_Cancel");
             s_pQuitGamePopup->AddButton(pButton_2);
         }
 

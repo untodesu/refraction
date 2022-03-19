@@ -8,6 +8,19 @@
 #include "nextui_screen.h"
 #include "vgui_controls/AnimationController.h"
 
+struct SaveFileInfo {
+    char m_szShortName[64];
+    char m_szFilename[64];
+    char m_szMapName[32];
+    char m_szFileTime[32];
+    char m_szComment[80];
+    unsigned int m_uTimestamp;
+
+    static bool ParseFile(const char *pszFilename, const char *pszShortName, SaveFileInfo &save);
+    static void FindSaveSlot(char *pszBuffer, int iBufferSize);
+    static int SortFunc(const void *p1, const void *p2);
+};
+
 class CNextUI : public CBaseGameSystemPerFrame {
 public:
     const char *Name() override;

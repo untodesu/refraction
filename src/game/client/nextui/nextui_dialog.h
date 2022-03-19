@@ -70,4 +70,17 @@ private:
     Color m_TextColor = Color();
 };
 
+class CNextUIDialogButton_CloseParent : public CNextUIDialogButton {
+    DECLARE_CLASS_SIMPLE(CNextUIDialogButton_CloseParent, CNextUIDialogButton);
+
+public:
+    CNextUIDialogButton_CloseParent(CNextUIDialog *pParent, const char *pszText);
+    CNextUIDialogButton_CloseParent(CNextUIDialog *pParent, const wchar_t *pszText);
+    virtual void SetParent(CNextUIDialog *pParent);
+    virtual void OnClick();
+
+private:
+    CNextUIDialog *m_pParent;
+};
+
 #endif

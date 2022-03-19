@@ -23,46 +23,79 @@ CNextUIButton::CNextUIButton(vgui::Panel *pParent, const char *pszPanelName, con
 void CNextUIButton::OnCursorEntered()
 {
     BaseClass::OnCursorEntered();
-    if(m_szRolloverSound[0])
-        g_pVGuiSurface->PlaySound(m_szRolloverSound);
-    m_bHighlight = true;
+    if(!m_bSticky) {
+        if(m_szRolloverSound[0])
+            g_pVGuiSurface->PlaySound(m_szRolloverSound);
+        m_bHighlight = true;
+    }
 }
 
 void CNextUIButton::OnCursorExited()
 {
     BaseClass::OnCursorExited();
-    m_bHighlight = false;
+    if(!m_bSticky) {
+        m_bHighlight = false;
+    }
 }
 
 void CNextUIButton::OnMousePressed(vgui::MouseCode eCode)
 {
-    if(eCode == MOUSE_LEFT && m_bHighlight) {
+    if(m_bSticky) {
+        m_bHighlight = true;
+        OnStickyHighlight();
+        return;
+    }
+
+    if(m_bHighlight) {
         if(m_szClickSound[0])
             g_pVGuiSurface->PlaySound(m_szClickSound);
         OnClick();
     }
 }
 
+void CNextUIButton::OnMouseDoublePressed(vgui::MouseCode eCode)
+{
+    if(m_bSticky) {
+        m_bHighlight = true;
+        OnStickyHighlight();
+        if(m_szClickSound[0])
+            g_pVGuiSurface->PlaySound(m_szClickSound);
+        OnClick();
+    }
+}
+
+void CNextUIButton::OnStickyHighlight()
+{
+}
+
 void CNextUIButton::OnThink()
 {
     BaseClass::OnThink();
 
-    if(HasFocus()) {
-        if(!IsCursorOver()) {
+    if(!m_bSticky) {
+        if(HasFocus()) {
+            if(!IsCursorOver()) {
+                m_bHighlight = false;
+            }
+            else if(!m_bHighlight) {
+                m_bHighlight = true;
+            }
+        }
+        else if(!IsCursorOver()) {
             m_bHighlight = false;
         }
-        else if(!m_bHighlight) {
-            m_bHighlight = true;
-        }
-    }
-    else if(!IsCursorOver()) {
-        m_bHighlight = false;
     }
 }
 
 void CNextUIButton::OnClick()
 {
     CNextUI::GetGameUI()->SendMainMenuCommand(m_szCommand);
+}
+
+void CNextUIButton::SetSticky(bool bSticky)
+{
+    m_bSticky = bSticky;
+    m_bHighlight = false;
 }
 
 void CNextUIButton::SetCommand(const char *pszCommand)

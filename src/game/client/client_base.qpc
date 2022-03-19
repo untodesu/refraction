@@ -71,13 +71,18 @@ files
     {
         folder "NextUI"
         {
-            "$GAME_CLIENT$/nextui/gamemenu.cpp"
-            "$GAME_CLIENT$/nextui/gamemenu.h"
-            "$GAME_CLIENT$/nextui/gamemenu_button.cpp"
-            "$GAME_CLIENT$/nextui/gamemenu_button.h"
+            folder "Elements"
+            {
+                "$GAME_CLIENT$/nextui/elements/gamemenu.cpp"
+                "$GAME_CLIENT$/nextui/elements/gamemenu.h"
+                "$GAME_CLIENT$/nextui/elements/quitgamedialog.cpp"
+            }
+            
             "$GAME_CLIENT$/nextui/INextUI.h"
             "$GAME_CLIENT$/nextui/nextui_button.cpp"
             "$GAME_CLIENT$/nextui/nextui_button.h"
+            "$GAME_CLIENT$/nextui/nextui_dialog.cpp"
+            "$GAME_CLIENT$/nextui/nextui_dialog.h"
             "$GAME_CLIENT$/nextui/nextui_int.cpp"
             "$GAME_CLIENT$/nextui/nextui_int.h"
             "$GAME_CLIENT$/nextui/nextui_rootpanel.cpp"

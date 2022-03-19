@@ -1,10 +1,10 @@
 #ifndef _NEXTUI_GAMEMENU_H_
 #define _NEXTUI_GAMEMENU_H_ 1
 #pragma once
-#include "gamemenu_button.h"
 #include "nextui/nextui_screen.h"
 #include "tier1/utlvector.h"
 
+class CGameMenuButton;
 class CGameMenu : public CNextUIScreen {
     DECLARE_CLASS_SIMPLE(CGameMenu, CNextUIScreen);
 
